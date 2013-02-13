@@ -53,6 +53,7 @@ namespace TestApp
             photoBomb.saveAlbumsXML(new SoftwareEng.generic_callback(saveXML_Callback), "test.xml");
         }//method
 
+        //callback for the above test button
         public void saveXML_Callback(SoftwareEng.Error e)
         {
             if(e.id == SoftwareEng.Error.SUCCESS){
