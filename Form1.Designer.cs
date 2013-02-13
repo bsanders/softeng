@@ -31,6 +31,7 @@
             this.loadXML = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.output = new System.Windows.Forms.RichTextBox();
+            this.loadAlbums = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // loadXML
@@ -45,7 +46,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(186, 185);
+            this.button2.Location = new System.Drawing.Point(105, 185);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -61,11 +62,22 @@
             this.output.TabIndex = 3;
             this.output.Text = "";
             // 
+            // loadAlbums
+            // 
+            this.loadAlbums.Location = new System.Drawing.Point(187, 184);
+            this.loadAlbums.Name = "loadAlbums";
+            this.loadAlbums.Size = new System.Drawing.Size(75, 23);
+            this.loadAlbums.TabIndex = 4;
+            this.loadAlbums.Text = "loadAlbums";
+            this.loadAlbums.UseVisualStyleBackColor = true;
+            this.loadAlbums.Click += new System.EventHandler(this.loadAlbums_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
+            this.Controls.Add(this.loadAlbums);
             this.Controls.Add(this.output);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.loadXML);
@@ -80,6 +92,7 @@
         private System.Windows.Forms.Button loadXML;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.RichTextBox output;
+        private System.Windows.Forms.Button loadAlbums;
     }
 }
 

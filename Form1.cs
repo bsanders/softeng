@@ -47,7 +47,7 @@ namespace TestApp
 
         //--------------------------------------------------------------------
 
-        //test button.
+        //test save button.
         private void button2_Click(object sender, EventArgs e)
         {
             photoBomb.saveAlbumsXML(new SoftwareEng.generic_callback(saveXML_Callback), "test.xml");
@@ -65,8 +65,14 @@ namespace TestApp
             }
         }
 
+
         //--------------------------------------------------------------------
 
+
+        private void loadAlbums_Click(object sender, EventArgs e)
+        {
+
+        }
 
 
     }//class

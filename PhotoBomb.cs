@@ -13,19 +13,20 @@ namespace SoftwareEng
 {
     class PhotoBomb
     {
+    //------------------------------------------------------
         //xml parsing utils.
         XmlParser xmlParser;
 
         //the XML in memory for the albumbs
-        XDocument _albums;
-        XDocument _pictures;
+        XDocument _albumsXDocs;
+        XDocument _picturesXDocs;
 
         //----------------------------------------------
         //init.
         public PhotoBomb()
         {
-            _albums = null;
-            _pictures = null;
+            _albumsXDocs = null;
+            _picturesXDocs = null;
 
             xmlParser = new XmlParser();
         }
@@ -40,7 +41,7 @@ namespace SoftwareEng
 
             try
             {
-                _albums = XDocument.Load(xmlPath);
+                _albumsXDocs = XDocument.Load(xmlPath);
             }
             catch
             {
@@ -60,7 +61,7 @@ namespace SoftwareEng
         {
             Error error = new Error();
             //error checking
-            if (_albums == null)
+            if (_albumsXDocs == null)
             {
                 error.id = Error.FAILURE;
                 error.description = "PhotoBomb:saveAlbumsXML:No Album to save.";
@@ -73,9 +74,47 @@ namespace SoftwareEng
         }
         //----------------------------------------------
 
+        //This method returns a list of Album objects to
+        //the parameter callback function.
+        public void getUserAlbumbs(getAlbumbsCallback guiCallback)
+        {
+            Error error = new Error();
+            List<UserAlbum> _albums = new List<UserAlbum>();
+
+            try
+            {
+                List<XElement> search = xmlParser.searchForElement(_albumsXDocs, "album");
+                //foreach()
+            }
+            catch
+            {
+                error.id = Error.FAILURE;
+                error.description = "failed to ...";
+            }
+            //fill out albums list...
+
+            guiCallback(error, _albums);
+        }
 
 
     }//class
+
+
+    //This is a data class that will be used
+    //to send a calling gui a list of albums.
+    //This class is a SINGLE element of that list.
+    public class UserAlbum
+    {
+        String albumName;
+        //add more information here...
+
+        public UserAlbum()
+        {
+            albumName = "";
+        }
+    }
+
+
 }//namespace
 
 

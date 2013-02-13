@@ -17,6 +17,8 @@ namespace SoftwareEng
     //to the gui is the error object.
     public delegate void generic_callback(Error error);
 
+    public delegate void getAlbumbsCallback(Error error, List<UserAlbum> _albums);
+
     //put more advanced callbacks here, ex:
     //public delegate crazy_callback(Error error, string bob, List<int> _someList);
 

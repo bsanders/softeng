@@ -10,7 +10,7 @@ namespace SoftwareEng
     {
 
         //--------------------------------------------------------------
-        private List<XElement> searchForElement(XElement parent, string lookingFor)
+        public List<XElement> searchForElement(XElement parent, string lookingFor)
         {
             List<XElement> _list = new List<XElement>();
             foreach (XElement subElement in parent.Descendants(lookingFor))
@@ -20,7 +20,7 @@ namespace SoftwareEng
             return _list;
         }//method
         //--------------------------------------------------------------
-        private List<XElement> searchForElement(XDocument parent, string lookingFor)
+        public List<XElement> searchForElement(XDocument parent, string lookingFor)
         {
             List<XElement> _list = new List<XElement>();
             foreach (XElement subElement in parent.Descendants(lookingFor))
