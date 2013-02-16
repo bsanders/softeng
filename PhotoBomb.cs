@@ -102,33 +102,53 @@ namespace SoftwareEng
         {
             Error error = new Error();
 
+            //error checking
+            if (_albumsXDocs == null)
+            {
+                error.id = Error.FAILURE;
+                error.description = "PhotoBomb.getAllUserAlbumNames():Albums xml has not been loaded yet!";
+                guiCallback(error, null);
+                return;
+            }
+
             //the list of all albums to return to the gui.
             List<UserAlbum> _albumsToReturn = new List<UserAlbum>();
 
             try
             {
-                //all the albums AND their children.
+                //get all the albums AND their children.
                 List<XElement> _albumSearch = xmlParser.searchForElements(_albumsXDocs, "album");
 
-                //go through each album and get its data to add to the list.
+                //go through each album and get data from its children to add to the list.
                 foreach (XElement elem in _albumSearch) 
                 {
                     //this gets sent back to the gui.
-                    UserAlbum anAlbum = new UserAlbum();
-
+                    UserAlbum userAlbum = new UserAlbum();
                     //get the name(s) of this album.
                     List<XElement> _nameSearch = xmlParser.searchForElements(elem, "name");
-                    if (_nameSearch.Count > 0)
+                    //make sure we have at least one name for the album.
+                    if (_nameSearch.Count == 1)
                     {
-                        anAlbum.albumName = _nameSearch.ElementAt(0).Value;
-                        _albumsToReturn.Add(anAlbum);
+                        //get the value of the album name and add to list.
+                        userAlbum.albumName = _nameSearch.ElementAt(0).Value;
+                        _albumsToReturn.Add(userAlbum);
                     }
-                }
+                    else if(_nameSearch.Count > 1)
+                    {
+                        error.id = Error.SUCCESS_WITH_WARNINGS;
+                        error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with more than one name.");
+                    }
+                    else if (_nameSearch.Count == 0)
+                    {
+                        error.id = Error.SUCCESS_WITH_WARNINGS;
+                        error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with no name.");
+                    }
+                }//foreach
             }
             catch
             {
-                error.id = Error.FAILURE;
-                error.description = "PhotoBomb.getAllUserAlbumNames():Failed to find albums in the database.";
+                error.id = Error.FAILURE;//maybe every error should be SHIT_JUST_GOT_REAL?  Decisions, decisions...
+                error.description = "PhotoBomb.getAllUserAlbumNames():Failed at finding albums in the database.";
                 guiCallback(error, null);
                 return;
             }
