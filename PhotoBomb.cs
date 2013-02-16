@@ -103,18 +103,26 @@ namespace SoftwareEng
             Error error = new Error();
 
             //the list of all albums to return to the gui.
-            List<UserAlbum> _albums = new List<UserAlbum>();
+            List<UserAlbum> _albumsToReturn = new List<UserAlbum>();
 
             try
             {
-                //all the albums and their children.
-                List<XElement> search = xmlParser.searchForElement(_albumsXDocs, "album");
-                //add the name of all the albums to the list
-                foreach (XElement elem in search) 
+                //all the albums AND their children.
+                List<XElement> _albumSearch = xmlParser.searchForElements(_albumsXDocs, "album");
+
+                //go through each album and get its data to add to the list.
+                foreach (XElement elem in _albumSearch) 
                 {
-                    UserAlbum tempAlbum = new UserAlbum();
-                    tempAlbum.albumName = "test";
-                    _albums.Add(tempAlbum);
+                    //this gets sent back to the gui.
+                    UserAlbum anAlbum = new UserAlbum();
+
+                    //get the name(s) of this album.
+                    List<XElement> _nameSearch = xmlParser.searchForElements(elem, "name");
+                    if (_nameSearch.Count > 0)
+                    {
+                        anAlbum.albumName = _nameSearch.ElementAt(0).Value;
+                        _albumsToReturn.Add(anAlbum);
+                    }
                 }
             }
             catch
@@ -125,7 +133,7 @@ namespace SoftwareEng
                 return;
             }
 
-            guiCallback(error, _albums);
+            guiCallback(error, _albumsToReturn);
         }
 
 
