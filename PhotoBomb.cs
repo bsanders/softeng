@@ -114,36 +114,11 @@ namespace SoftwareEng
             //the list of all albums to return to the gui.
             List<UserAlbum> _albumsToReturn = new List<UserAlbum>();
 
+            //get all the albums AND their children.
+            List<XElement> _albumSearch;
             try
-            {
-                //get all the albums AND their children.
-                List<XElement> _albumSearch = xmlParser.searchForElements(_albumsXDocs, "album");
-
-                //go through each album and get data from its children to add to the list.
-                foreach (XElement elem in _albumSearch) 
-                {
-                    //this gets sent back to the gui.
-                    UserAlbum userAlbum = new UserAlbum();
-                    //get the name(s) of this album.
-                    List<XElement> _nameSearch = xmlParser.searchForElements(elem, "name");
-                    //make sure we have at least one name for the album.
-                    if (_nameSearch.Count == 1)
-                    {
-                        //get the value of the album name and add to list.
-                        userAlbum.albumName = _nameSearch.ElementAt(0).Value;
-                        _albumsToReturn.Add(userAlbum);
-                    }
-                    else if(_nameSearch.Count > 1)
-                    {
-                        error.id = ErrorReport.SUCCESS_WITH_WARNINGS;
-                        error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with more than one name.");
-                    }
-                    else if (_nameSearch.Count == 0)
-                    {
-                        error.id = ErrorReport.SUCCESS_WITH_WARNINGS;
-                        error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with no name.");
-                    }
-                }//foreach
+            {  
+                _albumSearch = xmlParser.searchForElements(_albumsXDocs, "album");
             }
             catch
             {
@@ -152,6 +127,56 @@ namespace SoftwareEng
                 guiCallback(error, null);
                 return;
             }
+
+            //go through each album and get data from its children to add to the list.
+            foreach (XElement elem in _albumSearch) 
+            {
+                //this gets sent back to the gui.
+                UserAlbum userAlbum = new UserAlbum();
+                    
+                //need this inner try because if this fails to find the name it would go
+                //to the outer catch and not continue the foreach loop looking for albums.
+                List<XElement> _nameSearch;
+                try
+                {
+                    //get the name(s) of this album.
+                    _nameSearch = xmlParser.searchForElements(elem, "name");
+                }
+                catch
+                {
+                    error.id = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error finding the name of an album.");
+                    continue;
+                }
+                //make sure we have at least one name for the album.
+                if (_nameSearch.Count == 1)
+                {
+                    //get the value of the album name and add to list.
+                    //userAlbum.albumName = _nameSearch.ElementAt(0).Value;
+                    try
+                    {
+                        userAlbum.albumName = _nameSearch.ElementAt(0).Attribute("value").Value;
+                    }
+                    catch
+                    {
+                        error.id = ErrorReport.SUCCESS_WITH_WARNINGS;
+                        error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error trying to get the name value from an album.");
+                        continue;
+                    }
+                    _albumsToReturn.Add(userAlbum);
+                }
+                else if(_nameSearch.Count > 1)
+                {
+                    error.id = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with more than one name.");
+                }
+                else if (_nameSearch.Count == 0)
+                {
+                    error.id = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with no name.");
+                }
+
+            }//foreach
 
             guiCallback(error, _albumsToReturn);
         }
@@ -173,12 +198,14 @@ namespace SoftwareEng
     public class UserAlbum
     {
         public String albumName;
+        public int UID;
         //add more information here if needed...
 
         //initialize vars.
         public UserAlbum()
         {
             albumName = "";
+            UID = 0;//This should be set at init time to avoid errors!!!
         }
     }
 

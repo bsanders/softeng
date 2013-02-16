@@ -34,7 +34,7 @@ namespace TestApp
         private void loadXML_Click(object sender, EventArgs e)
         {
             photoBomb.openAlbumsXML(new SoftwareEng.generic_callback(loadXML_Callback), xmlPathTE.Text);
-        }//form1()
+        }
 
 
         //callback for above test button.
