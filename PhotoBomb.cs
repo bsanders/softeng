@@ -17,12 +17,16 @@ namespace SoftwareEng
         //xml parsing utils.
         XmlParser xmlParser;
 
-        //the XML in memory for the albumbs
+        //The XML in memory for the albumbs.
+        //Add new vars here if we get more xmls.
         XDocument _albumsXDocs;
         XDocument _picturesXDocs;
 
         //----------------------------------------------
-        //init.
+        //By: Ryan Moe
+        //Edited Last: 
+        //
+        //initialize.
         public PhotoBomb()
         {
             _albumsXDocs = null;
@@ -32,8 +36,13 @@ namespace SoftwareEng
         }
 
         //----------------------------------------------
+        //By: Ryan Moe
+        //Edited Last: 
+        //
         //open the xml document that represents the
-        //albumbs in the program.
+        //user's albums in the program.
+        //PARAM 1 = a callback (delegate) to a gui function (see PhotoBombDelegates.cs).
+        //PARAM 2 = The path to the album xml, THIS MAY BE REMOVED.
         public void openAlbumsXML(generic_callback guiCallback, string xmlPath)
         {
             //use this to inform the calling gui of how things went.
@@ -46,17 +55,23 @@ namespace SoftwareEng
             catch
             {
                 error.id = Error.SHIT_JUST_GOT_REAL;
-                error.description = "PhotoBomb:openAlbumsXML:failed to load the albums xml file.";
+                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file.";
                 guiCallback(error);
                 return;
             }
 
+            //The loading of the xml was nominal, report back to the gui callback.
             error.description = "great success!";
             guiCallback(error);
         }
 
         //----------------------------------------------
-        //save the xml document
+        //By: Ryan Moe
+        //Edited Last: 
+        //
+        //Save the album data to an xml file.
+        //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
+        //PARAM 2 = path to where you want to save the xml.
         public void saveAlbumsXML(generic_callback guiCallback, string xmlSavePath)
         {
             Error error = new Error();
@@ -73,9 +88,12 @@ namespace SoftwareEng
             guiCallback(error);
         }
         //----------------------------------------------
-
-        //This method returns a list of Album objects to
-        //the parameter callback function.
+        //By: Ryan Moe
+        //Edited Last: 
+        //
+        //This method returns a list of Album objects to the
+        //callback given by the parameter.
+        //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
         public void getUserAlbumbs(getAlbumbsCallback guiCallback)
         {
             Error error = new Error();
@@ -98,6 +116,13 @@ namespace SoftwareEng
 
 
     }//class
+
+
+
+
+    //-------------------------------------------------
+
+
 
 
     //This is a data class that will be used

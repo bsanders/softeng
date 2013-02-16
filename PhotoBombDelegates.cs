@@ -24,7 +24,7 @@ namespace SoftwareEng
 
 
     //no real need for this class.
-    class ProtoBombDelegates
+    class PhotoBombDelegates
     {
     }
 }
