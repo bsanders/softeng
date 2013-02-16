@@ -17,7 +17,7 @@ namespace SoftwareEng
 {
     
 
-    public class Error
+    public class ErrorReport
     {
         //---------------------------
         //CONSTANTS, these are standardized numbers for telling
@@ -34,7 +34,7 @@ namespace SoftwareEng
         public List<string> warnings;
         //---------------------------
         //Default to success, of course!
-        public Error()
+        public ErrorReport()
         {
             id = 0;
             description = "";

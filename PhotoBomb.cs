@@ -50,7 +50,7 @@ namespace SoftwareEng
         public void openAlbumsXML(generic_callback guiCallback, string xmlPath)
         {
             //use this to inform the calling gui of how things went.
-            Error error = new Error();
+            ErrorReport error = new ErrorReport();
 
             try
             {
@@ -58,7 +58,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.id = Error.SHIT_JUST_GOT_REAL;
+                error.id = ErrorReport.SHIT_JUST_GOT_REAL;
                 error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + xmlPath;
                 guiCallback(error);
                 return;
@@ -78,11 +78,11 @@ namespace SoftwareEng
         //PARAM 2 = path to where you want to save the xml.
         public void saveAlbumsXML(generic_callback guiCallback, string xmlSavePath)
         {
-            Error error = new Error();
+            ErrorReport error = new ErrorReport();
             //error checking
             if (_albumsXDocs == null)
             {
-                error.id = Error.FAILURE;
+                error.id = ErrorReport.FAILURE;
                 error.description = "PhotoBomb:saveAlbumsXML:No Album loaded to save.";
                 guiCallback(error);
                 return;
@@ -100,12 +100,12 @@ namespace SoftwareEng
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
         public void getAllUserAlbumNames(getAllUserAlbumNames_callback guiCallback)
         {
-            Error error = new Error();
+            ErrorReport error = new ErrorReport();
 
             //error checking
             if (_albumsXDocs == null)
             {
-                error.id = Error.FAILURE;
+                error.id = ErrorReport.FAILURE;
                 error.description = "PhotoBomb.getAllUserAlbumNames():Albums xml has not been loaded yet!";
                 guiCallback(error, null);
                 return;
@@ -135,19 +135,19 @@ namespace SoftwareEng
                     }
                     else if(_nameSearch.Count > 1)
                     {
-                        error.id = Error.SUCCESS_WITH_WARNINGS;
+                        error.id = ErrorReport.SUCCESS_WITH_WARNINGS;
                         error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with more than one name.");
                     }
                     else if (_nameSearch.Count == 0)
                     {
-                        error.id = Error.SUCCESS_WITH_WARNINGS;
+                        error.id = ErrorReport.SUCCESS_WITH_WARNINGS;
                         error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with no name.");
                     }
                 }//foreach
             }
             catch
             {
-                error.id = Error.FAILURE;//maybe every error should be SHIT_JUST_GOT_REAL?  Decisions, decisions...
+                error.id = ErrorReport.FAILURE;//maybe every error should be SHIT_JUST_GOT_REAL?  Decisions, decisions...
                 error.description = "PhotoBomb.getAllUserAlbumNames():Failed at finding albums in the database.";
                 guiCallback(error, null);
                 return;

@@ -16,10 +16,10 @@ namespace SoftwareEng
 {
     //use this callback if the only thing going back
     //to the gui is the error object.
-    public delegate void generic_callback(Error error);
+    public delegate void generic_callback(ErrorReport error);
 
     //callback used with the getAllUserAlbumNames method.
-    public delegate void getAllUserAlbumNames_callback(Error error, List<UserAlbum> _albums);
+    public delegate void getAllUserAlbumNames_callback(ErrorReport error, List<UserAlbum> _albums);
 
     //put more advanced callbacks here, ex:
     //public delegate crazy_callback(Error error, string bob, List<int> _someList);

@@ -38,12 +38,20 @@ namespace TestApp
 
 
         //callback for above test button.
-        public void loadXML_Callback(SoftwareEng.Error e)
+        public void loadXML_Callback(SoftwareEng.ErrorReport e)
         {
-            if (e.id == SoftwareEng.Error.SUCCESS)
+            if (e.id == SoftwareEng.ErrorReport.SUCCESS || e.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
             {
                 output.AppendText("XML Loaded\n");
+                if(e.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    for (int i = 0; i < e.warnings.Count; ++i)
+                    {
+                        output.AppendText(e.warnings.ElementAt(i));
+                    }
+                }
             }
+
             else
             {
                 output.AppendText("Error: " + e.description + "\n\n");
@@ -60,11 +68,22 @@ namespace TestApp
 
 
         //callback for the above test button
-        public void saveXML_Callback(SoftwareEng.Error e)
+        public void saveXML_Callback(SoftwareEng.ErrorReport e)
         {
-            if(e.id == SoftwareEng.Error.SUCCESS){
+            if (e.id == SoftwareEng.ErrorReport.SUCCESS || e.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+            {
                 output.AppendText("XML Saved\n");
+
+                if (e.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    output.AppendText("Warnings:\n");
+                    for (int i = 0; i < e.warnings.Count; ++i)
+                    {
+                        output.AppendText(e.warnings.ElementAt(i));
+                    }
+                }
             }
+
             else
             {
                 output.AppendText("Error: " + e.description + "\n\n");
@@ -81,15 +100,26 @@ namespace TestApp
         }
 
 
-        public void loadAlbums_Callback(SoftwareEng.Error error, List<SoftwareEng.UserAlbum> _albums)
+        public void loadAlbums_Callback(SoftwareEng.ErrorReport error, List<SoftwareEng.UserAlbum> _albums)
         {
-            if (error.id == SoftwareEng.Error.SUCCESS)
+            if (error.id == SoftwareEng.ErrorReport.SUCCESS || error.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
             {
+                //output albums
                 for (int i = 0; i < _albums.Count; ++i)
                 {
                     output.AppendText(_albums.ElementAt(i).albumName + "\n");
                 }
+                //output warnings
+                if (error.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    output.AppendText("Warnings:\n");
+                    for (int i = 0; i < error.warnings.Count; ++i)
+                    {
+                        output.AppendText(error.warnings.ElementAt(i) + "\n");
+                    }
+                }
             }
+
             else
             {
                 output.AppendText("Error: " + error.description + "\n\n");

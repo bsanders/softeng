@@ -37,7 +37,7 @@
             // 
             // loadXML
             // 
-            this.loadXML.Location = new System.Drawing.Point(24, 185);
+            this.loadXML.Location = new System.Drawing.Point(12, 386);
             this.loadXML.Name = "loadXML";
             this.loadXML.Size = new System.Drawing.Size(75, 23);
             this.loadXML.TabIndex = 0;
@@ -47,7 +47,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(105, 185);
+            this.button2.Location = new System.Drawing.Point(145, 386);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -57,15 +57,15 @@
             // 
             // output
             // 
-            this.output.Location = new System.Drawing.Point(24, 32);
+            this.output.Location = new System.Drawing.Point(12, 12);
             this.output.Name = "output";
-            this.output.Size = new System.Drawing.Size(237, 122);
+            this.output.Size = new System.Drawing.Size(547, 349);
             this.output.TabIndex = 3;
             this.output.Text = "";
             // 
             // loadAlbums
             // 
-            this.loadAlbums.Location = new System.Drawing.Point(187, 184);
+            this.loadAlbums.Location = new System.Drawing.Point(259, 386);
             this.loadAlbums.Name = "loadAlbums";
             this.loadAlbums.Size = new System.Drawing.Size(75, 23);
             this.loadAlbums.TabIndex = 4;
@@ -75,7 +75,7 @@
             // 
             // xmlPathTE
             // 
-            this.xmlPathTE.Location = new System.Drawing.Point(24, 230);
+            this.xmlPathTE.Location = new System.Drawing.Point(12, 415);
             this.xmlPathTE.Name = "xmlPathTE";
             this.xmlPathTE.Size = new System.Drawing.Size(100, 20);
             this.xmlPathTE.TabIndex = 5;
@@ -85,7 +85,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(571, 459);
             this.Controls.Add(this.xmlPathTE);
             this.Controls.Add(this.loadAlbums);
             this.Controls.Add(this.output);
