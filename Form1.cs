@@ -29,7 +29,7 @@ namespace TestApp
         //test button.
         private void loadXML_Click(object sender, EventArgs e)
         {
-            photoBomb.openAlbumsXML(new SoftwareEng.generic_callback(loadXML_Callback), "test.xml");
+            photoBomb.openAlbumsXML(new SoftwareEng.generic_callback(loadXML_Callback), xmlPathTE.Text);
         }//form1()
 
         //callback for above test button.
@@ -41,7 +41,7 @@ namespace TestApp
             }
             else
             {
-                output.AppendText("XML Not Loaded\n");
+                output.AppendText("Error: " + e.description + "\n\n");
             }
         }
 
@@ -50,7 +50,7 @@ namespace TestApp
         //test save button.
         private void button2_Click(object sender, EventArgs e)
         {
-            photoBomb.saveAlbumsXML(new SoftwareEng.generic_callback(saveXML_Callback), "test.xml");
+            photoBomb.saveAlbumsXML(new SoftwareEng.generic_callback(saveXML_Callback), xmlPathTE.Text);
         }//method
 
         //callback for the above test button
@@ -61,7 +61,7 @@ namespace TestApp
             }
             else
             {
-                output.AppendText("XML Not Saved\n");
+                output.AppendText("Error: " + e.description + "\n\n");
             }
         }
 
