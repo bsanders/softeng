@@ -1,4 +1,5 @@
 ﻿/**
+ * BY: Ryan Moe.
  * This class is for organizing the callbacks (c# delegates)
  * used to connect the backend to the gui.  We are using
  * callbacks so that the gui does not have to wait for the

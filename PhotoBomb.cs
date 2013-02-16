@@ -43,6 +43,10 @@ namespace SoftwareEng
         //user's albums in the program.
         //PARAM 1 = a callback (delegate) to a gui function (see PhotoBombDelegates.cs).
         //PARAM 2 = The path to the album xml, THIS MAY BE REMOVED.
+        //
+        //ERROR CONDITIONS
+        //1) if the xml file does not exist, an error will be returned.
+        //2) if the xml file does not contain VALID xml, error.
         public void openAlbumsXML(generic_callback guiCallback, string xmlPath)
         {
             //use this to inform the calling gui of how things went.
@@ -55,7 +59,7 @@ namespace SoftwareEng
             catch
             {
                 error.id = Error.SHIT_JUST_GOT_REAL;
-                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file.";
+                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + xmlPath;
                 guiCallback(error);
                 return;
             }
@@ -79,7 +83,7 @@ namespace SoftwareEng
             if (_albumsXDocs == null)
             {
                 error.id = Error.FAILURE;
-                error.description = "PhotoBomb:saveAlbumsXML:No Album to save.";
+                error.description = "PhotoBomb:saveAlbumsXML:No Album loaded to save.";
                 guiCallback(error);
                 return;
             }
@@ -94,7 +98,7 @@ namespace SoftwareEng
         //This method returns a list of Album objects to the
         //callback given by the parameter.
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
-        public void getUserAlbumbs(getAlbumbsCallback guiCallback)
+        public void getAllUserAlbumNames(getAlbumbsCallback guiCallback)
         {
             Error error = new Error();
             List<UserAlbum> _albums = new List<UserAlbum>();
@@ -124,7 +128,7 @@ namespace SoftwareEng
 
 
 
-
+    //BY: Ryan Moe
     //This is a data class that will be used
     //to send a calling gui a list of albums.
     //This class is a SINGLE element of that list.
