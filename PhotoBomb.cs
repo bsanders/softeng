@@ -98,22 +98,32 @@ namespace SoftwareEng
         //This method returns a list of Album objects to the
         //callback given by the parameter.
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
-        public void getAllUserAlbumNames(getAlbumbsCallback guiCallback)
+        public void getAllUserAlbumNames(getAllUserAlbumNames_callback guiCallback)
         {
             Error error = new Error();
+
+            //the list of all albums to return to the gui.
             List<UserAlbum> _albums = new List<UserAlbum>();
 
             try
             {
+                //all the albums and their children.
                 List<XElement> search = xmlParser.searchForElement(_albumsXDocs, "album");
-                //foreach()
+                //add the name of all the albums to the list
+                foreach (XElement elem in search) 
+                {
+                    UserAlbum tempAlbum = new UserAlbum();
+                    tempAlbum.albumName = "test";
+                    _albums.Add(tempAlbum);
+                }
             }
             catch
             {
                 error.id = Error.FAILURE;
-                error.description = "failed to ...";
+                error.description = "PhotoBomb.getAllUserAlbumNames():Failed to find albums in the database.";
+                guiCallback(error, null);
+                return;
             }
-            //fill out albums list...
 
             guiCallback(error, _albums);
         }
@@ -134,9 +144,10 @@ namespace SoftwareEng
     //This class is a SINGLE element of that list.
     public class UserAlbum
     {
-        String albumName;
-        //add more information here...
+        public String albumName;
+        //add more information here if needed...
 
+        //initialize vars.
         public UserAlbum()
         {
             albumName = "";
