@@ -1,7 +1,6 @@
 ﻿/**
- * This is the main backend program for PhotoBomb.
- * There will be function calls in here for the gui
- * to interact with the backend.
+ * This is the main program for the PhotoBomb backend.
+ * These are the function calls for the GUI to call.
  **/
 using System;
 using System.Collections.Generic;
@@ -11,16 +10,8 @@ using System.Xml.Linq;
 
 namespace SoftwareEng
 {
-    class PhotoBomb
+    partial class PhotoBomb
     {
-    //------------------------------------------------------
-        //xml parsing utils.
-        XmlParser xmlParser;
-
-        //The XML in memory for the albumbs.
-        //Add new vars here if we get more xmls.
-        XDocument _albumsXDocs;
-        XDocument _picturesXDocs;
 
         //----------------------------------------------
         //By: Ryan Moe
@@ -205,7 +196,7 @@ namespace SoftwareEng
         public UserAlbum()
         {
             albumName = "";
-            UID = 0;//This should be set at init time to avoid errors!!!
+            UID = -1;//indicates UID not set.
         }
     }
 

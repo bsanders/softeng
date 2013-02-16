@@ -104,6 +104,7 @@ namespace TestApp
         {
             if (error.id == SoftwareEng.ErrorReport.SUCCESS || error.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
             {
+                output.AppendText("Albums Found:\n");
                 //output albums
                 for (int i = 0; i < _albums.Count; ++i)
                 {
@@ -112,7 +113,7 @@ namespace TestApp
                 //output warnings
                 if (error.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
-                    output.AppendText("Warnings:\n");
+                    output.AppendText("\nWarnings:\n");
                     for (int i = 0; i < error.warnings.Count; ++i)
                     {
                         output.AppendText(error.warnings.ElementAt(i) + "\n");
