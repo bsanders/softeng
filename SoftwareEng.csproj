@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Error.cs" />
+    <Compile Include="ErrorReport.cs" />
     <Compile Include="PhotoBomb.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

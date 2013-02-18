@@ -40,10 +40,10 @@ namespace TestApp
         //callback for above test button.
         public void loadXML_Callback(SoftwareEng.ErrorReport e)
         {
-            if (e.id == SoftwareEng.ErrorReport.SUCCESS || e.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+            if (e.reportID == SoftwareEng.ErrorReport.SUCCESS || e.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
             {
                 output.AppendText("XML Loaded\n");
-                if(e.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+                if(e.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     for (int i = 0; i < e.warnings.Count; ++i)
                     {
@@ -70,11 +70,11 @@ namespace TestApp
         //callback for the above test button
         public void saveXML_Callback(SoftwareEng.ErrorReport e)
         {
-            if (e.id == SoftwareEng.ErrorReport.SUCCESS || e.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+            if (e.reportID == SoftwareEng.ErrorReport.SUCCESS || e.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
             {
                 output.AppendText("XML Saved\n");
 
-                if (e.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+                if (e.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     output.AppendText("Warnings:\n");
                     for (int i = 0; i < e.warnings.Count; ++i)
@@ -102,7 +102,7 @@ namespace TestApp
 
         public void loadAlbums_Callback(SoftwareEng.ErrorReport error, List<SoftwareEng.UserAlbum> _albums)
         {
-            if (error.id == SoftwareEng.ErrorReport.SUCCESS || error.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+            if (error.reportID == SoftwareEng.ErrorReport.SUCCESS || error.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
             {
                 output.AppendText("Albums Found:\n");
                 //output albums
@@ -111,7 +111,7 @@ namespace TestApp
                     output.AppendText(_albums.ElementAt(i).albumName + "\n");
                 }
                 //output warnings
-                if (error.id == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+                if (error.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     output.AppendText("\nWarnings:\n");
                     for (int i = 0; i < error.warnings.Count; ++i)

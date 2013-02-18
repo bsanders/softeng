@@ -29,14 +29,14 @@ namespace SoftwareEng
         //---------------------------
         //Error object vars.
         //These get set by the backend.
-        public int id;
+        public int reportID;
         public string description;
         public List<string> warnings;
         //---------------------------
         //Default to success, of course!
         public ErrorReport()
         {
-            id = 0;
+            reportID = 0;
             description = "";
             warnings = new List<string>();
         }
