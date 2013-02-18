@@ -61,9 +61,9 @@ namespace SoftwareEng
         //
         //This method will return ALL of the pictures 
         //that are within a single album.
-        public void getAllPhotosInAlbum(getAllPhotosInAlbum_callback guiCallback)
+        public void getAllPhotosInAlbum(getAllPhotosInAlbum_callback guiCallback, int albumUID)
         {
-            getAllPhotosInAlbum_backend(guiCallback);
+            getAllPhotosInAlbum_backend(guiCallback, albumUID);
         }
 
 
@@ -73,8 +73,7 @@ namespace SoftwareEng
 
 
     //-------------------------------------------------
-    //-------------------------------------------------
-    //-------------------------------------------------
+    //DATA CLASSES-------------------------------------
     //-------------------------------------------------
 
 

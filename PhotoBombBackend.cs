@@ -10,6 +10,7 @@ using System.Xml.Linq;
 
 namespace SoftwareEng
 {
+
     //This is a PARTIAL class,
     //it is the private part of the PhotoBomb class.
     partial class PhotoBomb
@@ -163,10 +164,53 @@ namespace SoftwareEng
         //-----------------------------------------------------------------
 
 
-        private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback)
+        private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback, int AlbumUID)
         {
             ErrorReport error = new ErrorReport();
 
+            //make sure the album database is valid.
+            if (!checkAlbumsDatabaseIntegrity(_albumsXDocs, error))
+            {
+                guiCallback(error, null);
+                return;
+            }
+
+            //Try searching for the album with the uid specified.
+            XElement specificAlbum;
+            try
+            {
+                specificAlbum = (from c in _albumsXDocs.Element("root").Elements()
+                                 where (int)c.Attribute("uid") == AlbumUID
+                                 select c).First();
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "PhotoBomb.getAllPhotosInAlbum():Failed to find the album specified.";
+                guiCallback(error, null);
+                return;
+            }
+    
+            //Now lets get all the picture data from
+            //the album and fill out the picture object list.
+            List<Picture> _list = new List<Picture>();
+            foreach (XElement subElement in specificAlbum.Elements("picture"))
+            {
+                Picture pic = new Picture();
+                try
+                {
+                    pic.pictureName = (string)subElement.Element("name").Attribute("value");
+                    pic.UID = (int)subElement.Element("uid").Attribute("value");
+                    _list.Add(pic);
+                }
+                catch
+                {
+                    error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    error.warnings.Add("PhotoBomb.getAllPhotosInAlbum():A Picture in the album is missing either a name or an id.");
+                }
+            }//foreach
+
+            guiCallback(error, _list);
         }
 
 

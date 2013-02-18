@@ -129,6 +129,29 @@ namespace TestApp
 
         //---------------------------------------------------------------------
 
+        //load Album Pictures
+        private void loadAlbumPictures_Click(object sender, EventArgs e)
+        {
+            photoBomb.getAllPhotosInAlbum(new SoftwareEng.getAllPhotosInAlbum_callback(loadAlbumPictures_callback), 1);
+            //photoBomb.saveAlbumsXML(new SoftwareEng.generic_callback(saveXML_Callback), xmlPathTE.Text);
+            //getAllPhotosInAlbum_callback
+        }
+
+        public void loadAlbumPictures_callback(SoftwareEng.ErrorReport error, List<SoftwareEng.Picture> _pictures)
+        {
+            
+            if (error.reportID == SoftwareEng.ErrorReport.FAILURE)
+            {
+                output.AppendText("FAILURE!!!\n" + error.description);
+            }
+            if (error.reportID == SoftwareEng.ErrorReport.SUCCESS || error.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
+            {
+                output.AppendText("SUCCESS!!!\n" + _pictures.ElementAt(0).pictureName);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
 
 
 

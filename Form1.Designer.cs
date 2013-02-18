@@ -33,6 +33,7 @@
             this.output = new System.Windows.Forms.RichTextBox();
             this.loadAlbums = new System.Windows.Forms.Button();
             this.xmlPathTE = new System.Windows.Forms.TextBox();
+            this.loadAlbumPictures = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // loadXML
@@ -81,11 +82,22 @@
             this.xmlPathTE.TabIndex = 5;
             this.xmlPathTE.Text = "test.xml";
             // 
+            // loadAlbumPictures
+            // 
+            this.loadAlbumPictures.Location = new System.Drawing.Point(391, 385);
+            this.loadAlbumPictures.Name = "loadAlbumPictures";
+            this.loadAlbumPictures.Size = new System.Drawing.Size(98, 23);
+            this.loadAlbumPictures.TabIndex = 6;
+            this.loadAlbumPictures.Text = "loadAlbumPictures";
+            this.loadAlbumPictures.UseVisualStyleBackColor = true;
+            this.loadAlbumPictures.Click += new System.EventHandler(this.loadAlbumPictures_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(571, 459);
+            this.Controls.Add(this.loadAlbumPictures);
             this.Controls.Add(this.xmlPathTE);
             this.Controls.Add(this.loadAlbums);
             this.Controls.Add(this.output);
@@ -105,6 +117,7 @@
         private System.Windows.Forms.RichTextBox output;
         private System.Windows.Forms.Button loadAlbums;
         private System.Windows.Forms.TextBox xmlPathTE;
+        private System.Windows.Forms.Button loadAlbumPictures;
     }
 }
 
