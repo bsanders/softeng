@@ -108,7 +108,7 @@ namespace TestApp
                 //output albums
                 for (int i = 0; i < _albums.Count; ++i)
                 {
-                    output.AppendText(_albums.ElementAt(i).albumName + "\n");
+                    output.AppendText(_albums.ElementAt(i).albumName + ", UID: " + _albums.ElementAt(i).UID + "\n");
                 }
                 //output warnings
                 if (error.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
@@ -132,9 +132,24 @@ namespace TestApp
         //load Album Pictures
         private void loadAlbumPictures_Click(object sender, EventArgs e)
         {
-            photoBomb.getAllPhotosInAlbum(new SoftwareEng.getAllPhotosInAlbum_callback(loadAlbumPictures_callback), 1);
-            //photoBomb.saveAlbumsXML(new SoftwareEng.generic_callback(saveXML_Callback), xmlPathTE.Text);
-            //getAllPhotosInAlbum_callback
+            int UID;
+            try
+            {
+                int.TryParse(albumUID.Text, out UID);
+                if (UID > 0 && UID < 9999999)
+                {
+                    photoBomb.getAllPhotosInAlbum(new SoftwareEng.getAllPhotosInAlbum_callback(loadAlbumPictures_callback), UID);
+                }
+                else
+                {
+                    output.AppendText("The UID does not appear to be a valid number, try again.\n");
+                }
+            }
+            catch
+            {
+                output.AppendText("The UID does not appear to be a valid number, try again.\n");
+            }
+            
         }
 
         public void loadAlbumPictures_callback(SoftwareEng.ErrorReport error, List<SoftwareEng.Picture> _pictures)
@@ -142,7 +157,7 @@ namespace TestApp
             
             if (error.reportID == SoftwareEng.ErrorReport.FAILURE)
             {
-                output.AppendText("FAILURE!!!\n" + error.description);
+                output.AppendText("FAILURE!!!\n" + error.description + "\n");
             }
             if (error.reportID == SoftwareEng.ErrorReport.SUCCESS || error.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
             {
@@ -153,6 +168,7 @@ namespace TestApp
                 }
             }
         }
+
 
         //---------------------------------------------------------------------
 

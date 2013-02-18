@@ -34,11 +34,14 @@
             this.loadAlbums = new System.Windows.Forms.Button();
             this.xmlPathTE = new System.Windows.Forms.TextBox();
             this.loadAlbumPictures = new System.Windows.Forms.Button();
+            this.albumUID = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // loadXML
             // 
-            this.loadXML.Location = new System.Drawing.Point(12, 386);
+            this.loadXML.Location = new System.Drawing.Point(12, 367);
             this.loadXML.Name = "loadXML";
             this.loadXML.Size = new System.Drawing.Size(75, 23);
             this.loadXML.TabIndex = 0;
@@ -48,7 +51,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(145, 386);
+            this.button2.Location = new System.Drawing.Point(149, 367);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -66,7 +69,7 @@
             // 
             // loadAlbums
             // 
-            this.loadAlbums.Location = new System.Drawing.Point(259, 386);
+            this.loadAlbums.Location = new System.Drawing.Point(260, 367);
             this.loadAlbums.Name = "loadAlbums";
             this.loadAlbums.Size = new System.Drawing.Size(75, 23);
             this.loadAlbums.TabIndex = 4;
@@ -76,7 +79,7 @@
             // 
             // xmlPathTE
             // 
-            this.xmlPathTE.Location = new System.Drawing.Point(12, 415);
+            this.xmlPathTE.Location = new System.Drawing.Point(12, 427);
             this.xmlPathTE.Name = "xmlPathTE";
             this.xmlPathTE.Size = new System.Drawing.Size(100, 20);
             this.xmlPathTE.TabIndex = 5;
@@ -84,7 +87,7 @@
             // 
             // loadAlbumPictures
             // 
-            this.loadAlbumPictures.Location = new System.Drawing.Point(391, 385);
+            this.loadAlbumPictures.Location = new System.Drawing.Point(393, 367);
             this.loadAlbumPictures.Name = "loadAlbumPictures";
             this.loadAlbumPictures.Size = new System.Drawing.Size(98, 23);
             this.loadAlbumPictures.TabIndex = 6;
@@ -92,11 +95,39 @@
             this.loadAlbumPictures.UseVisualStyleBackColor = true;
             this.loadAlbumPictures.Click += new System.EventHandler(this.loadAlbumPictures_Click);
             // 
+            // albumUID
+            // 
+            this.albumUID.Location = new System.Drawing.Point(391, 427);
+            this.albumUID.Name = "albumUID";
+            this.albumUID.Size = new System.Drawing.Size(100, 20);
+            this.albumUID.TabIndex = 7;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 411);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Xml Name";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(388, 411);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Album UID";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(571, 459);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.albumUID);
             this.Controls.Add(this.loadAlbumPictures);
             this.Controls.Add(this.xmlPathTE);
             this.Controls.Add(this.loadAlbums);
@@ -118,6 +149,9 @@
         private System.Windows.Forms.Button loadAlbums;
         private System.Windows.Forms.TextBox xmlPathTE;
         private System.Windows.Forms.Button loadAlbumPictures;
+        private System.Windows.Forms.TextBox albumUID;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 
