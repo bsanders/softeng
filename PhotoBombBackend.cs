@@ -104,7 +104,7 @@ namespace SoftwareEng
             List<XElement> _albumSearch;
             try
             {
-                _albumSearch = xmlParser.searchForElements(_albumsXDocs, "album");
+                _albumSearch = xmlParser.searchForElements(_albumsXDocs.Element("root"), "album");
             }
             catch
             {
@@ -114,7 +114,7 @@ namespace SoftwareEng
                 return;
             }
             //go through each album and get data from its children to add to the list.
-            foreach (XElement elem in _albumSearch)
+            foreach (XElement thisAlbum in _albumSearch)
             {
                 //this custom data class gets sent back to the gui.
                 UserAlbum userAlbum = new UserAlbum();
@@ -123,7 +123,7 @@ namespace SoftwareEng
                 try
                 {
                     //get the name(s) of this album.
-                    _nameSearch = xmlParser.searchForElements(elem, "name");
+                    _nameSearch = xmlParser.searchForElements(thisAlbum, "name");
                 }
                 catch
                 {
@@ -137,12 +137,13 @@ namespace SoftwareEng
                     //get the value of the album name and add to list.
                     try
                     {
-                        userAlbum.albumName = _nameSearch.ElementAt(0).Attribute("value").Value;
+                        userAlbum.albumName = _nameSearch.ElementAt(0).Value;
+                        userAlbum.UID = (int)thisAlbum.Attribute("uid");
                     }
                     catch
                     {
                         error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-                        error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error trying to get the name value from an album.");
+                        error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error trying to get either the name or uid value from an album.");
                         continue;
                     }
                     _albumsToReturn.Add(userAlbum);

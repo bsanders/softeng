@@ -27,7 +27,7 @@ namespace SoftwareEng
         public List<XElement> searchForElements(XElement parent, string lookingFor)
         {
             List<XElement> _list = new List<XElement>();
-            foreach (XElement subElement in parent.Descendants(lookingFor))
+            foreach (XElement subElement in parent.Elements(lookingFor))
             {
                 _list.Add(subElement);
             }//foreach
@@ -44,7 +44,7 @@ namespace SoftwareEng
         public List<XElement> searchForElements(XDocument parent, string lookingFor)
         {
             List<XElement> _list = new List<XElement>();
-            foreach (XElement subElement in parent.Descendants(lookingFor))
+            foreach (XElement subElement in parent.Elements(lookingFor))
             {
                 _list.Add(subElement);
             }//foreach

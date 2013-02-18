@@ -146,7 +146,11 @@ namespace TestApp
             }
             if (error.reportID == SoftwareEng.ErrorReport.SUCCESS || error.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
             {
-                output.AppendText("SUCCESS!!!\n" + _pictures.ElementAt(0).pictureName);
+                output.AppendText("Pictures in album:\n");
+                for (int i = 0; i < _pictures.Count; ++i)
+                {
+                    output.AppendText(_pictures.ElementAt(i).pictureName + "\n");
+                }
             }
         }
 
