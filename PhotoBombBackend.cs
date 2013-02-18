@@ -41,7 +41,8 @@ namespace SoftwareEng
         }
 
         //-----------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void openAlbumsXML_backend(generic_callback guiCallback, string xmlPath){
             //use this to inform the calling gui of how things went.
             ErrorReport error = new ErrorReport();
@@ -64,7 +65,8 @@ namespace SoftwareEng
         }
 
         //-----------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void saveAlbumsXML_backend(generic_callback guiCallback, string xmlSavePath)
         {
             ErrorReport error = new ErrorReport();
@@ -82,7 +84,8 @@ namespace SoftwareEng
         }
 
         //-----------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void getAllUserAlbumNames_backend(getAllUserAlbumNames_callback guiCallback)
         {
             ErrorReport error = new ErrorReport();
@@ -162,8 +165,8 @@ namespace SoftwareEng
 
 
         //-----------------------------------------------------------------
-
-
+        //By: Ryan Moe
+        //Edited Last:
         private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback, int AlbumUID)
         {
             ErrorReport error = new ErrorReport();
@@ -179,9 +182,12 @@ namespace SoftwareEng
             XElement specificAlbum;
             try
             {
+                //for(from) every c in the database's root's children (all albums),
+                //see if it's attribute uid is the one we want,
+                //and if so return the first instance of a match.
                 specificAlbum = (from c in _albumsXDocs.Element("root").Elements()
                                  where (int)c.Attribute("uid") == AlbumUID
-                                 select c).First();
+                                 select c).Single();//NOTE: this will throw error if more than one OR none at all.
             }
             catch
             {
