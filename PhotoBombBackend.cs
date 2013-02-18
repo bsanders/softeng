@@ -67,15 +67,15 @@ namespace SoftwareEng
         private void saveAlbumsXML_backend(generic_callback guiCallback, string xmlSavePath)
         {
             ErrorReport error = new ErrorReport();
-            //error checking
-            if (_albumsXDocs == null)
+
+            //make sure the album database is valid.
+            if (!checkAlbumsDatabaseIntegrity(_albumsXDocs, error))
             {
-                error.reportID = ErrorReport.FAILURE;
-                error.description = "PhotoBomb:saveAlbumsXML:No Album loaded to save.";
                 guiCallback(error);
                 return;
             }
 
+            //put save xml stuff here!!!
 
             guiCallback(error);
         }
@@ -86,11 +86,9 @@ namespace SoftwareEng
         {
             ErrorReport error = new ErrorReport();
 
-            //error checking
-            if (_albumsXDocs == null)
+            //make sure the album database is valid.
+            if (!checkAlbumsDatabaseIntegrity(_albumsXDocs, error))
             {
-                error.reportID = ErrorReport.FAILURE;
-                error.description = "PhotoBomb.getAllUserAlbumNames():Albums xml has not been loaded yet!";
                 guiCallback(error, null);
                 return;
             }
@@ -111,7 +109,6 @@ namespace SoftwareEng
                 guiCallback(error, null);
                 return;
             }
-
             //go through each album and get data from its children to add to the list.
             foreach (XElement elem in _albumSearch)
             {
@@ -162,9 +159,15 @@ namespace SoftwareEng
             guiCallback(error, _albumsToReturn);
         }
 
+
         //-----------------------------------------------------------------
 
 
+        private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback)
+        {
+            ErrorReport error = new ErrorReport();
+
+        }
 
 
 

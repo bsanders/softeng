@@ -55,6 +55,17 @@ namespace SoftwareEng
             getAllUserAlbumNames_backend(guiCallback);
         }
 
+        //----------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        //
+        //This method will return ALL of the pictures 
+        //that are within a single album.
+        public void getAllPhotosInAlbum(getAllPhotosInAlbum_callback guiCallback)
+        {
+            getAllPhotosInAlbum_backend(guiCallback);
+        }
+
 
     }//class
 
@@ -83,6 +94,21 @@ namespace SoftwareEng
         {
             albumName = "";
             UID = -1;//indicates UID not set.
+        }
+    }
+
+
+    //-----------------------------------
+
+    public class Picture
+    {
+        public String pictureName;
+        public int UID;
+
+        public Picture()
+        {
+            pictureName = "";
+            UID = -1;
         }
     }
 

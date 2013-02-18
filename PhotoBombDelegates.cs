@@ -21,12 +21,11 @@ namespace SoftwareEng
     //callback used with the getAllUserAlbumNames method.
     public delegate void getAllUserAlbumNames_callback(ErrorReport error, List<UserAlbum> _albums);
 
+    public delegate void getAllPhotosInAlbum_callback(ErrorReport error, List<Picture> _pictures);
+
     //put more advanced callbacks here, ex:
     //public delegate crazy_callback(Error error, string bob, List<int> _someList);
 
 
-    //no real need for this class.
-    class PhotoBombDelegates
-    {
-    }
+    
 }
