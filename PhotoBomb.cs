@@ -19,19 +19,6 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last: 
         //
-        //initialize.
-        public PhotoBomb()
-        {
-            _albumsXDocs = null;
-            _picturesXDocs = null;
-
-            xmlParser = new XmlParser();
-        }
-
-        //----------------------------------------------
-        //By: Ryan Moe
-        //Edited Last: 
-        //
         //open the xml document that represents the
         //user's albums in the program.
         //PARAM 1 = a callback (delegate) to a gui function (see PhotoBombDelegates.cs).
@@ -42,24 +29,7 @@ namespace SoftwareEng
         //2) if the xml file does not contain VALID xml, error.
         public void openAlbumsXML(generic_callback guiCallback, string xmlPath)
         {
-            //use this to inform the calling gui of how things went.
-            ErrorReport error = new ErrorReport();
-
-            try
-            {
-                _albumsXDocs = XDocument.Load(xmlPath);
-            }
-            catch
-            {
-                error.reportID = ErrorReport.SHIT_JUST_GOT_REAL;
-                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + xmlPath;
-                guiCallback(error);
-                return;
-            }
-
-            //The loading of the xml was nominal, report back to the gui callback.
-            error.description = "great success!";
-            guiCallback(error);
+            openAlbumsXML_backend(guiCallback, xmlPath);
         }
 
         //----------------------------------------------
@@ -71,18 +41,7 @@ namespace SoftwareEng
         //PARAM 2 = path to where you want to save the xml.
         public void saveAlbumsXML(generic_callback guiCallback, string xmlSavePath)
         {
-            ErrorReport error = new ErrorReport();
-            //error checking
-            if (_albumsXDocs == null)
-            {
-                error.reportID = ErrorReport.FAILURE;
-                error.description = "PhotoBomb:saveAlbumsXML:No Album loaded to save.";
-                guiCallback(error);
-                return;
-            }
-
-
-            guiCallback(error);
+            saveAlbumsXML_backend(guiCallback, xmlSavePath);
         }
         //----------------------------------------------
         //By: Ryan Moe
@@ -102,6 +61,9 @@ namespace SoftwareEng
 
 
 
+    //-------------------------------------------------
+    //-------------------------------------------------
+    //-------------------------------------------------
     //-------------------------------------------------
 
 
@@ -126,4 +88,3 @@ namespace SoftwareEng
 
 
 }//namespace
-/

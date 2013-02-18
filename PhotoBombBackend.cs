@@ -23,7 +23,64 @@ namespace SoftwareEng
         private XDocument _albumsXDocs;
         private XDocument _picturesXDocs;
 
-        //------------------------------------------------------
+        //-----------------------------------------------------------------
+        //FUNCTIONS--------------------------------------------------------
+        //-----------------------------------------------------------------
+
+        //By: Ryan Moe
+        //Edited Last: 
+        //
+        //initialize.
+        public PhotoBomb()
+        {
+            _albumsXDocs = null;
+            _picturesXDocs = null;
+
+            xmlParser = new XmlParser();
+        }
+
+        //-----------------------------------------------------------------
+
+        private void openAlbumsXML_backend(generic_callback guiCallback, string xmlPath){
+            //use this to inform the calling gui of how things went.
+            ErrorReport error = new ErrorReport();
+
+            try
+            {
+                _albumsXDocs = XDocument.Load(xmlPath);
+            }
+            catch
+            {
+                error.reportID = ErrorReport.SHIT_JUST_GOT_REAL;
+                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + xmlPath;
+                guiCallback(error);
+                return;
+            }
+
+            //The loading of the xml was nominal, report back to the gui callback.
+            error.description = "great success!";
+            guiCallback(error);
+        }
+
+        //-----------------------------------------------------------------
+
+        private void saveAlbumsXML_backend(generic_callback guiCallback, string xmlSavePath)
+        {
+            ErrorReport error = new ErrorReport();
+            //error checking
+            if (_albumsXDocs == null)
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "PhotoBomb:saveAlbumsXML:No Album loaded to save.";
+                guiCallback(error);
+                return;
+            }
+
+
+            guiCallback(error);
+        }
+
+        //-----------------------------------------------------------------
 
         private void getAllUserAlbumNames_backend(getAllUserAlbumNames_callback guiCallback)
         {
@@ -58,11 +115,9 @@ namespace SoftwareEng
             //go through each album and get data from its children to add to the list.
             foreach (XElement elem in _albumSearch)
             {
-                //this gets sent back to the gui.
+                //this custom data class gets sent back to the gui.
                 UserAlbum userAlbum = new UserAlbum();
 
-                //need this inner try because if this fails to find the name it would go
-                //to the outer catch and not continue the foreach loop looking for albums.
                 List<XElement> _nameSearch;
                 try
                 {
@@ -79,7 +134,6 @@ namespace SoftwareEng
                 if (_nameSearch.Count == 1)
                 {
                     //get the value of the album name and add to list.
-                    //userAlbum.albumName = _nameSearch.ElementAt(0).Value;
                     try
                     {
                         userAlbum.albumName = _nameSearch.ElementAt(0).Attribute("value").Value;
@@ -107,5 +161,15 @@ namespace SoftwareEng
 
             guiCallback(error, _albumsToReturn);
         }
-    }
+
+        //-----------------------------------------------------------------
+
+
+
+
+
+
+
+
+    }//class
 }
