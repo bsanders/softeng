@@ -82,14 +82,14 @@ namespace SoftwareEng
     //This is a data class that will be used
     //to send a calling gui a list of albums.
     //This class is a SINGLE element of that list.
-    public class UserAlbum
+    public class SimpleAlbumData
     {
         public String albumName;
         public int UID;
         //add more information here if needed...
 
         //initialize vars.
-        public UserAlbum()
+        public SimpleAlbumData()
         {
             albumName = "";
             UID = -1;//indicates UID not set.
@@ -98,16 +98,39 @@ namespace SoftwareEng
 
 
     //-----------------------------------
+    //Simple photo data returned by functions like getAllPhotosInAlbum().
 
-    public class Picture
+    public class SimplePhotoData
     {
         public String pictureName;
         public int UID;
+        public String path;
 
-        public Picture()
+        public SimplePhotoData()
         {
             pictureName = "";
             UID = -1;
+            path = "";
+        }
+    }
+
+    //--------------------------------
+    //More complex photo data returned by functions like getPhotoDataByUID().
+    public class ComplexPhotoData
+    {
+        public String pictureName;
+        public int UID;
+        public String path;
+        public DateTime dateTaken;
+        //...
+
+        public ComplexPhotoData()
+        {
+            pictureName = "";
+            UID = -1;
+            path = "";
+            dateTaken = new DateTime();
+
         }
     }
 

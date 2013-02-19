@@ -100,7 +100,7 @@ namespace TestApp
         }
 
 
-        public void loadAlbums_Callback(SoftwareEng.ErrorReport error, List<SoftwareEng.UserAlbum> _albums)
+        public void loadAlbums_Callback(SoftwareEng.ErrorReport error, List<SoftwareEng.SimpleAlbumData> _albums)
         {
             if (error.reportID == SoftwareEng.ErrorReport.SUCCESS || error.reportID == SoftwareEng.ErrorReport.SUCCESS_WITH_WARNINGS)
             {
@@ -152,7 +152,7 @@ namespace TestApp
             
         }
 
-        public void loadAlbumPictures_callback(SoftwareEng.ErrorReport error, List<SoftwareEng.Picture> _pictures)
+        public void loadAlbumPictures_callback(SoftwareEng.ErrorReport error, List<SoftwareEng.SimplePhotoData> _pictures)
         {
             
             if (error.reportID == SoftwareEng.ErrorReport.FAILURE)

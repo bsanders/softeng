@@ -72,7 +72,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!checkAlbumsDatabaseIntegrity(_albumsXDocs, error))
+            if (!checkDatabaseIntegrity(_albumsXDocs, error))
             {
                 guiCallback(error);
                 return;
@@ -91,20 +91,20 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!checkAlbumsDatabaseIntegrity(_albumsXDocs, error))
+            if (!checkDatabaseIntegrity(_albumsXDocs, error))
             {
                 guiCallback(error, null);
                 return;
             }
 
             //the list of all albums to return to the gui.
-            List<UserAlbum> _albumsToReturn = new List<UserAlbum>();
+            List<SimpleAlbumData> _albumsToReturn = new List<SimpleAlbumData>();
 
             //get all the albums AND their children.
             List<XElement> _albumSearch;
             try
             {
-                _albumSearch = xmlParser.searchForElements(_albumsXDocs.Element("root"), "album");
+                _albumSearch = xmlParser.searchForElements(_albumsXDocs.Element("database"), "album");
             }
             catch
             {
@@ -117,7 +117,7 @@ namespace SoftwareEng
             foreach (XElement thisAlbum in _albumSearch)
             {
                 //this custom data class gets sent back to the gui.
-                UserAlbum userAlbum = new UserAlbum();
+                SimpleAlbumData userAlbum = new SimpleAlbumData();
 
                 List<XElement> _nameSearch;
                 try
@@ -173,7 +173,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!checkAlbumsDatabaseIntegrity(_albumsXDocs, error))
+            if (!checkDatabaseIntegrity(_albumsXDocs, error))
             {
                 guiCallback(error, null);
                 return;
@@ -183,10 +183,10 @@ namespace SoftwareEng
             XElement specificAlbum;
             try
             {
-                //for(from) every c in the database's root's children (all albums),
+                //for(from) every c in the database's children (all albums),
                 //see if it's attribute uid is the one we want,
                 //and if so return the first instance of a match.
-                specificAlbum = (from c in _albumsXDocs.Element("root").Elements()
+                specificAlbum = (from c in _albumsXDocs.Element("database").Elements()
                                  where (int)c.Attribute("uid") == AlbumUID
                                  select c).Single();//NOTE: this will throw error if more than one OR none at all.
             }
@@ -200,10 +200,10 @@ namespace SoftwareEng
     
             //Now lets get all the picture data from
             //the album and fill out the picture object list.
-            List<Picture> _list = new List<Picture>();
+            List<SimplePhotoData> _list = new List<SimplePhotoData>();
             foreach (XElement subElement in specificAlbum.Elements("picture"))
             {
-                Picture pic = new Picture();
+                SimplePhotoData pic = new SimplePhotoData();
                 try
                 {
                     pic.pictureName = (string)subElement.Element("name").Attribute("value");
@@ -218,8 +218,52 @@ namespace SoftwareEng
             }//foreach
 
             guiCallback(error, _list);
-        }
+        }//method
 
+        //----------------------------------------------------------------------
+
+        
+        private void getPictureByUID(getPhotoByUID_callback guiCallback, int uid)
+        {
+            ErrorReport error = new ErrorReport();
+
+            if (checkDatabaseIntegrity(_picturesXDocs, error))
+            {
+                //Try searching for the album with the uid specified.
+                XElement specificPicture;
+                try
+                {
+                    //for(from) every c in the database's children (all albums),
+                    //see if it's attribute uid is the one we want,
+                    //and if so return the first instance of a match.
+                    specificPicture = (from c in _picturesXDocs.Element("database").Elements()
+                                       where (int)c.Attribute("uid") == uid
+                                       select c).Single();//NOTE: this will throw error if more than one OR none at all.
+                }
+                //failed to find the picture
+                catch
+                {
+                    error.reportID = ErrorReport.FAILURE;
+                    error.description = "PhotoBomb.getPictureByUID():Failed to find the picture specified.";
+                    guiCallback(error, null);
+                    return;
+                }
+                //success!
+                SimplePhotoData picture = new SimplePhotoData();
+                picture.UID = (int)specificPicture.Element("uid").Attribute("value");
+                picture.pictureName =
+                guiCallback();
+                return;
+            }
+
+            //database is not clean!
+            else
+            {
+                //error object already filled out by integrity checker.
+                return;
+            }
+        }//method
+        
 
 
 
