@@ -1,4 +1,4 @@
-﻿namespace TestApp
+﻿namespace SoftwareEng
 {
     partial class Form1
     {
@@ -34,9 +34,10 @@
             this.loadAlbums = new System.Windows.Forms.Button();
             this.xmlPathTE = new System.Windows.Forms.TextBox();
             this.loadAlbumPictures = new System.Windows.Forms.Button();
-            this.albumUID = new System.Windows.Forms.TextBox();
+            this.uidTE = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.getPictureByUIDButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // loadXML
@@ -95,12 +96,12 @@
             this.loadAlbumPictures.UseVisualStyleBackColor = true;
             this.loadAlbumPictures.Click += new System.EventHandler(this.loadAlbumPictures_Click);
             // 
-            // albumUID
+            // uidTE
             // 
-            this.albumUID.Location = new System.Drawing.Point(391, 427);
-            this.albumUID.Name = "albumUID";
-            this.albumUID.Size = new System.Drawing.Size(100, 20);
-            this.albumUID.TabIndex = 7;
+            this.uidTE.Location = new System.Drawing.Point(391, 427);
+            this.uidTE.Name = "uidTE";
+            this.uidTE.Size = new System.Drawing.Size(100, 20);
+            this.uidTE.TabIndex = 7;
             // 
             // label1
             // 
@@ -116,18 +117,29 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(388, 411);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.Size = new System.Drawing.Size(26, 13);
             this.label2.TabIndex = 9;
-            this.label2.Text = "Album UID";
+            this.label2.Text = "UID";
+            // 
+            // getPictureByUIDButton
+            // 
+            this.getPictureByUIDButton.Location = new System.Drawing.Point(260, 411);
+            this.getPictureByUIDButton.Name = "getPictureByUIDButton";
+            this.getPictureByUIDButton.Size = new System.Drawing.Size(97, 23);
+            this.getPictureByUIDButton.TabIndex = 10;
+            this.getPictureByUIDButton.Text = "getPictureByUID";
+            this.getPictureByUIDButton.UseVisualStyleBackColor = true;
+            this.getPictureByUIDButton.Click += new System.EventHandler(this.getPictureByUIDButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(571, 459);
+            this.Controls.Add(this.getPictureByUIDButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.albumUID);
+            this.Controls.Add(this.uidTE);
             this.Controls.Add(this.loadAlbumPictures);
             this.Controls.Add(this.xmlPathTE);
             this.Controls.Add(this.loadAlbums);
@@ -149,9 +161,10 @@
         private System.Windows.Forms.Button loadAlbums;
         private System.Windows.Forms.TextBox xmlPathTE;
         private System.Windows.Forms.Button loadAlbumPictures;
-        private System.Windows.Forms.TextBox albumUID;
+        private System.Windows.Forms.TextBox uidTE;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button getPictureByUIDButton;
     }
 }
 

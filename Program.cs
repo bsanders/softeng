@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace TestApp
+namespace SoftwareEng
 {
     static class Program
     {
@@ -15,7 +15,8 @@ namespace TestApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new mainGUI());
+            //Application.Run(new mainGUI());//main gui
+            Application.Run(new Form1());//backend testing gui
         }
     }
 }

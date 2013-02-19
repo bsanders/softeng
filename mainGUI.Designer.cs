@@ -1,4 +1,4 @@
-﻿namespace TestApp
+﻿namespace SoftwareEng
 {
     partial class mainGUI
     {

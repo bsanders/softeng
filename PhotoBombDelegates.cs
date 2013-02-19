@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TestApp
+namespace SoftwareEng
 {
     //use this callback if the only thing going back
     //to the gui is the error object.

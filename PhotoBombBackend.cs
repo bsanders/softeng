@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace TestApp
+namespace SoftwareEng
 {
 
     //This is a PARTIAL class,
@@ -224,45 +224,36 @@ namespace TestApp
 
         //By: Ryan Moe
         //Edited Last:
-        private void getPictureByUID(getPhotoByUID_callback guiCallback, int uid)
+        private void getPictureByUID_backend(getPhotoByUID_callback guiCallback, int uid)
         {
             ErrorReport error = new ErrorReport();
 
-            if (checkDatabaseIntegrity(_picturesXDocs, error))
+            XElement picElement = getPictureElementByUID(error, uid);
+
+            //if the picture finding function reported success.
+            if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
-                //Try searching for the album with the uid specified.
-                XElement specificPicture;
+                ComplexPhotoData photo = new ComplexPhotoData();
                 try
                 {
-                    //for(from) every c in the database's children (all albums),
-                    //see if it's attribute uid is the one we want,
-                    //and if so return the first instance of a match.
-                    specificPicture = (from c in _picturesXDocs.Element("database").Elements()
-                                       where (int)c.Attribute("uid") == uid
-                                       select c).Single();//NOTE: this will throw error if more than one OR none at all.
+                    photo.UID = (int)picElement.Element("uid").Attribute("value");
+                    photo.path = (string)picElement.Element("path").Attribute("value");
+                    photo.pictureName = (string)picElement.Element("name").Attribute("value");
                 }
-                //failed to find the picture
                 catch
                 {
                     error.reportID = ErrorReport.FAILURE;
-                    error.description = "PhotoBomb.getPictureByUID():Failed to find the picture specified.";
+                    error.description = "PhotoBomb.getPictureByUID():Photo";
                     guiCallback(error, null);
                     return;
                 }
-                //success!
-                ComplexPhotoData picture = new ComplexPhotoData();
-                picture.UID = (int)specificPicture.Element("uid").Attribute("value");
-                picture.pictureName = (string)specificPicture.Element("name").Attribute("value");
-                picture.path = (string)specificPicture.Element("path").Attribute("value");
-                //guiCallback();
+                //Success!
+                guiCallback(error, photo);
                 return;
             }
-
-            //database is not clean!
             else
             {
-                //error object already filled out by integrity checker.
-                return;
+                guiCallback(error, null);
             }
         }//method
         

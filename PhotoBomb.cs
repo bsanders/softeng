@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace TestApp
+namespace SoftwareEng
 {
     //This is a PARTIAL class,
     //it is the public part of the PhotoBomb class.
@@ -67,7 +67,22 @@ namespace TestApp
         }
 
 
+        //---------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        //
+        //This method will return a complex photo data object
+        //filled out with the data of one photo referenced by the uid param.
+        //NOT TESTED YET.
+        public void getPictureByUID(getPhotoByUID_callback guiCallback, int uid)
+        {
+            getPictureByUID_backend(guiCallback, uid);
+        }
+
     }//class
+
+
+
 
 
 

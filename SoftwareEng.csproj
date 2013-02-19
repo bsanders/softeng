@@ -8,7 +8,7 @@
     <ProjectGuid>{11F07F1A-0B69-47C0-90BD-76F59ABF5422}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestApp</RootNamespace>
+    <RootNamespace>SoftwareEng</RootNamespace>
     <AssemblyName>SoftwareEng</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>

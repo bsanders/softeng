@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace TestApp
+namespace SoftwareEng
 {
     partial class PhotoBomb
     {
