@@ -222,7 +222,8 @@ namespace SoftwareEng
 
         //----------------------------------------------------------------------
 
-        
+        //By: Ryan Moe
+        //Edited Last:
         private void getPictureByUID(getPhotoByUID_callback guiCallback, int uid)
         {
             ErrorReport error = new ErrorReport();
@@ -251,8 +252,8 @@ namespace SoftwareEng
                 //success!
                 SimplePhotoData picture = new SimplePhotoData();
                 picture.UID = (int)specificPicture.Element("uid").Attribute("value");
-                picture.pictureName =
-                guiCallback();
+                //picture.pictureName =
+                //guiCallback();
                 return;
             }
 

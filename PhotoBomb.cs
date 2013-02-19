@@ -99,7 +99,8 @@ namespace SoftwareEng
 
     //-----------------------------------
     //Simple photo data returned by functions like getAllPhotosInAlbum().
-
+    //By: Ryan Moe
+    //Edited Last:
     public class SimplePhotoData
     {
         public String pictureName;
@@ -116,6 +117,8 @@ namespace SoftwareEng
 
     //--------------------------------
     //More complex photo data returned by functions like getPhotoDataByUID().
+    //By: Ryan Moe
+    //Edited Last:
     public class ComplexPhotoData
     {
         public String pictureName;
