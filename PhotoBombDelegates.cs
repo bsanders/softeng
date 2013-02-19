@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SoftwareEng
+namespace TestApp
 {
     //use this callback if the only thing going back
     //to the gui is the error object.
@@ -23,7 +23,7 @@ namespace SoftwareEng
 
     public delegate void getAllPhotosInAlbum_callback(ErrorReport error, List<SimplePhotoData> _pictures);
 
-    public delegate void getPhotoByUID_callback(ErrorReport error, SimplePhotoData picture);
+    public delegate void getPhotoByUID_callback(ErrorReport error, ComplexPhotoData picture);
 
     //put more advanced callbacks here, ex:
     //public delegate crazy_callback(Error error, string bob, List<int> _someList);

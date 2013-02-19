@@ -11,7 +11,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 
-namespace SoftwareEng
+namespace TestApp
 {
     class XmlParser
     {

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace SoftwareEng
+namespace TestApp
 {
 
     //This is a PARTIAL class,
@@ -250,9 +250,10 @@ namespace SoftwareEng
                     return;
                 }
                 //success!
-                SimplePhotoData picture = new SimplePhotoData();
+                ComplexPhotoData picture = new ComplexPhotoData();
                 picture.UID = (int)specificPicture.Element("uid").Attribute("value");
-                //picture.pictureName =
+                picture.pictureName = (string)specificPicture.Element("name").Attribute("value");
+                picture.path = (string)specificPicture.Element("path").Attribute("value");
                 //guiCallback();
                 return;
             }

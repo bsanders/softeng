@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace SoftwareEng
+namespace TestApp
 {
     //This is a PARTIAL class,
     //it is the public part of the PhotoBomb class.
@@ -124,15 +124,13 @@ namespace SoftwareEng
         public String pictureName;
         public int UID;
         public String path;
-        public DateTime dateTaken;
-        //...
+        //... add more stuff here when we have more metadata
 
         public ComplexPhotoData()
         {
             pictureName = "";
             UID = -1;
             path = "";
-            dateTaken = new DateTime();
 
         }
     }

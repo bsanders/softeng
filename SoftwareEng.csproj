@@ -8,7 +8,7 @@
     <ProjectGuid>{11F07F1A-0B69-47C0-90BD-76F59ABF5422}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SoftwareEng</RootNamespace>
+    <RootNamespace>TestApp</RootNamespace>
     <AssemblyName>SoftwareEng</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -47,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErrorReport.cs" />
+    <Compile Include="mainGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainGUI.Designer.cs">
+      <DependentUpon>mainGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="PhotoBomb.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -63,6 +69,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="mainGUI.resx">
+      <DependentUpon>mainGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -71,6 +80,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
