@@ -36,6 +36,7 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.NextButton = new System.Windows.Forms.Button();
             this.backButton = new System.Windows.Forms.Button();
+            this.selectFiles = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // promptLabel
@@ -107,6 +108,7 @@
             this.NextButton.TabIndex = 6;
             this.NextButton.Text = "Next";
             this.NextButton.UseVisualStyleBackColor = true;
+            this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
             // 
             // backButton
             // 
@@ -116,6 +118,11 @@
             this.backButton.TabIndex = 7;
             this.backButton.Text = "Back";
             this.backButton.UseVisualStyleBackColor = true;
+            // 
+            // selectFiles
+            // 
+            this.selectFiles.FileName = "openFileDialog1";
+            this.selectFiles.Multiselect = true;
             // 
             // addNewAlbum
             // 
@@ -147,5 +154,6 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button NextButton;
         private System.Windows.Forms.Button backButton;
+        private System.Windows.Forms.OpenFileDialog selectFiles;
     }
 }
