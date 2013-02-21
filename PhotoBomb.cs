@@ -114,6 +114,18 @@ namespace SoftwareEng
             getPictureByUID_backend(guiCallback, uid);
         }
 
+        //----------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        //
+        //Adds a picture to the picture database AND the album database.
+        public void addPicture(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID)
+        {
+            addPicture_backend(guiCallback, newPicture, albumUID);
+        }
+
+
+
     }//class
 
 
@@ -171,17 +183,18 @@ namespace SoftwareEng
     //Edited Last:
     public class ComplexPhotoData
     {
-        public String pictureName;
+        public String picturesAlbumName;
         public int UID;
         public String path;
+        public String extension;
         //... add more stuff here when we have more metadata
 
         public ComplexPhotoData()
         {
-            pictureName = "";
+            picturesAlbumName = "";
             UID = -1;
             path = "";
-
+            extension = "";
         }
     }
 

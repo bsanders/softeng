@@ -16,6 +16,8 @@ namespace SoftwareEng
     partial class PhotoBomb
     {
         //----------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
         //call this before using the albums database,
         //this will check for integrity problems.
         //RETURNS: true = good to go, false = the database is bad!
@@ -35,7 +37,8 @@ namespace SoftwareEng
 
 
         //----------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private XElement getPictureElementByUID(ErrorReport error, int uid)
         {
             if (checkDatabaseIntegrity(_picturesDatabase, error))
@@ -71,7 +74,30 @@ namespace SoftwareEng
         }//method
 
 
+        //--------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private void addPictureToPictureDatabase(ComplexPhotoData newPictureData)
+        {
+            //CHECK newPicture data here!!!!!
 
+            XElement newPicRoot = new XElement("picture",
+                new XAttribute("uid", newPictureData.UID),
+                new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.path)
+                );
+
+            _picturesDatabase.Element("database").Add(newPicRoot);
+        }
+
+        //--------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private void addPictureToAlbumDatabase(ComplexPhotoData newPicture, int albumUID)
+        {
+
+        }
+
+        //--------------------------------------------------------
 
     }//class
 }

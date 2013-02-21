@@ -211,6 +211,24 @@ namespace SoftwareEng
             }
         }
 
+
+        //---------------------------------------------------------------------
+        //add a picture button
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ComplexPhotoData data = new ComplexPhotoData();
+            data.UID = 999;
+            data.picturesAlbumName = "dude";
+            data.path = "nonya";
+            photoBomb.addPicture(new SoftwareEng.generic_callback(addPictureButton_callback) , data, -1);
+
+        }
+
+        public void addPictureButton_callback(SoftwareEng.ErrorReport error)
+        {
+
+        }
+
         //---------------------------------------------------------------------
 
 

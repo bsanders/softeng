@@ -82,12 +82,13 @@ namespace SoftwareEng
             //make sure the album database is valid.
             if (!checkDatabaseIntegrity(_albumsDatabase, error))
             {
-                _albumsDatabase.Save(albumsDatabasePath);
+                //make an error message here.
+
                 guiCallback(error);
                 return;
             }
 
-            //put save xml stuff here!!!
+            _albumsDatabase.Save(albumsDatabasePath);
 
             guiCallback(error);
         }
@@ -125,17 +126,18 @@ namespace SoftwareEng
         {
             ErrorReport error = new ErrorReport();
 
-            //make sure the album database is valid.
+            //if the database is NOT valid.
             if (!checkDatabaseIntegrity(_picturesDatabase, error))
             {
-                _picturesDatabase.Save(picturesDatabasePath);
+                //make an error message here.
+
                 guiCallback(error);
                 return;
             }
 
-            //put save xml stuff here!!!
-
-            guiCallback(error);
+            _picturesDatabase.Save(picturesDatabasePath);
+            if(guiCallback != null)
+                guiCallback(error);
         }
 
         //-----------------------------------------------------------------
@@ -314,6 +316,21 @@ namespace SoftwareEng
             }
         }//method
         
+
+        //-------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private void addPicture_backend(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID)
+        {
+            ErrorReport errorReport = new ErrorReport();
+
+            addPictureToPictureDatabase(newPicture);
+
+            savePicturesXML_backend(null);
+
+        }
+
+
 
 
 
