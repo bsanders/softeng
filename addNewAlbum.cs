@@ -15,5 +15,15 @@ namespace SoftwareEng
         {
             InitializeComponent();
         }
+
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guiSelectPictureFiles()
+        {
+            ;
+        }
     }
 }
