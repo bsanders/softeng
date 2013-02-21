@@ -19,42 +19,50 @@ namespace SoftwareEng
         //xml parsing utils.
         private XmlParser xmlParser;
 
+        //path to the pictures folder we put all the pictures
+        //tracked by the database.
+        private string picturePath;
+
         //The XML in memory for the albumbs.
         //Add new vars here if we get more xmls.
-        private XDocument _albumsXDocs;
-        private XDocument _picturesXDocs;
+        private XDocument _albumsDatabase;
+            private string albumsDatabasePath;
+        private XDocument _picturesDatabase;
+            private string picturesDatabasePath;
 
         //-----------------------------------------------------------------
         //FUNCTIONS--------------------------------------------------------
         //-----------------------------------------------------------------
 
-        //By: Ryan Moe
-        //Edited Last: 
-        //
-        //initialize.
-        public PhotoBomb()
+        private void init(string albumDatabasePathIn, string pictureDatabasePathIn, string pictureFolderPathIn)
         {
-            _albumsXDocs = null;
-            _picturesXDocs = null;
+            //break these up into different paths eventually?
+            albumsDatabasePath = albumDatabasePathIn;
+            picturesDatabasePath = pictureDatabasePathIn;
+            picturePath = pictureFolderPathIn;
+
+            _albumsDatabase = null;
+            _picturesDatabase = null;
 
             xmlParser = new XmlParser();
         }
 
         //-----------------------------------------------------------------
+
         //By: Ryan Moe
         //Edited Last:
-        private void openAlbumsXML_backend(generic_callback guiCallback, string xmlPath){
+        private void openAlbumsXML_backend(generic_callback guiCallback){
             //use this to inform the calling gui of how things went.
             ErrorReport error = new ErrorReport();
 
             try
             {
-                _albumsXDocs = XDocument.Load(xmlPath);
+                _albumsDatabase = XDocument.Load(albumsDatabasePath);
             }
             catch
             {
                 error.reportID = ErrorReport.SHIT_JUST_GOT_REAL;
-                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + xmlPath;
+                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + albumsDatabasePath;
                 guiCallback(error);
                 return;
             }
@@ -67,12 +75,12 @@ namespace SoftwareEng
         //-----------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void saveAlbumsXML_backend(generic_callback guiCallback, string xmlSavePath)
+        private void saveAlbumsXML_backend(generic_callback guiCallback)
         {
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!checkDatabaseIntegrity(_albumsXDocs, error))
+            if (!checkDatabaseIntegrity(_albumsDatabase, error))
             {
                 guiCallback(error);
                 return;
@@ -84,6 +92,53 @@ namespace SoftwareEng
         }
 
         //-----------------------------------------------------------------
+
+        //By: Ryan Moe
+        //Edited Last:
+        private void openPicturesXML_backend(generic_callback guiCallback)
+        {
+            //use this to inform the calling gui of how things went.
+            ErrorReport error = new ErrorReport();
+
+            try
+            {
+                _albumsDatabase = XDocument.Load(albumsDatabasePath);
+            }
+            catch
+            {
+                error.reportID = ErrorReport.SHIT_JUST_GOT_REAL;
+                error.description = "PhotoBomb.openPicturesXML():failed to load the albums xml file: " + albumsDatabasePath;
+                guiCallback(error);
+                return;
+            }
+
+            //The loading of the xml was nominal, report back to the gui callback.
+            error.description = "great success!";
+            guiCallback(error);
+        }
+
+        //-----------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private void savePicturesXML_backend(generic_callback guiCallback)
+        {
+            ErrorReport error = new ErrorReport();
+
+            //make sure the album database is valid.
+            if (!checkDatabaseIntegrity(_albumsDatabase, error))
+            {
+                guiCallback(error);
+                return;
+            }
+
+            //put save xml stuff here!!!
+
+            guiCallback(error);
+        }
+
+        //-----------------------------------------------------------------
+
+
         //By: Ryan Moe
         //Edited Last:
         private void getAllUserAlbumNames_backend(getAllUserAlbumNames_callback guiCallback)
@@ -91,7 +146,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!checkDatabaseIntegrity(_albumsXDocs, error))
+            if (!checkDatabaseIntegrity(_albumsDatabase, error))
             {
                 guiCallback(error, null);
                 return;
@@ -104,7 +159,7 @@ namespace SoftwareEng
             List<XElement> _albumSearch;
             try
             {
-                _albumSearch = xmlParser.searchForElements(_albumsXDocs.Element("database"), "album");
+                _albumSearch = xmlParser.searchForElements(_albumsDatabase.Element("database"), "album");
             }
             catch
             {
@@ -173,7 +228,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!checkDatabaseIntegrity(_albumsXDocs, error))
+            if (!checkDatabaseIntegrity(_albumsDatabase, error))
             {
                 guiCallback(error, null);
                 return;
@@ -186,7 +241,7 @@ namespace SoftwareEng
                 //for(from) every c in the database's children (all albums),
                 //see if it's attribute uid is the one we want,
                 //and if so return the first instance of a match.
-                specificAlbum = (from c in _albumsXDocs.Element("database").Elements()
+                specificAlbum = (from c in _albumsDatabase.Element("database").Elements()
                                  where (int)c.Attribute("uid") == AlbumUID
                                  select c).Single();//NOTE: this will throw error if more than one OR none at all.
             }
@@ -236,14 +291,13 @@ namespace SoftwareEng
                 ComplexPhotoData photo = new ComplexPhotoData();
                 try
                 {
-                    photo.UID = (int)picElement.Element("uid").Attribute("value");
-                    photo.path = (string)picElement.Element("path").Attribute("value");
-                    photo.pictureName = (string)picElement.Element("name").Attribute("value");
+                    photo.UID = (int)picElement.Attribute("uid");
+                    photo.path = (string)picElement.Element("filePath").Value;
                 }
                 catch
                 {
                     error.reportID = ErrorReport.FAILURE;
-                    error.description = "PhotoBomb.getPictureByUID():Photo";
+                    error.description = "PhotoBomb.getPictureByUID():Photo info could not be loaded.";
                     guiCallback(error, null);
                     return;
                 }
