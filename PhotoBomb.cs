@@ -63,7 +63,7 @@ namespace SoftwareEng
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
         public void openPicturesXML(generic_callback guiCallback)
         {
-
+            openPicturesXML_backend(guiCallback);
         }
 
         //-----------------------------------------------
@@ -74,7 +74,7 @@ namespace SoftwareEng
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
         public void savePicturesXML(generic_callback guiCallback)
         {
-
+            savePicturesXML_backend(guiCallback);
         }
 
         //-----------------------------------------------

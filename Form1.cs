@@ -34,6 +34,7 @@ namespace SoftwareEng
         private void loadXML_Click(object sender, EventArgs e)
         {
             photoBomb.openAlbumsXML(new SoftwareEng.generic_callback(loadXML_Callback));
+            photoBomb.openPicturesXML(new SoftwareEng.generic_callback(loadXML_Callback));
         }
 
 
@@ -63,7 +64,8 @@ namespace SoftwareEng
         //test save button.
         private void button2_Click(object sender, EventArgs e)
         {
-            photoBomb.saveAlbumsXML(new SoftwareEng.generic_callback(saveXML_Callback), xmlPathTE.Text);
+            photoBomb.saveAlbumsXML(new SoftwareEng.generic_callback(saveXML_Callback));
+            photoBomb.savePicturesXML(new SoftwareEng.generic_callback(saveXML_Callback));
         }//method
 
 
@@ -195,7 +197,7 @@ namespace SoftwareEng
 
         public void getPictureByUID_callback(SoftwareEng.ErrorReport error, ComplexPhotoData pictureInfo)
         {
-            output.AppendText(pictureInfo.pictureName);
+            output.AppendText("Picture UID: " + pictureInfo.UID + ", path: " + pictureInfo.path + "\n");
         }
 
         //---------------------------------------------------------------------
