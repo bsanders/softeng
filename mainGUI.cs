@@ -18,6 +18,23 @@ namespace SoftwareEng
 
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ;
+        }
+
+        private void photoListView_ItemActivate(object sender, EventArgs e)
+        {
+            ;
+        }
+
+        private void albumListView_ItemActivate(object sender, EventArgs e)
+        {
+            ;
+        }
+
+        private void guiAddNewAlbum()
+        {
+            ;
+
 
         }
     }

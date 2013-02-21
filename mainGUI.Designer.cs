@@ -37,13 +37,14 @@
             this.createNewAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.addPhotosToExistingAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addPhotosToThisAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.albumListView = new System.Windows.Forms.ListView();
             this.albumImageList = new System.Windows.Forms.ImageList(this.components);
+            this.mainFormBackbutton = new System.Windows.Forms.Button();
+            this.photoListView = new System.Windows.Forms.ListView();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,7 +65,6 @@
             this.createNewAlbumToolStripMenuItem,
             this.toolStripSeparator1,
             this.addPhotosToExistingAlbumToolStripMenuItem,
-            this.addPhotosToThisAlbumToolStripMenuItem,
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -88,12 +88,6 @@
             this.addPhotosToExistingAlbumToolStripMenuItem.Name = "addPhotosToExistingAlbumToolStripMenuItem";
             this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add photos to existing album";
-            // 
-            // addPhotosToThisAlbumToolStripMenuItem
-            // 
-            this.addPhotosToThisAlbumToolStripMenuItem.Name = "addPhotosToThisAlbumToolStripMenuItem";
-            this.addPhotosToThisAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.addPhotosToThisAlbumToolStripMenuItem.Text = "Add photos to this album";
             // 
             // toolStripSeparator2
             // 
@@ -136,6 +130,7 @@
             this.albumListView.Size = new System.Drawing.Size(565, 371);
             this.albumListView.TabIndex = 1;
             this.albumListView.UseCompatibleStateImageBehavior = false;
+            this.albumListView.ItemActivate += new System.EventHandler(this.albumListView_ItemActivate);
             // 
             // albumImageList
             // 
@@ -143,13 +138,33 @@
             this.albumImageList.TransparentColor = System.Drawing.Color.Transparent;
             this.albumImageList.Images.SetKeyName(0, "Book_Green_48x48.png");
             // 
+            // mainFormBackbutton
+            // 
+            this.mainFormBackbutton.Location = new System.Drawing.Point(502, 408);
+            this.mainFormBackbutton.Name = "mainFormBackbutton";
+            this.mainFormBackbutton.Size = new System.Drawing.Size(75, 23);
+            this.mainFormBackbutton.TabIndex = 2;
+            this.mainFormBackbutton.Text = "Back";
+            this.mainFormBackbutton.UseVisualStyleBackColor = true;
+            // 
+            // photoListView
+            // 
+            this.photoListView.Location = new System.Drawing.Point(12, 27);
+            this.photoListView.Name = "photoListView";
+            this.photoListView.Size = new System.Drawing.Size(565, 371);
+            this.photoListView.TabIndex = 3;
+            this.photoListView.UseCompatibleStateImageBehavior = false;
+            this.photoListView.ItemActivate += new System.EventHandler(this.photoListView_ItemActivate);
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(589, 443);
+            this.Controls.Add(this.mainFormBackbutton);
             this.Controls.Add(this.albumListView);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.photoListView);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "mainGUI";
             this.Text = "Photobombers";
@@ -171,8 +186,9 @@
         private System.Windows.Forms.ToolStripMenuItem createNewAlbumToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem addPhotosToExistingAlbumToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addPhotosToThisAlbumToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.Button mainFormBackbutton;
+        private System.Windows.Forms.ListView photoListView;
     }
 }
