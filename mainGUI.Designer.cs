@@ -34,16 +34,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createNewAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.addPhotosToExistingAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addPhotosToThisAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.albumListView = new System.Windows.Forms.ListView();
             this.albumImageList = new System.Windows.Forms.ImageList(this.components);
-            this.createNewAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addPhotosToExistingAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addPhotosToThisAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,6 +72,40 @@
             this.fileToolStripMenuItem.Text = "File";
             this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
+            // createNewAlbumToolStripMenuItem
+            // 
+            this.createNewAlbumToolStripMenuItem.Name = "createNewAlbumToolStripMenuItem";
+            this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.createNewAlbumToolStripMenuItem.Text = "Create New Album";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(227, 6);
+            // 
+            // addPhotosToExistingAlbumToolStripMenuItem
+            // 
+            this.addPhotosToExistingAlbumToolStripMenuItem.Name = "addPhotosToExistingAlbumToolStripMenuItem";
+            this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add photos to existing album";
+            // 
+            // addPhotosToThisAlbumToolStripMenuItem
+            // 
+            this.addPhotosToThisAlbumToolStripMenuItem.Name = "addPhotosToThisAlbumToolStripMenuItem";
+            this.addPhotosToThisAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.addPhotosToThisAlbumToolStripMenuItem.Text = "Add photos to this album";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(227, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -83,7 +117,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // albumListView
@@ -108,40 +142,6 @@
             this.albumImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("albumImageList.ImageStream")));
             this.albumImageList.TransparentColor = System.Drawing.Color.Transparent;
             this.albumImageList.Images.SetKeyName(0, "Book_Green_48x48.png");
-            // 
-            // createNewAlbumToolStripMenuItem
-            // 
-            this.createNewAlbumToolStripMenuItem.Name = "createNewAlbumToolStripMenuItem";
-            this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.createNewAlbumToolStripMenuItem.Text = "Create New Album";
-            // 
-            // addPhotosToExistingAlbumToolStripMenuItem
-            // 
-            this.addPhotosToExistingAlbumToolStripMenuItem.Name = "addPhotosToExistingAlbumToolStripMenuItem";
-            this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add photos to existing album";
-            // 
-            // addPhotosToThisAlbumToolStripMenuItem
-            // 
-            this.addPhotosToThisAlbumToolStripMenuItem.Name = "addPhotosToThisAlbumToolStripMenuItem";
-            this.addPhotosToThisAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.addPhotosToThisAlbumToolStripMenuItem.Text = "Add photos to this album";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(227, 6);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(227, 6);
             // 
             // mainGUI
             // 
