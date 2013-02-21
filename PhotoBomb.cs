@@ -120,10 +120,30 @@ namespace SoftwareEng
         //Edited Last:
         //
         //Adds a picture to the picture database AND the album database.
-        public void addPicture(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID)
+        public void addNewPicture(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID)
         {
-            addPicture_backend(guiCallback, newPicture, albumUID);
+            addNewPicture_backend(guiCallback, newPicture, albumUID);
         }
+
+
+        //----------------------------------------------
+        //not working yet.
+        public void addNewAlbum(generic_callback guiCallback, SimpleAlbumData albumData)
+        {
+            addNewAlbum_backend(guiCallback, albumData);
+        }
+
+        //----------------------------------------------
+        //not working yet.
+        public void addExistingPictureToAlbum(generic_callback guiCallback, int pictureUID, int albumUID)
+        {
+            addExistingPictureToAlbum_backend(guiCallback, pictureUID, albumUID);
+        }
+
+
+
+
+
 
 
 

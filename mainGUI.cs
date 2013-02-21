@@ -17,11 +17,11 @@ namespace SoftwareEng
         {
             InitializeComponent();
 
-            bombaDeFotos = new PhotoBomb("", "", "");
+            //bombaDeFotos = new PhotoBomb("", "", "");
 
-            bombaDeFotos.openAlbumsXML(new generic_callback(guiLoadXml_Delegate));
+            //bombaDeFotos.openAlbumsXML(new generic_callback(guiLoadXml_Delegate));
 
-            bombaDeFotos.openPicturesXML(new generic_callback(guiLoadXml_Delegate));
+            //bombaDeFotos.openPicturesXML(new generic_callback(guiLoadXml_Delegate));
 
         }
 

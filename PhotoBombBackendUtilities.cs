@@ -98,11 +98,9 @@ namespace SoftwareEng
                 return errorReport;
             }
 
-            int newUID = getNewUID_slow();
-
             //make the object that will go into the xml database.
             XElement newPicRoot = new XElement("picture",
-                new XAttribute("uid", newUID),
+                new XAttribute("uid", newPictureData.UID),
                 new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.path)
                 );
 
@@ -114,8 +112,41 @@ namespace SoftwareEng
         //--------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void addPictureToAlbumDatabase(ComplexPhotoData newPicture, int albumUID)
+        private void addPictureToAlbumDatabase(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID)
         {
+            //Error checking goes here!!!
+
+            //Get the specific album we will be adding to.
+            XElement specificAlbum;
+            try
+            {
+                specificAlbum = (from c in _albumsDatabase.Element("database").Elements()
+                                 where (int)c.Attribute("uid") == albumUID
+                                 select c).Single();//NOTE: this will throw error if more than one OR none at all.
+            }
+            catch
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Found more than one album with that UID or none at all.";
+                return;
+            }
+
+            
+            /*
+           //make the object that will go into the xml database.
+            XElement newPicRoot = new XElement("picture",
+                new XAttribute("uid", newUID),
+                new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.path)
+                );
+             */
+
+            //construct the object we will be adding to the album.
+            XElement newPhotoElem = new XElement("picture",
+                                            new XAttribute("uid", newPicture.UID),
+                                            new XElement("name", newPicture.picturesAlbumName));
+
+
+            specificAlbum.Element("albumPhotos").Add(newPhotoElem);
 
         }
 
@@ -151,7 +182,7 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
 
-        private int getNewUID_slow()
+        private int getNewPictureUID_slow()
         {
             int newUID = 1;
             Boolean uidNotFound = true;

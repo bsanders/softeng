@@ -81,7 +81,8 @@ namespace SoftwareEng
 
             _albumsDatabase.Save(albumsDatabasePath);
 
-            guiCallback(error);
+            if (guiCallback != null)
+                guiCallback(error);
         }
 
         //-----------------------------------------------------------------
@@ -291,7 +292,7 @@ namespace SoftwareEng
                 try
                 {
                     photo.UID = (int)picElement.Attribute("uid");
-                    photo.path = (string)picElement.Element("filePath").Value + (string)picElement.Element("filePath").Attribute("extension"); ;
+                    photo.path = (string)picElement.Element("filePath").Value;
                 }
                 catch
                 {
@@ -315,19 +316,57 @@ namespace SoftwareEng
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void addPicture_backend(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID)
+        private void addNewPicture_backend(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
+            //get a unique ID for this photo and update its 
+            //data object to reflect this new UID.
+            int newUID = getNewPictureUID_slow();
+            newPicture.UID = newUID;
+
             addPictureToPictureDatabase(errorReport, newPicture);
 
+            //if adding to the picture database failed
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            addPictureToAlbumDatabase(errorReport, newPicture, albumUID);
+
+            //if adding to the album database failed
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
 
             //FOR TESTING ONLY, REMOVE ONCE TESTING COMPLETE!!!
             savePicturesXML_backend(null);
+            saveAlbumsXML_backend(null);
 
             guiCallback(errorReport);
         }
 
+
+
+
+        //-------------------------------------------------------------
+
+        private void addNewAlbum_backend(generic_callback guiCallback, SimpleAlbumData albumData)
+        {
+
+        }
+
+
+        //-------------------------------------------------------------
+
+        private void addExistingPictureToAlbum_backend(generic_callback guiCallback, int pictureUID, int albumUID)
+        {
+
+        }
 
 
 

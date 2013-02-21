@@ -136,7 +136,7 @@ namespace SoftwareEng
 
         //---------------------------------------------------------------------
 
-        //load Album Pictures
+        //load all Album Pictures
         private void loadAlbumPictures_Click(object sender, EventArgs e)
         {
             int UID;
@@ -171,7 +171,7 @@ namespace SoftwareEng
                 output.AppendText("Pictures in album:\n");
                 for (int i = 0; i < _pictures.Count; ++i)
                 {
-                    output.AppendText(_pictures.ElementAt(i).pictureName + "\n");
+                    output.AppendText(_pictures.ElementAt(i).pictureName + ", UID: " + _pictures.ElementAt(i).UID + "\n");
                 }
             }
         }
@@ -222,11 +222,11 @@ namespace SoftwareEng
         private void button1_Click(object sender, EventArgs e)
         {
             ComplexPhotoData data = new ComplexPhotoData();
-            data.UID = 999;
-            data.picturesAlbumName = "dude";
-            data.path = "nonya.jpg";
+            data.UID = 999;//this doesn't matter as the backend assignes the real UID.
+            data.picturesAlbumName = "myNewPicture";
+            data.path = "newPic.jpg";
             data.extension = ".jpg";
-            photoBomb.addPicture(new SoftwareEng.generic_callback(addPictureButton_callback) , data, -1);
+            photoBomb.addNewPicture(new SoftwareEng.generic_callback(addPictureButton_callback) , data, 1);
 
         }
 
@@ -234,11 +234,11 @@ namespace SoftwareEng
         {
             if (error.reportID == ErrorReport.FAILURE)
             {
-                output.AppendText("Failure reported by the backend: " + error.description);
+                output.AppendText("Failure reported by the backend: " + error.description + "\n");
             }
             else
             {
-                output.AppendText("Picture Added");
+                output.AppendText("Picture Added\n");
             }
         }
 
