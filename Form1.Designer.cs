@@ -43,9 +43,9 @@
             // 
             this.loadXML.Location = new System.Drawing.Point(12, 367);
             this.loadXML.Name = "loadXML";
-            this.loadXML.Size = new System.Drawing.Size(75, 23);
+            this.loadXML.Size = new System.Drawing.Size(106, 23);
             this.loadXML.TabIndex = 0;
-            this.loadXML.Text = "loadXml";
+            this.loadXML.Text = "reload Databases";
             this.loadXML.UseVisualStyleBackColor = true;
             this.loadXML.Click += new System.EventHandler(this.loadXML_Click);
             // 

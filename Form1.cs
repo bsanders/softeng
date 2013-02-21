@@ -232,7 +232,14 @@ namespace SoftwareEng
 
         public void addPictureButton_callback(SoftwareEng.ErrorReport error)
         {
-
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                output.AppendText("Failure reported by the backend: " + error.description);
+            }
+            else
+            {
+                output.AppendText("Picture Added");
+            }
         }
 
         //---------------------------------------------------------------------

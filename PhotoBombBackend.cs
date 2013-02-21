@@ -136,13 +136,17 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last:
+        //NOTE: This function is up for replacement by new logic that uses
+        //the select/from/where style of code.
         private void getAllUserAlbumNames_backend(getAllUserAlbumNames_callback guiCallback)
         {
             ErrorReport error = new ErrorReport();
 
-            //make sure the album database is valid.
+            //if the database is NOT valid.
             if (!checkDatabaseIntegrity(_albumsDatabase, error))
             {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "The album database was determined to be not valid.";
                 guiCallback(error, null);
                 return;
             }
@@ -173,7 +177,7 @@ namespace SoftwareEng
                 try
                 {
                     //get the name(s) of this album.
-                    _nameSearch = xmlParser.searchForElements(thisAlbum, "name");
+                    _nameSearch = xmlParser.searchForElements(thisAlbum, "albumName");
                 }
                 catch
                 {
@@ -251,13 +255,13 @@ namespace SoftwareEng
             //Now lets get all the picture data from
             //the album and fill out the picture object list.
             List<SimplePhotoData> _list = new List<SimplePhotoData>();
-            foreach (XElement subElement in specificAlbum.Elements("picture"))
+            foreach (XElement subElement in specificAlbum.Element("albumPhotos").Elements("picture"))
             {
                 SimplePhotoData pic = new SimplePhotoData();
                 try
                 {
-                    pic.pictureName = (string)subElement.Element("name").Attribute("value");
-                    pic.UID = (int)subElement.Element("uid").Attribute("value");
+                    pic.UID = (int)subElement.Attribute("uid");
+                    pic.pictureName = (string)subElement.Element("name").Value;
                     _list.Add(pic);
                 }
                 catch
@@ -321,6 +325,7 @@ namespace SoftwareEng
             //FOR TESTING ONLY, REMOVE ONCE TESTING COMPLETE!!!
             savePicturesXML_backend(null);
 
+            guiCallback(errorReport);
         }
 
 
