@@ -82,6 +82,7 @@ namespace SoftwareEng
             //make sure the album database is valid.
             if (!checkDatabaseIntegrity(_albumsDatabase, error))
             {
+                _albumsDatabase.Save(albumsDatabasePath);
                 guiCallback(error);
                 return;
             }
@@ -127,6 +128,7 @@ namespace SoftwareEng
             //make sure the album database is valid.
             if (!checkDatabaseIntegrity(_picturesDatabase, error))
             {
+                _picturesDatabase.Save(picturesDatabasePath);
                 guiCallback(error);
                 return;
             }
@@ -308,6 +310,7 @@ namespace SoftwareEng
             else
             {
                 guiCallback(error, null);
+                return;
             }
         }//method
         

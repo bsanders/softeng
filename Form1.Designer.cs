@@ -32,10 +32,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.output = new System.Windows.Forms.RichTextBox();
             this.loadAlbums = new System.Windows.Forms.Button();
-            this.xmlPathTE = new System.Windows.Forms.TextBox();
             this.loadAlbumPictures = new System.Windows.Forms.Button();
             this.uidTE = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.getPictureByUIDButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -78,14 +76,6 @@
             this.loadAlbums.UseVisualStyleBackColor = true;
             this.loadAlbums.Click += new System.EventHandler(this.loadAlbums_Click);
             // 
-            // xmlPathTE
-            // 
-            this.xmlPathTE.Location = new System.Drawing.Point(12, 427);
-            this.xmlPathTE.Name = "xmlPathTE";
-            this.xmlPathTE.Size = new System.Drawing.Size(100, 20);
-            this.xmlPathTE.TabIndex = 5;
-            this.xmlPathTE.Text = "test.xml";
-            // 
             // loadAlbumPictures
             // 
             this.loadAlbumPictures.Location = new System.Drawing.Point(393, 367);
@@ -102,15 +92,6 @@
             this.uidTE.Name = "uidTE";
             this.uidTE.Size = new System.Drawing.Size(100, 20);
             this.uidTE.TabIndex = 7;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 411);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Xml Name";
             // 
             // label2
             // 
@@ -138,10 +119,8 @@
             this.ClientSize = new System.Drawing.Size(571, 459);
             this.Controls.Add(this.getPictureByUIDButton);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.uidTE);
             this.Controls.Add(this.loadAlbumPictures);
-            this.Controls.Add(this.xmlPathTE);
             this.Controls.Add(this.loadAlbums);
             this.Controls.Add(this.output);
             this.Controls.Add(this.button2);
@@ -159,10 +138,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.RichTextBox output;
         private System.Windows.Forms.Button loadAlbums;
-        private System.Windows.Forms.TextBox xmlPathTE;
         private System.Windows.Forms.Button loadAlbumPictures;
         private System.Windows.Forms.TextBox uidTE;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button getPictureByUIDButton;
     }

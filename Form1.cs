@@ -179,25 +179,36 @@ namespace SoftwareEng
             try
             {
                 int.TryParse(uidTE.Text, out UID);
-                if (UID > 0 && UID < 9999999)
-                {
-                    photoBomb.getPictureByUID(new SoftwareEng.getPhotoByUID_callback(getPictureByUID_callback), UID);
-                }
-                else
-                {
-                    output.AppendText("The UID does not appear to be a valid number, try again.\n");
-                }
             }
             catch
             {
                 output.AppendText("The UID does not appear to be a valid number, try again.\n");
+                return;
             }
+
+
+            if (UID > 0 && UID < 9999999)
+            {
+                photoBomb.getPictureByUID(new SoftwareEng.getPhotoByUID_callback(getPictureByUID_callback), UID);
+            }
+            else
+            {
+                output.AppendText("The UID does not appear to be a valid number, try again.\n");
+            }
+
         }
 
 
         public void getPictureByUID_callback(SoftwareEng.ErrorReport error, ComplexPhotoData pictureInfo)
         {
-            output.AppendText("Picture UID: " + pictureInfo.UID + ", path: " + pictureInfo.path + "\n");
+            if (error.reportID == SoftwareEng.ErrorReport.FAILURE)
+            {
+                output.AppendText("Failed to get the picture: " + error.description + "\n");
+            }
+            else
+            {
+                output.AppendText("Picture UID: " + pictureInfo.UID + ", path: " + pictureInfo.path + "\n");
+            }
         }
 
         //---------------------------------------------------------------------
