@@ -219,7 +219,8 @@ namespace SoftwareEng
             ComplexPhotoData data = new ComplexPhotoData();
             data.UID = 999;
             data.picturesAlbumName = "dude";
-            data.path = "nonya";
+            data.path = "nonya.jpg";
+            data.extension = ".jpg";
             photoBomb.addPicture(new SoftwareEng.generic_callback(addPictureButton_callback) , data, -1);
 
         }

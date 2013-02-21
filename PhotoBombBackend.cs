@@ -324,8 +324,10 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
-            addPictureToPictureDatabase(newPicture);
+            addPictureToPictureDatabase(errorReport, newPicture);
 
+
+            //FOR TESTING ONLY, REMOVE ONCE TESTING COMPLETE!!!
             savePicturesXML_backend(null);
 
         }
