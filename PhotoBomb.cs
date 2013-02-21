@@ -14,6 +14,20 @@ namespace SoftwareEng
     //it is the public part of the PhotoBomb class.
     partial class PhotoBomb
     {
+        //----------------------------------------------
+
+        //By: Ryan Moe
+        //Edited Last: 
+        //
+        //initialize.
+        //PARAM 1 = the path to the album database (xml).
+        //PARAM 2 = path to the pictures database.
+        //PARAM 3 = the path to the folder where all the pictures
+        //          tracked by this program are stored.
+        public PhotoBomb(string albumDatabasePathIn, string pictureDatabasePathIn, string pictureFolderPathIn)
+        {
+            init(albumDatabasePathIn, pictureDatabasePathIn, pictureFolderPathIn);
+        }
 
         //----------------------------------------------
         //By: Ryan Moe
@@ -22,14 +36,13 @@ namespace SoftwareEng
         //open the xml document that represents the
         //user's albums in the program.
         //PARAM 1 = a callback (delegate) to a gui function (see PhotoBombDelegates.cs).
-        //PARAM 2 = The path to the album xml, THIS MAY BE REMOVED.
         //
         //ERROR CONDITIONS
         //1) if the xml file does not exist, an error will be returned.
         //2) if the xml file does not contain VALID xml, error.
-        public void openAlbumsXML(generic_callback guiCallback, string xmlPath)
+        public void openAlbumsXML(generic_callback guiCallback)
         {
-            openAlbumsXML_backend(guiCallback, xmlPath);
+            openAlbumsXML_backend(guiCallback);
         }
 
         //----------------------------------------------
@@ -38,12 +51,34 @@ namespace SoftwareEng
         //
         //Save the album data to an xml file.
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
-        //PARAM 2 = path to where you want to save the xml.
-        public void saveAlbumsXML(generic_callback guiCallback, string xmlSavePath)
+        public void saveAlbumsXML(generic_callback guiCallback)
         {
-            saveAlbumsXML_backend(guiCallback, xmlSavePath);
+            saveAlbumsXML_backend(guiCallback);
         }
         //----------------------------------------------
+        //By: Ryan Moe
+        //Edited Last: 
+        //
+        //Open the pictures database (xml file).
+        //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
+        public void openPicturesXML(generic_callback guiCallback)
+        {
+
+        }
+
+        //-----------------------------------------------
+        //By: Ryan Moe
+        //Edited Last: 
+        //
+        //Save the pictures database (xml file).
+        //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
+        public void savePicturesXML(generic_callback guiCallback)
+        {
+
+        }
+
+        //-----------------------------------------------
+
         //By: Ryan Moe
         //Edited Last: 
         //

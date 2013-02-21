@@ -38,7 +38,7 @@ namespace SoftwareEng
 
         private XElement getPictureElementByUID(ErrorReport error, int uid)
         {
-            if (checkDatabaseIntegrity(_picturesXDocs, error))
+            if (checkDatabaseIntegrity(_picturesDatabase, error))
             {
                 //Try searching for the album with the uid specified.
                 XElement specificPicture;
@@ -47,7 +47,7 @@ namespace SoftwareEng
                     //for(from) every c in the database's children (all albums),
                     //see if it's attribute uid is the one we want,
                     //and if so return the first instance of a match.
-                    specificPicture = (from c in _picturesXDocs.Element("database").Elements()
+                    specificPicture = (from c in _picturesDatabase.Element("database").Elements()
                                        where (int)c.Attribute("uid") == uid
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }

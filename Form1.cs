@@ -25,7 +25,7 @@ namespace SoftwareEng
         public Form1()
         {
             InitializeComponent();
-            photoBomb = new SoftwareEng.PhotoBomb();
+            photoBomb = new SoftwareEng.PhotoBomb("test.xml", "test2.xml", "");
         }
 
         //--------------------------------------------------------------------
@@ -33,7 +33,7 @@ namespace SoftwareEng
         //test button.
         private void loadXML_Click(object sender, EventArgs e)
         {
-            photoBomb.openAlbumsXML(new SoftwareEng.generic_callback(loadXML_Callback), xmlPathTE.Text);
+            photoBomb.openAlbumsXML(new SoftwareEng.generic_callback(loadXML_Callback));
         }
 
 
@@ -170,14 +170,33 @@ namespace SoftwareEng
         }
 
         //---------------------------------------------------------------------
-
+        //Get a picture's complex data
         private void getPictureByUIDButton_Click(object sender, EventArgs e)
         {
-            //getPictureByUID();
+            int UID;
+            try
+            {
+                int.TryParse(uidTE.Text, out UID);
+                if (UID > 0 && UID < 9999999)
+                {
+                    photoBomb.getPictureByUID(new SoftwareEng.getPhotoByUID_callback(getPictureByUID_callback), UID);
+                }
+                else
+                {
+                    output.AppendText("The UID does not appear to be a valid number, try again.\n");
+                }
+            }
+            catch
+            {
+                output.AppendText("The UID does not appear to be a valid number, try again.\n");
+            }
         }
 
 
-
+        public void getPictureByUID_callback(SoftwareEng.ErrorReport error, ComplexPhotoData pictureInfo)
+        {
+            output.AppendText(pictureInfo.pictureName);
+        }
 
         //---------------------------------------------------------------------
 
