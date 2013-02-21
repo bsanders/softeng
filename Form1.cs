@@ -25,7 +25,12 @@ namespace SoftwareEng
         public Form1()
         {
             InitializeComponent();
-            photoBomb = new SoftwareEng.PhotoBomb("test.xml", "test2.xml", "");
+            photoBomb = new SoftwareEng.PhotoBomb(new generic_callback(photoBombConstructor_callback), "test.xml", "test2.xml", "");
+        }
+
+        public void photoBombConstructor_callback(ErrorReport e)
+        {
+
         }
 
         //--------------------------------------------------------------------
@@ -33,8 +38,8 @@ namespace SoftwareEng
         //test button.
         private void loadXML_Click(object sender, EventArgs e)
         {
-            photoBomb.openAlbumsXML(new SoftwareEng.generic_callback(loadXML_Callback));
-            photoBomb.openPicturesXML(new SoftwareEng.generic_callback(loadXML_Callback));
+            photoBomb.reopenAlbumsXML(new SoftwareEng.generic_callback(loadXML_Callback));
+            photoBomb.reopenPicturesXML(new SoftwareEng.generic_callback(loadXML_Callback));
         }
 
 

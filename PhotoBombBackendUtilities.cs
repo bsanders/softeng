@@ -78,17 +78,11 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //This adds a picture to JUST the picture database.
+        //Does not use the UID or the albumName from the newPictureData.
         private ErrorReport addPictureToPictureDatabase(ErrorReport errorReport, ComplexPhotoData newPictureData)
         {
-            //if uid is not valid
-            if (!checkUID(newPictureData.UID))
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "UID is not valid.";
-                return errorReport;
-            }
 
-            //if uid is not valid
+            //if picture extension is not valid
             if (!checkPictureExtension(newPictureData.extension))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
@@ -96,7 +90,7 @@ namespace SoftwareEng
                 return errorReport;
             }
 
-            //if uid is not valid
+            //if path is not valid
             if (!checkPicturePath(newPictureData.path))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
@@ -104,9 +98,11 @@ namespace SoftwareEng
                 return errorReport;
             }
 
+            int newUID = getNewUID_slow();
+
             //make the object that will go into the xml database.
             XElement newPicRoot = new XElement("picture",
-                new XAttribute("uid", newPictureData.UID),
+                new XAttribute("uid", newUID),
                 new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.path)
                 );
 
@@ -128,7 +124,7 @@ namespace SoftwareEng
         //RETURN: true if the uid is valid, false otherwise.
         private Boolean checkUID(int uid)
         {
-            if (uid > 0 && uid < 9999999)
+            if (uid > 0 && uid < 999999)
                 return true;
             return false;
         }
@@ -147,17 +143,81 @@ namespace SoftwareEng
 
         private Boolean checkPicturePath(String path)
         {
-            return true;
+            if(path != "")
+                return true;
+            return false;
         }
 
 
         //--------------------------------------------------------
 
-        private int getNewUID()
+        private int getNewUID_slow()
         {
-            //HEY MAKE LOGIC TO GET A NEW UID!!!
+            int newUID = 1;
+            Boolean uidNotFound = true;
+            while (uidNotFound && newUID < 999999)
+            {
+                try
+                {
+                    (from c in _picturesDatabase.Element("database").Elements("picture")
+                     where (int)c.Attribute("uid") == newUID
+                     select c).First();//NOTE: this will throw an exception if no elements' id matches the one we have.
+                    ++newUID;
+                }
+                //we found one!
+                catch
+                {
+                    uidNotFound = false;
+                }
+            }//while
+
+            if(newUID != 999999)
+                return newUID;
             return -1;
         }
+
+        //--------------------------------------------------------
+
+        private void openAlbumsXML(ErrorReport error)
+        {
+            try
+            {
+                _albumsDatabase = XDocument.Load(albumsDatabasePath);
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + albumsDatabasePath;
+                return;
+            }
+
+            //The loading of the xml was nominal.
+            error.description = "great success!";
+        }
+
+        //-------------------------------------------------------
+
+        private void openPicturesXML(ErrorReport error)
+        {
+            try
+            {
+                _picturesDatabase = XDocument.Load(picturesDatabasePath);
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "PhotoBomb.openPicturesXML():failed to load the pictures xml file: " + picturesDatabasePath;
+                return;
+            }
+
+            //The loading of the xml was nominal.
+            error.description = "great success!";
+        }
+
+
+
+
+
 
     }//class
 }

@@ -34,41 +34,32 @@ namespace SoftwareEng
         //FUNCTIONS--------------------------------------------------------
         //-----------------------------------------------------------------
 
-        private void init(string albumDatabasePathIn, string pictureDatabasePathIn, string pictureFolderPathIn)
+        private void init(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string pictureFolderPathIn)
         {
-            //break these up into different paths eventually?
+            ErrorReport errorReport = new ErrorReport();
+
             albumsDatabasePath = albumDatabasePathIn;
             picturesDatabasePath = pictureDatabasePathIn;
             picturePath = pictureFolderPathIn;
 
-            _albumsDatabase = null;
-            _picturesDatabase = null;
-
             xmlParser = new XmlParser();
+
+            openAlbumsXML(errorReport);
+            openPicturesXML(errorReport);
+
+            guiCallback(errorReport);
         }
 
         //-----------------------------------------------------------------
 
         //By: Ryan Moe
         //Edited Last:
-        private void openAlbumsXML_backend(generic_callback guiCallback){
+        private void reopenAlbumsXML_backend(generic_callback guiCallback){
             //use this to inform the calling gui of how things went.
             ErrorReport error = new ErrorReport();
 
-            try
-            {
-                _albumsDatabase = XDocument.Load(albumsDatabasePath);
-            }
-            catch
-            {
-                error.reportID = ErrorReport.SHIT_JUST_GOT_REAL;
-                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + albumsDatabasePath;
-                guiCallback(error);
-                return;
-            }
+            openAlbumsXML(error);
 
-            //The loading of the xml was nominal, report back to the gui callback.
-            error.description = "great success!";
             guiCallback(error);
         }
 
@@ -97,7 +88,7 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last:
-        private void openPicturesXML_backend(generic_callback guiCallback)
+        private void reopenPicturesXML_backend(generic_callback guiCallback)
         {
             //use this to inform the calling gui of how things went.
             ErrorReport error = new ErrorReport();
@@ -108,7 +99,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.SHIT_JUST_GOT_REAL;
+                error.reportID = ErrorReport.FAILURE;
                 error.description = "PhotoBomb.openPicturesXML():failed to load the albums xml file: " + picturesDatabasePath;
                 guiCallback(error);
                 return;
