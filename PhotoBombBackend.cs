@@ -82,6 +82,7 @@ namespace SoftwareEng
             //make sure the album database is valid.
             if (!checkDatabaseIntegrity(_albumsDatabase, error))
             {
+                _albumsDatabase.Save(albumsDatabasePath);
                 guiCallback(error);
                 return;
             }
@@ -102,12 +103,12 @@ namespace SoftwareEng
 
             try
             {
-                _albumsDatabase = XDocument.Load(albumsDatabasePath);
+                _picturesDatabase = XDocument.Load(picturesDatabasePath);
             }
             catch
             {
                 error.reportID = ErrorReport.SHIT_JUST_GOT_REAL;
-                error.description = "PhotoBomb.openPicturesXML():failed to load the albums xml file: " + albumsDatabasePath;
+                error.description = "PhotoBomb.openPicturesXML():failed to load the albums xml file: " + picturesDatabasePath;
                 guiCallback(error);
                 return;
             }
@@ -125,8 +126,9 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!checkDatabaseIntegrity(_picturesDatabase, error))
             {
+                _picturesDatabase.Save(picturesDatabasePath);
                 guiCallback(error);
                 return;
             }
@@ -292,7 +294,7 @@ namespace SoftwareEng
                 try
                 {
                     photo.UID = (int)picElement.Attribute("uid");
-                    photo.path = (string)picElement.Element("filePath").Value;
+                    photo.path = (string)picElement.Element("filePath").Value + (string)picElement.Element("filePath").Attribute("extension"); ;
                 }
                 catch
                 {
@@ -308,6 +310,7 @@ namespace SoftwareEng
             else
             {
                 guiCallback(error, null);
+                return;
             }
         }//method
         
