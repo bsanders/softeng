@@ -25,7 +25,6 @@ namespace SoftwareEng
         public const int SUCCESS = 0;
         public const int SUCCESS_WITH_WARNINGS = 1;
         public const int FAILURE = 2;
-        public const int SHIT_JUST_GOT_REAL = 9001;//what my scouter says
         //---------------------------
         //Error object vars.
         //These get set by the backend.

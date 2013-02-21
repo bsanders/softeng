@@ -19,14 +19,15 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last: 
         //
-        //initialize.
-        //PARAM 1 = the path to the album database (xml).
-        //PARAM 2 = path to the pictures database.
-        //PARAM 3 = the path to the folder where all the pictures
+        //initialize the backend object AND load the databases.
+        //PARAM 1 = the callback for the results of loading the databses.
+        //PARAM 2 = the path to the album database (xml).
+        //PARAM 3 = path to the pictures database.
+        //PARAM 4 = the path to the folder where all the pictures
         //          tracked by this program are stored.
-        public PhotoBomb(string albumDatabasePathIn, string pictureDatabasePathIn, string pictureFolderPathIn)
+        public PhotoBomb(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string pictureFolderPathIn)
         {
-            init(albumDatabasePathIn, pictureDatabasePathIn, pictureFolderPathIn);
+            init(guiCallback, albumDatabasePathIn, pictureDatabasePathIn, pictureFolderPathIn);
         }
 
         //----------------------------------------------
@@ -40,9 +41,9 @@ namespace SoftwareEng
         //ERROR CONDITIONS
         //1) if the xml file does not exist, an error will be returned.
         //2) if the xml file does not contain VALID xml, error.
-        public void openAlbumsXML(generic_callback guiCallback)
+        public void reopenAlbumsXML(generic_callback guiCallback)
         {
-            openAlbumsXML_backend(guiCallback);
+            reopenAlbumsXML_backend(guiCallback);
         }
 
         //----------------------------------------------
@@ -61,9 +62,9 @@ namespace SoftwareEng
         //
         //Open the pictures database (xml file).
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
-        public void openPicturesXML(generic_callback guiCallback)
+        public void reopenPicturesXML(generic_callback guiCallback)
         {
-            openPicturesXML_backend(guiCallback);
+            reopenPicturesXML_backend(guiCallback);
         }
 
         //-----------------------------------------------
