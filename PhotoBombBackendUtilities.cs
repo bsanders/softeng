@@ -245,6 +245,49 @@ namespace SoftwareEng
             error.description = "great success!";
         }
 
+        //------------------------------------------------------
+
+        private int getNewAlbumUID_slow(ErrorReport error)
+        {
+            int newUID = 1;
+            Boolean uidNotFound = true;
+            while (uidNotFound && newUID < 999999)
+            {
+                try
+                {
+                    (from c in _albumsDatabase.Element("database").Elements("album")
+                     where (int)c.Attribute("uid") == newUID
+                     select c).First();//NOTE: this will throw an exception if no elements' id matches the one we have.
+                    ++newUID;
+                }
+                //we found one!
+                catch
+                {
+                    uidNotFound = false;
+                }
+            }//while
+
+            if(newUID != 999999)
+                return newUID;
+            return -1;
+        }
+
+        //-------------------------------------------------------------------
+
+        private void addAlbumToAlbumDatabase(ErrorReport errorReport, SimpleAlbumData albumData){
+            //Error checking goes here!!!
+
+            //construct the object we will be adding to the database.
+            XElement newAlbum = new XElement("album",
+                                            new XAttribute("uid", albumData.UID),
+                                            new XElement("albumName", albumData.albumName),
+                                            new XElement("albumPhotos"));
+
+            _albumsDatabase.Element("database").Add(newAlbum);
+        }//method
+
+
+
 
 
 
