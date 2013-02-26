@@ -200,6 +200,7 @@ namespace SoftwareEng
         public void guiPhotosInAlbumRetrieved(ErrorReport status, List<SimplePhotoData> albumContents)
         {
             photoListView.BringToFront();
+            addPhotosToExistingAlbumToolStripMenuItem.Enabled = true;
             mainFormBackbutton.Enabled = true;
 
             if (status.reportID == ErrorReport.SUCCESS)
@@ -325,6 +326,12 @@ namespace SoftwareEng
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("   Created by PhotoBombers Studio, LLC   ", "About", MessageBoxButtons.OK);
+        }
+
+        private void mainFormBackbutton_Click(object sender, EventArgs e)
+        {
+            albumListView.BringToFront();
+            mainFormBackbutton.Enabled = false;
         }
     }
 }

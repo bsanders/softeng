@@ -60,7 +60,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cancelButton.Location = new System.Drawing.Point(12, 114);
+            this.cancelButton.Location = new System.Drawing.Point(12, 92);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 5;
@@ -73,7 +73,7 @@
             this.finishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.finishButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.finishButton.Enabled = false;
-            this.finishButton.Location = new System.Drawing.Point(372, 114);
+            this.finishButton.Location = new System.Drawing.Point(372, 92);
             this.finishButton.Name = "finishButton";
             this.finishButton.Size = new System.Drawing.Size(75, 23);
             this.finishButton.TabIndex = 6;
@@ -91,11 +91,11 @@
             this.newAlbumMaskedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.newAlbumMaskedTextBox.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Insert;
-            this.newAlbumMaskedTextBox.Location = new System.Drawing.Point(77, 84);
+            this.newAlbumMaskedTextBox.Location = new System.Drawing.Point(150, 83);
             this.newAlbumMaskedTextBox.Mask = "aaaaaaaaaaaaaaaa";
             this.newAlbumMaskedTextBox.Name = "newAlbumMaskedTextBox";
             this.newAlbumMaskedTextBox.PromptChar = ' ';
-            this.newAlbumMaskedTextBox.Size = new System.Drawing.Size(302, 20);
+            this.newAlbumMaskedTextBox.Size = new System.Drawing.Size(124, 20);
             this.newAlbumMaskedTextBox.TabIndex = 7;
             // 
             // addNewAlbum
