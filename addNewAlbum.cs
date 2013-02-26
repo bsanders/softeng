@@ -11,7 +11,7 @@ namespace SoftwareEng
 {
     public partial class addNewAlbum : Form
     {
-        private guiCreateAlbumDelegate form1Delegate;
+        private PhotoBomb bombaDeFotos;
 
         private const int userInputMaxSize = 16; 
 
@@ -23,9 +23,9 @@ namespace SoftwareEng
             InitializeComponent();
         }
 
-        public addNewAlbum(guiCreateAlbumDelegate form1DelegateParam)
+        public addNewAlbum(PhotoBomb photobombParam)
         {
-            form1Delegate = form1DelegateParam;
+            bombaDeFotos = photobombParam;
 
             InitializeComponent();
         }
@@ -46,7 +46,7 @@ namespace SoftwareEng
             }
             else
             {
-                form1Delegate(newAlbumMaskedTextBox.Text);
+                ;
             }
         }
 
@@ -54,6 +54,7 @@ namespace SoftwareEng
         {
 
             createTheNewAlbum();
+            this.Close();
         }
 
         /************************************************************

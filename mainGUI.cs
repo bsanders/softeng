@@ -230,14 +230,14 @@ namespace SoftwareEng
         ************************************************************/
         private void guiAddNewAlbum()
         {
-            ;
+            addNewAlbum createAlbumDialog= new addNewAlbum(bombaDeFotos);
 
-
+            createAlbumDialog.ShowDialog();
         }
 
 
         /************************************************************
-        * used as delegate and passed to addNewAlbum form
+        * used as delegate
         ************************************************************/
         public void guiNewAlbumNamed(string userInput)
         {
@@ -289,7 +289,7 @@ namespace SoftwareEng
 
 
 
-        public static string label = "8===========================================D----------------- ({})";
+        public static string label = "8===============================D-------- ({})";
 
         /************************************************************
         * 
