@@ -244,6 +244,28 @@ namespace SoftwareEng
             }
         }
 
+
+        //---------------------------------------------------------------------
+        //add an album
+        private void addAlbumButton_Click(object sender, EventArgs e)
+        {
+            SimpleAlbumData data = new SimpleAlbumData();
+            data.albumName = "newAlbum";
+            photoBomb.addNewAlbum(new SoftwareEng.generic_callback(addAlbumButton_callback), data);
+        }
+
+        public void addAlbumButton_callback(SoftwareEng.ErrorReport error)
+        {
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                output.AppendText("Failure reported by the backend: " + error.description + "\n");
+            }
+            else
+            {
+                output.AppendText("Album Added\n");
+            }
+        }
+
         //---------------------------------------------------------------------
 
 

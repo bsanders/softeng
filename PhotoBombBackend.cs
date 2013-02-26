@@ -343,7 +343,6 @@ namespace SoftwareEng
                 return;
             }
 
-            //FOR TESTING ONLY, REMOVE ONCE TESTING COMPLETE!!!
             savePicturesXML_backend(null);
             saveAlbumsXML_backend(null);
 
@@ -357,6 +356,15 @@ namespace SoftwareEng
 
         private void addNewAlbum_backend(generic_callback guiCallback, SimpleAlbumData albumData)
         {
+            ErrorReport errorReport = new ErrorReport();
+            int uid = getNewAlbumUID_slow(errorReport);
+            albumData.UID = uid;
+
+            addAlbumToAlbumDatabase(errorReport, albumData);
+
+            saveAlbumsXML_backend(null);
+
+            guiCallback(errorReport);
 
         }
 
