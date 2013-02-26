@@ -11,7 +11,7 @@ namespace SoftwareEng
 {
     public partial class addNewAlbum : Form
     {
-        //private PhotoBomb bombaDeFotos;
+        private mainGUI mainWindowRef;
 
         private const int userInputMaxSize = 16; 
 
@@ -23,14 +23,14 @@ namespace SoftwareEng
             InitializeComponent();
         }
 
-        /*
-        public addNewAlbum(PhotoBomb photobombParam)
+        
+        public addNewAlbum(mainGUI localMainWindowRef)
         {
-            bombaDeFotos = photobombParam;
+            mainWindowRef = localMainWindowRef;
 
             InitializeComponent();
         }
-         */
+         
         
         /************************************************************
          * 
@@ -42,16 +42,32 @@ namespace SoftwareEng
         ************************************************************/
         private void createTheNewAlbum()
         {
-            if (stringChecker(newAlbumMaskedTextBox.Text, userInputMaxSize) == false)
+            if (stringChecker(newAlbumMaskedTextBox.Text) == false)
             {
                 showError("Invalid album name.");
             }
             else
             {
-                showError("Invalid album name.");
+                mainWindowRef.guiNewAlbumNamed(albumNameTextBox.Text, albumNameAccepted);
             }
         }
 
+        /************************************************************
+        * 
+        ************************************************************/
+        public void albumNameAccepted(ErrorReport status)
+        {
+            if (status.reportID != ErrorReport.SUCCESS)
+            {
+                showError("Functionailty not yet finished, LOL");
+            }
+        }
+
+
+
+        /************************************************************
+        * 
+        ************************************************************/
         private void finishButton_Click(object sender, EventArgs e)
         {
 
@@ -59,21 +75,7 @@ namespace SoftwareEng
             //this.Close();
         }
 
-        /************************************************************
-        * 
-        ************************************************************/
-        private bool stringChecker(string target, int maxSize)
-        {
-            if ((target.Length >= maxSize) || (target.Length < 1))
-            {
-                return false;
-            }
-            else
-            {
-                ;
-            }
-            return true;
-        }
+
 
         /************************************************************
         * 
@@ -83,9 +85,53 @@ namespace SoftwareEng
             MessageBox.Show(errorMessage, "Deez Nutz 2!", MessageBoxButtons.OK);
         }
 
+
+        /************************************************************
+        * 
+        ************************************************************/
         private void cancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+
+        /************************************************************
+        * 
+        ************************************************************/
+        private void albumNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            finishButton.Enabled = true;
+        }
+
+
+        /************************************************************
+        * 
+        ************************************************************/
+        private bool stringChecker(string target)
+        {
+
+
+            return true;
+
+            /*
+            albumNameTextBox.Enabled = false;
+            for (int i = 0; i < albumNameTextBox.Text.Length; i++)
+            {
+                
+
+
+            }
+            */
+        }
+
+        private void newAlbumMaskedTextBox_TextChanged(object sender, EventArgs e)
+        {
+            finishButton.Enabled = true;
+        }
+
+        private void newAlbumMaskedTextBox_Enter(object sender, EventArgs e)
+        {
+
+        }        
     }
 }

@@ -52,15 +52,19 @@
             // 
             this.albumNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.albumNameTextBox.Location = new System.Drawing.Point(12, 57);
+            this.albumNameTextBox.Location = new System.Drawing.Point(113, 57);
+            this.albumNameTextBox.MaxLength = 16;
             this.albumNameTextBox.Name = "albumNameTextBox";
-            this.albumNameTextBox.Size = new System.Drawing.Size(435, 20);
+            this.albumNameTextBox.ShortcutsEnabled = false;
+            this.albumNameTextBox.Size = new System.Drawing.Size(196, 20);
             this.albumNameTextBox.TabIndex = 1;
+            this.albumNameTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.albumNameTextBox.TextChanged += new System.EventHandler(this.albumNameTextBox_TextChanged);
             // 
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cancelButton.Location = new System.Drawing.Point(12, 92);
+            this.cancelButton.Location = new System.Drawing.Point(12, 114);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 5;
@@ -70,10 +74,9 @@
             // 
             // finishButton
             // 
-            this.finishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.finishButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.finishButton.Enabled = false;
-            this.finishButton.Location = new System.Drawing.Point(372, 92);
+            this.finishButton.Location = new System.Drawing.Point(372, 114);
             this.finishButton.Name = "finishButton";
             this.finishButton.Size = new System.Drawing.Size(75, 23);
             this.finishButton.TabIndex = 6;
@@ -90,13 +93,19 @@
             // 
             this.newAlbumMaskedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.newAlbumMaskedTextBox.CutCopyMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
             this.newAlbumMaskedTextBox.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Insert;
             this.newAlbumMaskedTextBox.Location = new System.Drawing.Point(150, 83);
             this.newAlbumMaskedTextBox.Mask = "aaaaaaaaaaaaaaaa";
             this.newAlbumMaskedTextBox.Name = "newAlbumMaskedTextBox";
             this.newAlbumMaskedTextBox.PromptChar = ' ';
+            this.newAlbumMaskedTextBox.RejectInputOnFirstFailure = true;
+            this.newAlbumMaskedTextBox.ShortcutsEnabled = false;
             this.newAlbumMaskedTextBox.Size = new System.Drawing.Size(124, 20);
             this.newAlbumMaskedTextBox.TabIndex = 7;
+            this.newAlbumMaskedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.newAlbumMaskedTextBox.TextChanged += new System.EventHandler(this.newAlbumMaskedTextBox_TextChanged);
+            this.newAlbumMaskedTextBox.Enter += new System.EventHandler(this.newAlbumMaskedTextBox_Enter);
             // 
             // addNewAlbum
             // 

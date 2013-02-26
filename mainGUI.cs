@@ -14,7 +14,13 @@ namespace SoftwareEng
     {
         private SoftwareEng.PhotoBomb bombaDeFotos;
 
+        //stores the albumImageList index of the default image for albums
         private const short defaultAlbumImageListIndex = 0;
+
+        //used to specify the UID of the "add new album" icon
+        private const int addAlbumID = 0;
+
+        private int albumChosenbyUser;
 
         /************************************************************
          * 
@@ -26,12 +32,15 @@ namespace SoftwareEng
             //for now the gui will determine filepaths in case it is ever made a user choice
             bombaDeFotos = new PhotoBomb(guiGenericErrorFunction, "albumRC1.xml", "photoRC1.xml", "photo library");
 
-            //createNewAlbumToolStripMenuItem.Enabled = true;
             
+            //display all albums 
+            albumListView.BringToFront();
             populateAlbumView(false);
 
             createNewAlbumToolStripMenuItem.Enabled = true;
             aboutToolStripMenuItem.Enabled = true;
+
+            albumChosenbyUser = addAlbumID;
         }
 
         /************************************************************
@@ -82,9 +91,12 @@ namespace SoftwareEng
 
             albumListView.Items.Clear();
 
+            //--code from here to the if statement is to regenerate the 
+            //--the "add new album icon" as it's not an album
             itemHolderSubitems= new ListViewItem.ListViewSubItem[]{
                 new ListViewItem.ListViewSubItem(itemHolder, "Add New Album"),
-                new ListViewItem.ListViewSubItem(itemHolder, "0")};
+                new ListViewItem.ListViewSubItem(itemHolder, addAlbumID.ToString() )
+                };
 
             itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
             albumListView.Items.Add(itemHolder);
@@ -104,6 +116,9 @@ namespace SoftwareEng
 
             if (status.reportID == ErrorReport.SUCCESS)
             {
+                //--stops the drawing of albumListView
+                albumListView.BeginUpdate();
+
                 ListViewItem itemHolder = null;
                 ListViewItem.ListViewSubItem[] itemHolderSubitems;
 
@@ -112,8 +127,9 @@ namespace SoftwareEng
                     try
                     {
                         itemHolderSubitems = new ListViewItem.ListViewSubItem[]{
-                        new ListViewItem.ListViewSubItem(itemHolder, singleAlbum.albumName),
-                        new ListViewItem.ListViewSubItem(itemHolder, singleAlbum.UID.ToString() )};
+                            new ListViewItem.ListViewSubItem(itemHolder, singleAlbum.albumName),
+                            new ListViewItem.ListViewSubItem(itemHolder, singleAlbum.UID.ToString() )
+                            };
 
                         itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
                         albumListView.Items.Add(itemHolder);
@@ -123,6 +139,9 @@ namespace SoftwareEng
                         MessageBox.Show("Exception!", "Super Deez Nutz", MessageBoxButtons.OK);
                     }
                 }
+
+                //--resumes drawing of albumListView
+                albumListView.EndUpdate();
             }
             else
             {
@@ -144,15 +163,6 @@ namespace SoftwareEng
         }
 
 
-
-
-        /************************************************************
-         * 
-         ************************************************************/
-        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ;
-        }
 
         /************************************************************
          * 
@@ -176,17 +186,19 @@ namespace SoftwareEng
         ************************************************************/
         private void albumListActivation()
         {
-            //first item will have an index of zero, necessary even if multiselect is disabled
+            //--first selected item will have an index of zero, 
+            //--this isnecessary even if multiselect is disabled
             const int firstItem = 0;
 
-            //second subitem will be album uid
+            //--second subitem will be album uid
             const int uid = 1;
 
             int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstItem].SubItems[uid].Text);
 
-            if (selectedAlbumID >= 1)
+            if (selectedAlbumID > addAlbumID)
             {
                 bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), selectedAlbumID);
+                albumChosenbyUser = selectedAlbumID;
             }
             else
             {
@@ -201,6 +213,7 @@ namespace SoftwareEng
         {
             photoListView.BringToFront();
             addPhotosToExistingAlbumToolStripMenuItem.Enabled = true;
+            ;
             mainFormBackbutton.Enabled = true;
 
             if (status.reportID == ErrorReport.SUCCESS)
@@ -213,8 +226,9 @@ namespace SoftwareEng
                     try
                     {
                         itemHolderSubitems = new ListViewItem.ListViewSubItem[]{
-                        new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.pictureName),
-                        new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.UID.ToString() )};
+                            new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.pictureName),
+                            new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.UID.ToString() )
+                            };
 
                         itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
                         albumListView.Items.Add(itemHolder);
@@ -237,9 +251,7 @@ namespace SoftwareEng
         ************************************************************/
         private void guiAddNewAlbum()
         {
-            PhotoBomb photobombRef = bombaDeFotos;
-
-            addNewAlbum createAlbumDialog = new addNewAlbum();
+            addNewAlbum createAlbumDialog = new addNewAlbum(this);
 
             createAlbumDialog.ShowDialog();
         }
@@ -248,9 +260,14 @@ namespace SoftwareEng
         /************************************************************
         * used as delegate
         ************************************************************/
-        public void guiNewAlbumNamed(string userInput)
+        public void guiNewAlbumNamed(string userInput, generic_callback createAlbumDelegate)
         {
-            showError(label);
+            ErrorReport errorStatus= new ErrorReport();
+
+            bombaDeFotos.checkIfAlbumNameIsUnique();
+
+            createAlbumDelegate(errorStatus);
+           
         }
 
         /************************************************************
@@ -279,7 +296,6 @@ namespace SoftwareEng
         {
             if (photoOpenFileDialog.ShowDialog() != DialogResult.OK)
             {
-                showError(label);
                 return;
             }
             ComplexPhotoData newPicture= new ComplexPhotoData();
@@ -305,14 +321,16 @@ namespace SoftwareEng
 
 
 
-        public static string label = "8===============================D-------- ({})";
+        public static string label = "welcome"; // "8===============================D-------- ({})";
 
         /************************************************************
         * 
         ************************************************************/
         private void addPhotosToExistingAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showError("Functionailty not yet finished, LOL");
+            addPicturesToAlbum(albumChosenbyUser);
+
+            //showError("Functionailty not yet finished, LOL");
         }
 
         /************************************************************
@@ -323,11 +341,17 @@ namespace SoftwareEng
             guiAddNewAlbum();
         }
 
+        /************************************************************
+        * 
+        ************************************************************/
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("   Created by PhotoBombers Studio, LLC   ", "About", MessageBoxButtons.OK);
         }
 
+        /************************************************************
+        * 
+        ************************************************************/
         private void mainFormBackbutton_Click(object sender, EventArgs e)
         {
             albumListView.BringToFront();
