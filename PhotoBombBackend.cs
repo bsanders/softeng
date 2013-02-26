@@ -373,7 +373,10 @@ namespace SoftwareEng
 
         private void addExistingPictureToAlbum_backend(generic_callback guiCallback, int pictureUID, int albumUID)
         {
-
+            ErrorReport errorReport = new ErrorReport();
+            this.getPictureElementByUID(errorReport, pictureUID);
+            //get pictureData
+            //addPictureToAlbumDatabase(errorReport, pictureData, albumUID);
         }
 
 
