@@ -85,7 +85,6 @@
             // 
             // newAlbumMaskedTextBox
             // 
-            this.newAlbumMaskedTextBox.AllowPromptAsInput = false;
             this.newAlbumMaskedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.newAlbumMaskedTextBox.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Insert;

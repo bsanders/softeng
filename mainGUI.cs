@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -74,14 +75,16 @@ namespace SoftwareEng
          ************************************************************/
         private void populateAlbumView(bool resetView)
         {
-            //ListViewItem.ListViewSubItem[] itemHolderSubitems;
+            ListViewItem.ListViewSubItem[] itemHolderSubitems;
             ListViewItem itemHolder= null;
 
             albumListView.Items.Clear();
 
-            //itemHolderSubitems= new ListViewItem.ListViewSubItem[]{new ListViewItem.ListViewSubItem(itemHolder, "Add New Album")};
+            itemHolderSubitems= new ListViewItem.ListViewSubItem[]{
+                new ListViewItem.ListViewSubItem(itemHolder, "Add New Album"),
+                new ListViewItem.ListViewSubItem(itemHolder, "0")};
 
-            itemHolder = new ListViewItem("Add New Album", defaultAlbumImageListIndex);
+            itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
             albumListView.Items.Add(itemHolder);
 
             if(resetView == false)
@@ -101,7 +104,6 @@ namespace SoftwareEng
             {
                 ListViewItem itemHolder = null;
                 ListViewItem.ListViewSubItem[] itemHolderSubitems;
-
 
                 foreach (SimpleAlbumData singleAlbum in albumsRetrieved)
                 {
@@ -124,8 +126,12 @@ namespace SoftwareEng
             {
                 showError("Error Loading Albums");
             }
-
         }
+
+
+
+
+
 
         /************************************************************
         * 
@@ -162,6 +168,63 @@ namespace SoftwareEng
             ;
         }
 
+
+        /************************************************************
+        * 
+        ************************************************************/
+        private void pushIntoAlbum()
+        {
+            //first item will have an index of zero, necessary even if multiselect is disabled
+            const int firstItem = 0;
+
+            //second subitem will be album uid
+            const int uid = 1;
+
+            int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstItem].SubItems[uid].Text);
+
+            if (selectedAlbumID >= 1)
+            {
+                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), selectedAlbumID);
+            }
+        }
+
+        /************************************************************
+        * 
+        ************************************************************/
+        public void guiPhotosInAlbumRetrieved(ErrorReport status, List<SimplePhotoData> albumContents)
+        {
+            photoListView.BringToFront();
+            mainFormBackbutton.Enabled = true;
+
+            if (status.reportID == ErrorReport.SUCCESS)
+            {
+                ListViewItem itemHolder = null;
+                ListViewItem.ListViewSubItem[] itemHolderSubitems;
+
+                foreach (SimplePhotoData singlePhoto in albumContents)
+                {
+                    try
+                    {
+                        itemHolderSubitems = new ListViewItem.ListViewSubItem[]{
+                        new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.pictureName),
+                        new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.UID.ToString() )};
+
+                        itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
+                        albumListView.Items.Add(itemHolder);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Exception!", "Super Deez Nutz", MessageBoxButtons.OK);
+                    }
+                }
+            }
+            else
+            {
+                showError("Error Loading Pictures");
+            }
+        }
+
+
         /************************************************************
         * 
         ************************************************************/
@@ -178,8 +241,7 @@ namespace SoftwareEng
         ************************************************************/
         public void guiNewAlbumNamed(string userInput)
         {
-            //bombaDeFotos.addNewAlbum(
-
+            showError(label);
         }
 
         /************************************************************
@@ -201,6 +263,40 @@ namespace SoftwareEng
         }
 
 
-        public static string label = "8===========================D-----------------";
+        /************************************************************
+        * 
+        ************************************************************/
+        private void addPicturesToAlbum(int albumId)
+        {
+            if (photoOpenFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                showError(label);
+                return;
+            }
+            ComplexPhotoData newPicture= new ComplexPhotoData();
+            foreach (string picFile in photoOpenFileDialog.FileNames)
+            {
+                newPicture.path= picFile;
+                bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId);
+
+            }
+        }
+
+        public void guiPictureAdded(ErrorReport status)
+        {
+            ;
+        }
+
+
+
+        public static string label = "8===========================================D----------------- ({})";
+
+        /************************************************************
+        * 
+        ************************************************************/
+        private void addPhotosToExistingAlbumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ;
+        }
     }
 }

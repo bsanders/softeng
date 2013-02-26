@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
             this.programMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,6 +45,8 @@
             this.mainFormBackbutton = new System.Windows.Forms.Button();
             this.photoListView = new System.Windows.Forms.ListView();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.photoOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.photoImageList = new System.Windows.Forms.ImageList(this.components);
             this.programMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,6 +92,7 @@
             this.addPhotosToExistingAlbumToolStripMenuItem.Name = "addPhotosToExistingAlbumToolStripMenuItem";
             this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add photos to existing album";
+            this.addPhotosToExistingAlbumToolStripMenuItem.Click += new System.EventHandler(this.addPhotosToExistingAlbumToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -124,7 +127,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.albumListView.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
             this.albumListView.LargeImageList = this.albumImageList;
             this.albumListView.Location = new System.Drawing.Point(12, 27);
             this.albumListView.MultiSelect = false;
@@ -152,11 +155,17 @@
             // 
             // photoListView
             // 
+            this.photoListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.photoListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.photoListView.Location = new System.Drawing.Point(12, 27);
             this.photoListView.Name = "photoListView";
             this.photoListView.Size = new System.Drawing.Size(565, 371);
+            this.photoListView.SmallImageList = this.photoImageList;
             this.photoListView.TabIndex = 3;
             this.photoListView.UseCompatibleStateImageBehavior = false;
+            this.photoListView.View = System.Windows.Forms.View.List;
             this.photoListView.ItemActivate += new System.EventHandler(this.photoListView_ItemActivate);
             // 
             // statusLabel
@@ -167,6 +176,17 @@
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(0, 13);
             this.statusLabel.TabIndex = 4;
+            // 
+            // photoOpenFileDialog
+            // 
+            this.photoOpenFileDialog.Filter = "Jpeg(*.jpeg)|*.jpeg";
+            this.photoOpenFileDialog.Multiselect = true;
+            // 
+            // photoImageList
+            // 
+            this.photoImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("photoImageList.ImageStream")));
+            this.photoImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.photoImageList.Images.SetKeyName(0, "generic_picture.ico");
             // 
             // mainGUI
             // 
@@ -204,5 +224,7 @@
         private System.Windows.Forms.Button mainFormBackbutton;
         private System.Windows.Forms.ListView photoListView;
         private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.OpenFileDialog photoOpenFileDialog;
+        private System.Windows.Forms.ImageList photoImageList;
     }
 }
