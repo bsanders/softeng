@@ -11,7 +11,7 @@ namespace SoftwareEng
 {
     public partial class addNewAlbum : Form
     {
-        private PhotoBomb bombaDeFotos;
+        //private PhotoBomb bombaDeFotos;
 
         private const int userInputMaxSize = 16; 
 
@@ -23,13 +23,15 @@ namespace SoftwareEng
             InitializeComponent();
         }
 
+        /*
         public addNewAlbum(PhotoBomb photobombParam)
         {
             bombaDeFotos = photobombParam;
 
             InitializeComponent();
         }
-
+         */
+        
         /************************************************************
          * 
          ************************************************************/
@@ -46,7 +48,7 @@ namespace SoftwareEng
             }
             else
             {
-                ;
+                showError("Invalid album name.");
             }
         }
 
@@ -54,7 +56,7 @@ namespace SoftwareEng
         {
 
             createTheNewAlbum();
-            this.Close();
+            //this.Close();
         }
 
         /************************************************************
@@ -79,6 +81,11 @@ namespace SoftwareEng
         private void showError(string errorMessage)
         {
             MessageBox.Show(errorMessage, "Deez Nutz 2!", MessageBoxButtons.OK);
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

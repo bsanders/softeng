@@ -30,6 +30,8 @@ namespace SoftwareEng
             
             populateAlbumView(false);
 
+            createNewAlbumToolStripMenuItem.Enabled = true;
+            aboutToolStripMenuItem.Enabled = true;
         }
 
         /************************************************************
@@ -165,14 +167,14 @@ namespace SoftwareEng
          ************************************************************/
         private void albumListView_ItemActivate(object sender, EventArgs e)
         {
-            ;
+            albumListActivation();   
         }
 
 
         /************************************************************
         * 
         ************************************************************/
-        private void pushIntoAlbum()
+        private void albumListActivation()
         {
             //first item will have an index of zero, necessary even if multiselect is disabled
             const int firstItem = 0;
@@ -185,6 +187,10 @@ namespace SoftwareEng
             if (selectedAlbumID >= 1)
             {
                 bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), selectedAlbumID);
+            }
+            else
+            {
+                guiAddNewAlbum();
             }
         }
 
@@ -230,7 +236,9 @@ namespace SoftwareEng
         ************************************************************/
         private void guiAddNewAlbum()
         {
-            addNewAlbum createAlbumDialog= new addNewAlbum(bombaDeFotos);
+            PhotoBomb photobombRef = bombaDeFotos;
+
+            addNewAlbum createAlbumDialog = new addNewAlbum();
 
             createAlbumDialog.ShowDialog();
         }
@@ -277,14 +285,21 @@ namespace SoftwareEng
             foreach (string picFile in photoOpenFileDialog.FileNames)
             {
                 newPicture.path= picFile;
+                newPicture.extension = ".jpeg";
                 bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId);
 
             }
         }
 
+        /************************************************************
+        * 
+        ************************************************************/
         public void guiPictureAdded(ErrorReport status)
         {
-            ;
+            if (status.reportID != ErrorReport.SUCCESS)
+            {
+                showError("Failed to import a picture");
+            }
         }
 
 
@@ -296,7 +311,20 @@ namespace SoftwareEng
         ************************************************************/
         private void addPhotosToExistingAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ;
+            showError("Functionailty not yet finished, LOL");
+        }
+
+        /************************************************************
+        * 
+        ************************************************************/
+        private void createNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            guiAddNewAlbum();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("   Created by PhotoBombers Studio, LLC   ", "About", MessageBoxButtons.OK);
         }
     }
 }

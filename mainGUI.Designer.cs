@@ -47,7 +47,10 @@
             this.statusLabel = new System.Windows.Forms.Label();
             this.photoOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.photoImageList = new System.Windows.Forms.ImageList(this.components);
+            this.albumContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.programMenuStrip.SuspendLayout();
+            this.albumContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // programMenuStrip
@@ -80,6 +83,7 @@
             this.createNewAlbumToolStripMenuItem.Name = "createNewAlbumToolStripMenuItem";
             this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.createNewAlbumToolStripMenuItem.Text = "Create New Album";
+            this.createNewAlbumToolStripMenuItem.Click += new System.EventHandler(this.createNewAlbumToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -117,14 +121,16 @@
             // 
             this.aboutToolStripMenuItem.Enabled = false;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // albumListView
             // 
             this.albumListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.albumListView.ContextMenuStrip = this.albumContextMenuStrip;
             this.albumListView.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem2});
@@ -188,6 +194,19 @@
             this.photoImageList.TransparentColor = System.Drawing.Color.Transparent;
             this.photoImageList.Images.SetKeyName(0, "generic_picture.ico");
             // 
+            // albumContextMenuStrip
+            // 
+            this.albumContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testToolStripMenuItem});
+            this.albumContextMenuStrip.Name = "albumContextMenuStrip";
+            this.albumContextMenuStrip.Size = new System.Drawing.Size(94, 26);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.testToolStripMenuItem.Text = "test";
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -203,6 +222,7 @@
             this.Text = "Photobombers";
             this.programMenuStrip.ResumeLayout(false);
             this.programMenuStrip.PerformLayout();
+            this.albumContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -226,5 +246,7 @@
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.OpenFileDialog photoOpenFileDialog;
         private System.Windows.Forms.ImageList photoImageList;
+        private System.Windows.Forms.ContextMenuStrip albumContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
     }
 }

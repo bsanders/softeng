@@ -66,10 +66,13 @@
             this.cancelButton.TabIndex = 5;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // finishButton
             // 
             this.finishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.finishButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.finishButton.Enabled = false;
             this.finishButton.Location = new System.Drawing.Point(372, 114);
             this.finishButton.Name = "finishButton";
             this.finishButton.Size = new System.Drawing.Size(75, 23);
