@@ -127,17 +127,39 @@ namespace SoftwareEng
 
 
         //----------------------------------------------
-        //not working yet.
+        //By: Ryan Moe
+        //Edited Last:
+        //
         public void addNewAlbum(generic_callback guiCallback, SimpleAlbumData albumData)
         {
             addNewAlbum_backend(guiCallback, albumData);
         }
 
         //----------------------------------------------
-        //not working yet.
+        //By: Ryan Moe
+        //Edited Last:
+        //
         public void addExistingPictureToAlbum(generic_callback guiCallback, int pictureUID, int albumUID)
         {
             addExistingPictureToAlbum_backend(guiCallback, pictureUID, albumUID);
+        }
+
+        //---------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        //
+        public void checkIfAlbumNameIsUnique()
+        {
+
+        }
+
+        //---------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        //
+        public void changePhotoNameByUID()
+        {
+
         }
 
 
@@ -204,6 +226,7 @@ namespace SoftwareEng
     //Edited Last:
     public class ComplexPhotoData
     {
+        //the name of the picture in the album, displayed by the gui
         public String picturesAlbumName;
         public int UID;
         public String path;
@@ -218,6 +241,14 @@ namespace SoftwareEng
             extension = "";
         }
     }
+
+
+
+
+
+
+
+
 
 
 }//namespace
