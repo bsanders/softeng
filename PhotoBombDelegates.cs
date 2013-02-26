@@ -28,6 +28,8 @@ namespace SoftwareEng
     //put more advanced callbacks here, ex:
     //public delegate crazy_callback(Error error, string bob, List<int> _someList);
 
+    public delegate void guiCreateAlbumDelegate(string input);
+
 
     
 }

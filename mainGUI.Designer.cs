@@ -29,10 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Unsorted Pictures", 0);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.programMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createNewAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -45,19 +44,20 @@
             this.albumImageList = new System.Windows.Forms.ImageList(this.components);
             this.mainFormBackbutton = new System.Windows.Forms.Button();
             this.photoListView = new System.Windows.Forms.ListView();
-            this.menuStrip1.SuspendLayout();
+            this.statusLabel = new System.Windows.Forms.Label();
+            this.programMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // programMenuStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.programMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(589, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.programMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.programMenuStrip.Name = "programMenuStrip";
+            this.programMenuStrip.Size = new System.Drawing.Size(589, 24);
+            this.programMenuStrip.TabIndex = 0;
+            this.programMenuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -74,6 +74,7 @@
             // 
             // createNewAlbumToolStripMenuItem
             // 
+            this.createNewAlbumToolStripMenuItem.Enabled = false;
             this.createNewAlbumToolStripMenuItem.Name = "createNewAlbumToolStripMenuItem";
             this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.createNewAlbumToolStripMenuItem.Text = "Create New Album";
@@ -85,6 +86,7 @@
             // 
             // addPhotosToExistingAlbumToolStripMenuItem
             // 
+            this.addPhotosToExistingAlbumToolStripMenuItem.Enabled = false;
             this.addPhotosToExistingAlbumToolStripMenuItem.Name = "addPhotosToExistingAlbumToolStripMenuItem";
             this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add photos to existing album";
@@ -110,6 +112,7 @@
             // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.Enabled = false;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
@@ -121,8 +124,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.albumListView.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3,
-            listViewItem4});
+            listViewItem1});
             this.albumListView.LargeImageList = this.albumImageList;
             this.albumListView.Location = new System.Drawing.Point(12, 27);
             this.albumListView.MultiSelect = false;
@@ -140,6 +142,7 @@
             // 
             // mainFormBackbutton
             // 
+            this.mainFormBackbutton.Enabled = false;
             this.mainFormBackbutton.Location = new System.Drawing.Point(502, 408);
             this.mainFormBackbutton.Name = "mainFormBackbutton";
             this.mainFormBackbutton.Size = new System.Drawing.Size(75, 23);
@@ -156,20 +159,30 @@
             this.photoListView.UseCompatibleStateImageBehavior = false;
             this.photoListView.ItemActivate += new System.EventHandler(this.photoListView_ItemActivate);
             // 
+            // statusLabel
+            // 
+            this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.Location = new System.Drawing.Point(12, 418);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(0, 13);
+            this.statusLabel.TabIndex = 4;
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(589, 443);
+            this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.mainFormBackbutton);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.programMenuStrip);
             this.Controls.Add(this.albumListView);
             this.Controls.Add(this.photoListView);
-            this.MainMenuStrip = this.menuStrip1;
+            this.MainMenuStrip = this.programMenuStrip;
             this.Name = "mainGUI";
             this.Text = "Photobombers";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.programMenuStrip.ResumeLayout(false);
+            this.programMenuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -177,7 +190,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip programMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
@@ -190,5 +203,6 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Button mainFormBackbutton;
         private System.Windows.Forms.ListView photoListView;
+        private System.Windows.Forms.Label statusLabel;
     }
 }

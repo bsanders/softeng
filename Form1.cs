@@ -26,6 +26,8 @@ namespace SoftwareEng
         {
             InitializeComponent();
             photoBomb = new SoftwareEng.PhotoBomb(new generic_callback(photoBombConstructor_callback), "test.xml", "test2.xml", "");
+
+            MessageBox.Show(mainGUI.label, " ", MessageBoxButtons.OK);
         }
 
         public void photoBombConstructor_callback(ErrorReport e)
