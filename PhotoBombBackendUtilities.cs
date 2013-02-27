@@ -348,6 +348,7 @@ namespace SoftwareEng
             {
                 data.UID = (int)elem.Attribute("UID");
                 data.path = elem.Element("filePath").Value;
+                //data.picturesNameInAlbum = elem
             }
             catch
             {

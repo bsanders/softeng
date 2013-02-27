@@ -382,14 +382,6 @@ namespace SoftwareEng
                 return;
             }
 
-<<<<<<< HEAD
-            //get
-            //get pictureData
-            //addPictureToAlbumDatabase(errorReport, pictureData, albumUID);
-        }
-=======
-            //getPictureDataFromUID
-
             util_addPicToAlbumDatabase(errorReport, null, albumUID, SimplePhotoData);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
@@ -399,7 +391,7 @@ namespace SoftwareEng
 
             guiCallback(errorReport);
         }//method
->>>>>>> 2cd69f7ba9a8211e9dbcf5ba2d643ab86ba5f33a
+
 
 
 
