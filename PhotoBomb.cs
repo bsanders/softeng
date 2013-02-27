@@ -25,9 +25,9 @@ namespace SoftwareEng
         //PARAM 3 = path to the pictures database.
         //PARAM 4 = the path to the folder where all the pictures
         //          tracked by this program are stored.
-        public PhotoBomb(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string pictureFolderPathIn)
+        public PhotoBomb(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPath)
         {
-            init(guiCallback, albumDatabasePathIn, pictureDatabasePathIn, pictureFolderPathIn);
+            init(guiCallback, albumDatabasePathIn, pictureDatabasePathIn, libraryPath);
         }
 
         //----------------------------------------------
@@ -120,9 +120,9 @@ namespace SoftwareEng
         //Edited Last:
         //
         //Adds a picture to the picture database AND the album database.
-        public void addNewPicture(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID, String pictureNameInAlbum)
+        public void addNewPicture(generic_callback guiCallback, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum)
         {
-            addNewPicture_backend(guiCallback, newPicture, albumUID, pictureNameInAlbum);
+            addNewPicture_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum);
         }
 
 
@@ -210,7 +210,6 @@ namespace SoftwareEng
     {
         public String picturesNameInAlbum;
         public int UID;
-        //public String path;
 
         public SimplePhotoData()
         {

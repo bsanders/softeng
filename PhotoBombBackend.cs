@@ -21,7 +21,7 @@ namespace SoftwareEng
 
         //path to the pictures folder we put all the pictures
         //tracked by the database.
-        private string picturePath;
+        private string libraryPath;
 
         //The XML in memory for the albumbs.
         //Add new vars here if we get more xmls.
@@ -34,13 +34,13 @@ namespace SoftwareEng
         //FUNCTIONS--------------------------------------------------------
         //-----------------------------------------------------------------
 
-        private void init(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string pictureFolderPathIn)
+        private void init(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPathIn)
         {
             ErrorReport errorReport = new ErrorReport();
 
             albumsDatabasePath = albumDatabasePathIn;
             picturesDatabasePath = pictureDatabasePathIn;
-            picturePath = pictureFolderPathIn;
+            libraryPath = libraryPathIn;
 
             xmlParser = new XmlParser();
 
@@ -317,14 +317,36 @@ namespace SoftwareEng
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void addNewPicture_backend(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID, String pictureNameInAlbum)
+        private void addNewPicture_backend(generic_callback guiCallback, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum)
         {
             ErrorReport errorReport = new ErrorReport();
+            ComplexPhotoData newPicture = new ComplexPhotoData();
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            int newUID = util_getNewPicUID();
-            newPicture.UID = newUID;
+            newPicture.UID = util_getNewPicUID();
+            //error checking
+            if (newPicture.UID == -1)
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Failed to get a UID for a new picture.";
+                guiCallback(errorReport);
+                return;
+            }
+
+            //Change me if you want to start naming the pictures differently in the library.
+            String picLibraryName = newPicture.UID.ToString();
+            
+            //Move picture and get a new path for the picture in our storage.
+            newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picLibraryName);
+            //error checking
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            newPicture.extension = photoExtension;
 
             util_addPicToPicDatabase(errorReport, newPicture);
 

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.IO;
 
 namespace SoftwareEng
 {
@@ -126,14 +127,6 @@ namespace SoftwareEng
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Found more than one album with that UID or none at all.";
-                return;
-            }
-
-
-            if (!util_checkPhotoUID(newPicture.UID))
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Photo UID is not valid.";
                 return;
             }
 
@@ -361,7 +354,8 @@ namespace SoftwareEng
         }
 
         //-------------------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private Boolean util_checkAlbumNameIsUnique(String albumName)
         {
             try
@@ -378,7 +372,52 @@ namespace SoftwareEng
             return false;
         }
 
+        //-------------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private String util_copyPicToLibrary(ErrorReport errorReport, String picturePath, String libraryName)
+        {
+            //check if file exists first!!!
+            //if the picture does NOT exist.
+            if (!File.Exists(picturePath))
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Can't find the new picture to import to the library.";
+                return "";
+            }
 
+            //check if the library is ok.
+            if (!checkLibrary())
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Something is wrong with the photo library.";
+                return "";
+            }
+
+            String newPath = System.IO.Path.Combine(libraryPath, libraryName);
+
+            try
+            {
+                System.IO.File.Copy(picturePath, newPath, true);
+            }
+            catch
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Unable to make a copy of the photo in the library.";
+                return "";
+            }
+
+            //new library path
+            return newPath;
+        }
+
+        //-------------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private Boolean checkLibrary()
+        {
+            return (Directory.Exists(libraryPath));
+        }
 
 
 

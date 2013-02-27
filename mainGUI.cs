@@ -326,7 +326,7 @@ namespace SoftwareEng
             {
                 newPicture.path= picFile;
                 newPicture.extension = ".jpg";
-                bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId, "");
+                //bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId, "");
             }
             guiPopulatePhotoListView(false);
         }
