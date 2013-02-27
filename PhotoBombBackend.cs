@@ -335,7 +335,12 @@ namespace SoftwareEng
             }
 
             //Change me if you want to start naming the pictures differently in the library.
-            String picLibraryName = newPicture.UID.ToString();
+            String picLibraryName = newPicture.UID.ToString() + photoExtension;
+            
+            //Change me if you want the default album name to be different.
+            if(pictureNameInAlbum == ""){
+                pictureNameInAlbum = "Image " + newPicture.UID.ToString();
+            }
             
             //Move picture and get a new path for the picture in our storage.
             newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picLibraryName);
