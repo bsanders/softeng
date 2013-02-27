@@ -140,9 +140,9 @@ namespace SoftwareEng
                 //--resumes drawing of albumListView
                 albumListView.EndUpdate();
             }
-            else
+            else if(status.reportID == ErrorReport.FAILURE)
             {
-                showError("Error Loading Albums");
+                showError(status.description);
             }
         }
 
@@ -187,7 +187,8 @@ namespace SoftwareEng
 
             if (selectedAlbumID > addAlbumID)
             {
-                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), selectedAlbumID);
+                albumChosenbyUser = selectedAlbumID;
+                guiPopulatePhotoListView(false);
                 albumChosenbyUser = selectedAlbumID;
             }
             else
@@ -237,7 +238,7 @@ namespace SoftwareEng
                             };
 
                         itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
-                        albumListView.Items.Add(itemHolder);
+                        photoListView.Items.Add(itemHolder);
                     }
                     catch (Exception)
                     {
@@ -327,6 +328,7 @@ namespace SoftwareEng
                 newPicture.extension = ".jpg";
                 bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId, "");
             }
+            guiPopulatePhotoListView(false);
         }
 
         /************************************************************
