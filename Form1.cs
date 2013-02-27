@@ -226,7 +226,7 @@ namespace SoftwareEng
             //data.picturesAlbumName = "myNewPicture";
             data.path = "newPic.jpg";
             data.extension = ".jpg";
-            photoBomb.addNewPicture(new SoftwareEng.generic_callback(addPictureButton_callback) , data, 1, "someName");
+            //photoBomb.addNewPicture(new SoftwareEng.generic_callback(addPictureButton_callback) , data, 1, "someName");
 
         }
 
