@@ -271,7 +271,7 @@ namespace SoftwareEng
         {
             ErrorReport errorStatus= new ErrorReport();
 
-            bombaDeFotos.checkIfAlbumNameIsUnique();
+            //bombaDeFotos.checkIfAlbumNameIsUnique();
 
             createAlbumDelegate(errorStatus);
            
