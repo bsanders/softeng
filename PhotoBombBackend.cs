@@ -262,7 +262,7 @@ namespace SoftwareEng
                 try
                 {
                     pic.UID = (int)subElement.Attribute("uid");
-                    pic.pictureName = (string)subElement.Element("name").Value;
+                    pic.picturesNameInAlbum = (string)subElement.Element("name").Value;
                     _list.Add(pic);
                 }
                 catch
@@ -316,7 +316,7 @@ namespace SoftwareEng
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void addNewPicture_backend(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID)
+        private void addNewPicture_backend(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID, String pictureNameInAlbum)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -334,7 +334,7 @@ namespace SoftwareEng
                 return;
             }
 
-            util_addPicToAlbumDatabase(errorReport, newPicture, albumUID);
+            util_addPicToAlbumDatabase(errorReport, newPicture, albumUID, pictureNameInAlbum);
 
             //if adding to the album database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -371,21 +371,35 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------
 
-        private void addExistingPictureToAlbum_backend(generic_callback guiCallback, int pictureUID, int albumUID)
+        private void addExistingPictureToAlbum_backend(generic_callback guiCallback, int pictureUID, int albumUID, String SimplePhotoData)
         {
             ErrorReport errorReport = new ErrorReport();
-            util_getPictureByUID(errorReport, pictureUID);
 
+            XElement picture = util_getPictureByUID(errorReport, pictureUID);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
             }
 
+<<<<<<< HEAD
             //get
             //get pictureData
             //addPictureToAlbumDatabase(errorReport, pictureData, albumUID);
         }
+=======
+            //getPictureDataFromUID
+
+            util_addPicToAlbumDatabase(errorReport, null, albumUID, SimplePhotoData);
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            guiCallback(errorReport);
+        }//method
+>>>>>>> 2cd69f7ba9a8211e9dbcf5ba2d643ab86ba5f33a
 
 
 

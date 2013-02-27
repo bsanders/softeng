@@ -232,7 +232,7 @@ namespace SoftwareEng
                     try
                     {
                         itemHolderSubitems = new ListViewItem.ListViewSubItem[]{
-                            new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.pictureName),
+                            new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.picturesNameInAlbum),
                             new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.UID.ToString() )
                             };
 
@@ -310,8 +310,7 @@ namespace SoftwareEng
             {
                 newPicture.path= picFile;
                 newPicture.extension = ".jpg";
-                bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId);
-
+                bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId, "");
             }
         }
 
