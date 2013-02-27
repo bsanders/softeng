@@ -377,6 +377,7 @@ namespace SoftwareEng
         {
             albumListView.BringToFront();
             mainFormBackbutton.Enabled = false;
+            albumChosenbyUser = 0;
         }
     }
 }

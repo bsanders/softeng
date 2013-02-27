@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Configuration;
+//using System.Configuration;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -72,14 +72,11 @@ namespace SoftwareEng
 
         }
 
-
-
         /************************************************************
         * 
         ************************************************************/
         private void finishButton_Click(object sender, EventArgs e)
         {
-
             createTheNewAlbum();
             //this.Close();
         }
