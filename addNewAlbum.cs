@@ -82,7 +82,7 @@ namespace SoftwareEng
         ************************************************************/
         private void showError(string errorMessage)
         {
-            MessageBox.Show(errorMessage, "Deez Nutz 2!", MessageBoxButtons.OK);
+            MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK);
         }
 
 

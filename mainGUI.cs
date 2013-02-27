@@ -136,7 +136,7 @@ namespace SoftwareEng
                     }
                     catch (Exception)
                     {
-                        MessageBox.Show("Exception!", "Super Deez Nutz", MessageBoxButtons.OK);
+                        MessageBox.Show("Exception!", "Super Error", MessageBoxButtons.OK);
                     }
                 }
 
@@ -159,7 +159,7 @@ namespace SoftwareEng
         ************************************************************/
         private void showError(string errorMessage)
         {
-            MessageBox.Show(errorMessage, "Deez Nutz!", MessageBoxButtons.OK);
+            MessageBox.Show(errorMessage, "Error!", MessageBoxButtons.OK);
         }
 
 
@@ -235,7 +235,7 @@ namespace SoftwareEng
                     }
                     catch (Exception)
                     {
-                        MessageBox.Show("Exception!", "Super Deez Nutz", MessageBoxButtons.OK);
+                        MessageBox.Show("Exception!", "Super Error", MessageBoxButtons.OK);
                     }
                 }
             }
@@ -313,15 +313,11 @@ namespace SoftwareEng
         ************************************************************/
         public void guiPictureAdded(ErrorReport status)
         {
-            if (status.reportID != ErrorReport.SUCCESS)
+            if (status.reportID == ErrorReport.FAILURE)
             {
-                showError("Failed to import a picture");
+                showError(status.description);
             }
         }
-
-
-
-        public static string label = "welcome"; // "8===============================D-------- ({})";
 
         /************************************************************
         * 
