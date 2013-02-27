@@ -22,7 +22,7 @@ namespace SoftwareEng
         //this will check for integrity problems.
         //RETURNS: true = good to go, false = the database is bad!
         //ALSO: this will append warnings/errors to the errorReport Parameter.
-        private Boolean checkDatabaseIntegrity(XDocument database, ErrorReport errorReport)
+        private Boolean util_checkDatabaseIntegrity(XDocument database, ErrorReport errorReport)
         {
             if (database == null)
             {
@@ -39,9 +39,9 @@ namespace SoftwareEng
         //----------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private XElement getPictureElementByUID(ErrorReport error, int uid)
+        private XElement util_getPictureByUID(ErrorReport error, int uid)
         {
-            if (checkDatabaseIntegrity(_picturesDatabase, error))
+            if (util_checkDatabaseIntegrity(_picturesDatabase, error))
             {
                 //Try searching for the album with the uid specified.
                 XElement specificPicture;
@@ -79,11 +79,11 @@ namespace SoftwareEng
         //Edited Last:
         //This adds a picture to JUST the picture database.
         //Does not use the UID or the albumName from the newPictureData.
-        private ErrorReport addPictureToPictureDatabase(ErrorReport errorReport, ComplexPhotoData newPictureData)
+        private ErrorReport util_addPicToPicDatabase(ErrorReport errorReport, ComplexPhotoData newPictureData)
         {
 
             //if picture extension is not valid
-            if (!checkPictureExtension(newPictureData.extension))
+            if (!util_checkPictureExtension(newPictureData.extension))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Extension is not valid.";
@@ -91,7 +91,7 @@ namespace SoftwareEng
             }
 
             //if path is not valid
-            if (!checkPicturePath(newPictureData.path))
+            if (!util_checkPicturePath(newPictureData.path))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Path is not valid.";
@@ -112,10 +112,8 @@ namespace SoftwareEng
         //--------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void addPictureToAlbumDatabase(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID)
+        private void util_addPicToAlbumDatabase(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID)
         {
-            //Error checking goes here!!!
-
             //Get the specific album we will be adding to.
             XElement specificAlbum;
             try
@@ -131,14 +129,21 @@ namespace SoftwareEng
                 return;
             }
 
-            
-            /*
-           //make the object that will go into the xml database.
-            XElement newPicRoot = new XElement("picture",
-                new XAttribute("uid", newUID),
-                new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.path)
-                );
-             */
+
+            if (!util_checkPhotoUID(newPicture.UID))
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Photo UID is not valid.";
+                return;
+            }
+
+
+            if (!util_checkPhotoUID(newPicture.UID))
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Photo UID is not valid.";
+                return;
+            }
 
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
@@ -153,15 +158,16 @@ namespace SoftwareEng
         //--------------------------------------------------------
         //Check UID's here.
         //RETURN: true if the uid is valid, false otherwise.
-        private Boolean checkUID(int uid)
+        private Boolean util_checkPhotoUID(int uid)
         {
             if (uid > 0 && uid < 999999)
                 return true;
             return false;
         }
         //--------------------------------------------------------
-
-        private Boolean checkPictureExtension(String extension)
+        //Check a pictures extension.
+        //RETURN: true if the uid is valid, false otherwise.
+        private Boolean util_checkPictureExtension(String extension)
         {
             if (extension.Equals(".jpg") || extension.Equals(".png"))
             {
@@ -171,18 +177,27 @@ namespace SoftwareEng
         }
 
         //--------------------------------------------------------
-
-        private Boolean checkPicturePath(String path)
+        //Check a picture's path.
+        //RETURN: true if the uid is valid, false otherwise.
+        private Boolean util_checkPicturePath(String path)
         {
             if(path != "")
                 return true;
             return false;
         }
 
+        //--------------------------------------------------------
+        //Check a picture's album name.
+        //RETURN: true if the uid is valid, false otherwise.
+        private Boolean util_checkPictureAlbumName(String name)
+        {
+            return true;
+        }
+
 
         //--------------------------------------------------------
 
-        private int getNewPictureUID_slow()
+        private int util_getNewPicUID()
         {
             int newUID = 1;
             Boolean uidNotFound = true;
@@ -209,7 +224,7 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
 
-        private void openAlbumsXML(ErrorReport error)
+        private void util_openAlbumsXML(ErrorReport error)
         {
             try
             {
@@ -228,7 +243,7 @@ namespace SoftwareEng
 
         //-------------------------------------------------------
 
-        private void openPicturesXML(ErrorReport error)
+        private void util_openPicturesXML(ErrorReport error)
         {
             try
             {
@@ -247,7 +262,7 @@ namespace SoftwareEng
 
         //------------------------------------------------------
 
-        private int getNewAlbumUID_slow(ErrorReport error)
+        private int util_getnewAlbumUID(ErrorReport error)
         {
             int newUID = 1;
             Boolean uidNotFound = true;
@@ -274,7 +289,7 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
 
-        private void addAlbumToAlbumDatabase(ErrorReport errorReport, SimpleAlbumData albumData){
+        private void util_addAlbumToAlbumDatabase(ErrorReport errorReport, SimpleAlbumData albumData){
             //Error checking goes here!!!
 
             //construct the object we will be adding to the database.

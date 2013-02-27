@@ -44,8 +44,8 @@ namespace SoftwareEng
 
             xmlParser = new XmlParser();
 
-            openAlbumsXML(errorReport);
-            openPicturesXML(errorReport);
+            util_openAlbumsXML(errorReport);
+            util_openPicturesXML(errorReport);
 
             guiCallback(errorReport);
         }
@@ -58,7 +58,7 @@ namespace SoftwareEng
             //use this to inform the calling gui of how things went.
             ErrorReport error = new ErrorReport();
 
-            openAlbumsXML(error);
+            util_openAlbumsXML(error);
 
             guiCallback(error);
         }
@@ -71,7 +71,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!util_checkDatabaseIntegrity(_albumsDatabase, error))
             {
                 //make an error message here.
 
@@ -119,7 +119,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //if the database is NOT valid.
-            if (!checkDatabaseIntegrity(_picturesDatabase, error))
+            if (!util_checkDatabaseIntegrity(_picturesDatabase, error))
             {
                 //make an error message here.
 
@@ -144,7 +144,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //if the database is NOT valid.
-            if (!checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!util_checkDatabaseIntegrity(_albumsDatabase, error))
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "The album database was determined to be not valid.";
@@ -228,7 +228,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!util_checkDatabaseIntegrity(_albumsDatabase, error))
             {
                 guiCallback(error, null);
                 return;
@@ -283,7 +283,7 @@ namespace SoftwareEng
         {
             ErrorReport error = new ErrorReport();
 
-            XElement picElement = getPictureElementByUID(error, uid);
+            XElement picElement = util_getPictureByUID(error, uid);
 
             //if the picture finding function reported success.
             if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
@@ -322,10 +322,10 @@ namespace SoftwareEng
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            int newUID = getNewPictureUID_slow();
+            int newUID = util_getNewPicUID();
             newPicture.UID = newUID;
 
-            addPictureToPictureDatabase(errorReport, newPicture);
+            util_addPicToPicDatabase(errorReport, newPicture);
 
             //if adding to the picture database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -334,7 +334,7 @@ namespace SoftwareEng
                 return;
             }
 
-            addPictureToAlbumDatabase(errorReport, newPicture, albumUID);
+            util_addPicToAlbumDatabase(errorReport, newPicture, albumUID);
 
             //if adding to the album database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -357,10 +357,10 @@ namespace SoftwareEng
         private void addNewAlbum_backend(generic_callback guiCallback, SimpleAlbumData albumData)
         {
             ErrorReport errorReport = new ErrorReport();
-            int uid = getNewAlbumUID_slow(errorReport);
+            int uid = util_getnewAlbumUID(errorReport);
             albumData.UID = uid;
 
-            addAlbumToAlbumDatabase(errorReport, albumData);
+            util_addAlbumToAlbumDatabase(errorReport, albumData);
 
             saveAlbumsXML_backend(null);
 
@@ -374,7 +374,15 @@ namespace SoftwareEng
         private void addExistingPictureToAlbum_backend(generic_callback guiCallback, int pictureUID, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
-            this.getPictureElementByUID(errorReport, pictureUID);
+            util_getPictureByUID(errorReport, pictureUID);
+
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            get
             //get pictureData
             //addPictureToAlbumDatabase(errorReport, pictureData, albumUID);
         }
