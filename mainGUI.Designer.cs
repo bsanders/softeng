@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
             this.programMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,8 +49,11 @@
             this.photoImageList = new System.Windows.Forms.ImageList(this.components);
             this.statusLabel = new System.Windows.Forms.Label();
             this.photoOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.photoContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.programMenuStrip.SuspendLayout();
             this.albumContextMenuStrip.SuspendLayout();
+            this.photoContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // programMenuStrip
@@ -132,7 +135,7 @@
             this.albumListView.ContextMenuStrip = this.albumContextMenuStrip;
             this.albumListView.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
             this.albumListView.LargeImageList = this.albumImageList;
             this.albumListView.Location = new System.Drawing.Point(12, 27);
             this.albumListView.MultiSelect = false;
@@ -178,7 +181,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.photoListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.photoListView.LabelWrap = false;
             this.photoListView.Location = new System.Drawing.Point(12, 27);
+            this.photoListView.MultiSelect = false;
             this.photoListView.Name = "photoListView";
             this.photoListView.Size = new System.Drawing.Size(565, 371);
             this.photoListView.SmallImageList = this.photoImageList;
@@ -207,6 +212,19 @@
             this.photoOpenFileDialog.Filter = "Jpeg(*.jpg)|*.jpg";
             this.photoOpenFileDialog.Multiselect = true;
             // 
+            // photoContextMenuStrip
+            // 
+            this.photoContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.renameToolStripMenuItem});
+            this.photoContextMenuStrip.Name = "photoContextMenuStrip";
+            this.photoContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            // 
+            // renameToolStripMenuItem
+            // 
+            this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.renameToolStripMenuItem.Text = "Rename";
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -215,14 +233,15 @@
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.mainFormBackbutton);
             this.Controls.Add(this.programMenuStrip);
-            this.Controls.Add(this.albumListView);
             this.Controls.Add(this.photoListView);
+            this.Controls.Add(this.albumListView);
             this.MainMenuStrip = this.programMenuStrip;
             this.Name = "mainGUI";
             this.Text = "Photobombers";
             this.programMenuStrip.ResumeLayout(false);
             this.programMenuStrip.PerformLayout();
             this.albumContextMenuStrip.ResumeLayout(false);
+            this.photoContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -248,5 +267,7 @@
         private System.Windows.Forms.ImageList photoImageList;
         private System.Windows.Forms.ContextMenuStrip albumContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip photoContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem;
     }
 }

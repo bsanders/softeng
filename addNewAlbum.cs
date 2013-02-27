@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,8 @@ namespace SoftwareEng
     public partial class addNewAlbum : Form
     {
         private mainGUI mainWindowRef;
+
+        private const string validInputKey = @"^[\w\d][\w\d ]{0,14}[\w\d]$";
 
         private const int userInputMaxSize = 16; 
 
@@ -48,7 +51,7 @@ namespace SoftwareEng
             }
             else
             {
-                mainWindowRef.guiNewAlbumNamed(albumNameTextBox.Text, albumNameAccepted);
+                mainWindowRef.guiCheckAlbumNameIsUnique(albumNameTextBox.Text, albumNameAccepted);
             }
         }
 
@@ -59,8 +62,14 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                showError("Functionailty not yet finished, LOL");
+                showError("Album name not unique");
             }
+            else
+            {
+                ;
+            }
+                
+
         }
 
 
@@ -106,7 +115,7 @@ namespace SoftwareEng
             }
             else
             {
-                ;
+                finishButton.Enabled = false;
             }
         }
 
@@ -116,7 +125,7 @@ namespace SoftwareEng
         ************************************************************/
         private bool stringChecker(string target)
         {
-
+            //RegexStringValidator a;
 
             return true;
 

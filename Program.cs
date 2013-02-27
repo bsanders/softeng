@@ -15,8 +15,8 @@ namespace SoftwareEng
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new mainGUI());//main gui
-            Application.Run(new Form1());//backend testing gui
+            Application.Run(new mainGUI());//main gui
+            //Application.Run(new Form1());//backend testing gui
         }
     }
 }
