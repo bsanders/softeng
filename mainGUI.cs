@@ -192,10 +192,10 @@ namespace SoftwareEng
             }
             else
             {
-                guiAddNewAlbum();
+                guiShowCreateAlbumWindow();
             }
         }
-
+        
 
         /************************************************************
         * 
@@ -256,7 +256,7 @@ namespace SoftwareEng
         /************************************************************
         * 
         ************************************************************/
-        private void guiAddNewAlbum()
+        private void guiShowCreateAlbumWindow()
         {
             addNewAlbum createAlbumDialog = new addNewAlbum(this);
 
@@ -267,7 +267,7 @@ namespace SoftwareEng
         /************************************************************
         * used as delegate
         ************************************************************/
-        public void guiNewAlbumNamed(string userInput, generic_callback createAlbumDelegate)
+        public void guiCheckAlbumNameIsUnique(string userInput, generic_callback createAlbumDelegate)
         {
             ErrorReport errorStatus= new ErrorReport();
 
@@ -276,6 +276,21 @@ namespace SoftwareEng
             createAlbumDelegate(errorStatus);
            
         }
+
+        public void guiAlbumNameChecked(ErrorReport errorStatus)
+        {
+            //createAlbumDelegate(errorStatus);
+
+        }
+
+        public void guiAddAlbum()
+        {
+            ;
+        }
+
+
+
+
 
         /************************************************************
         * used for generic_callback after calling photobomb object
@@ -344,7 +359,7 @@ namespace SoftwareEng
         ************************************************************/
         private void createNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            guiAddNewAlbum();
+            guiShowCreateAlbumWindow();
         }
 
         /************************************************************
@@ -362,6 +377,7 @@ namespace SoftwareEng
         {
             albumListView.BringToFront();
             mainFormBackbutton.Enabled = false;
+            albumChosenbyUser = 0;
         }
     }
 }
