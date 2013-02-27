@@ -382,7 +382,7 @@ namespace SoftwareEng
                 return;
             }
 
-            get
+            //get
             //get pictureData
             //addPictureToAlbumDatabase(errorReport, pictureData, albumUID);
         }

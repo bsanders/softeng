@@ -23,7 +23,7 @@ namespace SoftwareEng
         private int albumChosenbyUser;
 
         /************************************************************
-         * 
+         * constructor
          ************************************************************/
         public mainGUI()
         {
@@ -31,7 +31,6 @@ namespace SoftwareEng
 
             //for now the gui will determine filepaths in case it is ever made a user choice
             bombaDeFotos = new PhotoBomb(guiGenericErrorFunction, "albumRC1.xml", "photoRC1.xml", "photo library");
-
             
             //display all albums 
             albumListView.BringToFront();
@@ -112,8 +111,6 @@ namespace SoftwareEng
          ************************************************************/
         public void guiAlbumsRetrieved(ErrorReport status, List<SimpleAlbumData> albumsRetrieved)
         {
-            
-
             if (status.reportID == ErrorReport.SUCCESS)
             {
                 //--stops the drawing of albumListView
@@ -149,11 +146,6 @@ namespace SoftwareEng
             }
         }
 
-
-
-
-
-
         /************************************************************
         * 
         ************************************************************/
@@ -161,8 +153,6 @@ namespace SoftwareEng
         {
             MessageBox.Show(errorMessage, "Error!", MessageBoxButtons.OK);
         }
-
-
 
         /************************************************************
          * 
@@ -206,6 +196,21 @@ namespace SoftwareEng
             }
         }
 
+
+        /************************************************************
+        * 
+        ************************************************************/
+        public void guiPopulatePhotoListView(bool resetView)
+        {
+            photoListView.Clear();
+
+            if (resetView == false)
+            {
+                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), albumChosenbyUser);
+            }
+        }
+
+
         /************************************************************
         * 
         ************************************************************/
@@ -218,6 +223,7 @@ namespace SoftwareEng
 
             if (status.reportID == ErrorReport.SUCCESS)
             {
+                photoListView.BeginUpdate();
                 ListViewItem itemHolder = null;
                 ListViewItem.ListViewSubItem[] itemHolderSubitems;
 
@@ -238,10 +244,11 @@ namespace SoftwareEng
                         MessageBox.Show("Exception!", "Super Error", MessageBoxButtons.OK);
                     }
                 }
+                photoListView.EndUpdate();
             }
-            else
+            else if(status.reportID == ErrorReport.FAILURE)
             {
-                showError("Error Loading Pictures");
+                showError(status.description);
             }
         }
 
@@ -302,7 +309,7 @@ namespace SoftwareEng
             foreach (string picFile in photoOpenFileDialog.FileNames)
             {
                 newPicture.path= picFile;
-                newPicture.extension = ".jpeg";
+                newPicture.extension = ".jpg";
                 bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId);
 
             }
@@ -316,6 +323,10 @@ namespace SoftwareEng
             if (status.reportID == ErrorReport.FAILURE)
             {
                 showError(status.description);
+            }
+            else if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            {
+                showError("import picture warning");
             }
         }
 

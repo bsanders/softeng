@@ -16,7 +16,7 @@ namespace SoftwareEng
         private const int userInputMaxSize = 16; 
 
         /************************************************************
-        * 
+        * constructors
         ************************************************************/
         public addNewAlbum()
         {
@@ -42,7 +42,7 @@ namespace SoftwareEng
         ************************************************************/
         private void createTheNewAlbum()
         {
-            if (stringChecker(newAlbumMaskedTextBox.Text) == false)
+            if (stringChecker(albumNameTextBox.Text) == false)
             {
                 showError("Invalid album name.");
             }
@@ -100,7 +100,14 @@ namespace SoftwareEng
         ************************************************************/
         private void albumNameTextBox_TextChanged(object sender, EventArgs e)
         {
-            finishButton.Enabled = true;
+            if (albumNameTextBox.Text.Length > 0)
+            {
+                finishButton.Enabled = true;
+            }
+            else
+            {
+                ;
+            }
         }
 
 
@@ -122,16 +129,6 @@ namespace SoftwareEng
 
             }
             */
-        }
-
-        private void newAlbumMaskedTextBox_TextChanged(object sender, EventArgs e)
-        {
-            finishButton.Enabled = true;
-        }
-
-        private void newAlbumMaskedTextBox_Enter(object sender, EventArgs e)
-        {
-
-        }        
+        }       
     }
 }

@@ -41,14 +41,14 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.albumListView = new System.Windows.Forms.ListView();
+            this.albumContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.albumImageList = new System.Windows.Forms.ImageList(this.components);
             this.mainFormBackbutton = new System.Windows.Forms.Button();
             this.photoListView = new System.Windows.Forms.ListView();
+            this.photoImageList = new System.Windows.Forms.ImageList(this.components);
             this.statusLabel = new System.Windows.Forms.Label();
             this.photoOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.photoImageList = new System.Windows.Forms.ImageList(this.components);
-            this.albumContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.programMenuStrip.SuspendLayout();
             this.albumContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -120,7 +120,7 @@
             // 
             this.aboutToolStripMenuItem.Enabled = false;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -141,6 +141,19 @@
             this.albumListView.TabIndex = 1;
             this.albumListView.UseCompatibleStateImageBehavior = false;
             this.albumListView.ItemActivate += new System.EventHandler(this.albumListView_ItemActivate);
+            // 
+            // albumContextMenuStrip
+            // 
+            this.albumContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testToolStripMenuItem});
+            this.albumContextMenuStrip.Name = "albumContextMenuStrip";
+            this.albumContextMenuStrip.Size = new System.Drawing.Size(94, 26);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.testToolStripMenuItem.Text = "test";
             // 
             // albumImageList
             // 
@@ -174,6 +187,12 @@
             this.photoListView.View = System.Windows.Forms.View.List;
             this.photoListView.ItemActivate += new System.EventHandler(this.photoListView_ItemActivate);
             // 
+            // photoImageList
+            // 
+            this.photoImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("photoImageList.ImageStream")));
+            this.photoImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.photoImageList.Images.SetKeyName(0, "generic_picture.ico");
+            // 
             // statusLabel
             // 
             this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -185,27 +204,8 @@
             // 
             // photoOpenFileDialog
             // 
-            this.photoOpenFileDialog.Filter = "Jpeg(*.jpeg)|*.jpeg";
+            this.photoOpenFileDialog.Filter = "Jpeg(*.jpg)|*.jpg";
             this.photoOpenFileDialog.Multiselect = true;
-            // 
-            // photoImageList
-            // 
-            this.photoImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("photoImageList.ImageStream")));
-            this.photoImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.photoImageList.Images.SetKeyName(0, "generic_picture.ico");
-            // 
-            // albumContextMenuStrip
-            // 
-            this.albumContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.testToolStripMenuItem});
-            this.albumContextMenuStrip.Name = "albumContextMenuStrip";
-            this.albumContextMenuStrip.Size = new System.Drawing.Size(94, 26);
-            // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.testToolStripMenuItem.Text = "test";
             // 
             // mainGUI
             // 
