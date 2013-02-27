@@ -148,9 +148,9 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //
-        public void checkIfAlbumNameIsUnique()
+        public void checkIfAlbumNameIsUnique(generic_callback guiCallback, String albumName)
         {
-
+            checkIfAlbumNameIsUnique_backend(guiCallback, albumName);
         }
 
         //---------------------------------------------
@@ -210,13 +210,13 @@ namespace SoftwareEng
     {
         public String picturesNameInAlbum;
         public int UID;
-        public String path;
+        //public String path;
 
         public SimplePhotoData()
         {
             picturesNameInAlbum = "";
             UID = -1;
-            path = "";
+            //path = "";
         }
     }
 

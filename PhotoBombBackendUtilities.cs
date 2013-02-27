@@ -347,8 +347,8 @@ namespace SoftwareEng
             try
             {
                 data.UID = (int)elem.Attribute("UID");
-                data.path = elem.Element("filePath").Value;
-                //data.picturesNameInAlbum = elem
+                data.picturesNameInAlbum = elem.Element("name").Value;
+                
             }
             catch
             {
@@ -359,20 +359,28 @@ namespace SoftwareEng
 
             return data;
         }
-        /*
-         * 
-         *                 SimplePhotoData pic = new SimplePhotoData();
-                try
-                {
-                    pic.UID = (int)subElement.Attribute("uid");
-                    pic.pictureName = (string)subElement.Element("name").Value;
-                    _list.Add(pic);
-                }
-                catch
-                {
-                    error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-                    error.warnings.Add("PhotoBomb.getAllPhotosInAlbum():A Picture in the album is missing either a name or an id.");
-                }*/
+
+        //-------------------------------------------------------------------------
+
+        private Boolean util_checkAlbumNameIsUnique(String albumName)
+        {
+            try
+            {
+                (from c in _albumsDatabase.Element("database").Elements("album")
+                 where (String)c.Element("albumName") == albumName
+                 select c).First();
+            }
+            //we didn't find a matching name
+            catch
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+
+
 
 
 

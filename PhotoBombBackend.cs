@@ -289,6 +289,7 @@ namespace SoftwareEng
             if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
                 ComplexPhotoData photo = new ComplexPhotoData();
+                //ComplexPhotoData MOE MARKER MOE MARKER MOE MARKER MOE MARKER!!!!!!
                 try
                 {
                     photo.UID = (int)picElement.Attribute("uid");
@@ -391,6 +392,24 @@ namespace SoftwareEng
 
             guiCallback(errorReport);
         }//method
+
+        //--------------------------------------------------------------
+
+        private void checkIfAlbumNameIsUnique_backend(generic_callback guiCallback, String albumName)
+        {
+            ErrorReport errorReport = new ErrorReport();
+            Boolean nameUnique = util_checkAlbumNameIsUnique(albumName);
+
+            if (!nameUnique)
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Album name is not unique.";
+                guiCallback(errorReport);
+                return;
+            }
+
+            guiCallback(errorReport);
+        }
 
 
 
