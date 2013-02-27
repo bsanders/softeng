@@ -120,9 +120,9 @@ namespace SoftwareEng
         //Edited Last:
         //
         //Adds a picture to the picture database AND the album database.
-        public void addNewPicture(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID)
+        public void addNewPicture(generic_callback guiCallback, ComplexPhotoData newPicture, int albumUID, String pictureNameInAlbum)
         {
-            addNewPicture_backend(guiCallback, newPicture, albumUID);
+            addNewPicture_backend(guiCallback, newPicture, albumUID, pictureNameInAlbum);
         }
 
 
@@ -139,9 +139,9 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //
-        public void addExistingPictureToAlbum(generic_callback guiCallback, int pictureUID, int albumUID)
+        public void addExistingPictureToAlbum(generic_callback guiCallback, int pictureUID, int albumUID, String SimplePhotoData)
         {
-            addExistingPictureToAlbum_backend(guiCallback, pictureUID, albumUID);
+            addExistingPictureToAlbum_backend(guiCallback, pictureUID, albumUID, SimplePhotoData);
         }
 
         //---------------------------------------------
@@ -208,13 +208,13 @@ namespace SoftwareEng
     //Edited Last:
     public class SimplePhotoData
     {
-        public String pictureName;
+        public String picturesNameInAlbum;
         public int UID;
         public String path;
 
         public SimplePhotoData()
         {
-            pictureName = "";
+            picturesNameInAlbum = "";
             UID = -1;
             path = "";
         }
@@ -227,7 +227,6 @@ namespace SoftwareEng
     public class ComplexPhotoData
     {
         //the name of the picture in the album, displayed by the gui
-        public String picturesAlbumName;
         public int UID;
         public String path;
         public String extension;
@@ -235,7 +234,6 @@ namespace SoftwareEng
 
         public ComplexPhotoData()
         {
-            picturesAlbumName = "";
             UID = -1;
             path = "";
             extension = "";

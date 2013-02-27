@@ -112,7 +112,7 @@ namespace SoftwareEng
         //--------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void util_addPicToAlbumDatabase(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID)
+        private void util_addPicToAlbumDatabase(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID, String albumName)
         {
             //Get the specific album we will be adding to.
             XElement specificAlbum;
@@ -148,7 +148,7 @@ namespace SoftwareEng
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
                                             new XAttribute("uid", newPicture.UID),
-                                            new XElement("name", newPicture.picturesAlbumName));
+                                            new XElement("name", albumName));
 
 
             specificAlbum.Element("albumPhotos").Add(newPhotoElem);
@@ -156,6 +156,8 @@ namespace SoftwareEng
         }
 
         //--------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
         //Check UID's here.
         //RETURN: true if the uid is valid, false otherwise.
         private Boolean util_checkPhotoUID(int uid)
@@ -165,6 +167,8 @@ namespace SoftwareEng
             return false;
         }
         //--------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
         //Check a pictures extension.
         //RETURN: true if the uid is valid, false otherwise.
         private Boolean util_checkPictureExtension(String extension)
@@ -177,6 +181,8 @@ namespace SoftwareEng
         }
 
         //--------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
         //Check a picture's path.
         //RETURN: true if the uid is valid, false otherwise.
         private Boolean util_checkPicturePath(String path)
@@ -187,6 +193,8 @@ namespace SoftwareEng
         }
 
         //--------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
         //Check a picture's album name.
         //RETURN: true if the uid is valid, false otherwise.
         private Boolean util_checkPictureAlbumName(String name)
@@ -196,7 +204,8 @@ namespace SoftwareEng
 
 
         //--------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private int util_getNewPicUID()
         {
             int newUID = 1;
@@ -223,7 +232,8 @@ namespace SoftwareEng
         }
 
         //--------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void util_openAlbumsXML(ErrorReport error)
         {
             try
@@ -242,7 +252,8 @@ namespace SoftwareEng
         }
 
         //-------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void util_openPicturesXML(ErrorReport error)
         {
             try
@@ -261,7 +272,8 @@ namespace SoftwareEng
         }
 
         //------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private int util_getnewAlbumUID(ErrorReport error)
         {
             int newUID = 1;
@@ -288,7 +300,8 @@ namespace SoftwareEng
         }
 
         //-------------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void util_addAlbumToAlbumDatabase(ErrorReport errorReport, SimpleAlbumData albumData){
             //Error checking goes here!!!
 
@@ -301,7 +314,64 @@ namespace SoftwareEng
             _albumsDatabase.Element("database").Add(newAlbum);
         }//method
 
+        //-------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private ComplexPhotoData util_convertPhotoElemToComplexStruct(ErrorReport errorReport, XElement elem)
+        {
+            ComplexPhotoData data = new ComplexPhotoData();
 
+            try
+            {
+                data.UID = (int)elem.Attribute("UID");
+                data.path = elem.Element("filePath").Value;
+                data.extension = (String)elem.Element("filePath").Attribute("extension");
+            }
+            catch
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Error converting XElement to struct.";
+                return null;
+            }
+
+            return data;
+        }
+
+        //----------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private SimplePhotoData util_convertPhotoElemToSimpleStruct(ErrorReport errorReport, XElement elem)
+        {
+            SimplePhotoData data = new SimplePhotoData();
+
+            try
+            {
+                data.UID = (int)elem.Attribute("UID");
+                data.path = elem.Element("filePath").Value;
+            }
+            catch
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Error getting required data from photo element.";
+                return null;
+            }
+
+            return data;
+        }
+        /*
+         * 
+         *                 SimplePhotoData pic = new SimplePhotoData();
+                try
+                {
+                    pic.UID = (int)subElement.Attribute("uid");
+                    pic.pictureName = (string)subElement.Element("name").Value;
+                    _list.Add(pic);
+                }
+                catch
+                {
+                    error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    error.warnings.Add("PhotoBomb.getAllPhotosInAlbum():A Picture in the album is missing either a name or an id.");
+                }*/
 
 
 

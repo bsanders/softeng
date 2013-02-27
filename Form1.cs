@@ -171,7 +171,7 @@ namespace SoftwareEng
                 output.AppendText("Pictures in album:\n");
                 for (int i = 0; i < _pictures.Count; ++i)
                 {
-                    output.AppendText(_pictures.ElementAt(i).pictureName + ", UID: " + _pictures.ElementAt(i).UID + "\n");
+                    output.AppendText(_pictures.ElementAt(i).picturesNameInAlbum + ", UID: " + _pictures.ElementAt(i).UID + "\n");
                 }
             }
         }
@@ -223,10 +223,10 @@ namespace SoftwareEng
         {
             ComplexPhotoData data = new ComplexPhotoData();
             data.UID = 999;//this doesn't matter as the backend assignes the real UID.
-            data.picturesAlbumName = "myNewPicture";
+            //data.picturesAlbumName = "myNewPicture";
             data.path = "newPic.jpg";
             data.extension = ".jpg";
-            photoBomb.addNewPicture(new SoftwareEng.generic_callback(addPictureButton_callback) , data, 1);
+            photoBomb.addNewPicture(new SoftwareEng.generic_callback(addPictureButton_callback) , data, 1, "someName");
 
         }
 
