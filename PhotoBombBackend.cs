@@ -283,7 +283,7 @@ namespace SoftwareEng
         {
             ErrorReport error = new ErrorReport();
 
-            XElement picElement = util_getPictureByUID(error, uid);
+            XElement picElement = util_getComplexPictureByUID(error, uid);
 
             //if the picture finding function reported success.
             if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
@@ -385,7 +385,7 @@ namespace SoftwareEng
         private void addNewAlbum_backend(generic_callback guiCallback, SimpleAlbumData albumData)
         {
             ErrorReport errorReport = new ErrorReport();
-            int uid = util_getnewAlbumUID(errorReport);
+            int uid = util_getNewAlbumUID(errorReport);
             albumData.UID = uid;
 
             util_addAlbumToAlbumDatabase(errorReport, albumData);
@@ -403,7 +403,7 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
-            XElement picture = util_getPictureByUID(errorReport, pictureUID);
+            XElement picture = util_getComplexPictureByUID(errorReport, pictureUID);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
                 guiCallback(errorReport);
@@ -436,6 +436,39 @@ namespace SoftwareEng
             }
 
             guiCallback(errorReport);
+        }
+
+        //--------------------------------------------------------------
+
+        private void changePhotoNameByUID_backend(generic_callback guiCallback, int albumUID, int photoUID, String newName)
+        {
+            ErrorReport errorReport = new ErrorReport();
+
+            XElement album = util_getAlbumByUID(errorReport, albumUID);
+
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            XElement photo = util_getPhotoFromAlbumElemByUID(errorReport, album, photoUID);
+
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            util_changePhotoNameInAlbumPhotoElem(errorReport, photo, newName);
+
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            saveAlbumsXML_backend(null);
         }
 
 
