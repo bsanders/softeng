@@ -139,10 +139,8 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!util_checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!util_checkAlbumDatabase(error))
             {
-                //make an error message here.
-
                 guiCallback(error);
                 return;
             }
@@ -187,10 +185,8 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //if the database is NOT valid.
-            if (!util_checkDatabaseIntegrity(_picturesDatabase, error))
+            if (!util_checkPicturesDatabase(error))
             {
-                //make an error message here.
-
                 guiCallback(error);
                 return;
             }
@@ -212,7 +208,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //if the database is NOT valid.
-            if (!util_checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!util_checkAlbumDatabase(error))
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "The album database was determined to be not valid.";
@@ -296,7 +292,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!util_checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!util_checkAlbumDatabase(error))
             {
                 guiCallback(error, null);
                 return;
@@ -457,6 +453,13 @@ namespace SoftwareEng
             albumData.UID = uid;
 
             util_addAlbumToAlbumDatabase(errorReport, albumData);
+
+            //if adding to the album database failed
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
 
             saveAlbumsXML_backend(null);
 
