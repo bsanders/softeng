@@ -12,6 +12,9 @@ namespace SoftwareEng
 {
     public partial class mainGUI : Form
     {
+        // true enables additional output to help test the program
+        private const bool debugMode = true;
+
         private SoftwareEng.PhotoBomb bombaDeFotos;
 
         //stores the albumImageList index of the default image for albums
@@ -19,6 +22,13 @@ namespace SoftwareEng
 
         //used to specify the UID of the "add new album" icon
         private const int addAlbumID = 0;
+
+        //--first selected item in a List View will have an index of zero, 
+        //--this is necessary even if  listView multiselect is disabled
+        private const int firstListViewItemIndex = 0;
+
+        //--second subitem of first ListView item will be album uid
+        private const int albumListViewSubItemUidIndex = 1;
 
         private int albumChosenbyUser;
 
@@ -34,16 +44,19 @@ namespace SoftwareEng
             
             //display all albums 
             albumListView.BringToFront();
-            populateAlbumView(false);
+
+            //true tells the function to refresh list
+            populateAlbumView(true);
 
             createNewAlbumToolStripMenuItem.Enabled = true;
             aboutToolStripMenuItem.Enabled = true;
 
             albumChosenbyUser = addAlbumID;
+                
         }
 
         /************************************************************
-         * 
+         * Finished
          ************************************************************/
         private void guiGenericErrorFunction(ErrorReport status)
         {
@@ -63,27 +76,10 @@ namespace SoftwareEng
             }
         }
 
-
         /************************************************************
-         * 
+         * Finished
          ************************************************************/
-        public void guiLoadXml(ErrorReport status)
-        {
-            if (status.reportID == ErrorReport.SUCCESS)
-            {
-                ;
-            }
-            else
-            {
-                ;
-            }
-
-        }
-
-        /************************************************************
-         * 
-         ************************************************************/
-        private void populateAlbumView(bool resetView)
+        private void populateAlbumView(bool refreshView)
         {
             ListViewItem.ListViewSubItem[] itemHolderSubitems;
             ListViewItem itemHolder= null;
@@ -100,14 +96,14 @@ namespace SoftwareEng
             itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
             albumListView.Items.Add(itemHolder);
 
-            if(resetView == false)
+            if(refreshView == true)
             {
                 bombaDeFotos.getAllUserAlbumNames(new getAllUserAlbumNames_callback(guiAlbumsRetrieved));
             }
         }
 
         /************************************************************
-         * 
+         * Finished
          ************************************************************/
         public void guiAlbumsRetrieved(ErrorReport status, List<SimpleAlbumData> albumsRetrieved)
         {
@@ -147,7 +143,7 @@ namespace SoftwareEng
         }
 
         /************************************************************
-        * 
+        * temp
         ************************************************************/
         private void showError(string errorMessage)
         {
@@ -155,15 +151,15 @@ namespace SoftwareEng
         }
 
         /************************************************************
-         * 
+         * unfinished
          ************************************************************/
         private void photoListView_ItemActivate(object sender, EventArgs e)
         {
-            ;
+            statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
         }
 
         /************************************************************
-         * 
+         * Finished
          ************************************************************/
         private void albumListView_ItemActivate(object sender, EventArgs e)
         {
@@ -172,23 +168,21 @@ namespace SoftwareEng
 
 
         /************************************************************
-        * 
+        * Finished -needs more testing
         ************************************************************/
         private void albumListActivation()
         {
-            //--first selected item will have an index of zero, 
-            //--this isnecessary even if multiselect is disabled
-            const int firstItem = 0;
+            createNewAlbumToolStripMenuItem.Enabled = false;
 
-            //--second subitem will be album uid
-            const int uid = 1;
-
-            int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstItem].SubItems[uid].Text);
+            int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
 
             if (selectedAlbumID > addAlbumID)
             {
                 albumChosenbyUser = selectedAlbumID;
-                guiPopulatePhotoListView(false);
+
+                //true tells the function to refresh list
+                guiPopulatePhotoListView(true);
+
                 albumChosenbyUser = selectedAlbumID;
             }
             else
@@ -196,16 +190,16 @@ namespace SoftwareEng
                 guiShowCreateAlbumWindow();
             }
         }
-        
+
 
         /************************************************************
-        * 
+        * Finished -needs more testing
         ************************************************************/
-        public void guiPopulatePhotoListView(bool resetView)
+        public void guiPopulatePhotoListView(bool refreshView)
         {
             photoListView.Clear();
 
-            if (resetView == false)
+            if (refreshView == true)
             {
                 bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), albumChosenbyUser);
             }
@@ -213,14 +207,18 @@ namespace SoftwareEng
 
 
         /************************************************************
-        * 
+        * Finished -needs more testing
         ************************************************************/
         public void guiPhotosInAlbumRetrieved(ErrorReport status, List<SimplePhotoData> albumContents)
         {
             photoListView.BringToFront();
             addPhotosToExistingAlbumToolStripMenuItem.Enabled = true;
-            ;
             mainFormBackbutton.Enabled = true;
+
+            if (debugMode == true)
+            {
+                statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
+            }
 
             if (status.reportID == ErrorReport.SUCCESS)
             {
@@ -255,65 +253,46 @@ namespace SoftwareEng
 
 
         /************************************************************
-        * 
+        * Finished
         ************************************************************/
         private void guiShowCreateAlbumWindow()
         {
             addNewAlbum createAlbumDialog = new addNewAlbum(this);
 
             createAlbumDialog.ShowDialog();
-        }
 
-
-        /************************************************************
-        * used as delegate
-        ************************************************************/
-        public void guiCheckAlbumNameIsUnique(string userInput, generic_callback createAlbumDelegate)
-        {
-            ErrorReport errorStatus= new ErrorReport();
-
-            //bombaDeFotos.checkIfAlbumNameIsUnique();
-
-            createAlbumDelegate(errorStatus);
-           
-        }
-
-        public void guiAlbumNameChecked(ErrorReport errorStatus)
-        {
-            //createAlbumDelegate(errorStatus);
-
-        }
-
-        public void guiAddAlbum()
-        {
-            ;
-        }
-
-
-
-
-
-        /************************************************************
-        * used for generic_callback after calling photobomb object
-        ************************************************************/
-        public void guiAlbumAdded(ErrorReport status)
-        {
-            if (status.reportID == ErrorReport.SUCCESS)
+            if (createAlbumDialog.DialogResult == DialogResult.OK)
             {
-                statusLabel.Text = "Album Successfully Created!";
-            }
-            else
-            {
-                if (status.description != null)
-                {
-                    showError(status.description);
-                }
+                createAlbumDialog.Close();
+
+                //true tells the function to refresh list 
+                populateAlbumView(true);
             }
         }
 
 
         /************************************************************
-        * 
+        * unfinished --used as delegate
+        ************************************************************/
+        public void guiCheckAlbumNameIsUnique(string userInput, generic_callback addNewAlbumDelegate)
+        {
+            bombaDeFotos.checkIfAlbumNameIsUnique(addNewAlbumDelegate, userInput);
+        }
+
+        /************************************************************
+        * Finished --needs testing
+        ************************************************************/
+        public void guiCreateThisAlbum(string userInput, generic_callback addNewAlbumDelegate)
+        {
+            SimpleAlbumData theNewAlbum = new SimpleAlbumData();
+
+            theNewAlbum.albumName = userInput;
+
+            bombaDeFotos.addNewAlbum(addNewAlbumDelegate, theNewAlbum);
+        }
+
+        /************************************************************
+        * unfinished
         ************************************************************/
         private void addPicturesToAlbum(int albumId)
         {
@@ -328,11 +307,12 @@ namespace SoftwareEng
                 newPicture.extension = ".jpg";
                 //bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId, "");
             }
-            guiPopulatePhotoListView(false);
+            //true tells the function to refresh list
+            guiPopulatePhotoListView(true);
         }
 
         /************************************************************
-        * 
+        * Finished
         ************************************************************/
         public void guiPictureAdded(ErrorReport status)
         {
@@ -342,7 +322,7 @@ namespace SoftwareEng
             }
             else if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
-                showError("import picture warning");
+                showError("Import picture warning");
             }
         }
 
@@ -352,12 +332,10 @@ namespace SoftwareEng
         private void addPhotosToExistingAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
             addPicturesToAlbum(albumChosenbyUser);
-
-            //showError("Functionailty not yet finished, LOL");
         }
 
         /************************************************************
-        * 
+        * Finished
         ************************************************************/
         private void createNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -365,7 +343,7 @@ namespace SoftwareEng
         }
 
         /************************************************************
-        * 
+        * Finished
         ************************************************************/
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -373,13 +351,37 @@ namespace SoftwareEng
         }
 
         /************************************************************
-        * 
+        * Finished
         ************************************************************/
         private void mainFormBackbutton_Click(object sender, EventArgs e)
         {
-            albumListView.BringToFront();
             mainFormBackbutton.Enabled = false;
+            albumListView.BringToFront();
             albumChosenbyUser = 0;
+            createNewAlbumToolStripMenuItem.Enabled = true;
+            addPhotosToExistingAlbumToolStripMenuItem.Enabled = false;
+
+
+            if (debugMode == true)
+            {
+                statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
+            }
+        }
+
+        /************************************************************
+        * unfinished --needs testing
+        ************************************************************/
+        private void albumListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            //albumChosenbyUser = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
+        }
+
+        /************************************************************
+        * Finished --needs testing
+        ************************************************************/
+        private void addNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            guiShowCreateAlbumWindow();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-//using System.Configuration;
+using System.Configuration;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,12 +21,6 @@ namespace SoftwareEng
         /************************************************************
         * constructors
         ************************************************************/
-        public addNewAlbum()
-        {
-            InitializeComponent();
-        }
-
-        
         public addNewAlbum(mainGUI localMainWindowRef)
         {
             mainWindowRef = localMainWindowRef;
@@ -48,6 +42,8 @@ namespace SoftwareEng
             if (stringChecker(albumNameTextBox.Text) == false)
             {
                 showError("Invalid album name.");
+
+                finishButton.Enabled = true;
             }
             else
             {
@@ -62,26 +58,44 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                showError("Album name not unique");
+                showError(status.description);
+
+                finishButton.Enabled = true;
             }
             else
             {
-                ;
+                mainWindowRef.guiCreateThisAlbum(albumNameTextBox.Text, albumAdded);
             }
-                
-
         }
+
+        /************************************************************
+        * 
+        ************************************************************/
+        public void albumAdded(ErrorReport status)
+        {
+            if (status.reportID != ErrorReport.SUCCESS)
+            {
+                showError(status.description);
+
+                finishButton.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("New Album Successfully Created", "New Album", MessageBoxButtons.OK);
+                //this.Close();
+            }
+        }
+
 
         /************************************************************
         * 
         ************************************************************/
         private void finishButton_Click(object sender, EventArgs e)
         {
+            finishButton.Enabled = false ;
             createTheNewAlbum();
             //this.Close();
         }
-
-
 
         /************************************************************
         * 
@@ -90,7 +104,6 @@ namespace SoftwareEng
         {
             MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK);
         }
-
 
         /************************************************************
         * 
@@ -122,19 +135,18 @@ namespace SoftwareEng
         ************************************************************/
         private bool stringChecker(string target)
         {
-            //RegexStringValidator a;
+            RegexStringValidator inputChecker = new RegexStringValidator(validInputKey);
+
+            try
+            {
+                inputChecker.Validate(target);
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
 
             return true;
-
-            /*
-            albumNameTextBox.Enabled = false;
-            for (int i = 0; i < albumNameTextBox.Text.Length; i++)
-            {
-                
-
-
-            }
-            */
         }       
     }
 }
