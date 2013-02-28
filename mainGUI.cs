@@ -29,11 +29,11 @@ namespace SoftwareEng
         private const int firstListViewItemIndex = 0;
 
         //--second subitem of first ListView item will be album uid
-        private const int albumListViewSubItemUidIndex = 1;
+        private const int listViewSubItemUidIndex = 1;
 
         private int albumChosenbyUser;
 
-        private string photoNameTempBackup= "";
+        private string photoNameTempBackup = "";
 
         /************************************************************
          * constructor
@@ -44,7 +44,7 @@ namespace SoftwareEng
 
             //for now the gui will determine filepaths in case it is ever made a user choice
             bombaDeFotos = new PhotoBomb(guiGenericErrorFunction, "albumRC1.xml", "photoRC1.xml", "photo library");
-            
+
             //display all albums 
             albumListView.BringToFront();
 
@@ -55,7 +55,7 @@ namespace SoftwareEng
             aboutToolStripMenuItem.Enabled = true;
 
             albumChosenbyUser = addAlbumID;
-                
+
         }
 
         /************************************************************
@@ -85,13 +85,13 @@ namespace SoftwareEng
         private void populateAlbumView(bool refreshView)
         {
             ListViewItem.ListViewSubItem[] itemHolderSubitems;
-            ListViewItem itemHolder= null;
+            ListViewItem itemHolder = null;
 
             albumListView.Items.Clear();
 
             //--code from here to the if statement is to regenerate the 
             //--the "add new album icon" as it's not an album
-            itemHolderSubitems= new ListViewItem.ListViewSubItem[]{
+            itemHolderSubitems = new ListViewItem.ListViewSubItem[]{
                 new ListViewItem.ListViewSubItem(itemHolder, "Add New Album"),
                 new ListViewItem.ListViewSubItem(itemHolder, addAlbumID.ToString() )
                 };
@@ -99,7 +99,7 @@ namespace SoftwareEng
             itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
             albumListView.Items.Add(itemHolder);
 
-            if(refreshView == true)
+            if (refreshView == true)
             {
                 bombaDeFotos.getAllUserAlbumNames(new getAllUserAlbumNames_callback(guiAlbumsRetrieved));
             }
@@ -139,7 +139,7 @@ namespace SoftwareEng
                 //--resumes drawing of albumListView
                 albumListView.EndUpdate();
             }
-            else if(status.reportID == ErrorReport.FAILURE)
+            else if (status.reportID == ErrorReport.FAILURE)
             {
                 showError(status.description);
             }
@@ -158,9 +158,15 @@ namespace SoftwareEng
          ************************************************************/
         private void photoListView_ItemActivate(object sender, EventArgs e)
         {
-            if (debugMode == true && albumListView.SelectedItems.Count > 0)
+            viewPhoto();
+
+            if (albumListView.SelectedItems.Count > 0 && debugMode == true)
             {
-                statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
+                statusLabel.Text = albumListView.SelectedItems[0].SubItems[listViewSubItemUidIndex].Text;
+            }
+            else if (debugMode == true)
+            {
+                statusLabel.Text = "-1";
             }
         }
 
@@ -169,7 +175,7 @@ namespace SoftwareEng
          ************************************************************/
         private void albumListView_ItemActivate(object sender, EventArgs e)
         {
-            albumListActivation();   
+            albumListActivation();
         }
 
 
@@ -180,7 +186,7 @@ namespace SoftwareEng
         {
             if (albumListView.SelectedItems.Count > 0)
             {
-                int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
+                int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
 
                 if (selectedAlbumID > addAlbumID)
                 {
@@ -226,7 +232,7 @@ namespace SoftwareEng
 
             if (debugMode == true && albumListView.SelectedItems.Count > 0)
             {
-                statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
+                statusLabel.Text = albumListView.SelectedItems[0].SubItems[listViewSubItemUidIndex].Text;
             }
 
             if (status.reportID == ErrorReport.SUCCESS)
@@ -254,7 +260,7 @@ namespace SoftwareEng
                 }
                 photoListView.EndUpdate();
             }
-            else if(status.reportID == ErrorReport.FAILURE)
+            else if (status.reportID == ErrorReport.FAILURE)
             {
                 showError(status.description);
             }
@@ -311,11 +317,11 @@ namespace SoftwareEng
             {
                 return;
             }
-            ComplexPhotoData newPicture= new ComplexPhotoData();
+            ComplexPhotoData newPicture = new ComplexPhotoData();
             foreach (string picFile in photoOpenFileDialog.FileNames)
             {
                 bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumId, "");
-            } 
+            }
         }
 
         /************************************************************
@@ -370,11 +376,18 @@ namespace SoftwareEng
             createNewAlbumToolStripMenuItem.Enabled = true;
             addPhotosToExistingAlbumToolStripMenuItem.Enabled = false;
 
+            //albumListView.SelectedItems.Clear();
 
-            if (debugMode == true && albumListView.SelectedItems.Count > 0)
+
+            if (albumListView.SelectedItems.Count > 0 && debugMode == true)
             {
-                statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
+                //statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
             }
+            else if (debugMode == true)
+            {
+                //statusLabel.Text="-1";
+            }
+
         }
 
         /************************************************************
@@ -387,17 +400,17 @@ namespace SoftwareEng
                 albumListView.ContextMenuStrip = null;
                 return;
             }
-            albumChosenbyUser = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
+            albumChosenbyUser = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
 
             if (albumChosenbyUser > 0)
             {
-                albumListView.ContextMenuStrip= openAlbumContextMenuStrip;
+                albumListView.ContextMenuStrip = openAlbumContextMenuStrip;
             }
             else
             {
                 albumListView.ContextMenuStrip = addAlbumContextMenuStrip;
             }
-        
+
         }
 
         /************************************************************
@@ -410,10 +423,20 @@ namespace SoftwareEng
 
         private void photoListView_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
-            if (photoListViewItemRenameCheck(photoListView.SelectedItems[0].Text) == false)
+            if (photoListViewItemRenameCheck(e.Label) == false)
             {
-                photoListView.SelectedItems[0].Text = photoNameTempBackup;
+                e.CancelEdit = true;
+                return;
             }
+            int selectedItemUid = Convert.ToInt32(photoListView.Items[e.Item].SubItems[listViewSubItemUidIndex].Text);
+
+            bombaDeFotos.changePhotoNameByUID(photoNameChanged, albumChosenbyUser, selectedItemUid, e.Label);
+            renameToolStripMenuItem.Enabled = true;
+        }
+
+        public void photoNameChanged(ErrorReport status)
+        {
+            ;
         }
 
         private bool photoListViewItemRenameCheck(string newName)
@@ -429,7 +452,10 @@ namespace SoftwareEng
             }
             catch (ArgumentException)
             {
-                statusLabel.Text = "Bam! Check Not finished";
+                if (debugMode == true)
+                {
+                    statusLabel.Text = "Bam! Check Not finished";
+                }
                 return false;
             }
         }
@@ -443,15 +469,49 @@ namespace SoftwareEng
             else
             {
                 photoListView.ContextMenuStrip = photoContextMenuStrip;
-                photoNameTempBackup = photoListView.SelectedItems[0].Text;
+                photoNameTempBackup = photoListView.SelectedItems[firstListViewItemIndex].Text;
                 statusLabel.Text = photoNameTempBackup;
             }
         }
 
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //renameToolStripMenuItem.Enabled = true;
+            renameToolStripMenuItem.Enabled = false;
 
+            if (photoListView.SelectedItems.Count >= 1)
+            {
+                photoListView.SelectedItems[firstListViewItemIndex].BeginEdit();
+            }
+        }
+
+        private void viewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            viewPhoto();
+        }
+
+        private void viewPhoto()
+        {
+            int photoUid = Convert.ToInt32(photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
+
+            //int albumUid = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
+
+            bombaDeFotos.getPictureByUID(photoInfoRetrieved, photoUid);
+        }
+
+        public void photoInfoRetrieved(ErrorReport status, ComplexPhotoData thePhoto)
+        {
+            if (status.reportID == ErrorReport.SUCCESS)
+            {
+                //ComplexPhotoData toPhotoView= new ComplexPhotoData;
+
+                PhotoViewWindow photoDisplayer = new PhotoViewWindow(this, thePhoto, photoListView.SelectedItems[firstListViewItemIndex].Text);
+
+                photoDisplayer.ShowDialog();
+            }
+            else if(status.reportID == ErrorReport.FAILURE)
+            {
+                showError(status.description);
+            }
         }
     }
 }

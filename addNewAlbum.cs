@@ -16,7 +16,7 @@ namespace SoftwareEng
 
         private const string validInputKey = @"^[\w\d][\w\d ]{0,14}[\w\d]$";
 
-        private const int userInputMaxSize = 16; 
+        private const int userInputMaxSize = 16;
 
         /************************************************************
         * constructors

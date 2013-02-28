@@ -52,13 +52,12 @@
             // 
             this.albumNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.albumNameTextBox.Location = new System.Drawing.Point(132, 54);
-            this.albumNameTextBox.MaximumSize = new System.Drawing.Size(150, 20);
+            this.albumNameTextBox.Location = new System.Drawing.Point(95, 54);
             this.albumNameTextBox.MaxLength = 16;
             this.albumNameTextBox.MinimumSize = new System.Drawing.Size(150, 20);
             this.albumNameTextBox.Name = "albumNameTextBox";
             this.albumNameTextBox.ShortcutsEnabled = false;
-            this.albumNameTextBox.Size = new System.Drawing.Size(150, 20);
+            this.albumNameTextBox.Size = new System.Drawing.Size(225, 20);
             this.albumNameTextBox.TabIndex = 1;
             this.albumNameTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.albumNameTextBox.TextChanged += new System.EventHandler(this.albumNameTextBox_TextChanged);
@@ -105,6 +104,7 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.albumNameTextBox);
             this.Controls.Add(this.promptLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(427, 176);

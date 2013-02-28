@@ -107,6 +107,12 @@
     </Compile>
     <Compile Include="PhotoBombBackend.cs" />
     <Compile Include="PhotoBombBackendUtilities.cs" />
+    <Compile Include="PhotoView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PhotoView.Designer.cs">
+      <DependentUpon>PhotoView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PhotoBombDelegates.cs" />
@@ -119,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="mainGUI.resx">
       <DependentUpon>mainGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PhotoView.resx">
+      <DependentUpon>PhotoView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
