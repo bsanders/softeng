@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.IO;
 
 namespace SoftwareEng
 {
@@ -46,6 +47,73 @@ namespace SoftwareEng
 
             util_openAlbumsXML(errorReport);
             util_openPicturesXML(errorReport);
+
+            guiCallback(errorReport);
+        }
+
+        //-----------------------------------------------------------------
+
+        private void rebuildBackendOnFilesystem_backend(generic_callback guiCallback)
+        {
+            ErrorReport errorReport = new ErrorReport();
+            
+            //if the library folder existed, rename it.
+            if (Directory.Exists(libraryPath))
+            {
+                try
+                {
+                    Directory.Move(libraryPath, (libraryPath + "_backup"));
+                }
+                catch
+                {
+                    errorReport.reportID = ErrorReport.FAILURE;
+                    errorReport.description = "Couldn't backup (rename) the old library folder.  If you have a library backup already, please remove it.";
+                    guiCallback(errorReport);
+                    return;
+                }
+            }//if
+
+            //now make a new library folder
+            try
+            {
+                Directory.CreateDirectory(libraryPath);
+            }
+            catch
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Unable to create the new library folder.";
+                guiCallback(errorReport);
+                return;
+            }
+
+            //make the new database xml files
+            XDocument initDB = new XDocument();
+            XElement root = new XElement("database");
+            initDB.Add(root);
+            try
+            {
+                initDB.Save(albumsDatabasePath);
+                initDB.Save(picturesDatabasePath);
+            }
+            catch
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Unable to create the new database files.";
+                guiCallback(errorReport);
+                return;
+            }
+
+            //Load the new databases into memory.
+            util_openAlbumsXML(errorReport);
+            util_openPicturesXML(errorReport);
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            saveAlbumsXML_backend(null);
+            savePicturesXML_backend(null);
 
             guiCallback(errorReport);
         }
@@ -335,7 +403,7 @@ namespace SoftwareEng
             }
 
             //Change me if you want to start naming the pictures differently in the library.
-            String picLibraryName = newPicture.UID.ToString() + photoExtension;
+            String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
             
             //Change me if you want the default album name to be different.
             if(pictureNameInAlbum == ""){
@@ -343,7 +411,7 @@ namespace SoftwareEng
             }
             
             //Move picture and get a new path for the picture in our storage.
-            newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picLibraryName);
+            newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
             //error checking
             if (errorReport.reportID == ErrorReport.FAILURE)
             {

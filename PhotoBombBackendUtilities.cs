@@ -376,7 +376,7 @@ namespace SoftwareEng
         //-------------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private String util_copyPicToLibrary(ErrorReport errorReport, String picturePath, String libraryName)
+        private String util_copyPicToLibrary(ErrorReport errorReport, String picturePath, String picNameInLibrary)
         {
             //check if file exists first!!!
             //if the picture does NOT exist.
@@ -388,14 +388,14 @@ namespace SoftwareEng
             }
 
             //check if the library is ok.
-            if (!checkLibrary())
+            if (!checkLibraryDirectory())
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Something is wrong with the photo library.";
                 return "";
             }
 
-            String newPath = System.IO.Path.Combine(libraryPath, libraryName);
+            String newPath = System.IO.Path.Combine(libraryPath, picNameInLibrary);
 
             try
             {
@@ -415,7 +415,7 @@ namespace SoftwareEng
         //-------------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private Boolean checkLibrary()
+        private Boolean checkLibraryDirectory()
         {
             return (Directory.Exists(libraryPath));
         }
