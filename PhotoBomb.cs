@@ -38,6 +38,16 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last: 
         //
+        //CAREFULL!!!  This will blow out the databases and make a new library folder.
+        public void rebuildBackendOnFilesystem(generic_callback guiCallback)
+        {
+            rebuildBackendOnFilesystem_backend(guiCallback);
+        }
+
+        //----------------------------------------------
+        //By: Ryan Moe
+        //Edited Last: 
+        //
         //reopen the xml document (database) that represents the
         //user's albums in the program.
         //PARAM 1 = a callback (delegate) to a gui function (see PhotoBombDelegates.cs).

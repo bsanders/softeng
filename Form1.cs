@@ -25,7 +25,7 @@ namespace SoftwareEng
         public Form1()
         {
             InitializeComponent();
-            photoBomb = new SoftwareEng.PhotoBomb(new generic_callback(photoBombConstructor_callback), "test.xml", "test2.xml", "");
+            photoBomb = new SoftwareEng.PhotoBomb(new generic_callback(photoBombConstructor_callback), "test1.xml", "test2.xml", "pictureLibrary");
         }
 
         public void photoBombConstructor_callback(ErrorReport e)
@@ -267,6 +267,23 @@ namespace SoftwareEng
         //---------------------------------------------------------------------
         //change photo name
         private void changePhotoNameButton_Click(object sender, EventArgs e)
+        {
+            photoBomb.changePhotoNameByUID(new SoftwareEng.generic_callback(changePhotoNameButton_callback), 1, 4, "renamedPhoto");
+        }
+
+        public void changePhotoNameButton_callback(ErrorReport error)
+        {
+
+        }
+
+        //---------------------------------------------------------------------
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            photoBomb.rebuildBackendOnFilesystem(new SoftwareEng.generic_callback(reinitBackend_callback));
+        }
+
+        public void reinitBackend_callback(ErrorReport error)
         {
 
         }
