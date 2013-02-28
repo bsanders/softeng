@@ -161,9 +161,9 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //
-        public void changePhotoNameByUID()
+        public void changePhotoNameByUID(generic_callback guiCallback, int albumUID, int photoUID, String newName)
         {
-
+            changePhotoNameByUID_backend(guiCallback, albumUID, photoUID, newName);
         }
 
 

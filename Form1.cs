@@ -265,6 +265,13 @@ namespace SoftwareEng
         }
 
         //---------------------------------------------------------------------
+        //change photo name
+        private void changePhotoNameButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //---------------------------------------------------------------------
 
 
 

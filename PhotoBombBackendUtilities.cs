@@ -40,7 +40,8 @@ namespace SoftwareEng
         //----------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private XElement util_getPictureByUID(ErrorReport error, int uid)
+        //RETURN: the element that has the param uid from the picture database.
+        private XElement util_getComplexPictureByUID(ErrorReport error, int uid)
         {
             if (util_checkDatabaseIntegrity(_picturesDatabase, error))
             {
@@ -267,7 +268,7 @@ namespace SoftwareEng
         //------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private int util_getnewAlbumUID(ErrorReport error)
+        private int util_getNewAlbumUID(ErrorReport error)
         {
             int newUID = 1;
             Boolean uidNotFound = true;
@@ -419,6 +420,60 @@ namespace SoftwareEng
             return (Directory.Exists(libraryPath));
         }
 
+        //--------------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private void util_changePhotoNameInAlbumPhotoElem(ErrorReport error, XElement simplePhotoElem, String newName)
+        {
+            try
+            {
+                simplePhotoElem.Element("name").Value = newName;
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Failed to change the name of a photo.";
+            }
+        }
+        //--------------------------------------------------------------------------
+
+        //By: Ryan Moe
+        //Edited Last:
+        private XElement util_getPhotoFromAlbumElemByUID(ErrorReport error, XElement albumElem, int photoUID)
+        {
+            try
+            {
+                return (from c in albumElem.Element("albumPhotos").Elements("picture")
+                        where (int)c.Attribute("uid") == photoUID
+                        select c).Single();
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Failed to find a single picture by UID.";
+                return null;
+            }
+        }
+
+        //--------------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private XElement util_getAlbumByUID(ErrorReport error, int albumUID)
+        {
+            try
+            {
+                return (from c in _albumsDatabase.Element("database").Elements("album")
+                        where (int)c.Attribute("uid") == albumUID
+                        select c).Single();
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Failed to find a single album by UID.";
+                return null;
+            }
+
+        }
 
 
 

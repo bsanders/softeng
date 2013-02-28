@@ -38,6 +38,7 @@
             this.getPictureByUIDButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.addAlbumButton = new System.Windows.Forms.Button();
+            this.changePhotoNameButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // loadXML
@@ -90,7 +91,7 @@
             // 
             // uidTE
             // 
-            this.uidTE.Location = new System.Drawing.Point(391, 427);
+            this.uidTE.Location = new System.Drawing.Point(448, 427);
             this.uidTE.Name = "uidTE";
             this.uidTE.Size = new System.Drawing.Size(100, 20);
             this.uidTE.TabIndex = 7;
@@ -98,7 +99,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(388, 411);
+            this.label2.Location = new System.Drawing.Point(445, 411);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(26, 13);
             this.label2.TabIndex = 9;
@@ -106,7 +107,7 @@
             // 
             // getPictureByUIDButton
             // 
-            this.getPictureByUIDButton.Location = new System.Drawing.Point(260, 411);
+            this.getPictureByUIDButton.Location = new System.Drawing.Point(214, 411);
             this.getPictureByUIDButton.Name = "getPictureByUIDButton";
             this.getPictureByUIDButton.Size = new System.Drawing.Size(97, 23);
             this.getPictureByUIDButton.TabIndex = 10;
@@ -126,7 +127,7 @@
             // 
             // addAlbumButton
             // 
-            this.addAlbumButton.Location = new System.Drawing.Point(133, 411);
+            this.addAlbumButton.Location = new System.Drawing.Point(119, 411);
             this.addAlbumButton.Name = "addAlbumButton";
             this.addAlbumButton.Size = new System.Drawing.Size(75, 23);
             this.addAlbumButton.TabIndex = 12;
@@ -134,11 +135,22 @@
             this.addAlbumButton.UseVisualStyleBackColor = true;
             this.addAlbumButton.Click += new System.EventHandler(this.addAlbumButton_Click);
             // 
+            // changePhotoNameButton
+            // 
+            this.changePhotoNameButton.Location = new System.Drawing.Point(329, 411);
+            this.changePhotoNameButton.Name = "changePhotoNameButton";
+            this.changePhotoNameButton.Size = new System.Drawing.Size(110, 23);
+            this.changePhotoNameButton.TabIndex = 13;
+            this.changePhotoNameButton.Text = "changePhotoName";
+            this.changePhotoNameButton.UseVisualStyleBackColor = true;
+            this.changePhotoNameButton.Click += new System.EventHandler(this.changePhotoNameButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(571, 459);
+            this.Controls.Add(this.changePhotoNameButton);
             this.Controls.Add(this.addAlbumButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.getPictureByUIDButton);
@@ -168,6 +180,7 @@
         private System.Windows.Forms.Button getPictureByUIDButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button addAlbumButton;
+        private System.Windows.Forms.Button changePhotoNameButton;
     }
 }
 
