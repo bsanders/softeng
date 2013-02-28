@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
             this.programMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -135,10 +135,9 @@
             this.albumListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.albumListView.ContextMenuStrip = this.openAlbumContextMenuStrip;
             this.albumListView.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
             this.albumListView.LargeImageList = this.defaultImageList;
             this.albumListView.Location = new System.Drawing.Point(12, 27);
             this.albumListView.MultiSelect = false;
@@ -185,6 +184,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.photoListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.photoListView.LabelEdit = true;
             this.photoListView.LabelWrap = false;
             this.photoListView.Location = new System.Drawing.Point(12, 27);
             this.photoListView.MultiSelect = false;
@@ -194,7 +194,9 @@
             this.photoListView.TabIndex = 3;
             this.photoListView.UseCompatibleStateImageBehavior = false;
             this.photoListView.View = System.Windows.Forms.View.List;
+            this.photoListView.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.photoListView_AfterLabelEdit);
             this.photoListView.ItemActivate += new System.EventHandler(this.photoListView_ItemActivate);
+            this.photoListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.photoListView_ItemSelectionChanged);
             // 
             // photoImageList
             // 
@@ -226,8 +228,9 @@
             // renameToolStripMenuItem
             // 
             this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            this.renameToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.renameToolStripMenuItem.Text = "Rename";
+            this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
             // 
             // addAlbumContextMenuStrip
             // 
@@ -251,8 +254,8 @@
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.mainFormBackbutton);
             this.Controls.Add(this.programMenuStrip);
-            this.Controls.Add(this.albumListView);
             this.Controls.Add(this.photoListView);
+            this.Controls.Add(this.albumListView);
             this.MainMenuStrip = this.programMenuStrip;
             this.Name = "mainGUI";
             this.Text = "Photobombers";

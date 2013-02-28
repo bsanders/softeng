@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +32,8 @@ namespace SoftwareEng
         private const int albumListViewSubItemUidIndex = 1;
 
         private int albumChosenbyUser;
+
+        private string photoNameTempBackup= "";
 
         /************************************************************
          * constructor
@@ -263,6 +266,8 @@ namespace SoftwareEng
         ************************************************************/
         private void guiShowCreateAlbumWindow()
         {
+            albumListView.SelectedItems.Clear();
+
             addNewAlbum createAlbumDialog = new addNewAlbum(this);
 
             createAlbumDialog.ShowDialog();
@@ -378,10 +383,22 @@ namespace SoftwareEng
         ************************************************************/
         private void albumListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            if (albumListView.SelectedItems.Count > 0)
+            if (albumListView.SelectedItems.Count <= 0)
             {
-                albumChosenbyUser = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
+                albumListView.ContextMenuStrip = null;
+                return;
             }
+            albumChosenbyUser = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
+
+            if (albumChosenbyUser > 0)
+            {
+                albumListView.ContextMenuStrip= openAlbumContextMenuStrip;
+            }
+            else
+            {
+                albumListView.ContextMenuStrip = addAlbumContextMenuStrip;
+            }
+        
         }
 
         /************************************************************
@@ -390,6 +407,50 @@ namespace SoftwareEng
         private void addNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
             guiShowCreateAlbumWindow();
+        }
+
+        private void photoListView_AfterLabelEdit(object sender, LabelEditEventArgs e)
+        {
+            if (photoListViewItemRenameCheck(photoListView.SelectedItems[0].Text) == false)
+            {
+                photoListView.SelectedItems[0].Text = photoNameTempBackup;
+            }
+        }
+
+        private bool photoListViewItemRenameCheck(string newName)
+        {
+            //string validInputKey = @"^[\w\d][\w\d ]{0,30}[\w\d]$";
+
+            RegexStringValidator inputChecker = new RegexStringValidator(@"^[\w\d][\w\d ]{0,30}[\w\d]$");
+
+            try
+            {
+                inputChecker.Validate(newName);
+                return true;
+            }
+            catch (ArgumentException)
+            {
+                statusLabel.Text = "Bam! Check Not finished";
+                return false;
+            }
+        }
+
+        private void photoListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (photoListView.SelectedItems.Count < 0)
+            {
+                photoListView.ContextMenuStrip = null;
+                return;
+            }
+            photoListView.ContextMenuStrip = photoContextMenuStrip;
+            photoNameTempBackup= photoListView.SelectedItems[0].Text;
+            statusLabel.Text = photoNameTempBackup;
+        }
+
+        private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //renameToolStripMenuItem.Enabled = true;
+
         }
     }
 }
