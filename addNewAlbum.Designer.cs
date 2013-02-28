@@ -32,8 +32,8 @@
             this.promptLabel = new System.Windows.Forms.Label();
             this.albumNameTextBox = new System.Windows.Forms.TextBox();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.finishButton = new System.Windows.Forms.Button();
             this.selectFiles = new System.Windows.Forms.OpenFileDialog();
+            this.finishButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // promptLabel
@@ -67,7 +67,7 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(12, 59);
+            this.cancelButton.Location = new System.Drawing.Point(12, 103);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 5;
@@ -75,23 +75,23 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
+            // selectFiles
+            // 
+            this.selectFiles.FileName = "openFileDialog1";
+            this.selectFiles.Multiselect = true;
+            // 
             // finishButton
             // 
             this.finishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.finishButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.finishButton.Enabled = false;
-            this.finishButton.Location = new System.Drawing.Point(324, 59);
+            this.finishButton.Location = new System.Drawing.Point(324, 103);
             this.finishButton.Name = "finishButton";
             this.finishButton.Size = new System.Drawing.Size(75, 23);
             this.finishButton.TabIndex = 6;
             this.finishButton.Text = "Finish";
             this.finishButton.UseVisualStyleBackColor = true;
             this.finishButton.Click += new System.EventHandler(this.finishButton_Click);
-            // 
-            // selectFiles
-            // 
-            this.selectFiles.FileName = "openFileDialog1";
-            this.selectFiles.Multiselect = true;
             // 
             // addNewAlbum
             // 
@@ -125,7 +125,7 @@
         private System.Windows.Forms.Label promptLabel;
         private System.Windows.Forms.TextBox albumNameTextBox;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Button finishButton;
         private System.Windows.Forms.OpenFileDialog selectFiles;
+        private System.Windows.Forms.Button finishButton;
     }
 }

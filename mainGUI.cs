@@ -155,7 +155,10 @@ namespace SoftwareEng
          ************************************************************/
         private void photoListView_ItemActivate(object sender, EventArgs e)
         {
-            statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
+            if (debugMode == true && albumListView.SelectedItems.Count > 0)
+            {
+                statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
+            }
         }
 
         /************************************************************
@@ -172,22 +175,25 @@ namespace SoftwareEng
         ************************************************************/
         private void albumListActivation()
         {
-            createNewAlbumToolStripMenuItem.Enabled = false;
-
-            int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
-
-            if (selectedAlbumID > addAlbumID)
+            if (albumListView.SelectedItems.Count > 0)
             {
-                albumChosenbyUser = selectedAlbumID;
+                int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
 
-                //true tells the function to refresh list
-                guiPopulatePhotoListView(true);
+                if (selectedAlbumID > addAlbumID)
+                {
+                    albumChosenbyUser = selectedAlbumID;
 
-                albumChosenbyUser = selectedAlbumID;
-            }
-            else
-            {
-                guiShowCreateAlbumWindow();
+                    createNewAlbumToolStripMenuItem.Enabled = false;
+
+                    //true tells the function to refresh list
+                    guiPopulatePhotoListView(true);
+
+                    albumChosenbyUser = selectedAlbumID;
+                }
+                else
+                {
+                    guiShowCreateAlbumWindow();
+                }
             }
         }
 
@@ -215,7 +221,7 @@ namespace SoftwareEng
             addPhotosToExistingAlbumToolStripMenuItem.Enabled = true;
             mainFormBackbutton.Enabled = true;
 
-            if (debugMode == true)
+            if (debugMode == true && albumListView.SelectedItems.Count > 0)
             {
                 statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
             }
@@ -303,12 +309,9 @@ namespace SoftwareEng
             ComplexPhotoData newPicture= new ComplexPhotoData();
             foreach (string picFile in photoOpenFileDialog.FileNames)
             {
-                newPicture.path= picFile;
-                newPicture.extension = ".jpg";
-                //bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), newPicture, albumId, "");
+                bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumId, "");
             }
-            //true tells the function to refresh list
-            guiPopulatePhotoListView(true);
+            
         }
 
         /************************************************************
@@ -324,6 +327,8 @@ namespace SoftwareEng
             {
                 showError("Import picture warning");
             }
+            //true tells the function to refresh list
+            guiPopulatePhotoListView(true);
         }
 
         /************************************************************
@@ -362,18 +367,21 @@ namespace SoftwareEng
             addPhotosToExistingAlbumToolStripMenuItem.Enabled = false;
 
 
-            if (debugMode == true)
+            if (debugMode == true && albumListView.SelectedItems.Count > 0)
             {
                 statusLabel.Text = albumListView.SelectedItems[0].SubItems[1].Text;
             }
         }
 
         /************************************************************
-        * unfinished --needs testing
+        * unfinished
         ************************************************************/
         private void albumListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            //albumChosenbyUser = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
+            if (albumListView.SelectedItems.Count > 0)
+            {
+                albumChosenbyUser = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[albumListViewSubItemUidIndex].Text);
+            }
         }
 
         /************************************************************
