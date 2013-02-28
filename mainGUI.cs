@@ -315,8 +315,7 @@ namespace SoftwareEng
             foreach (string picFile in photoOpenFileDialog.FileNames)
             {
                 bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumId, "");
-            }
-            
+            } 
         }
 
         /************************************************************
@@ -437,14 +436,16 @@ namespace SoftwareEng
 
         private void photoListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            if (photoListView.SelectedItems.Count < 0)
+            if (photoListView.SelectedItems.Count <= 0)
             {
                 photoListView.ContextMenuStrip = null;
-                return;
             }
-            photoListView.ContextMenuStrip = photoContextMenuStrip;
-            photoNameTempBackup= photoListView.SelectedItems[0].Text;
-            statusLabel.Text = photoNameTempBackup;
+            else
+            {
+                photoListView.ContextMenuStrip = photoContextMenuStrip;
+                photoNameTempBackup = photoListView.SelectedItems[0].Text;
+                statusLabel.Text = photoNameTempBackup;
+            }
         }
 
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
