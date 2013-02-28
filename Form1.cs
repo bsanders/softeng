@@ -268,6 +268,11 @@ namespace SoftwareEng
         //change photo name
         private void changePhotoNameButton_Click(object sender, EventArgs e)
         {
+            photoBomb.changePhotoNameByUID(new SoftwareEng.generic_callback(changePhotoNameButton_callback), 1, 4, "renamedPhoto");
+        }
+
+        public void changePhotoNameButton_callback(ErrorReport error)
+        {
 
         }
 
