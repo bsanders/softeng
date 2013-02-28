@@ -20,11 +20,15 @@ namespace SoftwareEng
         //Edited Last: 
         //
         //initialize the backend object AND load the databases.
+        //DOES NOT initialize the databases.
         //PARAM 1 = the callback for the results of loading the databses.
         //PARAM 2 = the path to the album database (xml).
         //PARAM 3 = path to the pictures database.
         //PARAM 4 = the path to the folder where all the pictures
         //          tracked by this program are stored.
+        //ERROR CONDITIONS
+        //Fails if one of the database xml files is not found or if 
+        //the library folder does not exist.
         public PhotoBomb(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPath)
         {
             init(guiCallback, albumDatabasePathIn, pictureDatabasePathIn, libraryPath);
@@ -34,7 +38,7 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last: 
         //
-        //open the xml document that represents the
+        //reopen the xml document (database) that represents the
         //user's albums in the program.
         //PARAM 1 = a callback (delegate) to a gui function (see PhotoBombDelegates.cs).
         //
