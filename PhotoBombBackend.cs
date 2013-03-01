@@ -16,7 +16,7 @@ namespace SoftwareEng
     //it is the private part of the PhotoBomb class.
     partial class PhotoBomb
     {
-        
+
         //xml parsing utils.
         private XmlParser xmlParser;
 
@@ -27,9 +27,9 @@ namespace SoftwareEng
         //The XML in memory for the albumbs.
         //Add new vars here if we get more xmls.
         private XDocument _albumsDatabase;
-            private string albumsDatabasePath;
+        private string albumsDatabasePath;
         private XDocument _picturesDatabase;
-            private string picturesDatabasePath;
+        private string picturesDatabasePath;
 
         //-----------------------------------------------------------------
         //FUNCTIONS--------------------------------------------------------
@@ -56,7 +56,7 @@ namespace SoftwareEng
         private void rebuildBackendOnFilesystem_backend(generic_callback guiCallback)
         {
             ErrorReport errorReport = new ErrorReport();
-            
+
             //if the library folder existed, rename it.
             if (Directory.Exists(libraryPath))
             {
@@ -122,7 +122,8 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last:
-        private void reopenAlbumsXML_backend(generic_callback guiCallback){
+        private void reopenAlbumsXML_backend(generic_callback guiCallback)
+        {
             //use this to inform the calling gui of how things went.
             ErrorReport error = new ErrorReport();
 
@@ -139,10 +140,8 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!util_checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!util_checkAlbumDatabase(error))
             {
-                //make an error message here.
-
                 guiCallback(error);
                 return;
             }
@@ -187,16 +186,14 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //if the database is NOT valid.
-            if (!util_checkDatabaseIntegrity(_picturesDatabase, error))
+            if (!util_checkPicturesDatabase(error))
             {
-                //make an error message here.
-
                 guiCallback(error);
                 return;
             }
 
             _picturesDatabase.Save(picturesDatabasePath);
-            if(guiCallback != null)
+            if (guiCallback != null)
                 guiCallback(error);
         }
 
@@ -212,7 +209,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //if the database is NOT valid.
-            if (!util_checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!util_checkAlbumDatabase(error))
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "The album database was determined to be not valid.";
@@ -296,7 +293,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
-            if (!util_checkDatabaseIntegrity(_albumsDatabase, error))
+            if (!util_checkAlbumDatabase(error))
             {
                 guiCallback(error, null);
                 return;
@@ -320,7 +317,7 @@ namespace SoftwareEng
                 guiCallback(error, null);
                 return;
             }
-    
+
             //Now lets get all the picture data from
             //the album and fill out the picture object list.
             List<SimplePhotoData> _list = new List<SimplePhotoData>();
@@ -380,7 +377,7 @@ namespace SoftwareEng
                 return;
             }
         }//method
-        
+
 
         //-------------------------------------------------------------------
         //By: Ryan Moe
@@ -404,12 +401,13 @@ namespace SoftwareEng
 
             //Change me if you want to start naming the pictures differently in the library.
             String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
-            
+
             //Change me if you want the default album name to be different.
-            if(pictureNameInAlbum == ""){
+            if (pictureNameInAlbum == "")
+            {
                 pictureNameInAlbum = "Image " + newPicture.UID.ToString();
             }
-            
+
             //Move picture and get a new path for the picture in our storage.
             newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
             //error checking
@@ -457,6 +455,13 @@ namespace SoftwareEng
             albumData.UID = uid;
 
             util_addAlbumToAlbumDatabase(errorReport, albumData);
+
+            //if adding to the album database failed
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
 
             saveAlbumsXML_backend(null);
 

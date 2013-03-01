@@ -34,6 +34,10 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.selectFiles = new System.Windows.Forms.OpenFileDialog();
             this.finishButton = new System.Windows.Forms.Button();
+            this.cancelButtonPanel = new System.Windows.Forms.Panel();
+            this.finishButtonPanel = new System.Windows.Forms.Panel();
+            this.cancelButtonPanel.SuspendLayout();
+            this.finishButtonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // promptLabel
@@ -66,7 +70,7 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(12, 103);
+            this.cancelButton.Location = new System.Drawing.Point(0, 0);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 5;
@@ -84,7 +88,7 @@
             this.finishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.finishButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.finishButton.Enabled = false;
-            this.finishButton.Location = new System.Drawing.Point(324, 103);
+            this.finishButton.Location = new System.Drawing.Point(0, 0);
             this.finishButton.Name = "finishButton";
             this.finishButton.Size = new System.Drawing.Size(75, 23);
             this.finishButton.TabIndex = 6;
@@ -92,16 +96,32 @@
             this.finishButton.UseVisualStyleBackColor = true;
             this.finishButton.Click += new System.EventHandler(this.finishButton_Click);
             // 
+            // cancelButtonPanel
+            // 
+            this.cancelButtonPanel.Controls.Add(this.cancelButton);
+            this.cancelButtonPanel.Location = new System.Drawing.Point(12, 109);
+            this.cancelButtonPanel.Name = "cancelButtonPanel";
+            this.cancelButtonPanel.Size = new System.Drawing.Size(75, 23);
+            this.cancelButtonPanel.TabIndex = 7;
+            // 
+            // finishButtonPanel
+            // 
+            this.finishButtonPanel.Controls.Add(this.finishButton);
+            this.finishButtonPanel.Location = new System.Drawing.Point(330, 109);
+            this.finishButtonPanel.Name = "finishButtonPanel";
+            this.finishButtonPanel.Size = new System.Drawing.Size(75, 23);
+            this.finishButtonPanel.TabIndex = 8;
+            // 
             // addNewAlbum
             // 
             this.AcceptButton = this.finishButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(411, 138);
+            this.ClientSize = new System.Drawing.Size(417, 144);
             this.ControlBox = false;
-            this.Controls.Add(this.finishButton);
-            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.finishButtonPanel);
+            this.Controls.Add(this.cancelButtonPanel);
             this.Controls.Add(this.albumNameTextBox);
             this.Controls.Add(this.promptLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -115,6 +135,8 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add New Album";
+            this.cancelButtonPanel.ResumeLayout(false);
+            this.finishButtonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -127,5 +149,7 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.OpenFileDialog selectFiles;
         private System.Windows.Forms.Button finishButton;
+        private System.Windows.Forms.Panel cancelButtonPanel;
+        private System.Windows.Forms.Panel finishButtonPanel;
     }
 }

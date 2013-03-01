@@ -81,7 +81,7 @@ namespace SoftwareEng
             }
             else
             {
-                MessageBox.Show("New Album Successfully Created", "New Album", MessageBoxButtons.OK);
+                //MessageBox.Show("New Album Successfully Created", "New Album", MessageBoxButtons.OK);
                 //this.Close();
             }
         }

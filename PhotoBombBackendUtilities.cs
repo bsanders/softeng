@@ -23,6 +23,7 @@ namespace SoftwareEng
         //this will check for integrity problems.
         //RETURNS: true = good to go, false = the database is bad!
         //ALSO: this will append warnings/errors to the errorReport Parameter.
+        /*
         private Boolean util_checkDatabaseIntegrity(XDocument database, ErrorReport errorReport)
         {
             if (database == null)
@@ -35,6 +36,7 @@ namespace SoftwareEng
 
             return true;
         }
+         * */
 
 
         //----------------------------------------------------------
@@ -43,7 +45,7 @@ namespace SoftwareEng
         //RETURN: the element that has the param uid from the picture database.
         private XElement util_getComplexPictureByUID(ErrorReport error, int uid)
         {
-            if (util_checkDatabaseIntegrity(_picturesDatabase, error))
+            if (util_checkPicturesDatabase(error))
             {
                 //Try searching for the album with the uid specified.
                 XElement specificPicture;
@@ -181,7 +183,7 @@ namespace SoftwareEng
         //RETURN: true if the uid is valid, false otherwise.
         private Boolean util_checkPicturePath(String path)
         {
-            if(path != "")
+            if (path != "")
                 return true;
             return false;
         }
@@ -220,7 +222,7 @@ namespace SoftwareEng
                 }
             }//while
 
-            if(newUID != 999999)
+            if (newUID != 999999)
                 return newUID;
             return -1;
         }
@@ -288,7 +290,7 @@ namespace SoftwareEng
                 }
             }//while
 
-            if(newUID != 999999)
+            if (newUID != 999999)
                 return newUID;
             return -1;
         }
@@ -296,8 +298,13 @@ namespace SoftwareEng
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void util_addAlbumToAlbumDatabase(ErrorReport errorReport, SimpleAlbumData albumData){
-            //Error checking goes here!!!
+        private void util_addAlbumToAlbumDatabase(ErrorReport errorReport, SimpleAlbumData albumData)
+        {
+            //make sure the album database is valid.
+            if (!util_checkAlbumDatabase(errorReport))
+            {
+                return;
+            }
 
             //construct the object we will be adding to the database.
             XElement newAlbum = new XElement("album",
@@ -342,7 +349,7 @@ namespace SoftwareEng
             {
                 data.UID = (int)elem.Attribute("UID");
                 data.picturesNameInAlbum = elem.Element("name").Value;
-                
+
             }
             catch
             {
@@ -388,7 +395,7 @@ namespace SoftwareEng
             }
 
             //check if the library is ok.
-            if (!checkLibraryDirectory())
+            if (!util_checkLibraryDirectory())
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Something is wrong with the photo library.";
@@ -415,7 +422,7 @@ namespace SoftwareEng
         //-------------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private Boolean checkLibraryDirectory()
+        private Boolean util_checkLibraryDirectory()
         {
             return (Directory.Exists(libraryPath));
         }
@@ -475,6 +482,29 @@ namespace SoftwareEng
 
         }
 
+        //---------------------------------------------------------------------------
+        private Boolean util_checkAlbumDatabase(ErrorReport errorReport)
+        {
+            if (_albumsDatabase == null)
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
+                return false;
+            }
+            return true;
+        }
+        //-----------------------------------------------------------------------------
+
+        private Boolean util_checkPicturesDatabase(ErrorReport errorReport)
+        {
+            if (_picturesDatabase == null)
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
+                return false;
+            }
+            return true;
+        }
 
 
 

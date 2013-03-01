@@ -478,7 +478,7 @@ namespace SoftwareEng
         {
             renameToolStripMenuItem.Enabled = false;
 
-            if (photoListView.SelectedItems.Count >= 1)
+            if (photoListView.SelectedItems.Count > 0)
             {
                 photoListView.SelectedItems[firstListViewItemIndex].BeginEdit();
             }
@@ -491,11 +491,14 @@ namespace SoftwareEng
 
         private void viewPhoto()
         {
-            int photoUid = Convert.ToInt32(photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
+            if (photoListView.SelectedItems.Count > 0)
+            {
+                int photoUid = Convert.ToInt32(photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
 
-            //int albumUid = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
+                //int albumUid = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
 
-            bombaDeFotos.getPictureByUID(photoInfoRetrieved, photoUid);
+                bombaDeFotos.getPictureByUID(photoInfoRetrieved, photoUid);
+            }
         }
 
         public void photoInfoRetrieved(ErrorReport status, ComplexPhotoData thePhoto)
@@ -512,6 +515,11 @@ namespace SoftwareEng
             {
                 showError(status.description);
             }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ;
         }
     }
 }

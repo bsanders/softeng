@@ -26,6 +26,8 @@ namespace SoftwareEng
             this.Text = myName;
 
             displayPhoto();
+
+            //photoBox.LoadAsync(wantedPhoto.path);
         }
 
         private void displayPhoto()
