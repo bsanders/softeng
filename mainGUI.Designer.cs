@@ -55,6 +55,11 @@
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAlbumContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addNewAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backgroundPictureImporter = new System.ComponentModel.BackgroundWorker();
+            this.backgroundPhotoListLoader = new System.ComponentModel.BackgroundWorker();
+            this.backgroundPhotoLoader = new System.ComponentModel.BackgroundWorker();
+            this.backgroundAlbumListLoader = new System.ComponentModel.BackgroundWorker();
+            this.backgroundAlbumListDisplayer = new System.ComponentModel.BackgroundWorker();
             this.programMenuStrip.SuspendLayout();
             this.openAlbumContextMenuStrip.SuspendLayout();
             this.photoContextMenuStrip.SuspendLayout();
@@ -68,7 +73,7 @@
             this.helpToolStripMenuItem});
             this.programMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.programMenuStrip.Name = "programMenuStrip";
-            this.programMenuStrip.Size = new System.Drawing.Size(589, 24);
+            this.programMenuStrip.Size = new System.Drawing.Size(589, 29);
             this.programMenuStrip.TabIndex = 0;
             this.programMenuStrip.Text = "menuStrip1";
             // 
@@ -80,40 +85,41 @@
             this.addPhotosToExistingAlbumToolStripMenuItem,
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(49, 25);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // createNewAlbumToolStripMenuItem
             // 
             this.createNewAlbumToolStripMenuItem.Enabled = false;
             this.createNewAlbumToolStripMenuItem.Name = "createNewAlbumToolStripMenuItem";
-            this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.createNewAlbumToolStripMenuItem.Text = "Create New Album";
             this.createNewAlbumToolStripMenuItem.Click += new System.EventHandler(this.createNewAlbumToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(227, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(303, 6);
             // 
             // addPhotosToExistingAlbumToolStripMenuItem
             // 
             this.addPhotosToExistingAlbumToolStripMenuItem.Enabled = false;
             this.addPhotosToExistingAlbumToolStripMenuItem.Name = "addPhotosToExistingAlbumToolStripMenuItem";
-            this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add photos to existing album";
             this.addPhotosToExistingAlbumToolStripMenuItem.Click += new System.EventHandler(this.addPhotosToExistingAlbumToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(227, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(303, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -121,15 +127,16 @@
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(58, 25);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Enabled = false;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(127, 26);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -138,7 +145,7 @@
             this.albumListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.albumListView.Font = new System.Drawing.Font("Corbel", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.albumListView.Font = new System.Drawing.Font("Corbel", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
             this.albumListView.LargeImageList = this.defaultImageList;
@@ -163,20 +170,22 @@
             this.openAlbumContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.testToolStripMenuItem});
             this.openAlbumContextMenuStrip.Name = "albumContextMenuStrip";
-            this.openAlbumContextMenuStrip.Size = new System.Drawing.Size(104, 26);
+            this.openAlbumContextMenuStrip.Size = new System.Drawing.Size(153, 48);
             // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.testToolStripMenuItem.Text = "Open";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // mainFormBackbutton
             // 
             this.mainFormBackbutton.Enabled = false;
-            this.mainFormBackbutton.Location = new System.Drawing.Point(502, 408);
+            this.mainFormBackbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainFormBackbutton.Location = new System.Drawing.Point(502, 404);
             this.mainFormBackbutton.Name = "mainFormBackbutton";
-            this.mainFormBackbutton.Size = new System.Drawing.Size(75, 23);
+            this.mainFormBackbutton.Size = new System.Drawing.Size(75, 27);
             this.mainFormBackbutton.TabIndex = 2;
             this.mainFormBackbutton.Text = "Back";
             this.mainFormBackbutton.UseVisualStyleBackColor = true;
@@ -190,7 +199,7 @@
             this.photoListView.BackColor = System.Drawing.SystemColors.Window;
             this.photoListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
-            this.photoListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.photoListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.photoListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.photoListView.LabelEdit = true;
             this.photoListView.LabelWrap = false;
@@ -223,7 +232,7 @@
             // 
             // photoOpenFileDialog
             // 
-            this.photoOpenFileDialog.Filter = "Jpeg(*.jpg)|*.jpg";
+            this.photoOpenFileDialog.Filter = "Jpeg(*.jpg)|*.jpg|Jpeg(*.jpeg)|*.jpeg";
             this.photoOpenFileDialog.Multiselect = true;
             // 
             // photoContextMenuStrip
@@ -232,19 +241,19 @@
             this.viewToolStripMenuItem,
             this.renameToolStripMenuItem});
             this.photoContextMenuStrip.Name = "photoContextMenuStrip";
-            this.photoContextMenuStrip.Size = new System.Drawing.Size(153, 70);
+            this.photoContextMenuStrip.Size = new System.Drawing.Size(118, 48);
             // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.viewToolStripMenuItem.Text = "View";
             this.viewToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem_Click);
             // 
             // renameToolStripMenuItem
             // 
             this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            this.renameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.renameToolStripMenuItem.Text = "Rename";
             this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
             // 
@@ -262,6 +271,29 @@
             this.addNewAlbumToolStripMenuItem.Text = "Add New Album";
             this.addNewAlbumToolStripMenuItem.Click += new System.EventHandler(this.addNewAlbumToolStripMenuItem_Click);
             // 
+            // backgroundPictureImporter
+            // 
+            this.backgroundPictureImporter.WorkerSupportsCancellation = true;
+            this.backgroundPictureImporter.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundImportPictureWorker_DoWork);
+            this.backgroundPictureImporter.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundImportPictureWorker_RunWorkerCompleted);
+            // 
+            // backgroundPhotoListLoader
+            // 
+            this.backgroundPhotoListLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundPhotoListLoader_DoWork);
+            // 
+            // backgroundPhotoLoader
+            // 
+            this.backgroundPhotoLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundPhotoLoader_DoWork);
+            // 
+            // backgroundAlbumListLoader
+            // 
+            this.backgroundAlbumListLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundAlbumListLoader_DoWork);
+            this.backgroundAlbumListLoader.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundAlbumListLoader_RunWorkerCompleted);
+            // 
+            // backgroundAlbumListDisplayer
+            // 
+            this.backgroundAlbumListDisplayer.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundAlbumListDisplayer_DoWork);
+            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -270,10 +302,13 @@
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.mainFormBackbutton);
             this.Controls.Add(this.programMenuStrip);
-            this.Controls.Add(this.photoListView);
             this.Controls.Add(this.albumListView);
+            this.Controls.Add(this.photoListView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MainMenuStrip = this.programMenuStrip;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(599, 475);
+            this.MinimumSize = new System.Drawing.Size(599, 475);
             this.Name = "mainGUI";
             this.Text = "Photobombers";
             this.programMenuStrip.ResumeLayout(false);
@@ -312,5 +347,10 @@
         private System.Windows.Forms.ToolStripMenuItem addNewAlbumToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.ComponentModel.BackgroundWorker backgroundPictureImporter;
+        private System.ComponentModel.BackgroundWorker backgroundPhotoListLoader;
+        private System.ComponentModel.BackgroundWorker backgroundPhotoLoader;
+        private System.ComponentModel.BackgroundWorker backgroundAlbumListLoader;
+        private System.ComponentModel.BackgroundWorker backgroundAlbumListDisplayer;
     }
 }

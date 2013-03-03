@@ -45,10 +45,11 @@
             this.promptLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.promptLabel.AutoSize = true;
-            this.promptLabel.Location = new System.Drawing.Point(110, 22);
+            this.promptLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.promptLabel.Location = new System.Drawing.Point(35, 9);
             this.promptLabel.MinimumSize = new System.Drawing.Size(199, 13);
             this.promptLabel.Name = "promptLabel";
-            this.promptLabel.Size = new System.Drawing.Size(199, 13);
+            this.promptLabel.Size = new System.Drawing.Size(335, 20);
             this.promptLabel.TabIndex = 0;
             this.promptLabel.Text = "Please enter a name for your new album.";
             // 
@@ -56,12 +57,13 @@
             // 
             this.albumNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.albumNameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumNameTextBox.Location = new System.Drawing.Point(95, 54);
             this.albumNameTextBox.MaxLength = 16;
             this.albumNameTextBox.MinimumSize = new System.Drawing.Size(150, 20);
             this.albumNameTextBox.Name = "albumNameTextBox";
             this.albumNameTextBox.ShortcutsEnabled = false;
-            this.albumNameTextBox.Size = new System.Drawing.Size(225, 20);
+            this.albumNameTextBox.Size = new System.Drawing.Size(225, 26);
             this.albumNameTextBox.TabIndex = 1;
             this.albumNameTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.albumNameTextBox.TextChanged += new System.EventHandler(this.albumNameTextBox_TextChanged);
@@ -69,10 +71,12 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cancelButton.AutoSize = true;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(0, 0);
+            this.cancelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cancelButton.Location = new System.Drawing.Point(0, 4);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(75, 30);
             this.cancelButton.TabIndex = 5;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -86,11 +90,13 @@
             // finishButton
             // 
             this.finishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.finishButton.AutoSize = true;
             this.finishButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.finishButton.Enabled = false;
+            this.finishButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.finishButton.Location = new System.Drawing.Point(0, 0);
             this.finishButton.Name = "finishButton";
-            this.finishButton.Size = new System.Drawing.Size(75, 23);
+            this.finishButton.Size = new System.Drawing.Size(75, 30);
             this.finishButton.TabIndex = 6;
             this.finishButton.Text = "Finish";
             this.finishButton.UseVisualStyleBackColor = true;
@@ -98,18 +104,21 @@
             // 
             // cancelButtonPanel
             // 
+            this.cancelButtonPanel.AutoSize = true;
+            this.cancelButtonPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.cancelButtonPanel.Controls.Add(this.cancelButton);
-            this.cancelButtonPanel.Location = new System.Drawing.Point(12, 109);
+            this.cancelButtonPanel.Location = new System.Drawing.Point(12, 98);
             this.cancelButtonPanel.Name = "cancelButtonPanel";
-            this.cancelButtonPanel.Size = new System.Drawing.Size(75, 23);
+            this.cancelButtonPanel.Size = new System.Drawing.Size(78, 34);
             this.cancelButtonPanel.TabIndex = 7;
             // 
             // finishButtonPanel
             // 
+            this.finishButtonPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.finishButtonPanel.Controls.Add(this.finishButton);
-            this.finishButtonPanel.Location = new System.Drawing.Point(330, 109);
+            this.finishButtonPanel.Location = new System.Drawing.Point(330, 102);
             this.finishButtonPanel.Name = "finishButtonPanel";
-            this.finishButtonPanel.Size = new System.Drawing.Size(75, 23);
+            this.finishButtonPanel.Size = new System.Drawing.Size(75, 30);
             this.finishButtonPanel.TabIndex = 8;
             // 
             // addNewAlbum
@@ -136,7 +145,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add New Album";
             this.cancelButtonPanel.ResumeLayout(false);
+            this.cancelButtonPanel.PerformLayout();
             this.finishButtonPanel.ResumeLayout(false);
+            this.finishButtonPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

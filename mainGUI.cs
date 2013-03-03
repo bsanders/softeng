@@ -14,8 +14,12 @@ namespace SoftwareEng
     public partial class mainGUI : Form
     {
         // true enables additional output to help test the program
-        private const bool debugMode = true;
+        private const bool debugMode = false;
 
+        // switch that enables threading on program
+        private const bool threadingMode = false;
+
+        // didn't know what to call it, so I named it the literal spanish translation]
         private SoftwareEng.PhotoBomb bombaDeFotos;
 
         //stores the albumImageList index of the default image for albums
@@ -23,6 +27,8 @@ namespace SoftwareEng
 
         //used to specify the UID of the "add new album" icon
         private const int addAlbumID = 0;
+
+        private progressForm photoImportProgress;
 
         //--first selected item in a List View will have an index of zero, 
         //--this is necessary even if  listView multiselect is disabled
@@ -35,6 +41,9 @@ namespace SoftwareEng
 
         private string photoNameTempBackup = "";
 
+        private progressForm pictureImportProgress;
+
+
         /************************************************************
          * constructor
          ************************************************************/
@@ -42,20 +51,20 @@ namespace SoftwareEng
         {
             InitializeComponent();
 
-            //for now the gui will determine filepaths in case it is ever made a user choice
+            //for now the gui will determine filepaths(set to same folder as exe) in case it is ever made a user choice
             bombaDeFotos = new PhotoBomb(guiGenericErrorFunction, "albumRC1.xml", "photoRC1.xml", "photo library");
 
-            //display all albums 
+            //ensures that the album list is visible 
             albumListView.BringToFront();
 
             //true tells the function to refresh list
             populateAlbumView(true);
 
+            
             createNewAlbumToolStripMenuItem.Enabled = true;
             aboutToolStripMenuItem.Enabled = true;
 
             albumChosenbyUser = addAlbumID;
-
         }
 
         /************************************************************
@@ -101,8 +110,20 @@ namespace SoftwareEng
 
             if (refreshView == true)
             {
-                bombaDeFotos.getAllUserAlbumNames(new getAllUserAlbumNames_callback(guiAlbumsRetrieved));
+                if (threadingMode == true)
+                {
+                    backgroundAlbumListLoader.RunWorkerAsync();
+                }
+                else
+                {
+                    bombaDeFotos.getAllUserAlbumNames(new getAllUserAlbumNames_callback(guiAlbumsRetrieved));
+                }
             }
+        }
+
+        private void backgroundAlbumListLoader_DoWork(object sender, DoWorkEventArgs e)
+        {
+            bombaDeFotos.getAllUserAlbumNames(new getAllUserAlbumNames_callback(guiAlbumsRetrieved));
         }
 
         /************************************************************
@@ -132,7 +153,7 @@ namespace SoftwareEng
                     }
                     catch (Exception)
                     {
-                        MessageBox.Show("Exception!", "Super Error", MessageBoxButtons.OK);
+                        //MessageBox.Show("Exception!", "Super Error", MessageBoxButtons.OK);
                     }
                 }
 
@@ -145,30 +166,21 @@ namespace SoftwareEng
             }
         }
 
+        private void backgroundAlbumListDisplayer_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+
+
         /************************************************************
-        * temp
+        * temporary function to show an error
         ************************************************************/
         private void showError(string errorMessage)
         {
             MessageBox.Show(errorMessage, "Error!", MessageBoxButtons.OK);
         }
 
-        /************************************************************
-         * unfinished
-         ************************************************************/
-        private void photoListView_ItemActivate(object sender, EventArgs e)
-        {
-            viewPhoto();
 
-            if (albumListView.SelectedItems.Count > 0 && debugMode == true)
-            {
-                statusLabel.Text = albumListView.SelectedItems[0].SubItems[listViewSubItemUidIndex].Text;
-            }
-            else if (debugMode == true)
-            {
-                statusLabel.Text = "-1";
-            }
-        }
 
         /************************************************************
          * Finished
@@ -216,8 +228,21 @@ namespace SoftwareEng
 
             if (refreshView == true)
             {
-                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), albumChosenbyUser);
+                if (threadingMode == true)
+                {
+                    backgroundPhotoListLoader.RunWorkerAsync();
+                }
+                else
+                {
+                    bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), albumChosenbyUser);
+                }
             }
+        }
+
+
+        private void backgroundPhotoListLoader_DoWork(object sender, DoWorkEventArgs e)
+        {
+            bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), albumChosenbyUser);
         }
 
 
@@ -309,20 +334,75 @@ namespace SoftwareEng
         }
 
         /************************************************************
-        * unfinished
+        * Finished, needs testing
         ************************************************************/
         private void addPicturesToAlbum(int albumId)
+        {
+            if (threadingMode == true)
+            {
+                backgroundPictureImporter.RunWorkerAsync();
+            }
+            else
+            {
+                if (photoOpenFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+                pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length);
+                ComplexPhotoData newPicture = new ComplexPhotoData();
+                foreach (string picFile in photoOpenFileDialog.FileNames)
+                {
+                    bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumId, "");
+                }
+                guiPopulatePhotoListView(true);
+            }
+        }
+
+
+
+
+        /************************************************************
+        * Finished, needs testing
+        ************************************************************/
+        private void backgroundImportPictureWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             if (photoOpenFileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
-            ComplexPhotoData newPicture = new ComplexPhotoData();
+            pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length);
+
+            //ComplexPhotoData newPicture = new ComplexPhotoData();
+
+
+
             foreach (string picFile in photoOpenFileDialog.FileNames)
             {
-                bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumId, "");
+                bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumChosenbyUser, "");
             }
         }
+
+        /************************************************************
+         * unfinished
+         ************************************************************/
+        private void photoListView_ItemActivate(object sender, EventArgs e)
+        {
+            viewPhoto();
+
+
+            if (debugMode == true)
+            {
+                if (albumListView.SelectedItems.Count > 0)
+                {
+                    statusLabel.Text = albumListView.SelectedItems[0].SubItems[listViewSubItemUidIndex].Text;
+                }
+                else
+                {
+                    statusLabel.Text = "-1";
+                }
+            }
+        }
+
 
         /************************************************************
         * Finished
@@ -335,10 +415,8 @@ namespace SoftwareEng
             }
             else if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
-                showError("Import picture warning");
+                //showError("Import picture warning");
             }
-            //true tells the function to refresh list
-            guiPopulatePhotoListView(true);
         }
 
         /************************************************************
@@ -362,7 +440,14 @@ namespace SoftwareEng
         ************************************************************/
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("   Created by PhotoBombers Studio, LLC   ", "About", MessageBoxButtons.OK);
+            //MessageBox.Show("   Created by PhotoBombers Studio, LLC   ", "About", MessageBoxButtons.OK);
+            aboutToolStripMenuItem.Enabled = false;
+
+            aboutForm aboutBox = new aboutForm();
+
+            aboutBox.ShowDialog();
+
+            aboutToolStripMenuItem.Enabled = true;
         }
 
         /************************************************************
@@ -408,7 +493,8 @@ namespace SoftwareEng
             }
             else
             {
-                albumListView.ContextMenuStrip = addAlbumContextMenuStrip;
+                //albumListView.ContextMenuStrip = addAlbumContextMenuStrip;
+                albumListView.ContextMenuStrip = null;
             }
 
         }
@@ -506,10 +592,16 @@ namespace SoftwareEng
             if (status.reportID == ErrorReport.SUCCESS)
             {
                 //ComplexPhotoData toPhotoView= new ComplexPhotoData;
+                if (threadingMode == true)
+                {
+                    backgroundPhotoLoader.RunWorkerAsync(thePhoto);
+                }
+                else
+                {
+                    PhotoViewWindow photoDisplayer = new PhotoViewWindow(this, thePhoto, photoListView.SelectedItems[firstListViewItemIndex].Text);
 
-                PhotoViewWindow photoDisplayer = new PhotoViewWindow(this, thePhoto, photoListView.SelectedItems[firstListViewItemIndex].Text);
-
-                photoDisplayer.ShowDialog();
+                    photoDisplayer.ShowDialog();
+                }
             }
             else if(status.reportID == ErrorReport.FAILURE)
             {
@@ -517,9 +609,43 @@ namespace SoftwareEng
             }
         }
 
+        private void backgroundPhotoLoader_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ComplexPhotoData thePhoto = (ComplexPhotoData)e.Argument;
+
+            PhotoViewWindow photoDisplayer = new PhotoViewWindow(this, thePhoto, photoListView.SelectedItems[firstListViewItemIndex].Text);
+
+            photoDisplayer.ShowDialog();
+        }
+
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ;
+            Close();
         }
+
+
+
+        private void backgroundImportPictureWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //true tells the function to refresh list
+            guiPopulatePhotoListView(true);
+        }
+
+        private void backgroundAlbumListLoader_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            albumListActivation();
+        }
+
+
+
+
+
+
     }
 }
