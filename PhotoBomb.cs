@@ -7,12 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.ComponentModel;
 
 namespace SoftwareEng
 {
     //This is a PARTIAL class,
     //it is the public part of the PhotoBomb class.
-    partial class PhotoBomb
+    public partial class PhotoBomb
     {
         //----------------------------------------------
 
@@ -176,7 +177,19 @@ namespace SoftwareEng
             changePhotoNameByUID_backend(guiCallback, albumUID, photoUID, newName);
         }
 
+        //------------------------------------------------
+        //
+        public void addNewPictures(generic_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+        {
+            addNewPictures_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum, updateCallback, updateAmount);
+        }
 
+        //--------------------------------------------------
+
+        public ErrorReport cancelAddNewPicturesThread()
+        {
+            return cancelAddNewPicturesThread_backend();
+        }
 
 
 

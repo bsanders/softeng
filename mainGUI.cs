@@ -20,7 +20,7 @@ namespace SoftwareEng
         private const bool threadingMode = false;
 
         // didn't know what to call it, so I named it the literal spanish translation]
-        private SoftwareEng.PhotoBomb bombaDeFotos;
+        public SoftwareEng.PhotoBomb bombaDeFotos;
 
         //stores the albumImageList index of the default image for albums
         private const short defaultAlbumImageListIndex = 0;
@@ -28,7 +28,7 @@ namespace SoftwareEng
         //used to specify the UID of the "add new album" icon
         private const int addAlbumID = 0;
 
-        private progressForm photoImportProgress;
+        
 
         //--first selected item in a List View will have an index of zero, 
         //--this is necessary even if  listView multiselect is disabled
@@ -85,6 +85,18 @@ namespace SoftwareEng
                     oops = "Back end failed. ";
                 }
                 showError(oops);
+            }
+        }
+
+        /************************************************************
+         * Finished
+         ************************************************************/
+
+        private void guiConstructorCallback(ErrorReport status)
+        {
+            if (status.reportID != ErrorReport.SUCCESS)
+            {
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
 
@@ -303,10 +315,8 @@ namespace SoftwareEng
 
             createAlbumDialog.ShowDialog();
 
-            if (createAlbumDialog.DialogResult == DialogResult.OK)
+            if (createAlbumDialog.DialogResult != DialogResult.Cancel)
             {
-                createAlbumDialog.Close();
-
                 //true tells the function to refresh list 
                 populateAlbumView(true);
             }
@@ -348,17 +358,53 @@ namespace SoftwareEng
                 {
                     return;
                 }
-                pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length);
-                ComplexPhotoData newPicture = new ComplexPhotoData();
+
+                List<string> fullFileNames = new List<string>();
+
+                List<string> photoExtensions = new List<string>();
+
                 foreach (string picFile in photoOpenFileDialog.FileNames)
                 {
-                    bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumId, "");
+                    fullFileNames.Add(picFile);
+
+                    photoExtensions.Add(".jpg");
                 }
-                guiPopulatePhotoListView(true);
+
+                progressForm photoImportProgress;
+
+                pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length, bombaDeFotos);
+
+                
+
+                ComplexPhotoData newPicture = new ComplexPhotoData();
+
+
+                //pictureImportProgress.ShowDialog();
+                bombaDeFotos.addNewPictures(guiPictureAdded, fullFileNames, photoExtensions, albumChosenbyUser, null, new ProgressChangedEventHandler(guiUpdateImportProgress), 1);
+                pictureImportProgress.ShowDialog();
+
+
+                /*
+                foreach (string picFile in photoOpenFileDialog.FileNames)
+                {
+                    if (pictureImportProgress.DialogResult != DialogResult.Cancel)
+                    {
+                        bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumId, "");
+                        pictureImportProgress.updateProgress(1);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                */
             }
         }
 
-
+        public void guiUpdateImportProgress(object sender, ProgressChangedEventArgs e)
+        {
+            pictureImportProgress.updateProgress(1);
+        }
 
 
         /************************************************************
@@ -370,16 +416,25 @@ namespace SoftwareEng
             {
                 return;
             }
-            pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length);
+            progressForm photoImportProgress;
+
+
+            pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length, null);
 
             //ComplexPhotoData newPicture = new ComplexPhotoData();
+
+            pictureImportProgress.Show();
 
 
 
             foreach (string picFile in photoOpenFileDialog.FileNames)
             {
                 bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumChosenbyUser, "");
+
+                pictureImportProgress.updateProgress(1);
             }
+
+            pictureImportProgress.finished();
         }
 
         /************************************************************
@@ -417,6 +472,14 @@ namespace SoftwareEng
             {
                 //showError("Import picture warning");
             }
+            else
+            {
+                if (pictureImportProgress.DialogResult != DialogResult.Cancel)
+                {
+                    pictureImportProgress.finished();
+                }
+                guiPopulatePhotoListView(true);
+            }
         }
 
         /************************************************************
@@ -440,7 +503,6 @@ namespace SoftwareEng
         ************************************************************/
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("   Created by PhotoBombers Studio, LLC   ", "About", MessageBoxButtons.OK);
             aboutToolStripMenuItem.Enabled = false;
 
             aboutForm aboutBox = new aboutForm();
@@ -511,7 +573,9 @@ namespace SoftwareEng
         {
             if (photoListViewItemRenameCheck(e.Label) == false)
             {
+                renameToolStripMenuItem.Enabled = true;
                 e.CancelEdit = true;
+                showError("Invalid photo name.");
                 return;
             }
             int selectedItemUid = Convert.ToInt32(photoListView.Items[e.Item].SubItems[listViewSubItemUidIndex].Text);
@@ -574,7 +638,7 @@ namespace SoftwareEng
         {
             viewPhoto();
         }
-
+        //-------------------------------------
         private void viewPhoto()
         {
             if (photoListView.SelectedItems.Count > 0)
@@ -586,7 +650,7 @@ namespace SoftwareEng
                 bombaDeFotos.getPictureByUID(photoInfoRetrieved, photoUid);
             }
         }
-
+        //-------------------------------------
         public void photoInfoRetrieved(ErrorReport status, ComplexPhotoData thePhoto)
         {
             if (status.reportID == ErrorReport.SUCCESS)
@@ -598,9 +662,16 @@ namespace SoftwareEng
                 }
                 else
                 {
-                    PhotoViewWindow photoDisplayer = new PhotoViewWindow(this, thePhoto, photoListView.SelectedItems[firstListViewItemIndex].Text);
-
-                    photoDisplayer.ShowDialog();
+                    //check to see if photo exists.
+                    if (File.Exists(thePhoto.path) == true)
+                    {
+                        PhotoViewWindow photoDisplayer = new PhotoViewWindow(this, thePhoto, photoListView.SelectedItems[firstListViewItemIndex].Text);
+                        photoDisplayer.ShowDialog();
+                    }
+                    else
+                    {
+                        showError("Error: Photograph missing.");
+                    }
                 }
             }
             else if(status.reportID == ErrorReport.FAILURE)

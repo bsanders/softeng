@@ -58,12 +58,12 @@
             // okButton
             // 
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.okButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.okButton.Location = new System.Drawing.Point(93, 213);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 26);
             this.okButton.TabIndex = 2;
-            this.okButton.Text = "OK!";
+            this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 

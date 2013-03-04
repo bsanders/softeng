@@ -8,13 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.IO;
+using System.ComponentModel;
+using System.Threading;
 
 namespace SoftwareEng
 {
 
     //This is a PARTIAL class,
     //it is the private part of the PhotoBomb class.
-    partial class PhotoBomb
+    public partial class PhotoBomb
     {
 
         //xml parsing utils.
@@ -444,6 +446,66 @@ namespace SoftwareEng
         }
 
 
+        //-------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        private ErrorReport addNewPicture_backend(ErrorReport errorReport, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum)
+        {
+            ComplexPhotoData newPicture = new ComplexPhotoData();
+
+            //get a unique ID for this photo and update its 
+            //data object to reflect this new UID.
+            newPicture.UID = util_getNewPicUID();
+            //error checking
+            if (newPicture.UID == -1)
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Failed to get a UID for a new picture.";
+                return errorReport;
+            }
+
+            //Change me if you want to start naming the pictures differently in the library.
+            String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
+
+            //Change me if you want the default album name to be different.
+            if (pictureNameInAlbum == "")
+            {
+                pictureNameInAlbum = "Image " + newPicture.UID.ToString();
+            }
+
+            //Move picture and get a new path for the picture in our storage.
+            newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
+            //error checking
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                return errorReport;
+            }
+
+            newPicture.extension = photoExtension;
+
+            util_addPicToPicDatabase(errorReport, newPicture);
+
+            //if adding to the picture database failed
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                return errorReport;
+            }
+
+            util_addPicToAlbumDatabase(errorReport, newPicture, albumUID, pictureNameInAlbum);
+
+            //if adding to the album database failed
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                return errorReport;
+            }
+
+            savePicturesXML_backend(null);
+            saveAlbumsXML_backend(null);
+
+            return errorReport;
+        }
+
+
 
 
         //-------------------------------------------------------------
@@ -544,6 +606,94 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
         }
 
+        //---------------------------------------------
+        //TESTING
+        BackgroundWorker worker;
+
+        private void addNewPictures_backend(generic_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+        {
+            worker = new BackgroundWorker();
+
+            //transfer parameters into a data class.
+            bgThreadData data = new bgThreadData();
+            data.errorReport = new ErrorReport();
+            data.guiCallback = guiCallback;
+            data.photoUserPath = photoUserPath;
+            data.photoExtension = photoExtension;
+            data.albumUID = albumUID;
+            data.pictureNameInAlbum = pictureNameInAlbum;
+            //data.guiUpdateCallback;
+            //data.updateAmount;
+
+            //setup the worker.
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+            worker.DoWork += new DoWorkEventHandler(worker_DoWork);
+            worker.ProgressChanged += updateCallback;
+            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
+            worker.RunWorkerAsync(data);
+        }
+
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //get working variables
+            bgThreadData data = (bgThreadData)e.Argument;
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            for (int i = 0; i < data.photoUserPath.Count; ++i )
+            {
+                if (data.errorReport.reportID != ErrorReport.FAILURE && !worker.CancellationPending)
+                {
+                    String pictureName;
+                    if (data.pictureNameInAlbum == null)
+                        pictureName = "";
+                    else if (data.pictureNameInAlbum.ElementAt(i) == "")
+                    {
+                        pictureName = "";
+                    }
+                    else
+                        pictureName = data.pictureNameInAlbum.ElementAt(i);
+
+                    addNewPicture_backend(data.errorReport, data.photoUserPath.ElementAt(i), data.photoExtension.ElementAt(i), data.albumUID, pictureName);
+
+                    worker.ReportProgress(1);
+                }//if
+                else
+                {
+                    //if (worker.CancellationPending)
+                        //e.Cancel = true;
+                    break;
+                }
+            }//for
+            //done!
+            e.Result = data;
+        }
+
+
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            bgThreadData results = (bgThreadData)e.Result;
+
+            results.guiCallback(results.errorReport);
+        }
+
+        //------------------------------------------
+
+        private ErrorReport cancelAddNewPicturesThread_backend()
+        {
+            ErrorReport error = new ErrorReport();
+            try
+            {
+                worker.CancelAsync();
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Failed to stop the thread.";
+            }
+            return error;
+        }
+
 
 
 
@@ -551,4 +701,26 @@ namespace SoftwareEng
 
 
     }//class
+
+
+
+
+
+
+    public class bgThreadData
+    {
+        public ErrorReport errorReport;
+        public generic_callback guiCallback;
+        public List<String> photoUserPath;
+        public List<String> photoExtension;
+        public int albumUID;
+        public List<String> pictureNameInAlbum;
+        public threadUpdateDelegate guiUpdateCallback;
+        public int updateAmount;//number of photos to process before calling guiUpdate.
+    }
+
+
+
+
+
 }

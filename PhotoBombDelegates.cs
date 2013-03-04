@@ -30,6 +30,7 @@ namespace SoftwareEng
 
     public delegate void guiCreateAlbumDelegate(string input);
 
-
+    //
+    public delegate void threadUpdateDelegate(int processed);
     
 }

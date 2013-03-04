@@ -85,41 +85,41 @@
             this.addPhotosToExistingAlbumToolStripMenuItem,
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(49, 25);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(47, 25);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // createNewAlbumToolStripMenuItem
             // 
             this.createNewAlbumToolStripMenuItem.Enabled = false;
             this.createNewAlbumToolStripMenuItem.Name = "createNewAlbumToolStripMenuItem";
-            this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
+            this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(266, 26);
             this.createNewAlbumToolStripMenuItem.Text = "Create New Album";
             this.createNewAlbumToolStripMenuItem.Click += new System.EventHandler(this.createNewAlbumToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(303, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(263, 6);
             // 
             // addPhotosToExistingAlbumToolStripMenuItem
             // 
             this.addPhotosToExistingAlbumToolStripMenuItem.Enabled = false;
             this.addPhotosToExistingAlbumToolStripMenuItem.Name = "addPhotosToExistingAlbumToolStripMenuItem";
-            this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
-            this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add photos to existing album";
+            this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(266, 26);
+            this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add photos to this album";
             this.addPhotosToExistingAlbumToolStripMenuItem.Click += new System.EventHandler(this.addPhotosToExistingAlbumToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(303, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(263, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(266, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -127,16 +127,16 @@
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
-            this.helpToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.helpToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(58, 25);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(57, 25);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Enabled = false;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(127, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(126, 26);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -145,7 +145,7 @@
             this.albumListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.albumListView.Font = new System.Drawing.Font("Corbel", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.albumListView.Font = new System.Drawing.Font("Corbel", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
             this.albumListView.LargeImageList = this.defaultImageList;
@@ -182,7 +182,7 @@
             // mainFormBackbutton
             // 
             this.mainFormBackbutton.Enabled = false;
-            this.mainFormBackbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mainFormBackbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainFormBackbutton.Location = new System.Drawing.Point(502, 404);
             this.mainFormBackbutton.Name = "mainFormBackbutton";
             this.mainFormBackbutton.Size = new System.Drawing.Size(75, 27);

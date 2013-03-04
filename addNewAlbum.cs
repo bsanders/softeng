@@ -54,6 +54,8 @@ namespace SoftwareEng
         /************************************************************
         * 
         ************************************************************/
+
+        
         public void albumNameAccepted(ErrorReport status)
         {
             if (status.reportID != ErrorReport.SUCCESS)
@@ -81,8 +83,9 @@ namespace SoftwareEng
             }
             else
             {
+                DialogResult = DialogResult.OK;
                 //MessageBox.Show("New Album Successfully Created", "New Album", MessageBoxButtons.OK);
-                //this.Close();
+                this.Close();
             }
         }
 
@@ -94,7 +97,6 @@ namespace SoftwareEng
         {
             finishButton.Enabled = false ;
             createTheNewAlbum();
-            //this.Close();
         }
 
         /************************************************************

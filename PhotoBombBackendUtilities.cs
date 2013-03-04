@@ -1,4 +1,12 @@
-﻿/**
+﻿/*
+ * cant rename after failed rename.
+ * photo names must be unique.
+ * photo viewer is too big!!!
+ * 
+ * 
+ */ 
+
+/**
  * By: Ryan Moe
  * 
  * This class is for utility functions for the PhotoBomb backend.
@@ -14,7 +22,10 @@ using System.IO;
 
 namespace SoftwareEng
 {
-    partial class PhotoBomb
+
+
+
+    public partial class PhotoBomb
     {
         //----------------------------------------------------------
         //By: Ryan Moe
@@ -158,7 +169,7 @@ namespace SoftwareEng
         //RETURN: true if the uid is valid, false otherwise.
         private Boolean util_checkPhotoUID(int uid)
         {
-            if (uid > 0 && uid < 999999)
+            if (uid > 0 && uid < 2000000000)
                 return true;
             return false;
         }
@@ -166,14 +177,21 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //Check a pictures extension.
-        //RETURN: true if the uid is valid, false otherwise.
+        //RETURN: true if the extension is valid, false otherwise.
         private Boolean util_checkPictureExtension(String extension)
         {
+            //This is not being use right now because
+            //this job has been given to the gui.
+            //Uncomment out this to re-enable it, everything
+            //is still hooked up!
+            /*
             if (extension.Equals(".jpg") || extension.Equals(".png"))
             {
                 return true;
             }
             return false;
+             */
+            return true;
         }
 
         //--------------------------------------------------------
@@ -206,7 +224,7 @@ namespace SoftwareEng
         {
             int newUID = 1;
             Boolean uidNotFound = true;
-            while (uidNotFound && newUID < 999999)
+            while (uidNotFound && newUID < 2000000000)
             {
                 try
                 {
