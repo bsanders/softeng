@@ -55,11 +55,6 @@
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAlbumContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addNewAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.backgroundPictureImporter = new System.ComponentModel.BackgroundWorker();
-            this.backgroundPhotoListLoader = new System.ComponentModel.BackgroundWorker();
-            this.backgroundPhotoLoader = new System.ComponentModel.BackgroundWorker();
-            this.backgroundAlbumListLoader = new System.ComponentModel.BackgroundWorker();
-            this.backgroundAlbumListDisplayer = new System.ComponentModel.BackgroundWorker();
             this.programMenuStrip.SuspendLayout();
             this.openAlbumContextMenuStrip.SuspendLayout();
             this.photoContextMenuStrip.SuspendLayout();
@@ -271,29 +266,6 @@
             this.addNewAlbumToolStripMenuItem.Text = "Add New Album";
             this.addNewAlbumToolStripMenuItem.Click += new System.EventHandler(this.addNewAlbumToolStripMenuItem_Click);
             // 
-            // backgroundPictureImporter
-            // 
-            this.backgroundPictureImporter.WorkerSupportsCancellation = true;
-            this.backgroundPictureImporter.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundImportPictureWorker_DoWork);
-            this.backgroundPictureImporter.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundImportPictureWorker_RunWorkerCompleted);
-            // 
-            // backgroundPhotoListLoader
-            // 
-            this.backgroundPhotoListLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundPhotoListLoader_DoWork);
-            // 
-            // backgroundPhotoLoader
-            // 
-            this.backgroundPhotoLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundPhotoLoader_DoWork);
-            // 
-            // backgroundAlbumListLoader
-            // 
-            this.backgroundAlbumListLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundAlbumListLoader_DoWork);
-            this.backgroundAlbumListLoader.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundAlbumListLoader_RunWorkerCompleted);
-            // 
-            // backgroundAlbumListDisplayer
-            // 
-            this.backgroundAlbumListDisplayer.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundAlbumListDisplayer_DoWork);
-            // 
             // mainGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -347,10 +319,5 @@
         private System.Windows.Forms.ToolStripMenuItem addNewAlbumToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.ComponentModel.BackgroundWorker backgroundPictureImporter;
-        private System.ComponentModel.BackgroundWorker backgroundPhotoListLoader;
-        private System.ComponentModel.BackgroundWorker backgroundPhotoLoader;
-        private System.ComponentModel.BackgroundWorker backgroundAlbumListLoader;
-        private System.ComponentModel.BackgroundWorker backgroundAlbumListDisplayer;
     }
 }
