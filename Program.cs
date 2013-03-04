@@ -21,13 +21,11 @@ namespace SoftwareEng
 
             System.Threading.Mutex mutex = new System.Threading.Mutex(ownThisMutex, "PhotoBomberMutex", out mutexCreated);
 
+            //thus another instance is already running
             if (mutexCreated == false)
             {
                 return;
             }
-            
-
-
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

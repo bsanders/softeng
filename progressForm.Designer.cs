@@ -28,12 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(progressForm));
             this.finishButton = new System.Windows.Forms.Button();
             this.importProgressBar = new System.Windows.Forms.ProgressBar();
             this.progressLabel = new System.Windows.Forms.Label();
-            this.importNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -71,20 +68,12 @@
             this.progressLabel.Text = "Pictures Importing...";
             this.progressLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // importNotifyIcon
-            // 
-            this.importNotifyIcon.BalloonTipText = "Click Here to See";
-            this.importNotifyIcon.BalloonTipTitle = "Pictures successfully imported!";
-            this.importNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("importNotifyIcon.Icon")));
-            this.importNotifyIcon.Text = "test";
-            this.importNotifyIcon.Visible = true;
-            // 
             // cancelButton
             // 
             this.cancelButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.Location = new System.Drawing.Point(177, 146);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(2);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 3;
@@ -99,7 +88,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(432, 181);
+            this.ClientSize = new System.Drawing.Size(428, 177);
             this.ControlBox = false;
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.progressLabel);
@@ -121,7 +110,6 @@
         private System.Windows.Forms.Button finishButton;
         private System.Windows.Forms.ProgressBar importProgressBar;
         private System.Windows.Forms.Label progressLabel;
-        private System.Windows.Forms.NotifyIcon importNotifyIcon;
         private System.Windows.Forms.Button cancelButton;
     }
 }
