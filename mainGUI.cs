@@ -414,20 +414,20 @@ namespace SoftwareEng
         {
             if (status.reportID == ErrorReport.FAILURE)
             {
-                //showError(status.description);
+                showError(status.description);
             }
             else if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
-                //showError("Import picture warning");
+                showError("Import picture warning");
             }
-            else
+
+            //Do this even if there was a FAILURE
+            if (pictureImportProgress.DialogResult != DialogResult.Cancel)
             {
-                if (pictureImportProgress.DialogResult != DialogResult.Cancel)
-                {
-                    pictureImportProgress.finished();
-                }
-                guiPopulatePhotoListView(true);
+                pictureImportProgress.finished();
             }
+            guiPopulatePhotoListView(true);
+
         }
 
         /*********************************************************************************************

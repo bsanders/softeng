@@ -67,6 +67,7 @@ namespace SoftwareEng
                         picsAddedSinceReport = 0;
                     }
                 }//if
+                //something went wrong, break.
                 else
                 {
                     break;
