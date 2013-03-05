@@ -54,7 +54,9 @@ namespace SoftwareEng
             backendBuilt = false;
 
             //for now the gui will determine filepaths(set to same folder as exe) in case it is ever made a user choice
-            bombaDeFotos = new PhotoBomb(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", "photo library");
+            bombaDeFotos = new PhotoBomb();
+            bombaDeFotos.init(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", "photo library");
+
 
             //ensures that the album list is visible 
             albumListView.BringToFront();
@@ -98,7 +100,7 @@ namespace SoftwareEng
         /************************************************************
          * Finished
          ************************************************************/
-
+        //RM: why is this here???
         private void guiConstructorCallback(ErrorReport status)
         {
             if (status.reportID == ErrorReport.SUCCESS)

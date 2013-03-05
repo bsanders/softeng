@@ -25,7 +25,8 @@ namespace SoftwareEng
         public Form1()
         {
             InitializeComponent();
-            photoBomb = new SoftwareEng.PhotoBomb(new generic_callback(photoBombConstructor_callback), "test1.xml", "test2.xml", "pictureLibrary");
+            photoBomb = new SoftwareEng.PhotoBomb();
+            photoBomb.init(new generic_callback(photoBombConstructor_callback), "test1.xml", "test2.xml", "pictureLibrary");
         }
 
         public void photoBombConstructor_callback(ErrorReport e)
