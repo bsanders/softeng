@@ -1,6 +1,8 @@
 ﻿/**
  * This is the main program for the PhotoBomb backend.
  * These are the function calls for the GUI to call.
+ * 
+ * Keep these functions short to keep it easier on the gui builder.
  **/
 using System;
 using System.Collections.Generic;
@@ -19,9 +21,14 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last: 
+        public PhotoBomb(){}
+
+        //----------------------------------------------
+        //By: Ryan Moe
+        //Edited Last: 
         //
         //initialize the backend object AND load the databases.
-        //DOES NOT initialize the databases.
+        //DOES NOT re-initialize the databases if there is a problem.
         //PARAM 1 = the callback for the results of loading the databses.
         //PARAM 2 = the path to the album database (xml).
         //PARAM 3 = path to the pictures database.
@@ -30,11 +37,6 @@ namespace SoftwareEng
         //ERROR CONDITIONS
         //Fails if one of the database xml files is not found or if 
         //the library folder does not exist.
-        public PhotoBomb()
-        {
-            
-        }
-
         public void init(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPath)
         {
             init_backend(guiCallback, albumDatabasePathIn, pictureDatabasePathIn, libraryPath);
@@ -45,6 +47,12 @@ namespace SoftwareEng
         //Edited Last: 
         //
         //CAREFULL!!!  This will blow out the databases and make a new library folder.
+        //Before making the new library folder, if an old folder was found, that old folder
+        //will be renamed to libraryName_backup.
+        //ERROR CONDITIONS
+        //This returns an error if it fails to create one of the database files or
+        //the folder.  If libraryName_backup exists it also returns an error.
+
         public void rebuildBackendOnFilesystem(generic_callback guiCallback)
         {
             rebuildBackendOnFilesystem_backend(guiCallback);
@@ -57,7 +65,6 @@ namespace SoftwareEng
         //reopen the xml document (database) that represents the
         //user's albums in the program.
         //PARAM 1 = a callback (delegate) to a gui function (see PhotoBombDelegates.cs).
-        //
         //ERROR CONDITIONS
         //1) if the xml file does not exist, an error will be returned.
         //2) if the xml file does not contain VALID xml, error.
@@ -82,6 +89,9 @@ namespace SoftwareEng
         //
         //Open the pictures database (xml file).
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
+        //ERROR CONDITIONS
+        //1) if the xml file does not exist, an error will be returned.
+        //2) if the xml file does not contain VALID xml, error.
         public void reopenPicturesXML(generic_callback guiCallback)
         {
             reopenPicturesXML_backend(guiCallback);
@@ -116,7 +126,9 @@ namespace SoftwareEng
         //Edited Last:
         //
         //This method will return ALL of the pictures 
-        //that are within a single album.
+        //that are within a single album to the callback.
+        //PARAM 1 = the gui callback.
+        //PARAM 2 = the UID of the album to get all the photo names from.
         public void getAllPhotosInAlbum(getAllPhotosInAlbum_callback guiCallback, int albumUID)
         {
             getAllPhotosInAlbum_backend(guiCallback, albumUID);
@@ -129,7 +141,6 @@ namespace SoftwareEng
         //
         //This method will return a complex photo data object
         //filled out with the data of one photo referenced by the uid param.
-        //NOT TESTED YET.
         public void getPictureByUID(getPhotoByUID_callback guiCallback, int uid)
         {
             getPictureByUID_backend(guiCallback, uid);
@@ -140,6 +151,13 @@ namespace SoftwareEng
         //Edited Last:
         //
         //Adds a picture to the picture database AND the album database.
+        //Also this makes a copy of the photo in the Library.
+        //PARAM 1 = gui callback.
+        //PARAM 2 = the path to the photo that is being imported.
+        //PARAM 3 = extension of the photo (ex: ".jpg")
+        //PARAM 4 = uid of the album that the photo is being added to.
+        //PARAM 5 = the name of the photo in the album.  NOTE: you can 
+        //          send in "" and the backend will give the photo a default name.
         public void addNewPicture(generic_callback guiCallback, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum)
         {
             addNewPicture_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum);
@@ -150,6 +168,9 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //
+        //Adds a new album to the album database.
+        //PARAM 2 = a data class that you need to fill out with the new album's info.
+        //          NOTE: you don't need to worry about the UID, that gets set in here.
         public void addNewAlbum(generic_callback guiCallback, SimpleAlbumData albumData)
         {
             addNewAlbum_backend(guiCallback, albumData);

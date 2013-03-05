@@ -1,6 +1,10 @@
 ﻿/**
  * This is the backend for the PhotoBomb program.
  * These functions are NOT to be used by a frontend (gui).
+ * 
+ * These functions should be written in a "conductor" sort of
+ * way, in that they should try and call as many small functions
+ * as they can other classes (like the utils class).
  **/
 using System;
 using System.Collections.Generic;
@@ -611,7 +615,8 @@ namespace SoftwareEng
         {
             addPhotosThread = new BackgroundWorker();
 
-            //transfer parameters into a data class.
+            //transfer parameters into a data class to pass
+            //into the photo thread.
             addPhotosThreadData data = new addPhotosThreadData();
             data.errorReport = new ErrorReport();
             data.guiCallback = guiCallback;
@@ -619,8 +624,6 @@ namespace SoftwareEng
             data.photoExtension = photoExtension;
             data.albumUID = albumUID;
             data.pictureNameInAlbum = pictureNameInAlbum;
-            //data.guiUpdateCallback;
-            //data.updateAmount;
 
             //setup the worker.
             addPhotosThread.WorkerReportsProgress = true;
