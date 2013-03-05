@@ -35,7 +35,8 @@ namespace SoftwareEng
 
         private string photoNameTempBackup = "";
 
-
+        //--this object was made a class member to alleviate issues with 
+        //--modifying
         private progressForm pictureImportProgress;
 
 
@@ -416,6 +417,7 @@ namespace SoftwareEng
             {
                 showError(status.description);
                 pictureImportProgress.Close();
+                guiPopulatePhotoListView(true);
                 return;
             }
             if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
