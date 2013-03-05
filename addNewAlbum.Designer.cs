@@ -49,9 +49,9 @@
             this.promptLabel.Location = new System.Drawing.Point(48, 9);
             this.promptLabel.MinimumSize = new System.Drawing.Size(199, 13);
             this.promptLabel.Name = "promptLabel";
-            this.promptLabel.Size = new System.Drawing.Size(296, 20);
+            this.promptLabel.Size = new System.Drawing.Size(292, 20);
             this.promptLabel.TabIndex = 0;
-            this.promptLabel.Text = "Please enter a name for your new album.";
+            this.promptLabel.Text = "Please enter a name for your new album";
             // 
             // albumNameTextBox
             // 
