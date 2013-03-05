@@ -36,11 +36,11 @@ namespace SoftwareEng
         private string photoNameTempBackup = "";
 
         //--this object was made a class member to alleviate issues with 
-        //--modifying
+        //--different functions modifying
         private progressForm pictureImportProgress;
 
 
-        //--for showing errors 
+        //--for showing this class's errors 
         private ErrorDialogForm errorBox;
 
 
@@ -76,9 +76,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: an object of ErrorReport which will be used to check if backend was successful
+        * return type: void
+        * purpose: says generic error, but is used for blowing up the backend and restarting 
         *********************************************************************************************/
         private void guiGenericErrorFunction(ErrorReport status)
         {
@@ -94,7 +94,7 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
+        * parameters: an object of ErrorReport which will be used to check if backend was successful
         * return type: 
         * purpose: 
         *********************************************************************************************/
@@ -140,8 +140,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: an object of ErrorReport which will be used to check if backend was successful,
+        *   and a list <type is SimpleAlbumData> containing data to identify all albums requested
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         public void guiAlbumsRetrieved(ErrorReport status, List<SimpleAlbumData> albumsRetrieved)
@@ -199,9 +200,10 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: windows defined
+        * return type: void
+        * purpose: calls albumListActivation() which does the real work (to make sure different event
+        *   handlers did the same thing)
         *********************************************************************************************/
         private void albumListView_ItemActivate(object sender, EventArgs e)
         {
@@ -211,16 +213,18 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: none
+        * return type: void
+        * purpose: does the real work to handle when an item in albumListView is activated
         *********************************************************************************************/
         private void albumListActivation()
         {
+            //check to make sure there actually are selected items
             if (albumListView.SelectedItems.Count > 0)
             {
                 int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
-
+                
+                // check to make sure selected item isn't the "add album" icon
                 if (selectedAlbumID > addAlbumID)
                 {
                     albumChosenbyUser = selectedAlbumID;
@@ -242,9 +246,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: a bool that determines whether the photosList is clear
+        * return type: void
+        * purpose: clears and refreshes the list of photos
         *********************************************************************************************/
         public void guiPopulatePhotoListView(bool refreshView)
         {
@@ -259,9 +263,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: ErrorReport, and a list<SimplePhotoData> containing all photo data
+        * return type: void
+        * purpose: this function decides how the gui will respond when the back end finishes
         *********************************************************************************************/
         public void guiPhotosInAlbumRetrieved(ErrorReport status, List<SimplePhotoData> albumContents)
         {
@@ -272,6 +276,8 @@ namespace SoftwareEng
             if (status.reportID == ErrorReport.SUCCESS)
             {
                 photoListView.BeginUpdate();
+                
+                //--if switching to another kind of "view", from here to the end of catch block
                 ListViewItem itemHolder = null;
                 ListViewItem.ListViewSubItem[] itemHolderSubitems;
 
@@ -291,6 +297,8 @@ namespace SoftwareEng
                     {
                         showError("Error: Album missing.");
                     }
+                    //end of catch
+                    
                 }
                 photoListView.EndUpdate();
             }
@@ -303,8 +311,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: none
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void guiShowCreateAlbumWindow()
@@ -326,7 +334,7 @@ namespace SoftwareEng
         /*********************************************************************************************
         * Author: Alejandro Sosa
         * parameters: 
-        * return type: 
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         public void guiCheckAlbumNameIsUnique(string userInput, generic_callback addNewAlbumDelegate)
@@ -337,7 +345,7 @@ namespace SoftwareEng
         /*********************************************************************************************
         * Author: Alejandro Sosa
         * parameters: 
-        * return type: 
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         public void guiCreateThisAlbum(string userInput, generic_callback addNewAlbumDelegate)
@@ -351,8 +359,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: int that specifies the UID of an album to add pictures to
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void addPicturesToAlbum(int albumId)
@@ -365,7 +373,7 @@ namespace SoftwareEng
                 List<string> fullFileNames = new List<string>();
 
                 List<string> photoExtensions = new List<string>();
-
+                //--fills up both lists that will be passed to bombaDeFotos.addNewPictures
                 foreach (string picFile in photoOpenFileDialog.FileNames)
                 {
                     fullFileNames.Add(picFile);
@@ -377,10 +385,7 @@ namespace SoftwareEng
 
                 pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length, bombaDeFotos);
 
-                
-
                 ComplexPhotoData newPicture = new ComplexPhotoData();
-
 
                 bombaDeFotos.addNewPictures(guiPictureAdded, fullFileNames, photoExtensions, albumChosenbyUser, null, new ProgressChangedEventHandler(guiUpdateImportProgress), 1);
                 pictureImportProgress.ShowDialog();
@@ -395,8 +400,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void photoListView_ItemActivate(object sender, EventArgs e)
@@ -436,8 +441,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void addPhotosToExistingAlbumToolStripMenuItem_Click(object sender, EventArgs e)
@@ -447,8 +452,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void createNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
@@ -458,8 +463,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -475,8 +480,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void mainFormBackbutton_Click(object sender, EventArgs e)
@@ -486,8 +491,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: none
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void backButtonActivate()
@@ -501,8 +506,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void albumListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -527,8 +532,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void addNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
@@ -538,8 +543,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void photoListView_AfterLabelEdit(object sender, LabelEditEventArgs e)
@@ -559,9 +564,10 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: errorReport 
+        * return type: void
+        * purpose: used as a delegate/call_back function to conform to backend function parameters
+        *   and is empty for now
         *********************************************************************************************/
         public void photoNameChanged(ErrorReport status)
         {
@@ -570,9 +576,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: the string to be checked
+        * return type: bool to indicate success of validation
+        * purpose: checks the string parameter to see if it's valid according to
         *********************************************************************************************/
         private bool photoListViewItemRenameCheck(string newName)
         {
@@ -592,9 +598,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: windows default
+        * return type: void
+        * purpose: event handler for when a photo item is activated
         *********************************************************************************************/
         private void photoListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
@@ -612,8 +618,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -625,7 +631,13 @@ namespace SoftwareEng
                 photoListView.SelectedItems[firstListViewItemIndex].BeginEdit();
             }
         }
-
+        
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: windows default
+        * return type: void
+        * purpose: 
+        *********************************************************************************************/
         private void viewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             viewPhoto();
@@ -634,8 +646,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: none
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void viewPhoto()
@@ -682,8 +694,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -693,8 +705,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: windows default
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
