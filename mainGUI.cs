@@ -412,8 +412,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: an object of ErrorReport which will be used to check if backend was successful
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         public void guiPictureAdded(ErrorReport status)
@@ -564,7 +564,7 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: errorReport 
+        * parameters: an object of ErrorReport which will be used to check if backend was successful
         * return type: void
         * purpose: used as a delegate/call_back function to conform to backend function parameters
         *   and is empty for now
@@ -665,8 +665,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: an object of ErrorReport which will be used to check if backend was successful
+        *   a complexPhoto object containing the info about a previously requested photo
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         public void photoInfoRetrieved(ErrorReport status, ComplexPhotoData thePhoto)
