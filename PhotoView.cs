@@ -15,6 +15,11 @@ namespace SoftwareEng
 
         private ComplexPhotoData photoToDisplay;
 
+        /*********************************************************************************************
+        * parameters: a reference to the main GUI window, 
+        * return type:
+        * purpose: 
+        *********************************************************************************************/
         public PhotoViewWindow(mainGUI localMainWindowRef, ComplexPhotoData wantedPhoto, string myName)
         {
             mainWindowRef = localMainWindowRef;
@@ -30,6 +35,11 @@ namespace SoftwareEng
             //photoBox.LoadAsync(wantedPhoto.path);
         }
 
+        /*********************************************************************************************
+        * parameters:
+        * return type:
+        * purpose: 
+        *********************************************************************************************/
         private void displayPhoto()
         {
             
@@ -38,6 +48,11 @@ namespace SoftwareEng
             photoBox.LoadAsync();
         }
 
+        /*********************************************************************************************
+        * parameters:
+        * return type:
+        * purpose: 
+        *********************************************************************************************/
         private void okPhotoViewButton_Click(object sender, EventArgs e)
         {
             this.Close();
