@@ -16,9 +16,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: int that specifies total sections on the progress bar, and a reference to the backed
+        * return type: none
+        * purpose: initializes progressForm object
         *********************************************************************************************/
         public progressForm( int maxBarUnits, PhotoBomb backend)
         {
@@ -27,10 +27,13 @@ namespace SoftwareEng
 
             InitializeComponent();
 
+            //-- set progress bar sections to maxBarUnits
             importProgressBar.Maximum = maxBarUnits;
 
             finishButton.Enabled = false;
 
+            //--cancel button and finish button are in the same spot, so make sure cencel button
+            //--remains on top
             cancelButton.BringToFront();
 
             DialogResult = DialogResult.None;
@@ -38,9 +41,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: number of blocks to increment progress bar
+        * return type: void
+        * purpose: updates progress bar
         *********************************************************************************************/
         public void updateProgress(int amount)
         {
@@ -53,9 +56,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: none
+        * return type: void
+        * purpose: call this once backend is done  
         *********************************************************************************************/
         public void finished()
         {
@@ -68,9 +71,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: windows default
+        * return type: void
+        * purpose: simply closes the form
         *********************************************************************************************/
         private void finishButton_Click(object sender, EventArgs e)
         {
@@ -81,9 +84,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: windows default
+        * return type: void
+        * purpose: calls the cancel function for the backend before closing form
         *********************************************************************************************/
         private void cancelButton_Click(object sender, EventArgs e)
         {
