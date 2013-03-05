@@ -14,9 +14,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: none
+        * return type: void
+        * purpose: initializes object
         *********************************************************************************************/
         public aboutForm()
         {
@@ -25,9 +25,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: windows default
+        * return type: void
+        * purpose: closes form
         *********************************************************************************************/
         private void okButton_Click(object sender, EventArgs e)
         {
