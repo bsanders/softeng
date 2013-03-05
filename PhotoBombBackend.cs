@@ -37,7 +37,7 @@ namespace SoftwareEng
         //FUNCTIONS--------------------------------------------------------
         //-----------------------------------------------------------------
 
-        private void init(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPathIn)
+        private void init_backend(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPathIn)
         {
             ErrorReport errorReport = new ErrorReport();
 

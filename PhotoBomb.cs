@@ -30,9 +30,14 @@ namespace SoftwareEng
         //ERROR CONDITIONS
         //Fails if one of the database xml files is not found or if 
         //the library folder does not exist.
-        public PhotoBomb(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPath)
+        public PhotoBomb()
         {
-            init(guiCallback, albumDatabasePathIn, pictureDatabasePathIn, libraryPath);
+            
+        }
+
+        public void init(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPath)
+        {
+            init_backend(guiCallback, albumDatabasePathIn, pictureDatabasePathIn, libraryPath);
         }
 
         //----------------------------------------------
