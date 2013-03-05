@@ -404,7 +404,7 @@ namespace SoftwareEng
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            newPicture.UID = util_getNewPicUID();
+            newPicture.UID = util_getNewPicUID(1);
             //error checking
             if (newPicture.UID == -1)
             {
@@ -466,13 +466,13 @@ namespace SoftwareEng
         //NOTE: this is an overloaded function call FOR BACKEND USE ONLY.
         //      It does not have a gui callback and instead returns the
         //      Error report directly, for use in the backend.
-        private ErrorReport addNewPicture_backend(ErrorReport errorReport, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum)
+        private ErrorReport addNewPicture_backend(ErrorReport errorReport, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum, int searchStartingPoint)
         {
             ComplexPhotoData newPicture = new ComplexPhotoData();
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            newPicture.UID = util_getNewPicUID();
+            newPicture.UID = util_getNewPicUID(searchStartingPoint);
             //error checking
             if (newPicture.UID == -1)
             {
