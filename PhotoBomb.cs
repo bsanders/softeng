@@ -180,6 +180,10 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //
+        //Adds a single existing picture (it exists in the picture database already) to
+        //an album.
+        //PARAM 4 = data class for you to fill out.
+        //UNTESTED/UNFINISHED.
         public void addExistingPictureToAlbum(generic_callback guiCallback, int pictureUID, int albumUID, String SimplePhotoData)
         {
             addExistingPictureToAlbum_backend(guiCallback, pictureUID, albumUID, SimplePhotoData);
@@ -189,6 +193,9 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //
+        //Checks to see if an album name is unique.
+        //This will return FAILED in the error report (in the callback) 
+        //if the name is not unique.
         public void checkIfAlbumNameIsUnique(generic_callback guiCallback, String albumName)
         {
             checkIfAlbumNameIsUnique_backend(guiCallback, albumName);
@@ -198,20 +205,37 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //
+        //Change the name of a photo (its name in a single album) in the
+        //database and save the change to disk.
         public void changePhotoNameByUID(generic_callback guiCallback, int albumUID, int photoUID, String newName)
         {
             changePhotoNameByUID_backend(guiCallback, albumUID, photoUID, newName);
         }
 
         //------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
         //
+        //THIS IS THREADED, call this instead of multiple calls to addnewPicture to prevent gui lockup.
+        //Adds multiple new photos to the databases and moves a copy of the picture to the library.
+        //Also writes all these changes to the disk.
+        //PARAM 2 = List of photo paths on the disk.
+        //PARAM 3 = List of photo extensions (ex: ".jpg").
+        //PARAM 4 = the SINGLE uid of the album to add ALL photos to.
+        //PARAM 5 = the list of names for the photos in the album.
+        //          NOTE: you can pass in NULL for the list for all default names,
+        //                or you can have "" for a single element for a single default name.
         public void addNewPictures(generic_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addNewPictures_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum, updateCallback, updateAmount);
         }
 
         //--------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
+        //
+        //This will cancel the thread from addNewPictures() if it exists.
+        //Returns the error report directly.
         public ErrorReport cancelAddNewPicturesThread()
         {
             return cancelAddNewPicturesThread_backend();

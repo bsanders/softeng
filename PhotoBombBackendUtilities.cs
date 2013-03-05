@@ -27,27 +27,6 @@ namespace SoftwareEng
 
     public partial class PhotoBomb
     {
-        //----------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //call this before reading from the albums database,
-        //this will check for integrity problems.
-        //RETURNS: true = good to go, false = the database is bad!
-        //ALSO: this will append warnings/errors to the errorReport Parameter.
-        /*
-        private Boolean util_checkDatabaseIntegrity(XDocument database, ErrorReport errorReport)
-        {
-            if (database == null)
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "PhotoBomb: The database has not been loaded yet!";
-                return false;
-            }
-            //put more things to check here.
-
-            return true;
-        }
-         * */
 
 
         //----------------------------------------------------------
@@ -127,6 +106,8 @@ namespace SoftwareEng
         //--------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
+        //This adds a picture to JUST the album database.
+        //Does not use the UID or the albumName from the newPictureData.
         private void util_addPicToAlbumDatabase(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID, String albumName)
         {
             //Get the specific album we will be adding to.
@@ -169,7 +150,7 @@ namespace SoftwareEng
         //RETURN: true if the uid is valid, false otherwise.
         private Boolean util_checkPhotoUID(int uid)
         {
-            if (uid > 0 && uid < 2000000000)
+            if (uid > 0 && uid < UID_MAX_SIZE)
                 return true;
             return false;
         }
@@ -501,6 +482,8 @@ namespace SoftwareEng
         }
 
         //---------------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
         private Boolean util_checkAlbumDatabase(ErrorReport errorReport)
         {
             if (_albumsDatabase == null)
@@ -512,7 +495,8 @@ namespace SoftwareEng
             return true;
         }
         //-----------------------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private Boolean util_checkPicturesDatabase(ErrorReport errorReport)
         {
             if (_picturesDatabase == null)
