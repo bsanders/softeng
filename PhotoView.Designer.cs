@@ -58,7 +58,7 @@
             this.okPhotoViewButton.Name = "okPhotoViewButton";
             this.okPhotoViewButton.Size = new System.Drawing.Size(75, 23);
             this.okPhotoViewButton.TabIndex = 1;
-            this.okPhotoViewButton.Text = "OK";
+            this.okPhotoViewButton.Text = "Ok";
             this.okPhotoViewButton.UseVisualStyleBackColor = true;
             this.okPhotoViewButton.Click += new System.EventHandler(this.okPhotoViewButton_Click);
             // 
@@ -98,7 +98,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(328, 342);
+            this.ClientSize = new System.Drawing.Size(324, 338);
             this.ControlBox = false;
             this.Controls.Add(this.okPhotoViewButton);
             this.Controls.Add(this.photoboxPanel2);

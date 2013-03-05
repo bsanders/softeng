@@ -28,8 +28,6 @@ namespace SoftwareEng
         //used to specify the UID of the "add new album" icon
         private const int addAlbumID = 0;
 
-        private bool backendBuilt;
-
         //--first selected item in a List View will have an index of zero, 
         //--this is necessary even if  listView multiselect is disabled
         private const int firstListViewItemIndex = 0;
@@ -51,8 +49,6 @@ namespace SoftwareEng
         {
             InitializeComponent();
 
-            backendBuilt = false;
-
             //for now the gui will determine filepaths(set to same folder as exe) in case it is ever made a user choice
             bombaDeFotos = new PhotoBomb();
             bombaDeFotos.init(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", "photo library");
@@ -70,10 +66,6 @@ namespace SoftwareEng
 
             albumChosenbyUser = addAlbumID;
 
-            if (backendBuilt == false)
-            {
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
-            }
         }
 
         /************************************************************
@@ -83,17 +75,11 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                string oops;
-
-                if (status.description != null)
+                if (Directory.Exists("photo library_backup"))
                 {
-                    oops = status.description;
+                    Directory.Delete("photo library_backup", true);
+                    bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
                 }
-                else
-                {
-                    oops = "Back end failed. ";
-                }
-                showError(oops);
             }
         }
 
@@ -103,17 +89,10 @@ namespace SoftwareEng
         //RM: why is this here???
         private void guiConstructorCallback(ErrorReport status)
         {
-            if (status.reportID == ErrorReport.SUCCESS)
-            {
-                
-                backendBuilt = true;
-            }
-            /*else
+            if (status.reportID != ErrorReport.SUCCESS)
             {
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             } 
-            */
-
         }
 
         /************************************************************
@@ -464,7 +443,6 @@ namespace SoftwareEng
             }
             else
             {
-                //albumListView.ContextMenuStrip = addAlbumContextMenuStrip;
                 albumListView.ContextMenuStrip = null;
             }
 
@@ -500,8 +478,6 @@ namespace SoftwareEng
 
         private bool photoListViewItemRenameCheck(string newName)
         {
-            //string validInputKey = @"^[\w\d][\w\d ]{0,30}[\w\d]$";
-
             RegexStringValidator inputChecker = new RegexStringValidator(@"^[\w\d][\w\d ]{0,30}[\w\d]$");
 
             try
@@ -548,8 +524,6 @@ namespace SoftwareEng
             if (photoListView.SelectedItems.Count > 0)
             {
                 int photoUid = Convert.ToInt32(photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
-
-                //int albumUid = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
 
                 bombaDeFotos.getPictureByUID(photoInfoRetrieved, photoUid);
             }
