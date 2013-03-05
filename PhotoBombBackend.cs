@@ -606,15 +606,13 @@ namespace SoftwareEng
         }
 
         //---------------------------------------------
-        //TESTING
-        BackgroundWorker worker;
 
         private void addNewPictures_backend(generic_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
-            worker = new BackgroundWorker();
+            addPhotosThread = new BackgroundWorker();
 
             //transfer parameters into a data class.
-            bgThreadData data = new bgThreadData();
+            addPhotosThreadData data = new addPhotosThreadData();
             data.errorReport = new ErrorReport();
             data.guiCallback = guiCallback;
             data.photoUserPath = photoUserPath;
@@ -625,65 +623,22 @@ namespace SoftwareEng
             //data.updateAmount;
 
             //setup the worker.
-            worker.WorkerReportsProgress = true;
-            worker.WorkerSupportsCancellation = true;
-            worker.DoWork += new DoWorkEventHandler(worker_DoWork);
-            worker.ProgressChanged += updateCallback;
-            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
-            worker.RunWorkerAsync(data);
+            addPhotosThread.WorkerReportsProgress = true;
+            addPhotosThread.WorkerSupportsCancellation = true;
+            addPhotosThread.DoWork += new DoWorkEventHandler(addPhotosThread_DoWork);
+            addPhotosThread.ProgressChanged += updateCallback;
+            addPhotosThread.RunWorkerCompleted += new RunWorkerCompletedEventHandler(addPhotosThread_RunWorkerCompleted);
+            addPhotosThread.RunWorkerAsync(data);
         }
 
-        private void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            //get working variables
-            bgThreadData data = (bgThreadData)e.Argument;
-            BackgroundWorker worker = sender as BackgroundWorker;
-
-            for (int i = 0; i < data.photoUserPath.Count; ++i )
-            {
-                if (data.errorReport.reportID != ErrorReport.FAILURE && !worker.CancellationPending)
-                {
-                    String pictureName;
-                    if (data.pictureNameInAlbum == null)
-                        pictureName = "";
-                    else if (data.pictureNameInAlbum.ElementAt(i) == "")
-                    {
-                        pictureName = "";
-                    }
-                    else
-                        pictureName = data.pictureNameInAlbum.ElementAt(i);
-
-                    addNewPicture_backend(data.errorReport, data.photoUserPath.ElementAt(i), data.photoExtension.ElementAt(i), data.albumUID, pictureName);
-
-                    worker.ReportProgress(1);
-                }//if
-                else
-                {
-                    //if (worker.CancellationPending)
-                        //e.Cancel = true;
-                    break;
-                }
-            }//for
-            //done!
-            e.Result = data;
-        }
-
-
-        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            bgThreadData results = (bgThreadData)e.Result;
-
-            results.guiCallback(results.errorReport);
-        }
-
-        //------------------------------------------
+        //------------------------------------------------
 
         private ErrorReport cancelAddNewPicturesThread_backend()
         {
             ErrorReport error = new ErrorReport();
             try
             {
-                worker.CancelAsync();
+                addPhotosThread.CancelAsync();
             }
             catch
             {
@@ -706,17 +661,7 @@ namespace SoftwareEng
 
 
 
-    public class bgThreadData
-    {
-        public ErrorReport errorReport;
-        public generic_callback guiCallback;
-        public List<String> photoUserPath;
-        public List<String> photoExtension;
-        public int albumUID;
-        public List<String> pictureNameInAlbum;
-        public threadUpdateDelegate guiUpdateCallback;
-        public int updateAmount;//number of photos to process before calling guiUpdate.
-    }
+
 
 
 
