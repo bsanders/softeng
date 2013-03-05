@@ -13,11 +13,14 @@ namespace SoftwareEng
     public partial class addNewAlbum : Form
     {
         private mainGUI mainWindowRef;
-
+        
+        //-- contains the regex to check user inputs against
         private const string validInputKey = @"^[\w\d][\w\d ]{0,14}[\w\d]$";
-
+        
+        //-- the maximum length of an album name according to srs
         private const int userInputMaxSize = 16;
-
+        
+        //-- this class's error window object
         private ErrorDialogForm errorBox;
 
         /*********************************************************************************************
@@ -36,9 +39,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: none
+        * return type: void
+        * purpose: workhorse function that handles the finish button click
         *********************************************************************************************/
         private void createTheNewAlbum()
         {
@@ -56,16 +59,15 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: ErrorReport to check if back end successful 
+        * return type: void
+        * purpose: determines course of action depending on whether name is valid and unique
         *********************************************************************************************/
         public void albumNameAccepted(ErrorReport status)
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
                 showError("Invalid album name.");
-
 
                 finishButton.Enabled = true;
             }
@@ -77,8 +79,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
+        * parameters: ErrorReport to check if back end successful 
+        * return type: void
         * purpose: 
         *********************************************************************************************/
         public void albumAdded(ErrorReport status)
@@ -98,9 +100,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: windows default
+        * return type: void
+        * purpose: disables the finishbutton( to prevent click spam), and then calls a workhorse function
         *********************************************************************************************/
         private void finishButton_Click(object sender, EventArgs e)
         {
@@ -110,9 +112,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: string containing the error message to be displayed
+        * return type: void
+        * purpose: displays an error dialog
         *********************************************************************************************/
         private void showError(string theErrorMessage)
         {
@@ -125,9 +127,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: windows default
+        * return type: void
+        * purpose: close the form
         *********************************************************************************************/
         private void cancelButton_Click(object sender, EventArgs e)
         {
@@ -137,9 +139,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: windows default
+        * return type: void
+        * purpose: to enable/disable the finish button based on whether there is text in the text box
         *********************************************************************************************/
         private void albumNameTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -156,9 +158,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: string containing the text to be checked
+        * return type: bool that checks to see if input string is valid
+        * purpose: checks to see if input string is valid
         *********************************************************************************************/
         private bool stringChecker(string target)
         {
