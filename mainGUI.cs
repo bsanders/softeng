@@ -13,19 +13,13 @@ namespace SoftwareEng
 {
     public partial class mainGUI : Form
     {
-        // true enables additional output to help test the program
-        //private const bool debugMode = false;
-
-        // switch that enables threading on program
-        //private const bool threadingMode = false;
-
-        // didn't know what to call it, so I named it the literal spanish translation]
+        //--didn't know what to call it, so I named it the literal spanish translation
         public SoftwareEng.PhotoBomb bombaDeFotos;
 
-        //stores the albumImageList index of the default image for albums
+        //--stores the albumImageList index of the default image for albums
         private const short defaultAlbumImageListIndex = 0;
 
-        //used to specify the UID of the "add new album" icon
+        //--used to specify the UID of the "add new album" icon
         private const int addAlbumID = 0;
 
         //--first selected item in a List View will have an index of zero, 
@@ -35,16 +29,22 @@ namespace SoftwareEng
         //--second subitem of first ListView item will be album uid
         private const int listViewSubItemUidIndex = 1;
 
+        //--A more stable storage for the ID of the user album instead
+        //-- of relying on a form's selected items collection
         private int albumChosenbyUser;
 
         private string photoNameTempBackup = "";
 
+
         private progressForm pictureImportProgress;
 
 
-        /************************************************************
-         * constructor
-         ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public mainGUI()
         {
             InitializeComponent();
@@ -68,9 +68,12 @@ namespace SoftwareEng
 
         }
 
-        /************************************************************
-         * Finished
-         ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void guiGenericErrorFunction(ErrorReport status)
         {
             if (status.reportID != ErrorReport.SUCCESS)
@@ -83,9 +86,12 @@ namespace SoftwareEng
             }
         }
 
-        /************************************************************
-         * Finished
-         ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         //RM: why is this here???
         private void guiConstructorCallback(ErrorReport status)
         {
@@ -95,9 +101,13 @@ namespace SoftwareEng
             } 
         }
 
-        /************************************************************
-         * Finished
-         ************************************************************/
+
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void populateAlbumView(bool refreshView)
         {
             ListViewItem.ListViewSubItem[] itemHolderSubitems;
@@ -122,9 +132,12 @@ namespace SoftwareEng
         }
 
 
-        /************************************************************
-         * Finished
-         ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void guiAlbumsRetrieved(ErrorReport status, List<SimpleAlbumData> albumsRetrieved)
         {
             if (status.reportID == ErrorReport.SUCCESS)
@@ -149,7 +162,7 @@ namespace SoftwareEng
                     }
                     catch (Exception)
                     {
-                        //MessageBox.Show("Exception!", "Super Error", MessageBoxButtons.OK);
+                        showError("Error: Album Missing");
                     }
                 }
 
@@ -173,18 +186,24 @@ namespace SoftwareEng
 
 
 
-        /************************************************************
-         * Finished
-         ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void albumListView_ItemActivate(object sender, EventArgs e)
         {
             albumListActivation();
         }
 
 
-        /************************************************************
-        * Finished -needs more testing
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void albumListActivation()
         {
             if (albumListView.SelectedItems.Count > 0)
@@ -210,9 +229,12 @@ namespace SoftwareEng
         }
 
 
-        /************************************************************
-        * Finished -needs more testing
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void guiPopulatePhotoListView(bool refreshView)
         {
             photoListView.Clear();
@@ -224,9 +246,12 @@ namespace SoftwareEng
         }
 
 
-        /************************************************************
-        * Finished -needs more testing
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void guiPhotosInAlbumRetrieved(ErrorReport status, List<SimplePhotoData> albumContents)
         {
             photoListView.BringToFront();
@@ -265,9 +290,12 @@ namespace SoftwareEng
         }
 
 
-        /************************************************************
-        * Finished
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void guiShowCreateAlbumWindow()
         {
             albumListView.SelectedItems.Clear();
@@ -284,17 +312,23 @@ namespace SoftwareEng
         }
 
 
-        /************************************************************
-        * unfinished --used as delegate
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void guiCheckAlbumNameIsUnique(string userInput, generic_callback addNewAlbumDelegate)
         {
             bombaDeFotos.checkIfAlbumNameIsUnique(addNewAlbumDelegate, userInput);
         }
 
-        /************************************************************
-        * Finished --needs testing
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void guiCreateThisAlbum(string userInput, generic_callback addNewAlbumDelegate)
         {
             SimpleAlbumData theNewAlbum = new SimpleAlbumData();
@@ -304,9 +338,12 @@ namespace SoftwareEng
             bombaDeFotos.addNewAlbum(addNewAlbumDelegate, theNewAlbum);
         }
 
-        /************************************************************
-        * Finished, needs testing
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void addPicturesToAlbum(int albumId)
         {
                 if (photoOpenFileDialog.ShowDialog() != DialogResult.OK)
@@ -345,18 +382,24 @@ namespace SoftwareEng
 
 
 
-        /************************************************************
-         * unfinished
-         ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void photoListView_ItemActivate(object sender, EventArgs e)
         {
             viewPhoto();
         }
 
 
-        /************************************************************
-        * Finished
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void guiPictureAdded(ErrorReport status)
         {
             if (status.reportID == ErrorReport.FAILURE)
@@ -377,25 +420,34 @@ namespace SoftwareEng
             }
         }
 
-        /************************************************************
-        * 
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void addPhotosToExistingAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
             addPicturesToAlbum(albumChosenbyUser);
         }
 
-        /************************************************************
-        * Finished
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void createNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
             guiShowCreateAlbumWindow();
         }
 
-        /************************************************************
-        * Finished
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             aboutToolStripMenuItem.Enabled = false;
@@ -407,9 +459,12 @@ namespace SoftwareEng
             aboutToolStripMenuItem.Enabled = true;
         }
 
-        /************************************************************
-        * Finished
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void mainFormBackbutton_Click(object sender, EventArgs e)
         {
             backButtonActivate();
@@ -425,9 +480,12 @@ namespace SoftwareEng
             addPhotosToExistingAlbumToolStripMenuItem.Enabled = false;
         }
 
-        /************************************************************
-        * unfinished
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void albumListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (albumListView.SelectedItems.Count <= 0)
@@ -448,14 +506,23 @@ namespace SoftwareEng
 
         }
 
-        /************************************************************
-        * Finished --needs testing
-        ************************************************************/
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void addNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
             guiShowCreateAlbumWindow();
         }
 
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void photoListView_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
             if (photoListViewItemRenameCheck(e.Label) == false)
@@ -471,11 +538,23 @@ namespace SoftwareEng
             renameToolStripMenuItem.Enabled = true;
         }
 
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void photoNameChanged(ErrorReport status)
         {
             ;
         }
 
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private bool photoListViewItemRenameCheck(string newName)
         {
             RegexStringValidator inputChecker = new RegexStringValidator(@"^[\w\d][\w\d ]{0,30}[\w\d]$");
@@ -491,6 +570,13 @@ namespace SoftwareEng
             }
         }
 
+
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void photoListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (photoListView.SelectedItems.Count <= 0)
@@ -504,6 +590,13 @@ namespace SoftwareEng
             }
         }
 
+
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             renameToolStripMenuItem.Enabled = false;
@@ -518,7 +611,14 @@ namespace SoftwareEng
         {
             viewPhoto();
         }
-        //-------------------------------------
+
+
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void viewPhoto()
         {
             if (photoListView.SelectedItems.Count > 0)
@@ -528,7 +628,16 @@ namespace SoftwareEng
                 bombaDeFotos.getPictureByUID(photoInfoRetrieved, photoUid);
             }
         }
-        //-------------------------------------
+
+
+
+
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void photoInfoRetrieved(ErrorReport status, ComplexPhotoData thePhoto)
         {
             if (status.reportID == ErrorReport.SUCCESS)
@@ -553,13 +662,23 @@ namespace SoftwareEng
         }
 
 
-
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
             albumListActivation();

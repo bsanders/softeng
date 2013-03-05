@@ -17,8 +17,9 @@ namespace SoftwareEng
         private ComplexPhotoData photoToDisplay;
 
         /*********************************************************************************************
-        * parameters: a reference to the main GUI window, 
-        * return type:
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
         * purpose: 
         *********************************************************************************************/
         public PhotoViewWindow(mainGUI localMainWindowRef, ComplexPhotoData wantedPhoto, string myName)
@@ -37,14 +38,15 @@ namespace SoftwareEng
 
             photoboxPanel1.MaximumSize = new System.Drawing.Size(appropriateWidth, appropriateHeight);
             
-            displayPhoto();
+            //displayPhoto();
 
-            //photoBox.LoadAsync(wantedPhoto.path);
+            photoBox.LoadAsync(wantedPhoto.path);
         }
 
         /*********************************************************************************************
-        * parameters:
-        * return type:
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
         * purpose: 
         *********************************************************************************************/
         private void displayPhoto()
@@ -56,8 +58,9 @@ namespace SoftwareEng
         }
 
         /*********************************************************************************************
-        * parameters:
-        * return type:
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
         * purpose: 
         *********************************************************************************************/
         private void okPhotoViewButton_Click(object sender, EventArgs e)

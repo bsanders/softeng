@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
             this.programMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -141,7 +141,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.albumListView.Font = new System.Drawing.Font("Corbel", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem1});
             this.albumListView.LargeImageList = this.defaultImageList;
             this.albumListView.Location = new System.Drawing.Point(12, 27);
             this.albumListView.MultiSelect = false;
@@ -271,7 +271,7 @@
             this.MaximumSize = new System.Drawing.Size(599, 475);
             this.MinimumSize = new System.Drawing.Size(599, 475);
             this.Name = "mainGUI";
-            this.Text = "Photobombers";
+            this.Text = "Photobomber";
             this.programMenuStrip.ResumeLayout(false);
             this.programMenuStrip.PerformLayout();
             this.openAlbumContextMenuStrip.ResumeLayout(false);

@@ -13,6 +13,13 @@ namespace SoftwareEng
     {
         public PhotoBomb bombaDeFotos;
 
+
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public progressForm( int maxBarUnits, PhotoBomb backend)
         {
 
@@ -29,6 +36,12 @@ namespace SoftwareEng
             DialogResult = DialogResult.None;
         }
 
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void updateProgress(int amount)
         {
             progressLabel.Text = "Pictures Importing ...";
@@ -38,6 +51,12 @@ namespace SoftwareEng
             importProgressBar.PerformStep();
         }
 
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public void finished()
         {
             progressLabel.Text = "Pictures successfully imported!";
@@ -47,6 +66,12 @@ namespace SoftwareEng
             finishButton.BringToFront();
         }
 
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void finishButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
@@ -54,6 +79,12 @@ namespace SoftwareEng
             
         }
 
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void cancelButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
@@ -62,6 +93,5 @@ namespace SoftwareEng
 
             Close();
         }
-
     }
 }

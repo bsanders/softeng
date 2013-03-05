@@ -83,12 +83,10 @@
             // 
             // progressForm
             // 
-            this.AcceptButton = this.finishButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(428, 177);
+            this.ClientSize = new System.Drawing.Size(424, 173);
             this.ControlBox = false;
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.progressLabel);

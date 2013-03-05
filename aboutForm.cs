@@ -11,11 +11,24 @@ namespace SoftwareEng
 {
     public partial class aboutForm : Form
     {
+
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         public aboutForm()
         {
             InitializeComponent();
         }
 
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void okButton_Click(object sender, EventArgs e)
         {
             Close();
