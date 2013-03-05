@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,6 +31,12 @@ namespace SoftwareEng
 
             this.Text = myName;
 
+            int appropriateHeight = (int)((SystemParameters.PrimaryScreenHeight)/3)*2;
+
+            int appropriateWidth= (int)((SystemParameters.PrimaryScreenWidth)/3)*2;
+
+            photoboxPanel1.MaximumSize = new System.Drawing.Size(appropriateWidth, appropriateHeight);
+            
             displayPhoto();
 
             //photoBox.LoadAsync(wantedPhoto.path);
