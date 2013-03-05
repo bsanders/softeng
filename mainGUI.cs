@@ -28,7 +28,7 @@ namespace SoftwareEng
         //used to specify the UID of the "add new album" icon
         private const int addAlbumID = 0;
 
-        
+        private bool backendBuilt;
 
         //--first selected item in a List View will have an index of zero, 
         //--this is necessary even if  listView multiselect is disabled
@@ -51,9 +51,12 @@ namespace SoftwareEng
         {
             InitializeComponent();
 
+            backendBuilt = false;
+
             //for now the gui will determine filepaths(set to same folder as exe) in case it is ever made a user choice
             bombaDeFotos = new PhotoBomb();
             bombaDeFotos.init(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", "photo library");
+
 
             //ensures that the album list is visible 
             albumListView.BringToFront();
@@ -66,6 +69,11 @@ namespace SoftwareEng
             aboutToolStripMenuItem.Enabled = true;
 
             albumChosenbyUser = addAlbumID;
+
+            if (backendBuilt == false)
+            {
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
+            }
         }
 
         /************************************************************
@@ -95,10 +103,17 @@ namespace SoftwareEng
         //RM: why is this here???
         private void guiConstructorCallback(ErrorReport status)
         {
-            if (status.reportID != ErrorReport.SUCCESS)
+            if (status.reportID == ErrorReport.SUCCESS)
+            {
+                
+                backendBuilt = true;
+            }
+            /*else
             {
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
-            }
+            } 
+            */
+
         }
 
         /************************************************************
@@ -169,7 +184,8 @@ namespace SoftwareEng
         }
 
         /************************************************************
-        * temporary function to show an error
+        * temporary function to show an error. Can eventually be 
+         * replaced by a function that shows a custom form.
         ************************************************************/
         private void showError(string errorMessage)
         {
@@ -229,12 +245,6 @@ namespace SoftwareEng
         }
 
 
-        private void backgroundPhotoListLoader_DoWork(object sender, DoWorkEventArgs e)
-        {
-            bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiPhotosInAlbumRetrieved), albumChosenbyUser);
-        }
-
-
         /************************************************************
         * Finished -needs more testing
         ************************************************************/
@@ -264,14 +274,14 @@ namespace SoftwareEng
                     }
                     catch (Exception)
                     {
-                        MessageBox.Show("Exception!", "Super Error", MessageBoxButtons.OK);
+                        showError("Error: Album missing.");
                     }
                 }
                 photoListView.EndUpdate();
             }
             else if (status.reportID == ErrorReport.FAILURE)
             {
-                showError(status.description);
+                showError("Error: Album missing.");
             }
         }
 
@@ -345,26 +355,8 @@ namespace SoftwareEng
                 ComplexPhotoData newPicture = new ComplexPhotoData();
 
 
-                //pictureImportProgress.ShowDialog();
                 bombaDeFotos.addNewPictures(guiPictureAdded, fullFileNames, photoExtensions, albumChosenbyUser, null, new ProgressChangedEventHandler(guiUpdateImportProgress), 1);
                 pictureImportProgress.ShowDialog();
-
-
-                /*
-                foreach (string picFile in photoOpenFileDialog.FileNames)
-                {
-                    if (pictureImportProgress.DialogResult != DialogResult.Cancel)
-                    {
-                        bombaDeFotos.addNewPicture(new generic_callback(guiPictureAdded), picFile, ".jpg", albumId, "");
-                        pictureImportProgress.updateProgress(1);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                */
-            
         }
 
         public void guiUpdateImportProgress(object sender, ProgressChangedEventArgs e)
@@ -440,6 +432,12 @@ namespace SoftwareEng
         * Finished
         ************************************************************/
         private void mainFormBackbutton_Click(object sender, EventArgs e)
+        {
+            backButtonActivate();
+        }
+
+
+        private void backButtonActivate()
         {
             mainFormBackbutton.Enabled = false;
             albumListView.BringToFront();
@@ -527,7 +525,6 @@ namespace SoftwareEng
             {
                 photoListView.ContextMenuStrip = photoContextMenuStrip;
                 photoNameTempBackup = photoListView.SelectedItems[firstListViewItemIndex].Text;
-                statusLabel.Text = photoNameTempBackup;
             }
         }
 

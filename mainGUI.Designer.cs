@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Add New Album", 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainGUI));
             this.programMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +48,6 @@
             this.photoListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.photoImageList = new System.Windows.Forms.ImageList(this.components);
-            this.statusLabel = new System.Windows.Forms.Label();
             this.photoOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.photoContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,32 +88,32 @@
             // 
             this.createNewAlbumToolStripMenuItem.Enabled = false;
             this.createNewAlbumToolStripMenuItem.Name = "createNewAlbumToolStripMenuItem";
-            this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(266, 26);
+            this.createNewAlbumToolStripMenuItem.Size = new System.Drawing.Size(268, 26);
             this.createNewAlbumToolStripMenuItem.Text = "Create New Album";
             this.createNewAlbumToolStripMenuItem.Click += new System.EventHandler(this.createNewAlbumToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(263, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(265, 6);
             // 
             // addPhotosToExistingAlbumToolStripMenuItem
             // 
             this.addPhotosToExistingAlbumToolStripMenuItem.Enabled = false;
             this.addPhotosToExistingAlbumToolStripMenuItem.Name = "addPhotosToExistingAlbumToolStripMenuItem";
-            this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(266, 26);
-            this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add photos to this album";
+            this.addPhotosToExistingAlbumToolStripMenuItem.Size = new System.Drawing.Size(268, 26);
+            this.addPhotosToExistingAlbumToolStripMenuItem.Text = "Add Photos to this Album";
             this.addPhotosToExistingAlbumToolStripMenuItem.Click += new System.EventHandler(this.addPhotosToExistingAlbumToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(263, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(265, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(266, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(268, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -142,7 +141,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.albumListView.Font = new System.Drawing.Font("Corbel", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.albumListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
             this.albumListView.LargeImageList = this.defaultImageList;
             this.albumListView.Location = new System.Drawing.Point(12, 27);
             this.albumListView.MultiSelect = false;
@@ -216,15 +215,6 @@
             this.photoImageList.TransparentColor = System.Drawing.Color.Transparent;
             this.photoImageList.Images.SetKeyName(0, "generic_picture.ico");
             // 
-            // statusLabel
-            // 
-            this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(12, 418);
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(0, 13);
-            this.statusLabel.TabIndex = 4;
-            // 
             // photoOpenFileDialog
             // 
             this.photoOpenFileDialog.Filter = "Jpeg(*.jpg)|*.jpg|Jpeg(*.jpeg)|*.jpeg";
@@ -271,7 +261,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(589, 443);
-            this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.mainFormBackbutton);
             this.Controls.Add(this.programMenuStrip);
             this.Controls.Add(this.albumListView);
@@ -308,7 +297,6 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Button mainFormBackbutton;
         private System.Windows.Forms.ListView photoListView;
-        private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.OpenFileDialog photoOpenFileDialog;
         private System.Windows.Forms.ImageList photoImageList;
         private System.Windows.Forms.ContextMenuStrip openAlbumContextMenuStrip;
