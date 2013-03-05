@@ -336,6 +336,7 @@ namespace SoftwareEng
                                             new XElement("albumName", albumData.albumName),
                                             new XElement("albumPhotos"));
 
+            //add to the database in memory.
             _albumsDatabase.Element("database").Add(newAlbum);
         }//method
 
@@ -348,6 +349,7 @@ namespace SoftwareEng
         {
             ComplexPhotoData data = new ComplexPhotoData();
 
+            //TRANSFER ALL DATA TO THE DATA CLASS HERE.
             try
             {
                 data.UID = (int)elem.Attribute("UID");
@@ -373,6 +375,7 @@ namespace SoftwareEng
         {
             SimplePhotoData data = new SimplePhotoData();
 
+            //TRANSFER ALL DATA TO THE DATA CLASS HERE.
             try
             {
                 data.UID = (int)elem.Attribute("UID");
@@ -397,11 +400,13 @@ namespace SoftwareEng
         {
             try
             {
+                //try and find a matching album name.
+                //throws exception if we find NO matching names.
                 (from c in _albumsDatabase.Element("database").Elements("album")
                  where (String)c.Element("albumName") == albumName
                  select c).First();
             }
-            //we didn't find a matching name
+            //we didn't find a matching name, success!
             catch
             {
                 return true;
@@ -438,6 +443,7 @@ namespace SoftwareEng
 
             try
             {
+                //copy the photo to the library.
                 System.IO.File.Copy(picturePath, newPath, true);
             }
             catch
@@ -457,6 +463,7 @@ namespace SoftwareEng
         //check if the library is ok.
         private Boolean util_checkLibraryDirectory()
         {
+            //anything else we need to check?
             return (Directory.Exists(libraryPath));
         }
 
@@ -487,6 +494,8 @@ namespace SoftwareEng
         {
             try
             {
+                //find and return a picture whos uid is the one we are looking for.
+                //Throws exception if none or more than one match is found.
                 return (from c in albumElem.Element("albumPhotos").Elements("picture")
                         where (int)c.Attribute("uid") == photoUID
                         select c).Single();
@@ -508,6 +517,8 @@ namespace SoftwareEng
         {
             try
             {
+                //find and return an album whos uid is the one we are looking for.
+                //Throws exception if none or more than one match is found.
                 return (from c in _albumsDatabase.Element("database").Elements("album")
                         where (int)c.Attribute("uid") == albumUID
                         select c).Single();
@@ -533,6 +544,9 @@ namespace SoftwareEng
                 errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
                 return false;
             }
+
+            //put more checks here.
+
             return true;
         }
         //-----------------------------------------------------------------------------
@@ -547,6 +561,9 @@ namespace SoftwareEng
                 errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
                 return false;
             }
+
+            //put more checks here.
+
             return true;
         }
 

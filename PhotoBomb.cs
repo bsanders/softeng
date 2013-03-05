@@ -225,6 +225,8 @@ namespace SoftwareEng
         //PARAM 5 = the list of names for the photos in the album.
         //          NOTE: you can pass in NULL for the list for all default names,
         //                or you can have "" for a single element for a single default name.
+        //PARAM 6 = a callback for the thread to send progress updates to.
+        //PARAM 7 = the number of pictures to add BEFORE sending a progress update.
         public void addNewPictures(generic_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addNewPictures_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum, updateCallback, updateAmount);
