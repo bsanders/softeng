@@ -95,8 +95,8 @@ namespace SoftwareEng
         /*********************************************************************************************
         * Author: Alejandro Sosa
         * parameters: an object of ErrorReport which will be used to check if backend was successful
-        * return type: 
-        * purpose: 
+        * return type: void
+        * purpose: simply calls back end
         *********************************************************************************************/
         //RM: why is this here???
         private void guiConstructorCallback(ErrorReport status)
@@ -110,9 +110,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: bool that determines whether list is cleared or repopulated
+        * return type: void
+        * purpose: refreshes list of albums
         *********************************************************************************************/
         private void populateAlbumView(bool refreshView)
         {
@@ -143,7 +143,7 @@ namespace SoftwareEng
         * parameters: an object of ErrorReport which will be used to check if backend was successful,
         *   and a list <type is SimpleAlbumData> containing data to identify all albums requested
         * return type: void
-        * purpose: 
+        * purpose: list of albums returned from the backend
         *********************************************************************************************/
         public void guiAlbumsRetrieved(ErrorReport status, List<SimpleAlbumData> albumsRetrieved)
         {
@@ -402,7 +402,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: windows default
         * return type: void
-        * purpose: 
+        * purpose: class viewPhoto
         *********************************************************************************************/
         private void photoListView_ItemActivate(object sender, EventArgs e)
         {
@@ -414,7 +414,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: an object of ErrorReport which will be used to check if backend was successful
         * return type: void
-        * purpose: 
+        * purpose: called by backend once it is done
         *********************************************************************************************/
         public void guiPictureAdded(ErrorReport status)
         {
@@ -443,7 +443,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: windows default
         * return type: void
-        * purpose: 
+        * purpose: calls workhorse function
         *********************************************************************************************/
         private void addPhotosToExistingAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -454,7 +454,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: windows default
         * return type: void
-        * purpose: 
+        * purpose: calls workhorse function
         *********************************************************************************************/
         private void createNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -482,7 +482,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: windows default
         * return type: void
-        * purpose: 
+        * purpose: calls workhorse function
         *********************************************************************************************/
         private void mainFormBackbutton_Click(object sender, EventArgs e)
         {
@@ -493,7 +493,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: none
         * return type: void
-        * purpose: 
+        * purpose: makes back button visible
         *********************************************************************************************/
         private void backButtonActivate()
         {
@@ -534,7 +534,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: windows default
         * return type: void
-        * purpose: 
+        * purpose: calls workhorse function
         *********************************************************************************************/
         private void addNewAlbumToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -636,7 +636,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: windows default
         * return type: void
-        * purpose: 
+        * purpose: calls workhorse function
         *********************************************************************************************/
         private void viewToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -648,7 +648,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: none
         * return type: void
-        * purpose: 
+        * purpose: calls backend function
         *********************************************************************************************/
         private void viewPhoto()
         {
@@ -697,7 +697,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: windows default
         * return type: void
-        * purpose: 
+        * purpose: closes form
         *********************************************************************************************/
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -708,7 +708,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: windows default
         * return type: void
-        * purpose: 
+        * purpose: calls workhorse function
         *********************************************************************************************/
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
