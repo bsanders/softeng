@@ -34,10 +34,16 @@ namespace SoftwareEng
             addPhotosThreadData data = (addPhotosThreadData)e.Argument;
             BackgroundWorker worker = sender as BackgroundWorker;
 
+            int picsToAddBeforeReporting = data.updateAmount;
+            int picsAddedSinceReport = 0;
+
+            //start our uid search from the first known empty uid.
             int initialSearchingLocation = util_getNewPicUID(1);
 
+            //for each photo we are adding...
             for (int i = 0; i < data.photoUserPath.Count; ++i)
             {
+                //if we didn't get a cancel command...
                 if (data.errorReport.reportID != ErrorReport.FAILURE && !worker.CancellationPending)
                 {
                     String pictureName;
@@ -50,9 +56,16 @@ namespace SoftwareEng
                     else
                         pictureName = data.pictureNameInAlbum.ElementAt(i);
 
+                    //use backend function to add a single photo.
                     addNewPicture_backend(data.errorReport, data.photoUserPath.ElementAt(i), data.photoExtension.ElementAt(i), data.albumUID, pictureName, (initialSearchingLocation + i));
 
-                    worker.ReportProgress(1);
+                    //report progress maybe.
+                    ++picsAddedSinceReport;
+                    if (picsAddedSinceReport >= picsToAddBeforeReporting)
+                    {
+                        worker.ReportProgress(picsToAddBeforeReporting);
+                        picsAddedSinceReport = 0;
+                    }
                 }//if
                 else
                 {

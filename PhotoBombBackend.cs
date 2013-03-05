@@ -653,6 +653,7 @@ namespace SoftwareEng
             data.photoExtension = photoExtension;
             data.albumUID = albumUID;
             data.pictureNameInAlbum = pictureNameInAlbum;
+            data.updateAmount = updateAmount;
 
             //setup the worker.
             addPhotosThread.WorkerReportsProgress = true;
