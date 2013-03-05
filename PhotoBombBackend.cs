@@ -176,7 +176,6 @@ namespace SoftwareEng
             }
 
             //The loading of the xml was nominal, report back to the gui callback.
-            error.description = "great success!";
             guiCallback(error);
         }
 
