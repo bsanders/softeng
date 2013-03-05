@@ -54,8 +54,9 @@ namespace SoftwareEng
             InitializeComponent();
 
             //for now the gui will determine filepaths(set to same folder as exe) in case it is ever made a user choice
+            String libraryPath = System.IO.Path.Combine(Environment.CurrentDirectory, "photo library");
             bombaDeFotos = new PhotoBomb();
-            bombaDeFotos.init(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", "photo library");
+            bombaDeFotos.init(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", libraryPath);
 
 
             //ensures that the album list is visible 

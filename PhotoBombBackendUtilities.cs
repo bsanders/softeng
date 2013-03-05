@@ -467,6 +467,20 @@ namespace SoftwareEng
             return (Directory.Exists(libraryPath));
         }
 
+        //-------------------------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last:
+        //check if the library is ok, with ErrorReport param.
+        private void util_checkLibraryDirectory(ErrorReport error)
+        {
+            //anything else we need to check?
+            if (!Directory.Exists(libraryPath))
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Library folder not found.";
+            }
+        }
+
         //--------------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:

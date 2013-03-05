@@ -51,14 +51,21 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
+            //keep the paths to databases and library.
             albumsDatabasePath = albumDatabasePathIn;
             picturesDatabasePath = pictureDatabasePathIn;
             libraryPath = libraryPathIn;
 
+            //this might be depricated with the current backend design,
+            //think about moving it into the utils class...
             xmlParser = new XmlParser();
 
+            //try to open the databases.
             util_openAlbumsXML(errorReport);
             util_openPicturesXML(errorReport);
+
+            //check the library directory.
+            util_checkLibraryDirectory(errorReport);
 
             guiCallback(errorReport);
         }
