@@ -41,9 +41,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: none
+        * return type: none
+        * purpose: creates a new instance of mainGUI
         *********************************************************************************************/
         public mainGUI()
         {
@@ -642,7 +642,6 @@ namespace SoftwareEng
         {
             if (status.reportID == ErrorReport.SUCCESS)
             {
-                //ComplexPhotoData toPhotoView= new ComplexPhotoData;
 
                     //check to see if photo exists.
                     if (File.Exists(thePhoto.path) == true)

@@ -86,7 +86,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(424, 173);
+            this.ClientSize = new System.Drawing.Size(420, 169);
             this.ControlBox = false;
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.progressLabel);
@@ -98,7 +98,7 @@
             this.Name = "progressForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "Photo Import";
+            this.Text = "Import Photos";
             this.ResumeLayout(false);
 
         }
