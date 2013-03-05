@@ -23,6 +23,8 @@ namespace SoftwareEng
             addPhotosThreadData data = (addPhotosThreadData)e.Argument;
             BackgroundWorker worker = sender as BackgroundWorker;
 
+            int initialSearchOffset = util_getNewPicUID(1);
+
             for (int i = 0; i < data.photoUserPath.Count; ++i)
             {
                 if (data.errorReport.reportID != ErrorReport.FAILURE && !worker.CancellationPending)
@@ -37,7 +39,7 @@ namespace SoftwareEng
                     else
                         pictureName = data.pictureNameInAlbum.ElementAt(i);
 
-                    addNewPicture_backend(data.errorReport, data.photoUserPath.ElementAt(i), data.photoExtension.ElementAt(i), data.albumUID, pictureName);
+                    addNewPicture_backend(data.errorReport, data.photoUserPath.ElementAt(i), data.photoExtension.ElementAt(i), data.albumUID, pictureName, (initialSearchOffset + i));
 
                     worker.ReportProgress(1);
                 }//if

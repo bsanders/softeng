@@ -1,6 +1,10 @@
 ﻿/**
  * This is the backend for the PhotoBomb program.
  * These functions are NOT to be used by a frontend (gui).
+ * 
+ * These functions should be written in a "conductor" sort of
+ * way, in that they should try and call as many small functions
+ * as they can other classes (like the utils class).
  **/
 using System;
 using System.Collections.Generic;
@@ -30,13 +34,19 @@ namespace SoftwareEng
         //Add new vars here if we get more xmls.
         private XDocument _albumsDatabase;
         private string albumsDatabasePath;
+
         private XDocument _picturesDatabase;
         private string picturesDatabasePath;
+
+        private const int UID_MAX_SIZE = 2000000000;
+
 
         //-----------------------------------------------------------------
         //FUNCTIONS--------------------------------------------------------
         //-----------------------------------------------------------------
 
+        //By: Ryan Moe
+        //Edited Last:
         private void init_backend(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPathIn)
         {
             ErrorReport errorReport = new ErrorReport();
@@ -54,7 +64,8 @@ namespace SoftwareEng
         }
 
         //-----------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void rebuildBackendOnFilesystem_backend(generic_callback guiCallback)
         {
             ErrorReport errorReport = new ErrorReport();
@@ -62,6 +73,7 @@ namespace SoftwareEng
             //if the library folder existed, rename it.
             if (Directory.Exists(libraryPath))
             {
+                //if a backup already exists, throw error.
                 try
                 {
                     Directory.Move(libraryPath, (libraryPath + "_backup"));
@@ -121,7 +133,6 @@ namespace SoftwareEng
         }
 
         //-----------------------------------------------------------------
-
         //By: Ryan Moe
         //Edited Last:
         private void reopenAlbumsXML_backend(generic_callback guiCallback)
@@ -205,6 +216,7 @@ namespace SoftwareEng
         //Edited Last:
         //NOTE: This function is up for replacement by new logic that uses
         //the select/from/where style of code.
+        //This is not in the style of code this file wants.
         private void getAllUserAlbumNames_backend(getAllUserAlbumNames_callback guiCallback)
         {
             ErrorReport error = new ErrorReport();
@@ -349,6 +361,7 @@ namespace SoftwareEng
         {
             ErrorReport error = new ErrorReport();
 
+            //get the picture from the picture database.
             XElement picElement = util_getComplexPictureByUID(error, uid);
 
             //if the picture finding function reported success.
@@ -372,6 +385,7 @@ namespace SoftwareEng
                 guiCallback(error, photo);
                 return;
             }
+            //picture failed to be found.
             else
             {
                 guiCallback(error, null);
@@ -390,7 +404,7 @@ namespace SoftwareEng
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            newPicture.UID = util_getNewPicUID();
+            newPicture.UID = util_getNewPicUID(1);
             //error checking
             if (newPicture.UID == -1)
             {
@@ -438,6 +452,7 @@ namespace SoftwareEng
                 return;
             }
 
+            //add to disk.
             savePicturesXML_backend(null);
             saveAlbumsXML_backend(null);
 
@@ -448,13 +463,16 @@ namespace SoftwareEng
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private ErrorReport addNewPicture_backend(ErrorReport errorReport, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum)
+        //NOTE: this is an overloaded function call FOR BACKEND USE ONLY.
+        //      It does not have a gui callback and instead returns the
+        //      Error report directly, for use in the backend.
+        private ErrorReport addNewPicture_backend(ErrorReport errorReport, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum, int searchStartingPoint)
         {
             ComplexPhotoData newPicture = new ComplexPhotoData();
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            newPicture.UID = util_getNewPicUID();
+            newPicture.UID = util_getNewPicUID(searchStartingPoint);
             //error checking
             if (newPicture.UID == -1)
             {
@@ -498,6 +516,7 @@ namespace SoftwareEng
                 return errorReport;
             }
 
+            //save to disk.
             savePicturesXML_backend(null);
             saveAlbumsXML_backend(null);
 
@@ -508,13 +527,17 @@ namespace SoftwareEng
 
 
         //-------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void addNewAlbum_backend(generic_callback guiCallback, SimpleAlbumData albumData)
         {
             ErrorReport errorReport = new ErrorReport();
+
+            //get a new uid for the new album.
             int uid = util_getNewAlbumUID(errorReport);
             albumData.UID = uid;
 
+            //add the album to the memory database.
             util_addAlbumToAlbumDatabase(errorReport, albumData);
 
             //if adding to the album database failed
@@ -524,6 +547,7 @@ namespace SoftwareEng
                 return;
             }
 
+            //save to disk.
             saveAlbumsXML_backend(null);
 
             guiCallback(errorReport);
@@ -532,11 +556,12 @@ namespace SoftwareEng
 
 
         //-------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
+        //UNTESTED/UNFINISHED
         private void addExistingPictureToAlbum_backend(generic_callback guiCallback, int pictureUID, int albumUID, String SimplePhotoData)
         {
             ErrorReport errorReport = new ErrorReport();
-
             XElement picture = util_getComplexPictureByUID(errorReport, pictureUID);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
@@ -555,10 +580,13 @@ namespace SoftwareEng
         }//method
 
         //--------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void checkIfAlbumNameIsUnique_backend(generic_callback guiCallback, String albumName)
         {
             ErrorReport errorReport = new ErrorReport();
+
+            //get uniqueness
             Boolean nameUnique = util_checkAlbumNameIsUnique(albumName);
 
             if (!nameUnique)
@@ -573,11 +601,13 @@ namespace SoftwareEng
         }
 
         //--------------------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void changePhotoNameByUID_backend(generic_callback guiCallback, int albumUID, int photoUID, String newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
+            //get the album that has the name of the photo we are changing.
             XElement album = util_getAlbumByUID(errorReport, albumUID);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -586,6 +616,7 @@ namespace SoftwareEng
                 return;
             }
 
+            //Get the photo from the album.
             XElement photo = util_getPhotoFromAlbumElemByUID(errorReport, album, photoUID);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -594,6 +625,7 @@ namespace SoftwareEng
                 return;
             }
 
+            //change the photo's name.
             util_changePhotoNameInAlbumPhotoElem(errorReport, photo, newName);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -606,12 +638,14 @@ namespace SoftwareEng
         }
 
         //---------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private void addNewPictures_backend(generic_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addPhotosThread = new BackgroundWorker();
 
-            //transfer parameters into a data class.
+            //transfer parameters into a data class to pass
+            //into the photo thread.
             addPhotosThreadData data = new addPhotosThreadData();
             data.errorReport = new ErrorReport();
             data.guiCallback = guiCallback;
@@ -619,8 +653,6 @@ namespace SoftwareEng
             data.photoExtension = photoExtension;
             data.albumUID = albumUID;
             data.pictureNameInAlbum = pictureNameInAlbum;
-            //data.guiUpdateCallback;
-            //data.updateAmount;
 
             //setup the worker.
             addPhotosThread.WorkerReportsProgress = true;
@@ -632,7 +664,8 @@ namespace SoftwareEng
         }
 
         //------------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
         private ErrorReport cancelAddNewPicturesThread_backend()
         {
             ErrorReport error = new ErrorReport();
