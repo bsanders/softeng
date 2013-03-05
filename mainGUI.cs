@@ -39,6 +39,10 @@ namespace SoftwareEng
         private progressForm pictureImportProgress;
 
 
+        //--for showing errors 
+        private ErrorDialogForm errorBox;
+
+
         /*********************************************************************************************
         * Author: Alejandro Sosa
         * parameters: none
@@ -178,10 +182,15 @@ namespace SoftwareEng
         /************************************************************
         * temporary function to show an error. Can eventually be 
          * replaced by a function that shows a custom form.
+         * -EDIT prophecy came true
         ************************************************************/
-        private void showError(string errorMessage)
+        private void showError(string theErrorMessage)
         {
-            MessageBox.Show(errorMessage, "Error!", MessageBoxButtons.OK);
+            errorBox = new ErrorDialogForm(theErrorMessage);
+
+            errorBox.ShowDialog();
+
+            //MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK);
         }
 
 
@@ -470,7 +479,12 @@ namespace SoftwareEng
             backButtonActivate();
         }
 
-
+        /*********************************************************************************************
+        * Author: Alejandro Sosa
+        * parameters: 
+        * return type: 
+        * purpose: 
+        *********************************************************************************************/
         private void backButtonActivate()
         {
             mainFormBackbutton.Enabled = false;

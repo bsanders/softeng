@@ -98,6 +98,12 @@
     <Compile Include="addNewAlbum.Designer.cs">
       <DependentUpon>addNewAlbum.cs</DependentUpon>
     </Compile>
+    <Compile Include="ErrorDialogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorDialogForm.Designer.cs">
+      <DependentUpon>ErrorDialogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ErrorReport.cs" />
     <Compile Include="mainGUI.cs">
       <SubType>Form</SubType>
@@ -136,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="addNewAlbum.resx">
       <DependentUpon>addNewAlbum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorDialogForm.resx">
+      <DependentUpon>ErrorDialogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

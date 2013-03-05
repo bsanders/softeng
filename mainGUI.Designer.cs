@@ -150,8 +150,8 @@
             this.albumListView.TabIndex = 1;
             this.albumListView.TileSize = new System.Drawing.Size(255, 52);
             this.albumListView.UseCompatibleStateImageBehavior = false;
-            this.albumListView.ItemActivate += new System.EventHandler(this.albumListView_ItemActivate);
             this.albumListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.albumListView_ItemSelectionChanged);
+            this.albumListView.DoubleClick += new System.EventHandler(this.albumListView_ItemActivate);
             // 
             // defaultImageList
             // 
@@ -164,12 +164,12 @@
             this.openAlbumContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.testToolStripMenuItem});
             this.openAlbumContextMenuStrip.Name = "albumContextMenuStrip";
-            this.openAlbumContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            this.openAlbumContextMenuStrip.Size = new System.Drawing.Size(104, 26);
             // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.testToolStripMenuItem.Text = "Open";
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
@@ -206,8 +206,8 @@
             this.photoListView.UseCompatibleStateImageBehavior = false;
             this.photoListView.View = System.Windows.Forms.View.SmallIcon;
             this.photoListView.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.photoListView_AfterLabelEdit);
-            this.photoListView.ItemActivate += new System.EventHandler(this.photoListView_ItemActivate);
             this.photoListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.photoListView_ItemSelectionChanged);
+            this.photoListView.DoubleClick += new System.EventHandler(this.photoListView_ItemActivate);
             // 
             // photoImageList
             // 
@@ -217,7 +217,7 @@
             // 
             // photoOpenFileDialog
             // 
-            this.photoOpenFileDialog.Filter = "Jpeg(*.jpg)|*.jpg|Jpeg(*.jpeg)|*.jpeg";
+            this.photoOpenFileDialog.Filter = "Jpeg(*.jpg, *.jpeg, *.jpe, *.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif";
             this.photoOpenFileDialog.Multiselect = true;
             // 
             // photoContextMenuStrip

@@ -18,6 +18,8 @@ namespace SoftwareEng
 
         private const int userInputMaxSize = 16;
 
+        private ErrorDialogForm errorBox;
+
         /*********************************************************************************************
         * Author: Alejandro Sosa
         * parameters: 
@@ -113,9 +115,13 @@ namespace SoftwareEng
         * return type: 
         * purpose: 
         *********************************************************************************************/
-        private void showError(string errorMessage)
+        private void showError(string theErrorMessage)
         {
-            MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK);
+            errorBox = new ErrorDialogForm(theErrorMessage);
+
+            errorBox.ShowDialog();
+
+            //MessageBox.Show(errorMessage, "Error", MessageBoxButtons.OK);
         }
 
         /*********************************************************************************************
