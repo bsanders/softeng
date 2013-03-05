@@ -1,4 +1,12 @@
-﻿using System;
+﻿/**
+ * By: Ryan Moe
+ * 
+ * This class is for threading functions.
+ * It is a partial class of the main PhotoBomb class.
+ * 
+ * Make sure you know what you are doing when threading!!!
+ **/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,14 +24,17 @@ namespace SoftwareEng
 
 
         //---------------METHODS--------------------
-
+        //By: Ryan Moe
+        //Edited Last:
+        //This is the working function of the backgroundworker for
+        //adding photos to the backend.
         private void addPhotosThread_DoWork(object sender, DoWorkEventArgs e)
         {
             //get working variables
             addPhotosThreadData data = (addPhotosThreadData)e.Argument;
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            int initialSearchOffset = util_getNewPicUID(1);
+            int initialSearchingLocation = util_getNewPicUID(1);
 
             for (int i = 0; i < data.photoUserPath.Count; ++i)
             {
@@ -39,7 +50,7 @@ namespace SoftwareEng
                     else
                         pictureName = data.pictureNameInAlbum.ElementAt(i);
 
-                    addNewPicture_backend(data.errorReport, data.photoUserPath.ElementAt(i), data.photoExtension.ElementAt(i), data.albumUID, pictureName, (initialSearchOffset + i));
+                    addNewPicture_backend(data.errorReport, data.photoUserPath.ElementAt(i), data.photoExtension.ElementAt(i), data.albumUID, pictureName, (initialSearchingLocation + i));
 
                     worker.ReportProgress(1);
                 }//if
@@ -53,7 +64,9 @@ namespace SoftwareEng
         }
 
         //------------------------------------------
-
+        //By: Ryan Moe
+        //Edited Last:
+        //This gets called when addPhotosThread_DoWork() is complete.
         private void addPhotosThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             addPhotosThreadData results = (addPhotosThreadData)e.Result;
@@ -69,8 +82,11 @@ namespace SoftwareEng
     }//class
 
     //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
-
+    //By: Ryan Moe
+    //Edited Last:
     public class addPhotosThreadData
     {
         public ErrorReport errorReport;

@@ -1,12 +1,4 @@
-﻿/*
- * cant rename after failed rename.
- * photo names must be unique.
- * photo viewer is too big!!!
- * 
- * 
- */ 
-
-/**
+﻿/**
  * By: Ryan Moe
  * 
  * This class is for utility functions for the PhotoBomb backend.
@@ -202,7 +194,8 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //Returns a new VALID uid for a new picture.
-        //PARAM 1 = an offset of where to start linearly searching for a new uid.
+        //PARAM 1 = where to start linearly searching for a new uid.
+        //          Use this for searching speed up!
         //NOTE: this is the slow way of doing it, but
         //      it does not leave holes in the uids.
         //      Ex: if a picture is deleted, we reuse it's uid
@@ -212,10 +205,11 @@ namespace SoftwareEng
         {
             int newUID;//the UID we will search against and return eventually.
 
+            //error checking the starting point.
             if (searchStartingpoint > 0 && searchStartingpoint < UID_MAX_SIZE)
                 newUID = searchStartingpoint;
             else
-                newUID = 1;
+                newUID = 1;//default starting point.
 
             Boolean uidNotFound = true;
 
