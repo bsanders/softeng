@@ -18,9 +18,10 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: creates a new instance of 
+        * parameters: reference to main window, and a complexphotodata containing info of the photo
+        *   to be displayed
+        * return type: none
+        * purpose: creates a new instance of PhotoViewWindow object
         *********************************************************************************************/
         public PhotoViewWindow(mainGUI localMainWindowRef, ComplexPhotoData wantedPhoto, string myName)
         {
@@ -45,9 +46,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: none
+        * return type: void
+        * purpose: obsolete
         *********************************************************************************************/
         private void displayPhoto()
         {
@@ -59,9 +60,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: windows default
+        * return type: void
+        * purpose: closes form
         *********************************************************************************************/
         private void okPhotoViewButton_Click(object sender, EventArgs e)
         {
