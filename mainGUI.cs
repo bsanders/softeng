@@ -415,10 +415,12 @@ namespace SoftwareEng
             if (status.reportID == ErrorReport.FAILURE)
             {
                 showError(status.description);
+                pictureImportProgress.Close();
+                return;
             }
-            else if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
-                showError("Import picture warning");
+                //showError("Import picture warning");
             }
 
             //Do this even if there was a FAILURE
