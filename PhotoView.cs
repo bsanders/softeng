@@ -20,7 +20,7 @@ namespace SoftwareEng
         * Author: Alejandro Sosa
         * parameters: 
         * return type: 
-        * purpose: 
+        * purpose: creates a new instance of 
         *********************************************************************************************/
         public PhotoViewWindow(mainGUI localMainWindowRef, ComplexPhotoData wantedPhoto, string myName)
         {

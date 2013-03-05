@@ -52,7 +52,7 @@
             this.creatorsLabel.Name = "creatorsLabel";
             this.creatorsLabel.Size = new System.Drawing.Size(125, 110);
             this.creatorsLabel.TabIndex = 1;
-            this.creatorsLabel.Text = "Ryan Causey Ryan Moe Julian Nguyen William Sanders Alejandro Sosa";
+            this.creatorsLabel.Text = "Ryan Causey Ryan Moe Julian Nguyen Bill Sanders Alejandro Sosa";
             this.creatorsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // okButton

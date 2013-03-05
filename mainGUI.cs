@@ -175,7 +175,7 @@ namespace SoftwareEng
             }
             else if (status.reportID == ErrorReport.FAILURE)
             {
-                showError(status.description);
+                showError("Error: Album Missing");
             }
         }
 
@@ -413,7 +413,7 @@ namespace SoftwareEng
         {
             if (status.reportID == ErrorReport.FAILURE)
             {
-                showError(status.description);
+                //showError(status.description);
             }
             else if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
@@ -670,7 +670,7 @@ namespace SoftwareEng
             }
             else if(status.reportID == ErrorReport.FAILURE)
             {
-                showError(status.description);
+                showError("Error: Photograph missing.");
             }
         }
 

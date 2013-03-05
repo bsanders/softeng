@@ -22,9 +22,9 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
-        * parameters: 
-        * return type: 
-        * purpose: 
+        * parameters: the Main Window of the program
+        * return type: none
+        * purpose: creates a new instance of addNewAlbum
         *********************************************************************************************/
         public addNewAlbum(mainGUI localMainWindowRef)
         {
@@ -64,7 +64,8 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                showError(status.description);
+                showError("Invalid album name.");
+
 
                 finishButton.Enabled = true;
             }
@@ -84,14 +85,12 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                showError(status.description);
-
+                // no error specified in srs.
                 finishButton.Enabled = true;
             }
             else
             {
                 DialogResult = DialogResult.OK;
-                //MessageBox.Show("New Album Successfully Created", "New Album", MessageBoxButtons.OK);
                 this.Close();
             }
         }
