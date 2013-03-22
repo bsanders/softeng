@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Photobombers")]
+[assembly: AssemblyTitle("Photobomber")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Photobombers Studio")]
-[assembly: AssemblyProduct("Photobombers")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCompany("Photobomber Studios, LLC")]
+[assembly: AssemblyProduct("Photobomber")]
+[assembly: AssemblyCopyright("Copyright © 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.10.1.1")]
-[assembly: AssemblyFileVersion("1.10.1.1")]
+[assembly: AssemblyVersion("2.1.1.1")]
+[assembly: AssemblyFileVersion("2.1.1.1")]
