@@ -346,6 +346,7 @@ namespace SoftwareEng
                 SimplePhotoData pic = new SimplePhotoData();
                 try
                 {
+                    pic.GUID = (string)subElement.Attribute("guid");
                     pic.UID = (int)subElement.Attribute("uid");
                     pic.picturesNameInAlbum = (string)subElement.Element("name").Value;
                     _list.Add(pic);
@@ -364,12 +365,12 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last:
-        private void getPictureByUID_backend(getPhotoByUID_callback guiCallback, int uid)
+        private void getPictureByGUID_backend(getPhotoByGUID_callback guiCallback, string guid)
         {
             ErrorReport error = new ErrorReport();
 
             //get the picture from the picture database.
-            XElement picElement = util_getComplexPictureByUID(error, uid);
+            XElement picElement = util_getComplexPictureByGUID(error, guid);
 
             //if the picture finding function reported success.
             if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
@@ -378,6 +379,7 @@ namespace SoftwareEng
                 //ComplexPhotoData MOE MARKER MOE MARKER MOE MARKER MOE MARKER!!!!!!
                 try
                 {
+                    photo.GUID = (string)picElement.Attribute("guid");
                     photo.UID = (int)picElement.Attribute("uid");
                     photo.path = (string)picElement.Element("filePath").Value;
                 }
@@ -408,6 +410,8 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
             ComplexPhotoData newPicture = new ComplexPhotoData();
+
+            newPicture.GUID = util_getNewPicGUID();
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
@@ -473,12 +477,15 @@ namespace SoftwareEng
         //NOTE: this is an overloaded function call FOR BACKEND USE ONLY.
         //      It does not have a gui callback and instead returns the
         //      Error report directly, for use in the backend.
-        private ErrorReport addNewPicture_backend(ErrorReport errorReport, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum, int searchStartingPoint)
+        private ErrorReport addNewPicture_backend(ErrorReport errorReport, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum, string photoGUID, int searchStartingPoint)
         {
             ComplexPhotoData newPicture = new ComplexPhotoData();
 
+//            Imazen.LightResize.ResizeJob bob = new Imazen.LightResize.ResizeJob();
+//            bob.Build(
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
+            newPicture.GUID = util_getNewPicGUID();
             newPicture.UID = util_getNewPicUID(searchStartingPoint);
             //error checking
             if (newPicture.UID == -1)
@@ -494,7 +501,7 @@ namespace SoftwareEng
             //Change me if you want the default album name to be different.
             if (pictureNameInAlbum == "")
             {
-                pictureNameInAlbum = "Image " + newPicture.UID.ToString();
+                pictureNameInAlbum = Properties.Settings.Default.DefaultImageName + " " + newPicture.UID.ToString();
             }
 
             //Move picture and get a new path for the picture in our storage.
@@ -566,10 +573,10 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //UNTESTED/UNFINISHED
-        private void addExistingPictureToAlbum_backend(generic_callback guiCallback, int pictureUID, int albumUID, String SimplePhotoData)
+        private void addExistingPictureToAlbum_backend(generic_callback guiCallback, string pictureGUID, int albumUID, String SimplePhotoData)
         {
             ErrorReport errorReport = new ErrorReport();
-            XElement picture = util_getComplexPictureByUID(errorReport, pictureUID);
+            XElement picture = util_getComplexPictureByGUID(errorReport, pictureGUID);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
                 guiCallback(errorReport);
@@ -610,7 +617,7 @@ namespace SoftwareEng
         //--------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void changePhotoNameByUID_backend(generic_callback guiCallback, int albumUID, int photoUID, String newName)
+        private void changePhotoNameByUID_backend(generic_callback guiCallback, int albumUID, string photoGUID, String newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -624,7 +631,7 @@ namespace SoftwareEng
             }
 
             //Get the photo from the album.
-            XElement photo = util_getPhotoFromAlbumElemByUID(errorReport, album, photoUID);
+            XElement photo = util_getPhotoFromAlbumElemByUID(errorReport, album, photoGUID);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {

@@ -57,7 +57,14 @@ namespace SoftwareEng
                         pictureName = data.pictureNameInAlbum.ElementAt(i);
 
                     //use backend function to add a single photo.
-                    addNewPicture_backend(data.errorReport, data.photoUserPath.ElementAt(i), data.photoExtension.ElementAt(i), data.albumUID, pictureName, (initialSearchingLocation + i));
+                    addNewPicture_backend(data.errorReport,
+                        data.photoUserPath.ElementAt(i),
+                        data.photoExtension.ElementAt(i),
+                        data.albumUID,
+                        pictureName,
+                        util_getNewPicGUID(),
+                        (initialSearchingLocation + i)
+                        );
 
                     //report progress maybe.
                     ++picsAddedSinceReport;

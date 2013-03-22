@@ -1,7 +1,21 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SoftwareEng.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DefaultImageName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Image</Value>
+    </Setting>
+    <Setting Name="AlbumXMLFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">albums.xml</Value>
+    </Setting>
+    <Setting Name="PhotoXMLFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">photos.xml</Value>
+    </Setting>
+    <Setting Name="PhotoLibraryName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">photo library</Value>
+    </Setting>
+    <Setting Name="PhotoLibraryBackupName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">photo library_backup</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

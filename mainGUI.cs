@@ -53,11 +53,17 @@ namespace SoftwareEng
         public mainGUI()
         {
             InitializeComponent();
-
+            
             //for now the gui will determine filepaths(set to same folder as exe) in case it is ever made a user choice
-            String libraryPath = System.IO.Path.Combine(Environment.CurrentDirectory, "photo library");
+            String libraryPath = System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    Properties.Settings.Default.PhotoLibraryName);
+                
             bombaDeFotos = new PhotoBomb();
-            bombaDeFotos.init(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", libraryPath);
+            bombaDeFotos.init(guiConstructorCallback,
+                Properties.Settings.Default.AlbumXMLFile,
+                Properties.Settings.Default.PhotoXMLFile,
+                libraryPath);
 
 
             //ensures that the album list is visible 
@@ -84,9 +90,9 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                if (Directory.Exists("photo library_backup"))
+                if (Directory.Exists(Properties.Settings.Default.PhotoLibraryBackupName))
                 {
-                    Directory.Delete("photo library_backup", true);
+                    Directory.Delete(Properties.Settings.Default.PhotoLibraryBackupName, true);
                     bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
                 }
             }
@@ -287,6 +293,7 @@ namespace SoftwareEng
                     {
                         itemHolderSubitems = new ListViewItem.ListViewSubItem[]{
                             new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.picturesNameInAlbum),
+                            new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.GUID),
                             new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.UID.ToString() )
                             };
 
@@ -387,7 +394,12 @@ namespace SoftwareEng
 
                 ComplexPhotoData newPicture = new ComplexPhotoData();
 
-                bombaDeFotos.addNewPictures(guiPictureAdded, fullFileNames, photoExtensions, albumChosenbyUser, null, new ProgressChangedEventHandler(guiUpdateImportProgress), 1);
+                bombaDeFotos.addNewPictures(guiPictureAdded,
+                    fullFileNames,
+                    photoExtensions,
+                    albumChosenbyUser,
+                    null,
+                    new ProgressChangedEventHandler(guiUpdateImportProgress), 1);
                 pictureImportProgress.ShowDialog();
         }
 
@@ -556,7 +568,7 @@ namespace SoftwareEng
                 showError("Invalid photo name.");
                 return;
             }
-            int selectedItemUid = Convert.ToInt32(photoListView.Items[e.Item].SubItems[listViewSubItemUidIndex].Text);
+            string selectedItemUid = photoListView.Items[e.Item].SubItems[listViewSubItemUidIndex].Text;
 
             bombaDeFotos.changePhotoNameByUID(photoNameChanged, albumChosenbyUser, selectedItemUid, e.Label);
             renameToolStripMenuItem.Enabled = true;
@@ -654,9 +666,9 @@ namespace SoftwareEng
         {
             if (photoListView.SelectedItems.Count > 0)
             {
-                int photoUid = Convert.ToInt32(photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
+                string photoUid = photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text;
 
-                bombaDeFotos.getPictureByUID(photoInfoRetrieved, photoUid);
+                bombaDeFotos.getPictureByGUID(photoInfoRetrieved, photoUid);
             }
         }
 
@@ -683,7 +695,7 @@ namespace SoftwareEng
                     }
                     else
                     {
-                        showError("Error: Photograph missing.");
+                        showError("Error: Photograph is not in the library.");
                     }
             }
             else if(status.reportID == ErrorReport.FAILURE)
