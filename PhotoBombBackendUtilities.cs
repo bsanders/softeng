@@ -11,21 +11,17 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.IO;
+using System.Security.Cryptography; //Namespace for SHA1
 
 namespace SoftwareEng
 {
-
-
-
     public partial class PhotoBomb
     {
-
-
         //----------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
         //RETURN: the element that has the param uid from the picture database.
-        private XElement util_getComplexPictureByGUID(ErrorReport error, string guid)
+        private XElement util_getComplexPictureByUID(ErrorReport error, int uid)
         {
             if (util_checkPicturesDatabase(error))
             {
@@ -37,7 +33,7 @@ namespace SoftwareEng
                     //see if it's attribute uid is the one we want,
                     //and if so return the first instance of a match.
                     specificPicture = (from c in _picturesDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements()
-                                       where (string)c.Attribute("guid") == guid
+                                       where (int)c.Attribute("uid") == uid
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
                 //failed to find the picture
@@ -87,7 +83,6 @@ namespace SoftwareEng
             //make the object that will go into the xml database.
             XElement newPicRoot = new XElement("picture",
                 new XAttribute("uid", newPictureData.UID),
-                new XAttribute("guid", newPictureData.GUID),
                 new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.path)
                 );
 
@@ -129,7 +124,6 @@ namespace SoftwareEng
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
                                             new XAttribute("uid", newPicture.UID),
-                                            new XAttribute("guid", newPicture.GUID),
                                             new XElement("name", albumName));
 
 
@@ -366,7 +360,6 @@ namespace SoftwareEng
             try
             {
                 data.UID = (int)elem.Attribute("UID");
-                data.GUID = (string)elem.Attribute("GUID");
                 data.path = elem.Element("filePath").Value;
                 data.extension = (String)elem.Element("filePath").Attribute("extension");
             }
@@ -393,7 +386,6 @@ namespace SoftwareEng
             try
             {
                 data.UID = (int)elem.Attribute("UID");
-                data.GUID = (string)elem.Attribute("GUID");
                 data.picturesNameInAlbum = elem.Element("name").Value;
 
             }
@@ -529,14 +521,14 @@ namespace SoftwareEng
         //returns the xelement that represents the requested photo,
         //gets this xelement from the parameter xelement that represents
         //the album that the picture might be in.
-        private XElement util_getPhotoFromAlbumElemByUID(ErrorReport error, XElement albumElem, string photoGUID)
+        private XElement util_getPhotoFromAlbumElemByUID(ErrorReport error, XElement albumElem, int photoUID)
         {
             try
             {
                 //find and return a picture whos uid is the one we are looking for.
                 //Throws exception if none or more than one match is found.
                 return (from c in albumElem.Element("albumPhotos").Elements("picture")
-                        where (string)c.Attribute("guid") == photoGUID
+                        where (int)c.Attribute("uid") == photoUID
                         select c).Single();
             }
             catch

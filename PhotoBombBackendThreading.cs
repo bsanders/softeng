@@ -62,7 +62,6 @@ namespace SoftwareEng
                         data.photoExtension.ElementAt(i),
                         data.albumUID,
                         pictureName,
-                        util_getNewPicGUID(),
                         (initialSearchingLocation + i)
                         );
 

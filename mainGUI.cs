@@ -65,7 +65,6 @@ namespace SoftwareEng
                 Properties.Settings.Default.PhotoXMLFile,
                 libraryPath);
 
-
             //ensures that the album list is visible 
             albumListView.BringToFront();
 
@@ -107,6 +106,7 @@ namespace SoftwareEng
         //RM: why is this here???
         private void guiConstructorCallback(ErrorReport status)
         {
+            // BS: If the backend returns any error with a library or XML file...?
             if (status.reportID != ErrorReport.SUCCESS)
             {
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
@@ -293,7 +293,6 @@ namespace SoftwareEng
                     {
                         itemHolderSubitems = new ListViewItem.ListViewSubItem[]{
                             new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.picturesNameInAlbum),
-                            new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.GUID),
                             new ListViewItem.ListViewSubItem(itemHolder, singlePhoto.UID.ToString() )
                             };
 
@@ -388,7 +387,7 @@ namespace SoftwareEng
                     photoExtensions.Add(".jpg");
                 }
 
-                progressForm photoImportProgress;
+//                progressForm photoImportProgress;
 
                 pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length, bombaDeFotos);
 
@@ -568,7 +567,7 @@ namespace SoftwareEng
                 showError("Invalid photo name.");
                 return;
             }
-            string selectedItemUid = photoListView.Items[e.Item].SubItems[listViewSubItemUidIndex].Text;
+            int selectedItemUid = Convert.ToInt32(photoListView.Items[e.Item].SubItems[listViewSubItemUidIndex].Text);
 
             bombaDeFotos.changePhotoNameByUID(photoNameChanged, albumChosenbyUser, selectedItemUid, e.Label);
             renameToolStripMenuItem.Enabled = true;
@@ -666,9 +665,9 @@ namespace SoftwareEng
         {
             if (photoListView.SelectedItems.Count > 0)
             {
-                string photoUid = photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text;
+                int photoUid = Convert.ToInt32(photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
 
-                bombaDeFotos.getPictureByGUID(photoInfoRetrieved, photoUid);
+                bombaDeFotos.getPictureByUID(photoInfoRetrieved, photoUid);
             }
         }
 
