@@ -455,7 +455,14 @@ namespace SoftwareEng
             String newPath = System.IO.Path.Combine(libraryPath, picNameInLibrary);
 
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
-            resizeJob.Build(picturePath + picNameInLibrary, libraryPath + 
+            resizeJob.Build(
+                picturePath,
+                System.IO.Path.Combine(
+                    libraryPath,
+                    Properties.Settings.Default.PhotoLibraryThumbsDir,
+                    picNameInLibrary),
+                Imazen.LightResize.JobOptions.CreateParentDirectory
+            );
 
             try
             {
