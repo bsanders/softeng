@@ -144,6 +144,65 @@ namespace SoftwareEng
                 return true;
             return false;
         }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/24/13
+        // TODO: Speed up by using a byte-array instead of string comparison in LINQ?
+        /// <summary>
+        /// Checks to see if the photo is unique (using a SHA1 hash) to the library
+        /// </summary>
+        /// <param name="hash">A hex string representation of the hash</param>
+        /// <returns></returns>
+        private Boolean util_checkPhotoUnique(string hash)
+        {
+            try
+            {
+                // Try to find a duplicate hash.
+                // throws exception if we find NO matching names.
+                (from c in _picturesDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("picture")
+                 where (String)c.Attribute("sha1") == hash
+                 select c).First();
+            }
+            // Did not find a matching hash, photo is unique
+            catch
+            {
+                return true;
+            }
+            // Otherwise we found at least one match
+            return false;
+        }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/24/13
+        // TODO: Speed up by using a byte-array instead of string comparison in LINQ?
+        /// <summary>
+        /// Checks to see if the photo is unique (using a SHA1 hash) to a given album
+        /// </summary>
+        /// <param name="albumID">A the unique ID of the album</param>
+        /// <param name="hash">A hex string representation of the hash</param>
+        /// <returns></returns>
+        private Boolean util_checkPhotoUniqueToAlbum(int albumID, string hash)
+        {
+            try
+            {
+                // Try to find a duplicate hash.
+                // throws exception if we find NO matching names.
+                var bob = (from c in _picturesDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("picture")
+                 where (String)c.Attribute("sha1") == hash
+                 select c).ToDictionary(pic => pic.Attribute("sha1"));
+                
+            }
+            // Did not find a matching hash, photo is unique
+            catch
+            {
+                return true;
+            }
+            // Otherwise we found at least one match
+            return false;
+        }
+
         //--------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:

@@ -473,7 +473,7 @@ namespace SoftwareEng
             }
         }//method
 
-
+        // BS: Is this function at all used given that we don't add photos one at a time?
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
@@ -561,9 +561,18 @@ namespace SoftwareEng
         {
             ComplexPhotoData newPicture = new ComplexPhotoData();
 
+            // Compute the hash for this picture, and then check to make sure it is unique
+            newPicture.hash = util_getHashOfFile(photoUserPath);
+            if (!util_checkPhotoUnique(ByteArrayToString(newPicture.hash)))
+            {
+                errorReport.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                errorReport.description = "Picture is not unique.";
+                errorReport.warnings.Add("Picture is not unique: " + photoUserPath);
+                return errorReport;
+            }
+
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            newPicture.hash = util_getHashOfFile(photoUserPath);
             newPicture.UID = util_getNewPicUID(searchStartingPoint);
             //error checking
             if (newPicture.UID == -1)
