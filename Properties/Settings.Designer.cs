@@ -82,5 +82,17 @@ namespace SoftwareEng.Properties {
                 this["PhotoLibraryBackupName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("thumbs_db")]
+        public string PhotoLibraryThumbsDir {
+            get {
+                return ((string)(this["PhotoLibraryThumbsDir"]));
+            }
+            set {
+                this["PhotoLibraryThumbsDir"] = value;
+            }
+        }
     }
 }

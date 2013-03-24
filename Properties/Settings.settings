@@ -17,5 +17,8 @@
     <Setting Name="PhotoLibraryBackupName" Type="System.String" Scope="User">
       <Value Profile="(Default)">photo library_backup</Value>
     </Setting>
+    <Setting Name="PhotoLibraryThumbsDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">thumbs_db</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
