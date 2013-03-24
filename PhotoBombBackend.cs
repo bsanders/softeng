@@ -61,6 +61,7 @@ namespace SoftwareEng
             xmlParser = new XmlParser();
 
             //try to open the databases.
+            // BS: These functions are being slated for merging together
             util_openAlbumsXML(errorReport);
             util_openPicturesXML(errorReport);
 
@@ -73,6 +74,7 @@ namespace SoftwareEng
         //-----------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
+        // I understand what this function does, but not entirely when/why it does it
         private void rebuildBackendOnFilesystem_backend(generic_callback guiCallback)
         {
             ErrorReport errorReport = new ErrorReport();
@@ -83,7 +85,7 @@ namespace SoftwareEng
                 //if a backup already exists, throw error.
                 try
                 {
-                    Directory.Move(libraryPath, (libraryPath + "_backup"));
+                    Directory.Move(libraryPath, (libraryPath + Properties.Settings.Default.PhotoLibraryBackupName));
                 }
                 catch
                 {
@@ -109,7 +111,7 @@ namespace SoftwareEng
 
             //make the new database xml files
             XDocument initDB = new XDocument();
-            XElement root = new XElement("database");
+            XElement root = new XElement(Properties.Settings.Default.XMLRootElement);
             initDB.Add(root);
             try
             {
@@ -125,8 +127,10 @@ namespace SoftwareEng
             }
 
             //Load the new databases into memory.
+            // BS: These functions are being slated for merging together
             util_openAlbumsXML(errorReport);
             util_openPicturesXML(errorReport);
+
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
                 guiCallback(errorReport);
@@ -245,7 +249,7 @@ namespace SoftwareEng
             List<XElement> _albumSearch;
             try
             {
-                _albumSearch = xmlParser.searchForElements(_albumsDatabase.Element("database"), "album");
+                _albumSearch = xmlParser.searchForElements(_albumsDatabase.Element(Properties.Settings.Default.XMLRootElement), "album");
             }
             catch
             {
@@ -327,7 +331,7 @@ namespace SoftwareEng
                 //for(from) every c in the database's children (all albums),
                 //see if it's attribute uid is the one we want,
                 //and if so return the first instance of a match.
-                specificAlbum = (from c in _albumsDatabase.Element("database").Elements()
+                specificAlbum = (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements()
                                  where (int)c.Attribute("uid") == AlbumUID
                                  select c).Single();//NOTE: this will throw error if more than one OR none at all.
             }

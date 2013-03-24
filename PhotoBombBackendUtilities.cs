@@ -36,7 +36,7 @@ namespace SoftwareEng
                     //for(from) every c in the database's children (all albums),
                     //see if it's attribute uid is the one we want,
                     //and if so return the first instance of a match.
-                    specificPicture = (from c in _picturesDatabase.Element("database").Elements()
+                    specificPicture = (from c in _picturesDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements()
                                        where (string)c.Attribute("guid") == guid
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
@@ -92,7 +92,7 @@ namespace SoftwareEng
                 );
 
             //add to the database (in memory, not on disk).
-            _picturesDatabase.Element("database").Add(newPicRoot);
+            _picturesDatabase.Element(Properties.Settings.Default.XMLRootElement).Add(newPicRoot);
             return errorReport;
         }
 
@@ -107,7 +107,7 @@ namespace SoftwareEng
             XElement specificAlbum;
             try
             {
-                specificAlbum = (from c in _albumsDatabase.Element("database").Elements()
+                specificAlbum = (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements()
                                  where (int)c.Attribute("uid") == albumUID
                                  select c).Single();//NOTE: this will throw error if more than one OR none at all.
             }
@@ -233,7 +233,7 @@ namespace SoftwareEng
                     //if one or more (hope not more!) uid's are found
                     //to match our testing uid, then incriment the testing
                     //uid and try again.
-                    (from c in _picturesDatabase.Element("database").Elements("picture")
+                    (from c in _picturesDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("picture")
                      where (int)c.Attribute("uid") == newUID
                      select c).First();
                     ++newUID;
@@ -254,6 +254,7 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //load the database from disk into memory.
+        // BS: This function is being slated for merging with util_openPicturesXML
         private void util_openAlbumsXML(ErrorReport error)
         {
             try
@@ -275,6 +276,7 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //load the database from disk into memory.
+        // BS: This function is being slated for merging with util_openAlbumXML
         private void util_openPicturesXML(ErrorReport error)
         {
             try
@@ -312,7 +314,7 @@ namespace SoftwareEng
                     //if one or more (hope not more!) uid's are found
                     //to match our testing uid, then incriment the testing
                     //uid and try again.
-                    (from c in _albumsDatabase.Element("database").Elements("album")
+                    (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("album")
                      where (int)c.Attribute("uid") == newUID
                      select c).First();
                     ++newUID;
@@ -348,7 +350,7 @@ namespace SoftwareEng
                                             new XElement("albumPhotos"));
 
             //add to the database in memory.
-            _albumsDatabase.Element("database").Add(newAlbum);
+            _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Add(newAlbum);
         }//method
 
         //-------------------------------------------------------------------
@@ -415,7 +417,7 @@ namespace SoftwareEng
             {
                 //try and find a matching album name.
                 //throws exception if we find NO matching names.
-                (from c in _albumsDatabase.Element("database").Elements("album")
+                (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("album")
                  where (String)c.Element("albumName") == albumName
                  select c).First();
             }
@@ -556,7 +558,7 @@ namespace SoftwareEng
             {
                 //find and return an album whos uid is the one we are looking for.
                 //Throws exception if none or more than one match is found.
-                return (from c in _albumsDatabase.Element("database").Elements("album")
+                return (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("album")
                         where (int)c.Attribute("uid") == albumUID
                         select c).Single();
             }

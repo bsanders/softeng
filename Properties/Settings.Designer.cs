@@ -73,7 +73,7 @@ namespace SoftwareEng.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("photo library_backup")]
+        [global::System.Configuration.DefaultSettingValueAttribute("_backup")]
         public string PhotoLibraryBackupName {
             get {
                 return ((string)(this["PhotoLibraryBackupName"]));
@@ -92,6 +92,18 @@ namespace SoftwareEng.Properties {
             }
             set {
                 this["PhotoLibraryThumbsDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("database")]
+        public string XMLRootElement {
+            get {
+                return ((string)(this["XMLRootElement"]));
+            }
+            set {
+                this["XMLRootElement"] = value;
             }
         }
     }

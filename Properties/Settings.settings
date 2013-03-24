@@ -15,10 +15,13 @@
       <Value Profile="(Default)">photo library</Value>
     </Setting>
     <Setting Name="PhotoLibraryBackupName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">photo library_backup</Value>
+      <Value Profile="(Default)">_backup</Value>
     </Setting>
     <Setting Name="PhotoLibraryThumbsDir" Type="System.String" Scope="User">
       <Value Profile="(Default)">thumbs_db</Value>
+    </Setting>
+    <Setting Name="XMLRootElement" Type="System.String" Scope="User">
+      <Value Profile="(Default)">database</Value>
     </Setting>
   </Settings>
 </SettingsFile>
