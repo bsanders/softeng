@@ -532,8 +532,13 @@ namespace SoftwareEng
             //make the full picture path.
             String newPath = System.IO.Path.Combine(libraryPath, picNameInLibrary);
 
+            // I haven't thought much about whether or not this is the right place to put this
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
+            // specifies a maximum height resolution constraint 
             resizeJob.Height = 120;
+            // Actually processes the image, copying it to the new location, should go in a try/catch for IO
+            // One of Build's overloads allows you to use file streams instead of filepaths.
+            // If images have to be resized on-the-fly instead of stored, that may work as well.
             resizeJob.Build(
                 picturePath,
                 System.IO.Path.Combine(
