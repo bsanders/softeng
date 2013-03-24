@@ -139,18 +139,19 @@ namespace SoftwareEng
             guiCallback(errorReport);
         }
 
+        //BS: Commenting this function out: its never used 03/23/13
         //-----------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void reopenAlbumsXML_backend(generic_callback guiCallback)
-        {
-            //use this to inform the calling gui of how things went.
-            ErrorReport error = new ErrorReport();
+        //private void reopenAlbumsXML_backend(generic_callback guiCallback)
+        //{
+        //    //use this to inform the calling gui of how things went.
+        //    ErrorReport error = new ErrorReport();
 
-            util_openAlbumsXML(error);
+        //    util_openAlbumsXML(error);
 
-            guiCallback(error);
-        }
+        //    guiCallback(error);
+        //}
 
         //-----------------------------------------------------------------
         //By: Ryan Moe
@@ -172,30 +173,30 @@ namespace SoftwareEng
                 guiCallback(error);
         }
 
+        //BS: Commenting this function out: its never used 03/23/13
         //-----------------------------------------------------------------
-
         //By: Ryan Moe
         //Edited Last:
-        private void reopenPicturesXML_backend(generic_callback guiCallback)
-        {
-            //use this to inform the calling gui of how things went.
-            ErrorReport error = new ErrorReport();
+        //private void reopenPicturesXML_backend(generic_callback guiCallback)
+        //{
+        //    //use this to inform the calling gui of how things went.
+        //    ErrorReport error = new ErrorReport();
 
-            try
-            {
-                _picturesDatabase = XDocument.Load(picturesDatabasePath);
-            }
-            catch
-            {
-                error.reportID = ErrorReport.FAILURE;
-                error.description = "PhotoBomb.openPicturesXML():failed to load the albums xml file: " + picturesDatabasePath;
-                guiCallback(error);
-                return;
-            }
+        //    try
+        //    {
+        //        _picturesDatabase = XDocument.Load(picturesDatabasePath);
+        //    }
+        //    catch
+        //    {
+        //        error.reportID = ErrorReport.FAILURE;
+        //        error.description = "PhotoBomb.openPicturesXML():failed to load the albums xml file: " + picturesDatabasePath;
+        //        guiCallback(error);
+        //        return;
+        //    }
 
-            //The loading of the xml was nominal, report back to the gui callback.
-            guiCallback(error);
-        }
+        //    //The loading of the xml was nominal, report back to the gui callback.
+        //    guiCallback(error);
+        //}
 
         //-----------------------------------------------------------------
         //By: Ryan Moe

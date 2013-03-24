@@ -58,6 +58,7 @@ namespace SoftwareEng
             rebuildBackendOnFilesystem_backend(guiCallback);
         }
 
+        //BS: Commenting this function out: its never used 03/23/13
         //----------------------------------------------
         //By: Ryan Moe
         //Edited Last: 
@@ -68,10 +69,10 @@ namespace SoftwareEng
         //ERROR CONDITIONS
         //1) if the xml file does not exist, an error will be returned.
         //2) if the xml file does not contain VALID xml, error.
-        public void reopenAlbumsXML(generic_callback guiCallback)
-        {
-            reopenAlbumsXML_backend(guiCallback);
-        }
+        //public void reopenAlbumsXML(generic_callback guiCallback)
+        //{
+        //    reopenAlbumsXML_backend(guiCallback);
+        //}
 
         //----------------------------------------------
         //By: Ryan Moe
@@ -83,6 +84,8 @@ namespace SoftwareEng
         {
             saveAlbumsXML_backend(guiCallback);
         }
+
+        //BS: Commenting this function out: its never used 03/23/13
         //----------------------------------------------
         //By: Ryan Moe
         //Edited Last: 
@@ -92,10 +95,10 @@ namespace SoftwareEng
         //ERROR CONDITIONS
         //1) if the xml file does not exist, an error will be returned.
         //2) if the xml file does not contain VALID xml, error.
-        public void reopenPicturesXML(generic_callback guiCallback)
-        {
-            reopenPicturesXML_backend(guiCallback);
-        }
+        //public void reopenPicturesXML(generic_callback guiCallback)
+        //{
+        //    reopenPicturesXML_backend(guiCallback);
+        //}
 
         //-----------------------------------------------
         //By: Ryan Moe
@@ -242,18 +245,7 @@ namespace SoftwareEng
         {
             return cancelAddNewPicturesThread_backend();
         }
-
-
-
-
-
-
     }//class
-
-
-
-
-
 
 
     //-------------------------------------------------
