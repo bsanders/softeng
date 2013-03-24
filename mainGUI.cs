@@ -56,7 +56,8 @@ namespace SoftwareEng
             
             //for now the gui will determine filepaths(set to same folder as exe) in case it is ever made a user choice
             String libraryPath = System.IO.Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    Properties.Settings.Default.OrgName,
                     Properties.Settings.Default.PhotoLibraryName);
                 
             bombaDeFotos = new PhotoBomb();
