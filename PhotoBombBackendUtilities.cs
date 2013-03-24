@@ -83,6 +83,7 @@ namespace SoftwareEng
             //make the object that will go into the xml database.
             XElement newPicRoot = new XElement("picture",
                 new XAttribute("uid", newPictureData.UID),
+                new XAttribute("sha1", ByteArrayToString(newPictureData.hash)),
                 new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.path)
                 );
 
@@ -124,6 +125,7 @@ namespace SoftwareEng
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
                                             new XAttribute("uid", newPicture.UID),
+                                            new XAttribute("sha1", ByteArrayToString(newPicture.hash)),
                                             new XElement("name", albumName));
 
 
@@ -185,14 +187,95 @@ namespace SoftwareEng
             return true;
         }
 
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/23/13
+        // Target for deletion - unused, unneeded
         /// <summary>
         /// Create's a GUID for an object
         /// </summary>
         /// <returns>A string representation of the GUID</returns>
         private string util_getNewPicGUID()
         {
+            
             string guid = System.Guid.NewGuid().ToString();
             return guid;
+        }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/23/13
+        // Should be parallelizeable 
+        /// <summary>
+        /// Compute the SHA1 Hash of a file
+        /// </summary>
+        /// <param name="fullFilePath">The path and file name of the file to SHA1</param>
+        /// <returns>A byte array representation of the SHA1</returns>
+        private byte[] util_getHashOfFile(string fullFilePath)
+        {
+            // fileHash will hold a byte array representation of the SHA1 hash.
+            byte[] fileHash = null;
+
+            // Read the file in as a stream
+            try
+            {
+                using (FileStream fs = new FileStream(fullFilePath, FileMode.Open, FileAccess.Read))
+                using (BufferedStream bs = new BufferedStream(fs))
+                {
+                    // SHA1Managed is the .NET class that actually holds the hashing logic
+                    using (SHA1Managed sha1 = new SHA1Managed())
+                    {
+                        fileHash = sha1.ComputeHash(bs);
+                    }
+                }
+            }
+            // If there's some file error, just leave it set to null.
+            catch (IOException)
+            {
+                fileHash = null;
+            }
+
+            return fileHash;
+        }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/23/13
+        /// <summary>
+        /// Convert an array of bytes to a HexString
+        /// </summary>
+        /// <param name="byteArray"></param>
+        /// <returns>The hexadecimal string representation of a byte array</returns>
+        public static string ByteArrayToString(byte[] byteArray)
+        {
+            StringBuilder hexStr = new StringBuilder(byteArray.Length * 2);
+            foreach (byte b in byteArray)
+            {
+                hexStr.AppendFormat("{0:x2}", b);
+            }
+            return hexStr.ToString();
+        }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/23/13
+        // Should be parallelizeable 
+        /// <summary>
+        /// Convert a HexString (such as a SHA1 hash) to an array of Bytes
+        /// </summary>
+        /// <param name="hexStr"></param>
+        /// <returns>a byte array</returns>
+        private static byte[] StringToByteArray(String hexStr)
+        {
+            int NumberChars = hexStr.Length / 2;
+            byte[] bytes = new byte[NumberChars];
+            StringReader sr = new StringReader(hexStr);
+            for (int i = 0; i < NumberChars; i++)
+            {
+                bytes[i] = Convert.ToByte(new string(new char[2] { (char)sr.Read(), (char)sr.Read() }), 16);
+            }
+            sr.Dispose();
+            return bytes;
         }
 
         //--------------------------------------------------------
@@ -360,6 +443,7 @@ namespace SoftwareEng
             try
             {
                 data.UID = (int)elem.Attribute("UID");
+                data.hash = StringToByteArray((string)elem.Attribute("SHA1"));
                 data.path = elem.Element("filePath").Value;
                 data.extension = (String)elem.Element("filePath").Attribute("extension");
             }

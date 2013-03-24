@@ -383,6 +383,7 @@ namespace SoftwareEng
                 //ComplexPhotoData MOE MARKER MOE MARKER MOE MARKER MOE MARKER!!!!!!
                 try
                 {
+                    photo.hash = StringToByteArray((string)picElement.Attribute("sha1"));
                     photo.UID = (int)picElement.Attribute("uid");
                     photo.path = (string)picElement.Element("filePath").Value;
                 }
@@ -418,6 +419,7 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
             ComplexPhotoData newPicture = new ComplexPhotoData();
 
+            newPicture.hash = util_getHashOfFile(photoUserPath);
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
@@ -494,6 +496,7 @@ namespace SoftwareEng
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
+            newPicture.hash = util_getHashOfFile(photoUserPath);
             newPicture.UID = util_getNewPicUID(searchStartingPoint);
             //error checking
             if (newPicture.UID == -1)
