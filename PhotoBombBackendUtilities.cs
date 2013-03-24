@@ -533,6 +533,7 @@ namespace SoftwareEng
             String newPath = System.IO.Path.Combine(libraryPath, picNameInLibrary);
 
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
+            resizeJob.Height = 120;
             resizeJob.Build(
                 picturePath,
                 System.IO.Path.Combine(
