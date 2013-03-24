@@ -33,10 +33,10 @@ namespace SoftwareEng
 
         //The XML in memory for the albumbs.
         //Add new vars here if we get more xmls.
-        private XDocument _albumsDatabase;
+        private XElement _albumsDatabase;
         private string albumsDatabasePath;
 
-        private XDocument _picturesDatabase;
+        private XElement _picturesDatabase;
         private string picturesDatabasePath;
 
         private const int UID_MAX_SIZE = 2000000000;
@@ -172,7 +172,7 @@ namespace SoftwareEng
                 return;
             }
 
-            _albumsDatabase.Save(albumsDatabasePath);
+            _albumsDatabase.Document.Save(albumsDatabasePath);
 
             if (guiCallback != null)
                 guiCallback(error);
@@ -216,8 +216,8 @@ namespace SoftwareEng
                 guiCallback(error);
                 return;
             }
-
-            _picturesDatabase.Save(picturesDatabasePath);
+            
+            _picturesDatabase.Document.Save(picturesDatabasePath);
             if (guiCallback != null)
                 guiCallback(error);
         }
@@ -250,7 +250,7 @@ namespace SoftwareEng
             try
             {
                 // get all the albums
-                _albumSearchIE = (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements() select c);
+                _albumSearchIE = (from c in _albumsDatabase.Elements() select c);
             }
             catch
             {
@@ -398,7 +398,7 @@ namespace SoftwareEng
                 //for(from) every c in the database's children (all albums),
                 //see if it's attribute uid is the one we want,
                 //and if so return the first instance of a match.
-                specificAlbum = (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements()
+                specificAlbum = (from c in _albumsDatabase.Elements()
                                  where (int)c.Attribute("uid") == AlbumUID
                                  select c).Single();//NOTE: this will throw error if more than one OR none at all.
             }
