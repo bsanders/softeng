@@ -119,9 +119,9 @@ namespace SoftwareEng
         //This method returns a list of Album objects to the
         //callback given by the parameter.
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
-        public void getAllUserAlbumNames(getAllUserAlbumNames_callback guiCallback)
+        public void getAllAlbums(getAllUserAlbumNames_callback guiCallback)
         {
-            getAllUserAlbumNames_backend(guiCallback);
+            getAllAlbums_backend(guiCallback);
         }
 
         //----------------------------------------------

@@ -140,7 +140,7 @@ namespace SoftwareEng
 
             if (refreshView == true)
             {
-                bombaDeFotos.getAllUserAlbumNames(new getAllUserAlbumNames_callback(guiAlbumsRetrieved));
+                bombaDeFotos.getAllAlbums(new getAllUserAlbumNames_callback(guiAlbumsRetrieved));
             }
         }
 

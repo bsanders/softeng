@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.ComponentModel;
 using System.Threading;
+using System.Reflection;
 
 namespace SoftwareEng
 {
@@ -223,17 +224,15 @@ namespace SoftwareEng
 
         //-----------------------------------------------------------------
 
-
-        //By: Ryan Moe
-        //Edited Last:
-        //NOTE: This function is up for replacement by new logic that uses
-        //the select/from/where style of code.
-        //This is not in the style of code this file wants.
-        private void getAllUserAlbumNames_backend(getAllUserAlbumNames_callback guiCallback)
+        /// <summary>
+        /// Retrieves a 
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        private void getAllAlbums_backend(getAllUserAlbumNames_callback guiCallback)
         {
             ErrorReport error = new ErrorReport();
 
-            //if the database is NOT valid.
+            // Ensure the database is valid before proceeding
             if (!util_checkAlbumDatabase(error))
             {
                 error.reportID = ErrorReport.FAILURE;
@@ -242,72 +241,139 @@ namespace SoftwareEng
                 return;
             }
 
-            //the list of all albums to return to the gui.
+            // This list will hold all the data the GUI needs for all albums in XML
             List<SimpleAlbumData> _albumsToReturn = new List<SimpleAlbumData>();
-
-            //get all the albums AND their children.
-            List<XElement> _albumSearch;
+            
+            // An object to enumerate over the album XML nodes
+            IEnumerable<XElement> _albumSearchIE;
             try
             {
-                _albumSearch = xmlParser.searchForElements(_albumsDatabase.Element(Properties.Settings.Default.XMLRootElement), "album");
+                // get all the albums
+                _albumSearchIE = (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements() select c);
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;//maybe every error should be SHIT_JUST_GOT_REAL?  Decisions, decisions...
-                error.description = "PhotoBomb.getAllUserAlbumNames():Failed at finding albums in the database.";
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "PhotoBomb.getAllAlbumsByID_backend():Failed at finding albums in the database.";
                 guiCallback(error, null);
                 return;
             }
-            //go through each album and get data from its children to add to the list.
-            foreach (XElement thisAlbum in _albumSearch)
+            foreach (XElement thisAlbum in _albumSearchIE)
             {
-                //this custom data class gets sent back to the gui.
                 SimpleAlbumData userAlbum = new SimpleAlbumData();
 
-                List<XElement> _nameSearch;
+                userAlbum.UID = (int)thisAlbum.Attribute("uid");
                 try
                 {
-                    //get the name(s) of this album.
-                    _nameSearch = xmlParser.searchForElements(thisAlbum, "albumName");
+                    // Throws an exception if there is not exactly one albumName for a given album.
+                    userAlbum.albumName = thisAlbum.Descendants("albumName").Single().Value;
                 }
                 catch
                 {
+                    // This is ugly.  If we're upgrading to .net 4.5 anyway we can replace all error code with a tracking class:
+                    // http://msdn.microsoft.com/en-us/library/system.runtime.compilerservices.callermembernameattribute.aspx
                     error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-                    error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error finding the name of an album.");
-                    continue;
-                }
-                //make sure we have at least one name for the album.
-                if (_nameSearch.Count == 1)
-                {
-                    //get the value of the album name and add to list.
-                    try
-                    {
-                        userAlbum.albumName = _nameSearch.ElementAt(0).Value;
-                        userAlbum.UID = (int)thisAlbum.Attribute("uid");
-                    }
-                    catch
-                    {
-                        error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-                        error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error trying to get either the name or uid value from an album.");
-                        continue;
-                    }
-                    _albumsToReturn.Add(userAlbum);
-                }
-                else if (_nameSearch.Count > 1)
-                {
-                    error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-                    error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with more than one name.");
-                }
-                else if (_nameSearch.Count == 0)
-                {
-                    error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-                    error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with no name.");
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendFormat("{0}.{1} : {2}",
+                        this.GetType().Name,
+                        MethodBase.GetCurrentMethod().Name,
+                        "Found an album with more than one name, or invalid name."
+                        );
+                    error.warnings.Add(sb.ToString());
+                    continue; // We'll keep going if one album is invalid
                 }
 
-            }//foreach
-
+                _albumsToReturn.Add(userAlbum);
+            }
             guiCallback(error, _albumsToReturn);
         }
+
+        // 3/24/2013, BS: Commenting this function out,
+        // having replaced it with the one above: getAllAlbums_backend()
+        //By: Ryan Moe
+        //Edited Last:
+        //NOTE: This function is up for replacement by new logic that uses
+        //the select/from/where style of code.
+        //This is not in the style of code this file wants.
+        //private void getAllUserAlbumNames_backend(getAllUserAlbumNames_callback guiCallback)
+        //{
+        //    ErrorReport error = new ErrorReport();
+
+        //    //if the database is NOT valid.
+        //    if (!util_checkAlbumDatabase(error))
+        //    {
+        //        error.reportID = ErrorReport.FAILURE;
+        //        error.description = "The album database was determined to be not valid.";
+        //        guiCallback(error, null);
+        //        return;
+        //    }
+
+        //    //the list of all albums to return to the gui.
+        //    List<SimpleAlbumData> _albumsToReturn = new List<SimpleAlbumData>();
+            
+        //    //get all the albums AND their children.
+        //    List<XElement> _albumSearch;
+        //    try
+        //    {
+        //        _albumSearch = xmlParser.searchForElements(_albumsDatabase.Element(Properties.Settings.Default.XMLRootElement), "album");
+        //    }
+        //    catch
+        //    {
+        //        error.reportID = ErrorReport.FAILURE;//maybe every error should be SHIT_JUST_GOT_REAL?  Decisions, decisions...
+        //        error.description = "PhotoBomb.getAllUserAlbumNames():Failed at finding albums in the database.";
+        //        guiCallback(error, null);
+        //        return;
+        //    }
+        //    //go through each album and get data from its children to add to the list.
+        //    foreach (XElement thisAlbum in _albumSearch)
+        //    {
+        //        //this custom data class gets sent back to the gui.
+        //        SimpleAlbumData userAlbum = new SimpleAlbumData();
+
+        //        List<XElement> _nameSearch;
+        //        try
+        //        {
+        //            //get the name(s) of this album.
+        //            _nameSearch = xmlParser.searchForElements(thisAlbum, "albumName");
+        //        }
+        //        catch
+        //        {
+        //            error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+        //            error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error finding the name of an album.");
+        //            continue;
+        //        }
+        //        //make sure we have at least one name for the album.
+        //        if (_nameSearch.Count == 1)
+        //        {
+        //            //get the value of the album name and add to list.
+        //            try
+        //            {
+        //                userAlbum.albumName = _nameSearch.ElementAt(0).Value;
+        //                userAlbum.UID = (int)thisAlbum.Attribute("uid");
+        //            }
+        //            catch
+        //            {
+        //                error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+        //                error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error trying to get either the name or uid value from an album.");
+        //                continue;
+        //            }
+        //            _albumsToReturn.Add(userAlbum);
+        //        }
+        //        else if (_nameSearch.Count > 1)
+        //        {
+        //            error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+        //            error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with more than one name.");
+        //        }
+        //        else if (_nameSearch.Count == 0)
+        //        {
+        //            error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+        //            error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with no name.");
+        //        }
+
+        //    }//foreach
+
+        //    guiCallback(error, _albumsToReturn);
+        //}
 
 
         //-----------------------------------------------------------------
