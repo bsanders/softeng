@@ -223,12 +223,13 @@ namespace SoftwareEng
         }
 
         //-----------------------------------------------------------------
-
+        // By: Bill Sanders, based on Ryan Moe's earlier function
+        // last edited: 3/24/13
         /// <summary>
-        /// Retrieves a 
+        /// Retrieves a list of all albums in the albums.xml file, sent back via the callback.
         /// </summary>
-        /// <param name="guiCallback"></param>
-        private void getAllAlbums_backend(getAllUserAlbumNames_callback guiCallback)
+        /// <param name="guiCallback">The callback to send the data back to the GUI</param>
+        private void getAllAlbums_backend(getAllAlbumNames_callback guiCallback)
         {
             ErrorReport error = new ErrorReport();
 

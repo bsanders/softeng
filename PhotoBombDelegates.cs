@@ -19,7 +19,7 @@ namespace SoftwareEng
     public delegate void generic_callback(ErrorReport error);
 
     //callback used with the getAllUserAlbumNames method.
-    public delegate void getAllUserAlbumNames_callback(ErrorReport error, List<SimpleAlbumData> _albums);
+    public delegate void getAllAlbumNames_callback(ErrorReport error, List<SimpleAlbumData> _albums);
 
     public delegate void getAllPhotosInAlbum_callback(ErrorReport error, List<SimplePhotoData> _pictures);
 
