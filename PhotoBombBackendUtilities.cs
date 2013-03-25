@@ -149,6 +149,8 @@ namespace SoftwareEng
         // By: Bill Sanders
         // Edited Last: 3/24/13
         // TODO: Speed up by using a byte-array instead of string comparison in LINQ?
+        // could make this function return empty list (null?) if hash not found, photo ID if found
+        // (photo ID list! what if multiple photos, but not in the album we're adding into)
         /// <summary>
         /// Checks to see if the photo is unique (using a SHA1 hash) to the library
         /// </summary>
@@ -176,6 +178,8 @@ namespace SoftwareEng
         //--------------------------------------------------------
         // By: Bill Sanders
         // Edited Last: 3/24/13
+        // Possible strategy: Add the photo anyway?  If found, see if it is in a different album.
+        // If so, get its XElement, give it a new UID, but keep the rest.
         // TODO: Speed up by using a byte-array instead of string comparison in LINQ?
         /// <summary>
         /// Checks to see if the photo is unique (using a SHA1 hash) to a given album
@@ -663,19 +667,24 @@ namespace SoftwareEng
                 error.description = "Failed to change the name of a photo.";
             }
         }
-        //--------------------------------------------------------------------------
 
-        //By: Ryan Moe
-        //Edited Last:
-        //returns the xelement that represents the requested photo,
-        //gets this xelement from the parameter xelement that represents
-        //the album that the picture might be in.
+        //--------------------------------------------------------------------------
+        //By: Ryan Moe, comments by Bill Sanders
+        //Edited Last: 3/24/13
+        /// <summary>
+        /// Searches for a photo by UID in the specified album.
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="albumElem"></param>
+        /// <param name="photoUID"></param>
+        /// <returns>An XElement of the Photo, or null if not in album</returns>
         private XElement util_getPhotoFromAlbumElemByUID(ErrorReport error, XElement albumElem, int photoUID)
         {
             try
             {
-                //find and return a picture whos uid is the one we are looking for.
-                //Throws exception if none or more than one match is found.
+                // Search through a specific album for a specific photo by ID
+                // Return an (XElement) picture with the matching uid if it exists
+                // Throws exception if it doesn't find exactly 1 match
                 return (from c in albumElem.Element("albumPhotos").Elements("picture")
                         where (int)c.Attribute("uid") == photoUID
                         select c).Single();
