@@ -506,7 +506,7 @@ namespace SoftwareEng
             //Change me if you want the default album name to be different.
             if (pictureNameInAlbum == "")
             {
-                pictureNameInAlbum = "Image " + newPicture.UID.ToString();
+                pictureNameInAlbum = Properties.Settings.Default.DefaultImageName + " " + newPicture.UID.ToString();
             }
 
             //Move picture and get a new path for the picture in our storage.
@@ -782,24 +782,6 @@ namespace SoftwareEng
             }
             return error;
         }
-
-
-
-
-
-
-
     }//class
-
-
-
-
-
-
-
-
-
-
-
 
 }
