@@ -170,7 +170,8 @@ namespace SoftwareEng
             XElement newPhotoElem = new XElement("picture",
                                             new XAttribute("uid", newPicture.UID),
                                             new XAttribute("sha1", ByteArrayToString(newPicture.hash)),
-                                            new XElement("name", albumName));
+                                            new XElement("name", albumName),
+                                            new XElement("caption", newPicture.caption));
 
 
             specificAlbum.Element("albumPhotos").Add(newPhotoElem);
