@@ -18,6 +18,50 @@ namespace SoftwareEng
     public partial class PhotoBomb
     {
         //----------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 3/26/13
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        private XElement util_getComplexPictureByHash(ErrorReport error, string hash)
+        {
+            if (util_checkPicturesDatabase(error))
+            {
+                //Try searching for the album with the uid specified.
+                XElement specificPicture;
+                try
+                {
+                    //for(from) every c in the database's children (all albums),
+                    //see if it's attribute uid is the one we want,
+                    //and if so return the first instance of a match.
+                    specificPicture = (from c in _picturesDatabase.Elements()
+                                       where (string)c.Attribute("sha1") == hash
+                                       select c).Single();//NOTE: this will throw error if more than one OR none at all.
+                }
+                //failed to find the picture
+                catch
+                {
+                    error.reportID = ErrorReport.FAILURE;
+                    error.description = "Failed to find the picture specified.";
+                    return null;
+                }
+                //success!
+                return specificPicture;
+            }
+
+            //database is not clean!
+            else
+            {
+                //error object already filled out by integrity checker.
+                return null;
+            }
+        }//method
+
+        
+        //----------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
         //RETURN: the element that has the param uid from the picture database.
