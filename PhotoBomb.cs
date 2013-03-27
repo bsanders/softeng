@@ -166,6 +166,16 @@ namespace SoftwareEng
             addNewPicture_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="uid"></param>
+        /// <param name="albumUID"></param>
+        public void deletePictureFromAlbum(generic_callback guiCallback, int uid, int albumUID)
+        {
+            deletePictureFromAlbum_backend(guiCallback, uid, albumUID);
+        }
 
         //----------------------------------------------
         //By: Ryan Moe

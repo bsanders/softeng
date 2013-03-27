@@ -625,6 +625,17 @@ namespace SoftwareEng
             return errorReport;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="uid"></param>
+        /// <param name="albumUID"></param>
+        private void deletePictureFromAlbum_backend(generic_callback guiCallback, int uid, int albumUID)
+        {
+
+            throw new NotImplementedException();
+        }
 
 
 
