@@ -177,34 +177,41 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         // By: Bill Sanders
-        // Edited Last: 3/24/13
-        // Possible strategy: Add the photo anyway?  If found, see if it is in a different album.
+        // Edited Last: 3/25/13
+        // Possible alternate strategy: Add the photo anyway?  If found, see if it is in a different album.
         // If so, get its XElement, give it a new UID, but keep the rest.
-        // TODO: Speed up by using a byte-array instead of string comparison in LINQ?
+        // TODO: Examine possible speed up by using a byte-array instead of string comparison in LINQ?
         /// <summary>
         /// Checks to see if the photo is unique (using a SHA1 hash) to a given album
         /// </summary>
-        /// <param name="albumID">A the unique ID of the album</param>
-        /// <param name="hash">A hex string representation of the hash</param>
-        /// <returns></returns>
-        private Boolean util_checkPhotoUniqueToAlbum(int albumID, string hash)
+        /// <param name="albumID">The unique ID of the album</param>
+        /// <param name="hash">A hex string representation of the hash of the photo</param>
+        /// <returns>False if the photo already exists in this album, otherwise true.</returns>
+        private Boolean util_checkPhotoIsUniqueToAlbum(int albumID, string hash)
         {
+            // start by assuming the photo does not exist in this album
+            Boolean photoExistsInAlbum = false;
             try
             {
-                // Try to find a duplicate hash.
-                // throws exception if we find NO matching names.
-                var bob = (from c in _picturesDatabase.Elements("picture")
-                 where (String)c.Attribute("sha1") == hash
-                 select c).ToDictionary(pic => pic.Attribute("sha1"));
-                
+                // Try to find a duplicate hash in this album.
+                // Note: this may be working inefficiently.
+                // Join every picture element from both databases, where the pictures have the same sha1
+                // Of those, we only care about the ones where the picture has the sha1 we're looking for
+                // finally, of those, we only care about the cases where the that match exists in the album we're interested in.
+                // This query then returns true if it found an item matching these criteria, or false if it did not.
+                photoExistsInAlbum = (from picDB in _picturesDatabase.Elements("picture")
+                           join picAlbDB in _albumsDatabase.Descendants("picture")
+                           on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
+                           where (string)picDB.Attribute("sha1") == hash
+                                && (int)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
+                           select picDB).Any();
             }
-            // Did not find a matching hash, photo is unique
-            catch
+            catch // we shouldn't be able to get here, as long as the databases exist
             {
-                return true;
+                //throw new ArgumentNullException();
             }
-            // Otherwise we found at least one match
-            return false;
+            // If the query returned true, the picture is already in the album, and therefore NOT unique
+            return !photoExistsInAlbum;
         }
 
         //--------------------------------------------------------

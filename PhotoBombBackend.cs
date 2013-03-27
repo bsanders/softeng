@@ -564,7 +564,7 @@ namespace SoftwareEng
 
             // Compute the hash for this picture, and then check to make sure it is unique
             newPicture.hash = util_getHashOfFile(photoUserPath);
-            if (!util_checkPhotoUnique(ByteArrayToString(newPicture.hash)))
+            if (!util_checkPhotoIsUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
             {
                 errorReport.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
                 errorReport.description = "Picture is not unique.";
