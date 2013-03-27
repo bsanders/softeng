@@ -301,6 +301,7 @@ namespace SoftwareEng
         public byte[] hash;
         public String path;
         public String extension;
+        public String caption;
         //... add more stuff here when we have more metadata
 
         public ComplexPhotoData()
@@ -309,16 +310,8 @@ namespace SoftwareEng
             hash = null;
             path = "";
             extension = "";
+            caption = "";
         }
     }
-
-
-
-
-
-
-
-
-
 
 }//namespace

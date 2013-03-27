@@ -25,7 +25,7 @@ namespace SoftwareEng
     {
 
         //xml parsing utils.
-        private XmlParser xmlParser;
+        //private XmlParser xmlParser;
 
         //path to the pictures folder we put all the pictures
         //tracked by the database.
@@ -59,7 +59,7 @@ namespace SoftwareEng
 
             //this might be depricated with the current backend design,
             //think about moving it into the utils class...
-            xmlParser = new XmlParser();
+            //xmlParser = new XmlParser();
 
             //try to open the databases.
             // BS: These functions are being slated for merging together
