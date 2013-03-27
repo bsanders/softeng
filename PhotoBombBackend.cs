@@ -63,6 +63,7 @@ namespace SoftwareEng
 
             //try to open the databases.
             // BS: These functions are being slated for merging together
+            // Ooops.  If these functions fail, but the third check succeeds, it overwrites errorReport
             util_openAlbumsXML(errorReport);
             util_openPicturesXML(errorReport);
 
