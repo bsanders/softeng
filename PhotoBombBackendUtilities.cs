@@ -810,7 +810,6 @@ namespace SoftwareEng
                 error.description = "Failed to find a single album by UID.";
                 return null;
             }
-
         }
 
         //---------------------------------------------------------------------------

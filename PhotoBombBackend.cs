@@ -394,22 +394,24 @@ namespace SoftwareEng
 
             //Try searching for the album with the uid specified.
             XElement specificAlbum;
-            try
-            {
-                //for(from) every c in the database's children (all albums),
-                //see if it's attribute uid is the one we want,
-                //and if so return the first instance of a match.
-                specificAlbum = (from c in _albumsDatabase.Elements()
-                                 where (int)c.Attribute("uid") == AlbumUID
-                                 select c).Single();//NOTE: this will throw error if more than one OR none at all.
-            }
-            catch
-            {
-                error.reportID = ErrorReport.FAILURE;
-                error.description = "PhotoBomb.getAllPhotosInAlbum():Failed to find the album specified.";
-                guiCallback(error, null);
-                return;
-            }
+            specificAlbum = util_getAlbumByUID(error, AlbumUID);
+            // Commenting out the below in favor of a util class. - BillSanders
+            //try
+            //{
+            //    //for(from) every c in the database's children (all albums),
+            //    //see if it's attribute uid is the one we want,
+            //    //and if so return the first instance of a match.
+            //    specificAlbum = (from c in _albumsDatabase.Elements()
+            //                     where (int)c.Attribute("uid") == AlbumUID
+            //                     select c).Single();//NOTE: this will throw error if more than one OR none at all.
+            //}
+            //catch
+            //{
+            //    error.reportID = ErrorReport.FAILURE;
+            //    error.description = "PhotoBomb.getAllPhotosInAlbum():Failed to find the album specified.";
+            //    guiCallback(error, null);
+            //    return;
+            //}
 
             //Now lets get all the picture data from
             //the album and fill out the picture object list.
