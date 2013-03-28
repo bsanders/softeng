@@ -626,15 +626,38 @@ namespace SoftwareEng
         }
 
         /// <summary>
-        /// 
+        /// Removes the specified photo from the specified album
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="uid"></param>
-        /// <param name="albumUID"></param>
-        private void deletePictureFromAlbum_backend(generic_callback guiCallback, int uid, int albumUID)
+        /// <param name="uid">The photo's UID</param>
+        /// <param name="albumUID">The album's UID</param>
+        private ErrorReport removePictureFromAlbum_backend(generic_callback guiCallback, int uid, int albumUID)
         {
-
-            throw new NotImplementedException();
+            ErrorReport errorReport = new ErrorReport();
+            
+            // these two lines are kind of redundant, at the moment
+            // First get the actual instance of the photo (from the pictures DB!)
+            XElement thisPicture = util_getComplexPictureByUID(errorReport, uid);
+            // Now get that photo from the album DB!
+            thisPicture = util_getSpecificPhotoNodeByUID(albumUID, (string)thisPicture.Attribute("sha1"));
+            var y = thisPicture.Attribute("sha1");
+            // check to see if this is the last instance of this photo in the library here.
+            // ... 
+            //
+            // Delete this instance of the photo from the in-memory xml database
+            try
+            {
+                var x = thisPicture.Attribute("sha1");
+                thisPicture.Remove();
+                saveAlbumsXML_backend(null);
+                savePicturesXML_backend(null);
+            }
+            catch // the photo mysteriously disappeared (from the xml!) before removing it..?
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Failed to remove the photo instance from the xml database";
+            }
+            return errorReport;
         }
 
 

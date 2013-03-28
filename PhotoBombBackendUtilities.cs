@@ -99,6 +99,44 @@ namespace SoftwareEng
             }
         }//method
 
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/25/13
+        // 
+        // TODO: Examine possible speed up by using a byte-array instead of string comparison in LINQ?
+        // TODO2: Add errorreport
+        // TODO3: roll out the query into a separate function!
+        /// <summary>
+        /// Retrieves a specific photo instance from a combination of the AlbumID and its hash
+        /// </summary>
+        /// <param name="albumID">The unique ID of the album</param>
+        /// <param name="hash">A hex string representation of the hash of the photo</param>
+        /// <returns>Returns an xml node of the photo, or null.</returns>
+        private XElement util_getSpecificPhotoNodeByUID(int albumID, string hash)
+        {
+            XElement photoInstance = null;
+            try
+            {
+                // Try to find a photo hash in this album by hash.
+                // Note: this may be working inefficiently.
+                // Join every picture element from both databases, where the pictures have the same sha1
+                // Of those, we only care about the ones where the picture has the sha1 we're looking for
+                // finally, of those, we only care about the cases where the that match exists in the album we're interested in.
+                // This query then returns a single xml instance matching these criteria, or throws an exception if 0 or more than 1 are found
+                photoInstance = (from picDB in _picturesDatabase.Elements("picture")
+                                      join picAlbDB in _albumsDatabase.Descendants("picture")
+                                      on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
+                                      where (string)picDB.Attribute("sha1") == hash
+                                           && (int)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
+                                      select picAlbDB).Single();
+            }
+            catch // We only get here if the database is already messed up (two of the same photo in an album)
+            {
+                throw new ArgumentNullException();
+            }
+            // If the query returned a single node
+            return photoInstance;
+        }
 
         //--------------------------------------------------------
         //By: Ryan Moe
@@ -316,6 +354,8 @@ namespace SoftwareEng
             string guid = System.Guid.NewGuid().ToString();
             return guid;
         }
+        
+
 
         //--------------------------------------------------------
         // By: Bill Sanders

@@ -53,13 +53,13 @@ namespace SoftwareEng
         public mainGUI()
         {
             InitializeComponent();
-            
+
             //for now the gui will determine filepaths(set to same folder as exe) in case it is ever made a user choice
             String libraryPath = System.IO.Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     Properties.Settings.Default.OrgName,
                     Properties.Settings.Default.PhotoLibraryName);
-                
+
             bombaDeFotos = new PhotoBomb();
             bombaDeFotos.init(guiConstructorCallback,
                 Properties.Settings.Default.AlbumXMLFile,
@@ -72,7 +72,7 @@ namespace SoftwareEng
             //true tells the function to refresh list
             populateAlbumView(true);
 
-            
+
             createNewAlbumToolStripMenuItem.Enabled = true;
             aboutToolStripMenuItem.Enabled = true;
 
@@ -111,7 +111,7 @@ namespace SoftwareEng
             if (status.reportID != ErrorReport.SUCCESS)
             {
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
-            } 
+            }
         }
 
 
@@ -230,7 +230,7 @@ namespace SoftwareEng
             if (albumListView.SelectedItems.Count > 0)
             {
                 int selectedAlbumID = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
-                
+
                 // check to make sure selected item isn't the "add album" icon
                 if (selectedAlbumID > addAlbumID)
                 {
@@ -283,7 +283,7 @@ namespace SoftwareEng
             if (status.reportID == ErrorReport.SUCCESS)
             {
                 photoListView.BeginUpdate();
-                
+
                 //--if switching to another kind of "view", from here to the end of catch block
                 ListViewItem itemHolder = null;
                 ListViewItem.ListViewSubItem[] itemHolderSubitems;
@@ -305,7 +305,7 @@ namespace SoftwareEng
                         showError("Error: Album missing.");
                     }
                     //end of catch
-                    
+
                 }
                 photoListView.EndUpdate();
             }
@@ -372,35 +372,35 @@ namespace SoftwareEng
         *********************************************************************************************/
         private void addPicturesToAlbum(int albumId)
         {
-                if (photoOpenFileDialog.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
+            if (photoOpenFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
 
-                List<string> fullFileNames = new List<string>();
+            List<string> fullFileNames = new List<string>();
 
-                List<string> photoExtensions = new List<string>();
-                //--fills up both lists that will be passed to bombaDeFotos.addNewPictures
-                foreach (string picFile in photoOpenFileDialog.FileNames)
-                {
-                    fullFileNames.Add(picFile);
+            List<string> photoExtensions = new List<string>();
+            //--fills up both lists that will be passed to bombaDeFotos.addNewPictures
+            foreach (string picFile in photoOpenFileDialog.FileNames)
+            {
+                fullFileNames.Add(picFile);
 
-                    photoExtensions.Add(".jpg");
-                }
+                photoExtensions.Add(".jpg");
+            }
 
-//                progressForm photoImportProgress;
+            //                progressForm photoImportProgress;
 
-                pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length, bombaDeFotos);
+            pictureImportProgress = new progressForm(photoOpenFileDialog.FileNames.Length, bombaDeFotos);
 
-                ComplexPhotoData newPicture = new ComplexPhotoData();
+            ComplexPhotoData newPicture = new ComplexPhotoData();
 
-                bombaDeFotos.addNewPictures(guiPictureAdded,
-                    fullFileNames,
-                    photoExtensions,
-                    albumChosenbyUser,
-                    null,
-                    new ProgressChangedEventHandler(guiUpdateImportProgress), 1);
-                pictureImportProgress.ShowDialog();
+            bombaDeFotos.addNewPictures(guiPictureAdded,
+                fullFileNames,
+                photoExtensions,
+                albumChosenbyUser,
+                null,
+                new ProgressChangedEventHandler(guiUpdateImportProgress), 1);
+            pictureImportProgress.ShowDialog();
         }
 
         public void guiUpdateImportProgress(object sender, ProgressChangedEventArgs e)
@@ -643,7 +643,7 @@ namespace SoftwareEng
                 photoListView.SelectedItems[firstListViewItemIndex].BeginEdit();
             }
         }
-        
+
         /*********************************************************************************************
         * Author: Alejandro Sosa
         * parameters: windows default
@@ -687,18 +687,18 @@ namespace SoftwareEng
             if (status.reportID == ErrorReport.SUCCESS)
             {
 
-                    //check to see if photo exists.
-                    if (File.Exists(thePhoto.path) == true)
-                    {
-                        PhotoViewWindow photoDisplayer = new PhotoViewWindow(this, thePhoto, photoListView.SelectedItems[firstListViewItemIndex].Text);
-                        photoDisplayer.ShowDialog();
-                    }
-                    else
-                    {
-                        showError("Error: Photograph is not in the library.");
-                    }
+                //check to see if photo exists.
+                if (File.Exists(thePhoto.path) == true)
+                {
+                    PhotoViewWindow photoDisplayer = new PhotoViewWindow(this, thePhoto, photoListView.SelectedItems[firstListViewItemIndex].Text);
+                    photoDisplayer.ShowDialog();
+                }
+                else
+                {
+                    showError("Error: Photograph is not in the library.");
+                }
             }
-            else if(status.reportID == ErrorReport.FAILURE)
+            else if (status.reportID == ErrorReport.FAILURE)
             {
                 showError("Error: Photograph missing.");
             }
@@ -727,10 +727,20 @@ namespace SoftwareEng
             albumListActivation();
         }
 
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            deletePhoto();
 
+            guiPopulatePhotoListView(true);
+        }
 
-
-
-
+        private void deletePhoto()
+        {
+            if (photoListView.SelectedItems.Count > 0)
+            {
+                int photoUid = Convert.ToInt32(photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
+                bombaDeFotos.removePictureFromAlbum(new generic_callback(guiGenericErrorFunction), photoUid, albumChosenbyUser);
+            }
+        }
     }
 }

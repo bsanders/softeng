@@ -11,6 +11,15 @@ using System.Text;
 using System.Xml.Linq;
 using System.ComponentModel;
 
+/*
+ * PhotoBomb TODO:
+ *  implement album renaming
+ *  implement reference counting for photos in library
+ *  Switch pictures in picdb away from UID to hash?
+ *    and then pics in albdb get an albumID?
+ * 
+ */
+
 namespace SoftwareEng
 {
     //This is a PARTIAL class,
@@ -166,15 +175,18 @@ namespace SoftwareEng
             addNewPicture_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum);
         }
 
+        //----------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 3/26/13
         /// <summary>
-        /// 
+        /// This function removes the specified photo from the specified album.
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="uid"></param>
-        /// <param name="albumUID"></param>
-        public void deletePictureFromAlbum(generic_callback guiCallback, int uid, int albumUID)
+        /// <param name="uid">The UID of the photo</param>
+        /// <param name="albumUID">The UID of the album</param>
+        public void removePictureFromAlbum(generic_callback guiCallback, int uid, int albumUID)
         {
-            deletePictureFromAlbum_backend(guiCallback, uid, albumUID);
+            removePictureFromAlbum_backend(guiCallback, uid, albumUID);
         }
 
         //----------------------------------------------
