@@ -258,6 +258,8 @@ namespace SoftwareEng
     //This is a data class that will be used
     //to send a calling gui a list of albums.
     //This class is a SINGLE element of that list.
+    //Edited Date: 3/28/13
+    //Edited By: Ryan Causey
     public class SimpleAlbumData
     {
         public String albumName;

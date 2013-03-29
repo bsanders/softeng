@@ -1,0 +1,84 @@
+﻿<Window 
+        x:Class="SoftwareEng.Images.ViewImage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        mc:Ignorable="d" 
+        Title="ViewImage" Height="300" Width="300"
+        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng">
+    
+    
+    <Grid>
+        <Popup x:Name="imageWindowContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade">
+            <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
+                <Button x:Name="addMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="addButtonImage" Source="/SoftwareEng;component/Images/112_Plus_Grey_48x48_72.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="copyMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="copyButtonImage" Source="/SoftwareEng;component/Images/112_RightArrowLong_Grey_48x48_72.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="deleteMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="deleteButtonImage" Source="/SoftwareEng;component/Images/delete.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="renameMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="renameButtonImage" Source="/SoftwareEng;component/Images/1462_Pencil_48x48.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="slideshowMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="slideshowButtonImage" Source="/SoftwareEng;component/Images/Move.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="viewMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="viewButtonImage" Source="/SoftwareEng;component/Images/view.png" Stretch="Fill"/>
+                </Button>
+            </SoftwareEngControls:customRadialPanel>
+        </Popup>
+        <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="25,0" Stroke="#00000000" VerticalAlignment="Bottom"/>
+        <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="25,0" RenderTransformOrigin="0.5,0.5" Height="70" VerticalAlignment="Bottom">
+            <DockPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#C7000000" Offset="1"/>
+                    <GradientStop Color="#C7383838"/>
+                    <GradientStop Color="#C7A7A7A7" Offset="0.581" />
+                    <GradientStop Color="#C7A7A7A7" Offset="0.372" />
+                </LinearGradientBrush>
+            </DockPanel.Background>
+            <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <Image x:Name="libraryDockButtonImage" Source="/SoftwareEng;component/Images/112_UpArrowLong_Grey_48x48_72.png" Stretch="None"/>
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#BD767676" Offset="0.698" />
+                        <GradientStop Color="#00C4C4C4" Offset="1" />
+                        <GradientStop Color="#AAFFFFFF" Offset="0.39" />
+                        <GradientStop Color="#B5000000" Offset="0.855" />
+                    </RadialGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <Image x:Name="clipboardDockButtonImage" Source="/SoftwareEng;component/Images/1435_ClipBoard.png" Stretch="None"/>
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#BD767676" Offset="0.698" />
+                        <GradientStop Color="#00C4C4C4" Offset="1" />
+                        <GradientStop Color="#AAFFFFFF" Offset="0.39" />
+                        <GradientStop Color="#B5000000" Offset="0.855" />
+                    </RadialGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <Image x:Name="addDockButtonImage" Source="/SoftwareEng;component/Images/112_Plus_Grey_48x48_72.png" Stretch="None"/>
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#BD767676" Offset="0.698" />
+                        <GradientStop Color="#00C4C4C4" Offset="1" />
+                        <GradientStop Color="#AAFFFFFF" Offset="0.39" />
+                        <GradientStop Color="#B5000000" Offset="0.855" />
+                    </RadialGradientBrush>
+                </Button.Background>
+            </Button>
+            <StackPanel Height="68" Name="stackPanel1" Width="121" DockPanel.Dock="Right">
+                <Label Content="Thumbnail Size" Height="28" Name="label1" HorizontalContentAlignment="Center" Margin="0,5,0,0" />
+                <Slider Height="23" Name="slider1" Width="100" />
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>
