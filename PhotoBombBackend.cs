@@ -380,7 +380,7 @@ namespace SoftwareEng
 
         //-----------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
+        //Edited Last: Bill Sanders, 3/27/13
         private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback, int AlbumUID)
         {
             ErrorReport error = new ErrorReport();
@@ -627,6 +627,9 @@ namespace SoftwareEng
             return errorReport;
         }
 
+        //-------------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 3/28/13
         /// <summary>
         /// Removes the specified photo from the specified album
         /// </summary>
@@ -642,15 +645,33 @@ namespace SoftwareEng
             XElement thisPicture = util_getComplexPictureByUID(errorReport, uid);
             // Now get that photo from the album DB!
             thisPicture = util_getSpecificPhotoNodeByUID(albumUID, (string)thisPicture.Attribute("sha1"));
-            var y = thisPicture.Attribute("sha1");
+
+            errorReport = removePictureElement_backend(null, thisPicture);
+
+            return errorReport;
+        }
+
+        //-------------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 3/28/13
+        /// <summary>
+        /// Removes the specified photo from the specified album
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="pictureElement"></param>
+        /// <returns></returns>
+        private ErrorReport removePictureElement_backend(generic_callback guiCallback, XElement pictureElement)
+        {
+            ErrorReport errorReport = new ErrorReport();
+
             // check to see if this is the last instance of this photo in the library here.
             // ... 
             //
             // Delete this instance of the photo from the in-memory xml database
             try
             {
-                var x = thisPicture.Attribute("sha1");
-                thisPicture.Remove();
+                pictureElement.Remove();
+                // TODO: move these calls out of here for efficiency in removing multiple files!
                 saveAlbumsXML_backend(null);
                 savePicturesXML_backend(null);
             }
@@ -662,6 +683,34 @@ namespace SoftwareEng
             return errorReport;
         }
 
+
+        //-------------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 3/28/13
+        /// <summary>
+        /// Removes the specified album
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The album's UID</param>
+        private ErrorReport removeAlbum_backend(generic_callback guiCallback, int albumUID)
+        {
+            ErrorReport errorReport = new ErrorReport();
+
+            XElement specificAlbum = util_getAlbumByUID(errorReport, albumUID);
+            List<XElement> pictureElements = specificAlbum.Element("albumPhotos").Elements("picture").ToList();
+            // linq returns a lazy evaluated ienumberable, which foreach apparently doesn't like, so we convert to a list.
+            foreach (XElement subElement in pictureElements)
+            {
+                // remove the picture element
+                removePictureElement_backend(null, subElement);
+            }
+
+            // now delete the album itself.
+            removePictureElement_backend(null, specificAlbum);
+
+            return errorReport;
+        }
+        
 
 
         //-------------------------------------------------------------

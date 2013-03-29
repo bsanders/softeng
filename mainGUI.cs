@@ -742,5 +742,16 @@ namespace SoftwareEng
                 bombaDeFotos.removePictureFromAlbum(new generic_callback(guiGenericErrorFunction), photoUid, albumChosenbyUser);
             }
         }
+
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (albumListView.SelectedItems.Count > 0)
+            {
+                int albumID = Convert.ToInt32(albumListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
+                bombaDeFotos.removeAlbum(new generic_callback(guiGenericErrorFunction), albumID);
+            }
+
+            populateAlbumView(true);
+        }
     }
 }

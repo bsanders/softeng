@@ -189,6 +189,18 @@ namespace SoftwareEng
             removePictureFromAlbum_backend(guiCallback, uid, albumUID);
         }
 
+        //By: Bill Sanders
+        //Edited Last: 3/28/13
+        /// <summary>
+        /// This function removes the specified album.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The UID of the album</param>
+        public void removeAlbum(generic_callback guiCallback, int albumUID)
+        {
+            removeAlbum_backend(guiCallback, albumUID);
+        }
+
         //----------------------------------------------
         //By: Ryan Moe
         //Edited Last:
