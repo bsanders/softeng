@@ -153,9 +153,9 @@ namespace SoftwareEng
         //
         //This method will return a complex photo data object
         //filled out with the data of one photo referenced by the uid param.
-        public void getPictureByUID(getPhotoByUID_callback guiCallback, int uid)
+        public void getPhoto(getPhotoByUID_callback guiCallback, int photoUID, int albumUID)
         {
-            getPictureByUID_backend(guiCallback, uid);
+            getPhoto_backend(guiCallback, photoUID, albumUID);
         }
 
         //----------------------------------------------
@@ -327,7 +327,7 @@ namespace SoftwareEng
     //--------------------------------
     //More complex photo data returned by functions like getPhotoDataByUID().
     //By: Ryan Moe
-    //Edited Last: Bill Sanders, added a hash field
+    //Edited Last: Bill Sanders, added a fields for hash, caption, ref count
     public class ComplexPhotoData
     {
         //the name of the picture in the album, displayed by the gui
@@ -336,6 +336,7 @@ namespace SoftwareEng
         public String path;
         public String extension;
         public String caption;
+        public int refCount;
         //... add more stuff here when we have more metadata
 
         public ComplexPhotoData()
@@ -345,7 +346,10 @@ namespace SoftwareEng
             path = "";
             extension = "";
             caption = "";
+            refCount = 0;
         }
+
+        // Add a toXML function here?
     }
 
 }//namespace

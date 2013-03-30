@@ -394,7 +394,7 @@ namespace SoftwareEng
 
             //Try searching for the album with the uid specified.
             XElement specificAlbum;
-            specificAlbum = util_getAlbumByUID(error, AlbumUID);
+            specificAlbum = util_getAlbum(error, AlbumUID);
             // Commenting out the below in favor of a util class. - BillSanders
             //try
             //{
@@ -439,13 +439,17 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last:
-        private void getPictureByUID_backend(getPhotoByUID_callback guiCallback, int uid)
+        private void getPhoto_backend(getPhotoByUID_callback guiCallback, int photoUID, int albumUID)
         {
             ErrorReport error = new ErrorReport();
 
+            // beware: this function assumes uid in album.xml == uid in photo.xml
+            // change to lookup by hash?
             //get the picture from the picture database.
-            XElement picElement = util_getComplexPictureByUID(error, uid);
-
+            XElement albumNode = util_getAlbum(error, albumUID);
+            XElement albumPicElement = util_getAlbumDBPhotoNode(error, albumNode, photoUID);
+            XElement picElement = util_getPhotoDBNode(error, (string)albumPicElement.Attribute("sha1").Value);
+            
             //if the picture finding function reported success.
             if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
@@ -455,6 +459,7 @@ namespace SoftwareEng
                 {
                     photo.hash = StringToByteArray((string)picElement.Attribute("sha1"));
                     photo.UID = (int)picElement.Attribute("uid");
+                    photo.refCount = (int)picElement.Attribute("refCount");
                     photo.path = (string)picElement.Element("filePath").Value;
                 }
                 catch
@@ -523,7 +528,7 @@ namespace SoftwareEng
 
             newPicture.extension = photoExtension;
 
-            util_addPicToPicDatabase(errorReport, newPicture);
+            util_addPicToPhotoDB(errorReport, newPicture);
 
             //if adding to the picture database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -532,7 +537,7 @@ namespace SoftwareEng
                 return;
             }
 
-            util_addPicToAlbumDatabase(errorReport, newPicture, albumUID, pictureNameInAlbum);
+            util_addPicToAlbumDB(errorReport, newPicture, albumUID, pictureNameInAlbum);
 
             //if adding to the album database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -604,7 +609,20 @@ namespace SoftwareEng
 
             newPicture.extension = photoExtension;
 
-            util_addPicToPicDatabase(errorReport, newPicture);
+            // Get the refcount (will get zero if the pic is brand new) and increment it.
+            newPicture.refCount = util_getPicRefCount(ByteArrayToString(newPicture.hash));
+            newPicture.refCount++;
+            // if this is a new picture, we add it to the db
+            if (newPicture.refCount == 1)
+            {
+                util_addPicToPhotoDB(errorReport, newPicture);
+            }
+            else
+            {
+                // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
+                XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(newPicture.hash));
+                thisPic.Attribute("refCount").Value = newPicture.refCount.ToString();
+            }
 
             //if adding to the picture database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -612,7 +630,7 @@ namespace SoftwareEng
                 return errorReport;
             }
 
-            util_addPicToAlbumDatabase(errorReport, newPicture, albumUID, pictureNameInAlbum);
+            util_addPicToAlbumDB(errorReport, newPicture, albumUID, pictureNameInAlbum);
 
             //if adding to the album database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -629,23 +647,23 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 3/28/13
+        //Edited Last: 3/29/13
         /// <summary>
         /// Removes the specified photo from the specified album
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="uid">The photo's UID</param>
+        /// <param name="PhotoID">The photo's ID</param>
         /// <param name="albumUID">The album's UID</param>
-        private ErrorReport removePictureFromAlbum_backend(generic_callback guiCallback, int uid, int albumUID)
+        private ErrorReport removePictureFromAlbum_backend(generic_callback guiCallback, int PhotoID, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
             
             // these two lines are kind of redundant, at the moment
             // First get the actual instance of the photo (from the pictures DB!)
-            XElement thisPicture = util_getComplexPictureByUID(errorReport, uid);
+            XElement thisPicture = util_getAlbumDBPhotoNode(albumUID, PhotoID); //util_getPhotoDBNode(errorReport, uid);
             // Now get that photo from the album DB!
-            thisPicture = util_getSpecificPhotoNodeByUID(albumUID, (string)thisPicture.Attribute("sha1"));
-
+//            thisPicture = util_getAlbumDBPhotoNode(albumUID, (string)thisPicture.Attribute("sha1"));
+            //thisPicture = 
             errorReport = removePictureElement_backend(null, thisPicture);
 
             return errorReport;
@@ -664,9 +682,61 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
-            // check to see if this is the last instance of this photo in the library here.
-            // ... 
-            //
+            XElement picFromPicsDB = util_getPhotoDBNode(errorReport, (string)pictureElement.Attribute("sha1"));
+            
+            int refCount = (int)picFromPicsDB.Attribute("refCount");
+            refCount--;
+            
+            // Delete this instance of the photo from the in-memory xml database
+            try
+            {
+                // delete this instance of the picture from the album db
+                pictureElement.Remove();
+                if (refCount == 0)
+                {
+                    // This was the last reference to the picture.
+                    removePictureFromPicsDB_backend(null, picFromPicsDB);
+                }
+                else
+                {
+                    // update xml with new refcount
+                    picFromPicsDB.Attribute("refCount").Value = refCount.ToString();
+                }
+                // TODO: move these two calls out of here for efficiency in removing multiple files!
+                saveAlbumsXML_backend(null);
+                savePicturesXML_backend(null);
+            }
+            catch // the photo mysteriously disappeared (from the xml!) before removing it..?
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Failed to remove the photo instance from the xml database";
+            }
+            return errorReport;
+        }
+
+        //-------------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 3/28/13
+        /// <summary>
+        /// Removes the specified photo from the specified album
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="pictureElement"></param>
+        /// <returns></returns>
+        private ErrorReport removePictureFromPicsDB_backend(generic_callback guiCallback, XElement pictureElement)
+        {
+            ErrorReport errorReport = new ErrorReport();
+
+            try
+            {
+                File.Delete(pictureElement.Element("filePath").Value);
+            }
+            catch
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Failed to delete the photo file from the filesystem";
+                return errorReport;
+            }
             // Delete this instance of the photo from the in-memory xml database
             try
             {
@@ -679,10 +749,10 @@ namespace SoftwareEng
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Failed to remove the photo instance from the xml database";
+                return errorReport;
             }
             return errorReport;
         }
-
 
         //-------------------------------------------------------------------
         //By: Bill Sanders
@@ -696,7 +766,7 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
-            XElement specificAlbum = util_getAlbumByUID(errorReport, albumUID);
+            XElement specificAlbum = util_getAlbum(errorReport, albumUID);
             List<XElement> pictureElements = specificAlbum.Element("albumPhotos").Elements("picture").ToList();
             // linq returns a lazy evaluated ienumberable, which foreach apparently doesn't like, so we convert to a list.
             foreach (XElement subElement in pictureElements)
@@ -706,7 +776,12 @@ namespace SoftwareEng
             }
 
             // now delete the album itself.
-            removePictureElement_backend(null, specificAlbum);
+            // Since we're deleting every photo in the album, we can just remove the node.
+            specificAlbum.Remove();
+
+            // now sync to the disk
+            saveAlbumsXML_backend(null);
+            savePicturesXML_backend(null);
 
             return errorReport;
         }
@@ -725,7 +800,7 @@ namespace SoftwareEng
             albumData.UID = uid;
 
             //add the album to the memory database.
-            util_addAlbumToAlbumDatabase(errorReport, albumData);
+            util_addAlbumToAlbumDB(errorReport, albumData);
 
             //if adding to the album database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -749,14 +824,14 @@ namespace SoftwareEng
         private void addExistingPictureToAlbum_backend(generic_callback guiCallback, int pictureUID, int albumUID, String SimplePhotoData)
         {
             ErrorReport errorReport = new ErrorReport();
-            XElement picture = util_getComplexPictureByUID(errorReport, pictureUID);
+            XElement picture = util_getPhotoDBNode(errorReport, pictureUID);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
             }
 
-            util_addPicToAlbumDatabase(errorReport, null, albumUID, SimplePhotoData);
+            util_addPicToAlbumDB(errorReport, null, albumUID, SimplePhotoData);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
                 guiCallback(errorReport);
@@ -795,7 +870,7 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             //get the album that has the name of the photo we are changing.
-            XElement album = util_getAlbumByUID(errorReport, albumUID);
+            XElement album = util_getAlbum(errorReport, albumUID);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
@@ -804,7 +879,7 @@ namespace SoftwareEng
             }
 
             //Get the photo from the album.
-            XElement photo = util_getPhotoFromAlbumElemByUID(errorReport, album, photoUID);
+            XElement photo = util_getAlbumDBPhotoNode(errorReport, album, photoUID);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {

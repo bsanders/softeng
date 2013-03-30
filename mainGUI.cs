@@ -668,7 +668,7 @@ namespace SoftwareEng
             {
                 int photoUid = Convert.ToInt32(photoListView.SelectedItems[firstListViewItemIndex].SubItems[listViewSubItemUidIndex].Text);
 
-                bombaDeFotos.getPictureByUID(photoInfoRetrieved, photoUid);
+                bombaDeFotos.getPhoto(photoInfoRetrieved, photoUid, albumChosenbyUser);
             }
         }
 
