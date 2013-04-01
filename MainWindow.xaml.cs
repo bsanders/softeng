@@ -46,6 +46,8 @@ namespace SoftwareEng
             bombaDeFotos = new PhotoBomb();
             bombaDeFotos.init(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", libraryPath);
 
+            hideAddAlbumBox();
+
             
 
             populateAlbumView(true);
@@ -58,7 +60,6 @@ namespace SoftwareEng
         * return type: void
         * purpose: simply calls back end
         *********************************************************************************************/
-        //RM: why is this here???
         private void guiConstructorCallback(ErrorReport status)
         {
             if (status.reportID != ErrorReport.SUCCESS)
@@ -190,7 +191,7 @@ namespace SoftwareEng
 
         private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
         {
-            //mainWindowDock.Height = 1;
+            mainWindowDock.Height = 1;
         }
 
         private void mainWindowContextMenu_LostMouseCapture(object sender, MouseEventArgs e)
@@ -215,9 +216,89 @@ namespace SoftwareEng
 
         private void addMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
         {
-            SoftwareEng.ViewImage imageViewer = new ViewImage();
+            showAddAlbumBox();
+            
+            //SoftwareEng.ViewImage imageViewer = new ViewImage();
 
-            imageViewer.Show();
+            //imageViewer.Show();
+
+            
         }
+
+        private void DockPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                if (e.ClickCount == 2)
+                {
+                    toggleWindowState();
+                }
+                else
+                {
+                    Application.Current.MainWindow.DragMove();
+                }
+            }
+        }
+
+        private void maximizeToolbarButton_Click(object sender, RoutedEventArgs e)
+        {
+            toggleWindowState();
+        }
+
+
+
+
+
+
+        private void toggleWindowState()
+        {
+            if(this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+            }
+        }
+
+        private void showAddAlbumBox()
+        {
+            generalPurposeLabel.Visibility = Visibility.Visible;
+            generalPurposeTextBox.Visibility = Visibility.Visible;
+
+            acceptAddToolbarButton.Visibility = Visibility.Visible;
+            cancelAddToolbarButton.Visibility = Visibility.Visible;
+        }
+
+        private void hideAddAlbumBox()
+        {
+            generalPurposeLabel.Visibility= Visibility.Hidden;
+            generalPurposeTextBox.Visibility = Visibility.Hidden;
+
+            acceptAddToolbarButton.Visibility = Visibility.Hidden;
+            cancelAddToolbarButton.Visibility = Visibility.Hidden;
+        }
+
+        private void cancelAddToolbarButton_Click(object sender, RoutedEventArgs e)
+        {
+            hideAddAlbumBox();
+        }
+
+        private void mainWindowAlbumList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void VirtualizingStackPanel_MouseRightButtonDown_1(object sender, MouseButtonEventArgs e)
+        {
+            libraryContextMenu.IsOpen = true;
+        }
+
+        private void main(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
     }
 }

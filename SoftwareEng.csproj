@@ -62,26 +62,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="addAlbumWindow.xaml.cs">
-      <DependentUpon>addAlbumWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="customRadialPanel.cs" />
     <Compile Include="LightResize.cs" />
     <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RadialStackPanelItem.xaml.cs">
-      <DependentUpon>RadialStackPanelItem.xaml</DependentUpon>
-    </Compile>
     <Compile Include="XmlParser.cs" />
-    <Page Include="addAlbumWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AlbumList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ViewImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -90,9 +76,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AlbumList.xaml.cs">
-      <DependentUpon>AlbumList.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -102,10 +85,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RadialStackPanelItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -144,18 +123,31 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="ImagesResources2012\Actions_5847.png" />
+    <Resource Include="ImagesResources2012\action_Accept_16xLG.png" />
     <Resource Include="ImagesResources2012\action_add_16xLG.png" />
     <Resource Include="ImagesResources2012\action_Cancel_16xLG.png" />
+    <Resource Include="ImagesResources2012\application_16xLG.png" />
+    <Resource Include="ImagesResources2012\application_32xLG.png" />
+    <Resource Include="ImagesResources2012\Arrow_UndoRevertRestore_16xLG.png" />
     <Resource Include="ImagesResources2012\asset_media-element-control_on_24X24.png" />
     <Resource Include="ImagesResources2012\Camera_16xLG.png" />
     <Resource Include="ImagesResources2012\Camera_32xLG.png" />
+    <Resource Include="ImagesResources2012\checkbox_16xLG.png" />
+    <Resource Include="ImagesResources2012\Clearallrequests_8816.png" />
     <Resource Include="ImagesResources2012\Close_16xLG.png" />
     <Resource Include="ImagesResources2012\eye_16xLG.png" />
     <Resource Include="ImagesResources2012\filmstrip_16xLG.png" />
     <Resource Include="ImagesResources2012\filmstrip_32xLG.png" />
     <Resource Include="ImagesResources2012\house_16xLG.png" />
+    <Resource Include="ImagesResources2012\KeyDown_8461.png" />
+    <Resource Include="ImagesResources2012\LockControls_322.png" />
     <Resource Include="ImagesResources2012\Monitor_Screen_32xLG.png" />
+    <Resource Include="ImagesResources2012\NewIconClipart-tiny-square.png" />
+    <Resource Include="ImagesResources2012\NewIconClipart-tiny.png" />
+    <Resource Include="ImagesResources2012\NewIconClipart.png" />
     <Resource Include="ImagesResources2012\pencil_005_16xLG.png" />
+    <Resource Include="ImagesResources2012\PhotoBomberlogo2.png" />
     <Resource Include="ImagesResources2012\resource_16xLG.png" />
     <Resource Include="ImagesResources2012\resource_32xLG.png" />
     <Resource Include="ImagesResources2012\scissors_16xLG.png" />
@@ -165,29 +157,18 @@
     <Resource Include="ImagesResources2012\StatusAnnotations_Play_32xLG_color.png" />
     <Resource Include="ImagesResources2012\StatusAnnotations_Stop_32xLG.png" />
     <Resource Include="ImagesResources2012\StatusAnnotations_Stop_32xLG_color.png" />
+    <Resource Include="ImagesResources2012\Symbols_Blocked_16xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Blocked_32xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Critical_16xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Critical_32xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Next_16xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Next_32xLG.png" />
-    <Resource Include="ImagesResources2012\Symbols_Stop_16xLG.png" />
-    <Resource Include="ImagesResources2012\Symbols_Stop_32xLG.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ImagesResources2012\Arrow_UndoRevertRestore_16xLG.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ImagesResources2012\WorkItem_16xLG.png" />
-    <Resource Include="ImagesResources2012\WorkItem_32xLG.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ImagesResources2012\Actions_5847.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="ImagesResources2012\Symbols_Prev_16xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Prev_32xLG.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ImagesResources2012\PhotoBomberlogo2.png" />
+    <Resource Include="ImagesResources2012\Symbols_Stop_16xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Stop_32xLG.png" />
+    <Resource Include="ImagesResources2012\WorkItem_16xLG.png" />
+    <Resource Include="ImagesResources2012\WorkItem_32xLG.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
