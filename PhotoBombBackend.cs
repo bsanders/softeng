@@ -490,76 +490,80 @@ namespace SoftwareEng
         }//method
 
         // BS: Is this function at all used given that we don't add photos one at a time?
+        // Added by Bill 4/1/13: This function is used only by frontend to add a single photo at a time
+        // Commenting it out
+        // This function doesn't take that param but starts hardcoded at 1
+        // So I added a default parameter of 1 to the below function.
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void addNewPicture_backend(generic_callback guiCallback,
-            String photoUserPath,
-            String photoExtension,
-            int albumUID,
-            String pictureNameInAlbum)
-        {
-            ErrorReport errorReport = new ErrorReport();
-            ComplexPhotoData newPicture = new ComplexPhotoData();
+        //private void addNewPicture_backend(generic_callback guiCallback,
+        //    String photoUserPath,
+        //    String photoExtension,
+        //    int albumUID,
+        //    String pictureNameInAlbum)
+        //{
+        //    ErrorReport errorReport = new ErrorReport();
+        //    ComplexPhotoData newPicture = new ComplexPhotoData();
 
-            newPicture.hash = util_getHashOfFile(photoUserPath);
+        //    newPicture.hash = util_getHashOfFile(photoUserPath);
 
-            //get a unique ID for this photo and update its 
-            //data object to reflect this new UID.
-            newPicture.UID = util_getNewPicUID(1);
-            //error checking
-            if (newPicture.UID == -1)
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Failed to get a UID for a new picture.";
-                guiCallback(errorReport);
-                return;
-            }
+        //    // get an ID number for the picture.
+        //    // Note that a photo may have two different ID numbers in albumsdb and picturesdb
+        //    newPicture.UID = util_getNextUID(_picturesDatabase, "picture", 1);
+        //    // error checking the call
+        //    if (!util_checkUIDIsValid(newPicture.UID))
+        //    {
+        //        errorReport.reportID = ErrorReport.FAILURE;
+        //        errorReport.description = "Failed to get a UID for a new picture.";
+        //        guiCallback(errorReport);
+        //        return;
+        //    }
 
-            //Change me if you want to start naming the pictures differently in the library.
-            String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
+        //    //Change me if you want to start naming the pictures differently in the library.
+        //    String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
 
-            //Change me if you want the default album name to be different.
-            if (pictureNameInAlbum == "")
-            {
-                pictureNameInAlbum = Properties.Settings.Default.DefaultImageName + " " + newPicture.UID.ToString();
-            }
+        //    //Change me if you want the default image name to be different.
+        //    if (pictureNameInAlbum == "")
+        //    {
+        //        pictureNameInAlbum = Properties.Settings.Default.DefaultImageName + " " + newPicture.UID.ToString();
+        //    }
 
-            //Move picture and get a new path for the picture in our storage.
-            newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
-            //error checking
-            if (errorReport.reportID == ErrorReport.FAILURE)
-            {
-                guiCallback(errorReport);
-                return;
-            }
+        //    //Move picture and get a new path for the picture in our storage.
+        //    newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
+        //    //error checking
+        //    if (errorReport.reportID == ErrorReport.FAILURE)
+        //    {
+        //        guiCallback(errorReport);
+        //        return;
+        //    }
 
-            newPicture.extension = photoExtension;
+        //    newPicture.extension = photoExtension;
 
-            util_addPicToPhotoDB(errorReport, newPicture);
+        //    util_addPicToPhotoDB(errorReport, newPicture);
 
-            //if adding to the picture database failed
-            if (errorReport.reportID == ErrorReport.FAILURE)
-            {
-                guiCallback(errorReport);
-                return;
-            }
+        //    //if adding to the picture database failed
+        //    if (errorReport.reportID == ErrorReport.FAILURE)
+        //    {
+        //        guiCallback(errorReport);
+        //        return;
+        //    }
 
-            util_addPicToAlbumDB(errorReport, newPicture, albumUID, pictureNameInAlbum);
+        //    util_addPicToAlbumDB(errorReport, newPicture, albumUID, pictureNameInAlbum);
 
-            //if adding to the album database failed
-            if (errorReport.reportID == ErrorReport.FAILURE)
-            {
-                guiCallback(errorReport);
-                return;
-            }
+        //    //if adding to the album database failed
+        //    if (errorReport.reportID == ErrorReport.FAILURE)
+        //    {
+        //        guiCallback(errorReport);
+        //        return;
+        //    }
 
-            //add to disk.
-            savePicturesXML_backend(null);
-            saveAlbumsXML_backend(null);
+        //    //add to disk.
+        //    savePicturesXML_backend(null);
+        //    saveAlbumsXML_backend(null);
 
-            guiCallback(errorReport);
-        }
+        //    guiCallback(errorReport);
+        //}
 
 
         //-------------------------------------------------------------------

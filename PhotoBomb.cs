@@ -158,6 +158,7 @@ namespace SoftwareEng
             getPhoto_backend(guiCallback, photoUID, albumUID);
         }
 
+        // BS (4/1/13) Commenting this out: we never add a single picture at a time!
         //----------------------------------------------
         //By: Ryan Moe
         //Edited Last:
@@ -170,10 +171,10 @@ namespace SoftwareEng
         //PARAM 4 = uid of the album that the photo is being added to.
         //PARAM 5 = the name of the photo in the album.  NOTE: you can 
         //          send in "" and the backend will give the photo a default name.
-        public void addNewPicture(generic_callback guiCallback, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum)
-        {
-            addNewPicture_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum);
-        }
+        //public void addNewPicture(generic_callback guiCallback, String photoUserPath, String photoExtension, int albumUID, String pictureNameInAlbum)
+        //{
+        //    addNewPicture_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum);
+        //}
 
         //----------------------------------------------
         //By: Bill Sanders
