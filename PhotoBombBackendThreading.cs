@@ -38,7 +38,7 @@ namespace SoftwareEng
             int picsAddedSinceReport = 0;
 
             //start our uid search from the first known empty uid.
-            int initialSearchingLocation = util_getNewPicUID(1);
+            int initialSearchingLocation = util_getNextUID(_picturesDatabase, "picture", 1);
 
             //for each photo we are adding...
             for (int i = 0; i < data.photoUserPath.Count; ++i)

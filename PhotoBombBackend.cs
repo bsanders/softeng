@@ -222,7 +222,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //if the database is NOT valid.
-            if (!util_checkPicturesDatabase(error))
+            if (!util_checkPhotoDBIntegrity(error))
             {
                 guiCallback(error);
                 return;
@@ -572,12 +572,22 @@ namespace SoftwareEng
         //NOTE: this is an overloaded function call FOR BACKEND USE ONLY.
         //      It does not have a gui callback and instead returns the
         //      Error report directly, for use in the backend.
+        /// <summary>
+        /// Create a photo object and its metadata, then adds it to both databases and the library.
+        /// </summary>
+        /// <param name="errorReport">An error report</param>
+        /// <param name="photoUserPath">The path where the photo is originally from</param>
+        /// <param name="photoExtension">The extension of the photo's filename</param>
+        /// <param name="albumUID">The ID of the album to add this picture to</param>
+        /// <param name="pictureNameInAlbum">The name the picture will have in the album</param>
+        /// <param name="searchStartingPoint">Where to start looking for a new UID; defaults to 1</param>
+        /// <returns></returns>
         private ErrorReport addNewPicture_backend(ErrorReport errorReport,
             String photoUserPath, 
             String photoExtension, 
             int albumUID, 
             String pictureNameInAlbum, 
-            int searchStartingPoint)
+            int searchStartingPoint = 1)
         {
             ComplexPhotoData newPicture = new ComplexPhotoData();
 
@@ -593,9 +603,9 @@ namespace SoftwareEng
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            newPicture.UID = util_getNewPicUID(searchStartingPoint);
-            //error checking
-            if (newPicture.UID == -1)
+            newPicture.UID = util_getNextUID(_picturesDatabase, "picture", searchStartingPoint);
+            // error checking the call
+            if (!util_checkUIDIsValid(newPicture.UID))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Failed to get a UID for a new picture.";
@@ -808,8 +818,7 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             //get a new uid for the new album.
-            int uid = util_getNewAlbumUID(errorReport);
-            albumData.UID = uid;
+            albumData.UID = util_getNextUID(_albumsDatabase, "album", 1);
 
             //add the album to the memory database.
             util_addAlbumToAlbumDB(errorReport, albumData);
@@ -900,7 +909,7 @@ namespace SoftwareEng
             }
 
             //change the photo's name.
-            util_changePhotoNameInAlbumPhotoElem(errorReport, photo, newName);
+            util_renamePhoto(errorReport, photo, newName);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {

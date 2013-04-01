@@ -28,7 +28,7 @@ namespace SoftwareEng
         /// <returns>An XElement object representing the photo in the PhotoDB</returns>
         private XElement util_getPhotoDBNode(ErrorReport error, string hash)
         {
-            if (util_checkPicturesDatabase(error))
+            if (util_checkPhotoDBIntegrity(error))
             {
                 //Try searching for the album with the uid specified.
                 XElement specificPicture;
@@ -72,7 +72,7 @@ namespace SoftwareEng
         /// <returns>An XElement object representing the photo in the PhotoDB</returns>
         private XElement util_getPhotoDBNode(ErrorReport error, int photoUID)
         {
-            if (util_checkPicturesDatabase(error))
+            if (util_checkPhotoDBIntegrity(error))
             {
                 //Try searching for the album with the uid specified.
                 XElement specificPicture;
@@ -121,7 +121,15 @@ namespace SoftwareEng
             XElement albumNode = util_getAlbum(errorReport, albumID);
 
             // Then get the photo node from that.
-            XElement photoInstance = util_getAlbumDBPhotoNode(errorReport, albumNode, photoID);
+            XElement photoInstance = null;
+            try
+            {
+                photoInstance = util_getAlbumDBPhotoNode(errorReport, albumNode, photoID);
+            }
+            catch
+            {
+                return null;
+            }
             return photoInstance;
         }
 
@@ -232,28 +240,30 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
-        //This adds a picture to JUST the album database.
-        //Does not use the UID or the albumName from the newPictureData.
+        //Edited Last: Bill Sanders (4/1/13, removed inline linq, replaced with lookup function; added comments)
+        /// <summary>
+        /// Adds a photo to a specific album in the album database 
+        /// </summary>
+        /// <param name="errorReport"></param>
+        /// <param name="newPicture"></param>
+        /// <param name="albumUID"></param>
+        /// <param name="albumName"></param>
         private void util_addPicToAlbumDB(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID, String albumName)
         {
             //Get the specific album we will be adding to.
-            XElement specificAlbum;
-            try
-            {
-                specificAlbum = (from c in _albumsDatabase.Elements()
-                                 where (int)c.Attribute("uid") == albumUID
-                                 select c).Single();//NOTE: this will throw error if more than one OR none at all.
-            }
-            catch
+            XElement specificAlbum = util_getAlbum(errorReport, albumUID);
+            // If the lookup returns null, the album doesn't exist, or there's more than one album with that UID (db error)
+            if (specificAlbum == null)
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Found more than one album with that UID or none at all.";
                 return;
             }
 
-            //check UID
-            if (!util_checkPhotoUID(newPicture.UID))
+            // UID for a photo is unique to an album in the albums database.
+            newPicture.UID = util_getNextUID(specificAlbum.Element("albumPhotos"), "picture", 1);
+            // check to make sure we got a valid number back...
+            if (!util_checkUIDIsValid(newPicture.UID))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Photo UID is not valid.";
@@ -267,7 +277,7 @@ namespace SoftwareEng
                                             new XElement("name", albumName),
                                             new XElement("caption", newPicture.caption));
 
-
+            // Now add it to the albums database
             specificAlbum.Element("albumPhotos").Add(newPhotoElem);
 
         }
@@ -277,7 +287,7 @@ namespace SoftwareEng
         //Edited Last:
         //Check UID's here.
         //RETURN: true if the uid is valid, false otherwise.
-        private Boolean util_checkPhotoUID(int uid)
+        private Boolean util_checkUIDIsValid(int uid)
         {
             if (uid > 0 && uid < UID_MAX_SIZE)
                 return true;
@@ -295,7 +305,7 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="hash">A hex string representation of the hash</param>
         /// <returns></returns>
-        private Boolean util_checkPhotoUnique(string hash)
+        private Boolean util_checkPhotoIsUnique(string hash)
         {
             try
             {
@@ -384,16 +394,6 @@ namespace SoftwareEng
             if (path != "")
                 return true;
             return false;
-        }
-
-        //--------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //Check a picture's album name.
-        //RETURN: true if the uid is valid, false otherwise.
-        private Boolean util_checkPictureAlbumName(String name)
-        {
-            return true;
         }
 
         /// <summary>
@@ -498,37 +498,40 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
-        //Returns a new VALID uid for a new picture.
-        //PARAM 1 = where to start linearly searching for a new uid.
-        //          Use this for searching speed up!
+        //Edited Last: Bill Sanders (4/1/13) moved search to function call
         //NOTE: this is the slow way of doing it, but
         //      it does not leave holes in the uids.
         //      Ex: if a picture is deleted, we reuse it's uid
         //      when a new picture is added.
-        //RETURNS -1 if there was a problem getting a new uid.
-        private int util_getNewPicUID(int searchStartingpoint)
+        /// <summary>
+        /// Performs a linear search through the Photo DB for a valid, unused UID for a photo
+        /// </summary>
+        /// <param name="potentialUID">The starting point to search from</param>
+        /// <returns>A valid UID to use, or -1 if there was a problem</returns>
+        private int util_getNextUID(XElement searchNode, string nodeType, int potentialUID = 1)
         {
             int newUID;//the UID we will search against and return eventually.
 
             //error checking the starting point.
-            if (searchStartingpoint > 0 && searchStartingpoint < UID_MAX_SIZE)
-                newUID = searchStartingpoint;
+            if (util_checkUIDIsValid(potentialUID))
+            {
+                newUID = potentialUID;
+            }
             else
+            {
                 newUID = 1;//default starting point.
+            }
 
-            Boolean uidNotFound = true;
-
-            //loop through and test uid's until we find one
-            //that works.
-            while (uidNotFound && newUID < UID_MAX_SIZE)
+            Boolean uidFound = false;
+            // fetch from the photo DB by uid until we find one that returns null
+            while (!uidFound && newUID < UID_MAX_SIZE)
             {
                 try
                 {
                     //if one or more (hope not more!) uid's are found
                     //to match our testing uid, then incriment the testing
                     //uid and try again.
-                    (from c in _picturesDatabase.Elements("picture")
+                    (from c in searchNode.Elements(nodeType)
                      where (int)c.Attribute("uid") == newUID
                      select c).First();
                     ++newUID;
@@ -536,13 +539,19 @@ namespace SoftwareEng
                 //we found a unique one!
                 catch
                 {
-                    uidNotFound = false;
+                    uidFound = true;
                 }
-            }//while
+            }
 
-            if (newUID < UID_MAX_SIZE)
+            // if we scanned through all UID's until UID_MAX_SIZE (!!)
+            if (newUID > UID_MAX_SIZE)
+            {
+                return -1;
+            }
+            else
+            {
                 return newUID;
-            return -1;
+            }
         }
 
         //--------------------------------------------------------
@@ -589,6 +598,8 @@ namespace SoftwareEng
             error.description = "great success!";
         }
 
+        // Commenting this out, its functionality has been merged with util_getNextUID()
+        // to replicate: util_getNextUID(_albumsDatabase, "album", 1)
         //------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
@@ -598,33 +609,33 @@ namespace SoftwareEng
         //      Ex: if an album is deleted, we reuse it's uid
         //      when a new album is added.
         //RETURNS -1 if there was a problem getting a new uid.
-        private int util_getNewAlbumUID(ErrorReport error)
-        {
-            int newUID = 1;
-            Boolean uidNotFound = true;
-            while (uidNotFound && newUID < UID_MAX_SIZE)
-            {
-                try
-                {
-                    //if one or more (hope not more!) uid's are found
-                    //to match our testing uid, then incriment the testing
-                    //uid and try again.
-                    (from c in _albumsDatabase.Elements("album")
-                     where (int)c.Attribute("uid") == newUID
-                     select c).First();
-                    ++newUID;
-                }
-                //we found a unique one!
-                catch
-                {
-                    uidNotFound = false;
-                }
-            }//while
+        //private int util_getNewAlbumUID(ErrorReport error)
+        //{
+        //    int newUID = 1;
+        //    Boolean uidNotFound = true;
+        //    while (uidNotFound && newUID < UID_MAX_SIZE)
+        //    {
+        //        try
+        //        {
+        //            //if one or more (hope not more!) uid's are found
+        //            //to match our testing uid, then incriment the testing
+        //            //uid and try again.
+        //            (from c in _albumsDatabase.Elements("album")
+        //             where (int)c.Attribute("uid") == newUID
+        //             select c).First();
+        //            ++newUID;
+        //        }
+        //        //we found a unique one!
+        //        catch
+        //        {
+        //            uidNotFound = false;
+        //        }
+        //    }//while
 
-            if (newUID < UID_MAX_SIZE)
-                return newUID;
-            return -1;
-        }
+        //    if (newUID < UID_MAX_SIZE)
+        //        return newUID;
+        //    return -1;
+        //}
 
         //-------------------------------------------------------------------
         //By: Ryan Moe
@@ -809,16 +820,22 @@ namespace SoftwareEng
 
         //--------------------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
-        //changes the photo name in the given xelement.
-        private void util_changePhotoNameInAlbumPhotoElem(ErrorReport error, XElement simplePhotoElem, String newName)
+        //Edited Last: Bill Sanders 4/1/13 (renamed function, added comments)
+        /// <summary>
+        /// Renames an instance of a photo in an album
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="photoElem">An XElement representation of the photo from the album DB</param>
+        /// <param name="newName">The new name for the photo</param>
+        private void util_renamePhoto(ErrorReport error, XElement photoElem, String newName)
         {
             try
             {
-                simplePhotoElem.Element("name").Value = newName;
+                photoElem.Element("name").Value = newName;
             }
             catch
             {
+                // this probably means they passed in a XElem from the pictures library...?
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "Failed to change the name of a photo.";
             }
@@ -872,7 +889,7 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //returns true if the picture database is ok.
-        private Boolean util_checkPicturesDatabase(ErrorReport errorReport)
+        private Boolean util_checkPhotoDBIntegrity(ErrorReport errorReport)
         {
             if (_picturesDatabase == null)
             {
