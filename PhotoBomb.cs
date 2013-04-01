@@ -8,6 +8,7 @@
  * Changelog:
  * 3/31/31 Ryan Causey: converted SimpleAlbumData's public datamembers into properties to facilitate databinding
  * 4/1/13 Ryan Causey: converting the rest of the data class's public datamember into properties
+ *                     Implementing the INotifyPropertyChanged interface for all data classes
  ***************************************************************************************************************/
 using System;
 using System.Collections.Generic;
@@ -300,11 +301,13 @@ namespace SoftwareEng
     //This class is a SINGLE element of that list.
     //Last Edited By: Ryan Causey
     //Last Edited Date: 3/31/13
-    public class SimpleAlbumData
+    public class SimpleAlbumData : INotifyPropertyChanged
     {
         private String albumNameValue;
         private int UIDValue;
         //add more information here if needed...
+        //event for changing a property
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public String albumName
         {
@@ -313,6 +316,8 @@ namespace SoftwareEng
                 if (value != albumNameValue)
                 {
                     albumNameValue = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("albumName");
                 }
             }
             get
@@ -328,6 +333,8 @@ namespace SoftwareEng
                 if (value != UIDValue)
                 {
                     UIDValue = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("UID");
                 }
             }
             get
@@ -342,6 +349,20 @@ namespace SoftwareEng
             albumNameValue = "";
             UIDValue = -1;//indicates UID not set.
         }
+
+        /*
+         * Call this function when any property is set as part of implementing INotifyPropertyChanged
+         * @Param: name is the name of the property, E.G. changing UID would mean name = "UID"
+         */ 
+        protected void OnPropertyChanged(String name)
+        {
+            PropertyChangedEventHandler changedHandler = PropertyChanged;
+
+            if (changedHandler != null)
+            {
+                changedHandler(this, new PropertyChangedEventArgs(name));
+            }
+        }
     }
 
 
@@ -350,10 +371,12 @@ namespace SoftwareEng
     //By: Ryan Moe
     //Edited Last By: Ryan Causey
     //Edited Date: 4/1/13
-    public class SimplePhotoData
+    public class SimplePhotoData : INotifyPropertyChanged
     {
         public String picturesNameInAlbumValue;
         public int UIDValue;
+        //event for changing a property
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public String picturesNameInAlbum
         {
@@ -362,6 +385,8 @@ namespace SoftwareEng
                 if (value != picturesNameInAlbumValue)
                 {
                     picturesNameInAlbumValue = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("picturesNameInAlbum");
                 }
             }
             get
@@ -377,6 +402,8 @@ namespace SoftwareEng
                 if (value != UIDValue)
                 {
                     UIDValue = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("UID");
                 }
             }
             get
@@ -391,6 +418,20 @@ namespace SoftwareEng
             UIDValue = -1;
             //path = "";
         }
+
+        /*
+         * Call this function when any property is set as part of implementing INotifyPropertyChanged
+         * @Param: name is the name of the property, E.G. changing UID would mean name = "UID"
+         */
+        protected void OnPropertyChanged(String name)
+        {
+            PropertyChangedEventHandler changedHandler = PropertyChanged;
+
+            if (changedHandler != null)
+            {
+                changedHandler(this, new PropertyChangedEventArgs(name));
+            }
+        }
     }
 
     //--------------------------------
@@ -399,7 +440,7 @@ namespace SoftwareEng
     //Edited Last: Bill Sanders, added a fields for hash, caption, ref count
     //Edited Last By: Ryan Causey
     //Edited Date: 4/1/13
-    public class ComplexPhotoData
+    public class ComplexPhotoData : INotifyPropertyChanged
     {
         //the name of the picture in the album, displayed by the gui
         public int UIDValue;
@@ -408,6 +449,9 @@ namespace SoftwareEng
         public String extensionValue;
         public String captionValue;
         public int refCountValue;
+
+        //event for changing a property
+        public event PropertyChangedEventHandler PropertyChanged;
         //... add more stuff here when we have more metadata
 
         public int UID
@@ -417,6 +461,8 @@ namespace SoftwareEng
                 if (value != UIDValue)
                 {
                     UIDValue = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("UID");
                 }
             }
             get
@@ -432,6 +478,8 @@ namespace SoftwareEng
                 if (value != hashValue)
                 {
                     hashValue = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("hash");
                 }
             }
             get
@@ -447,6 +495,8 @@ namespace SoftwareEng
                 if (value != pathValue)
                 {
                     pathValue = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("path");
                 }
             }
 
@@ -463,6 +513,8 @@ namespace SoftwareEng
                 if (value != extensionValue)
                 {
                     extensionValue = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("extension");
                 }
             }
 
@@ -479,6 +531,8 @@ namespace SoftwareEng
                 if (value != captionValue)
                 {
                     captionValue = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("caption");
                 }
             }
 
@@ -512,6 +566,20 @@ namespace SoftwareEng
             extensionValue = "";
             captionValue = "";
             refCountValue = 0;
+        }
+
+        /*
+         * Call this function when any property is set as part of implementing INotifyPropertyChanged
+         * @Param: name is the name of the property, E.G. changing UID would mean name = "UID"
+         */
+        protected void OnPropertyChanged(String name)
+        {
+            PropertyChangedEventHandler changedHandler = PropertyChanged;
+
+            if (changedHandler != null)
+            {
+                changedHandler(this, new PropertyChangedEventArgs(name));
+            }
         }
 
         // Add a toXML function here?
