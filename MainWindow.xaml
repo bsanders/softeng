@@ -8,36 +8,141 @@
     
         xmlns:SoftwareEngControls="clr-namespace:SoftwareEng"
     
-        Title="MainWindow" Height="350" Width="525" Opacity="0.7" Background="#FF272727" BorderBrush="#FFC3C3C3" WindowStyle="ThreeDBorderWindow" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        Title="PhotoBomber" Height="362.256" Width="638.992" Background="#FF1C2327" BorderBrush="#FFC3C3C3" ScrollViewer.VerticalScrollBarVisibility="Disabled" WindowStyle="ThreeDBorderWindow" MinWidth="638.992" MinHeight="362.256">
 
 
-    <Grid MouseRightButtonDown="Grid_MouseRightButtonDown_1">
-        <Popup x:Name="mainWindowContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture">
-            <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
-                <Button x:Name="addMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                    <Image x:Name="addButtonImage" Source="Images\112_Plus_Grey_48x48_72.png" Stretch="Fill"/>
+    <Grid>
+        <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture">
+            <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
+                <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemLibraryButton_Click">
+                    <Image x:Name="addButtonLibraryImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
                 </Button>
-                <Button x:Name="copyMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                    <Image x:Name="copyButtonImage" Source="Images\112_RightArrowLong_Grey_48x48_72.png" Stretch="Fill"/>
+                <Button x:Name="copyMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="copyButtonLibraryImage" Source="ImagesResources2012/WorkItem_16xLG.png" Stretch="Fill"/>
                 </Button>
-                <Button x:Name="deleteMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                    <Image x:Name="deleteButtonImage" Source="Images\delete.png" Stretch="Fill"/>
+                <Button x:Name="deleteMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="deleteButtonLibraryImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
                 </Button>
-                <Button x:Name="renameMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                    <Image x:Name="renameButtonImage" Source="Images\1462_Pencil_48x48.png" Stretch="Fill"/>
+                <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="renameButtonLibraryImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>
                 </Button>
-                <Button x:Name="slideshowMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                    <Image x:Name="slideshowButtonImage" Source="Images\Move.png" Stretch="Fill"/>
+                <Button x:Name="slideshowMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="slideshowButtonLibraryImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
                 </Button>
-                <Button x:Name="viewMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                    <Image x:Name="viewButtonImage" Source="Images\view.png" Stretch="Fill"/>
+                <Button x:Name="viewMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="viewButtonLibraryImage" Source="ImagesResources2012/resource_32xLG.png" Stretch="Fill"/>
                 </Button>
             </SoftwareEngControls:customRadialPanel>
         </Popup>
+        <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture">
+            <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
+                <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="copyMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="copyButtonAlbumImage" Source="ImagesResources2012/WorkItem_16xLG.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="deleteButtonAlbumImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="renameButtonAlbumImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="slideshowButtonAlbumImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="viewMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                    <Image x:Name="viewButtonAlbumImage" Source="ImagesResources2012/resource_32xLG.png" Stretch="Fill"/>
+                </Button>
+            </SoftwareEngControls:customRadialPanel>
+        </Popup>
+
+
+        <VirtualizingStackPanel>
+            <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource ListItemTemplate}" Background="#FF1C2327" BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </VirtualizingStackPanel>
+
+
+
+        <!--
+        <SoftwareEngControls:AlbumList x:Name="mainWindowAlbumList" Background="#FF404040" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonDown" />
+        -->
         
-        <SoftwareEngControls:AlbumList x:Name="mainWindowAlbumList" Background="#FF404040" ScrollViewer.VerticalScrollBarVisibility="Auto" />
-        <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="25,0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter"/>
-        <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="25,0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" Height="70" VerticalAlignment="Bottom">
+        
+        
+        <!--
+        <WrapPanel x:Name="mainWindowAlbumList" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonDown">
+            <StackPanel x:Name="fakeLibraryItem1" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/albums/1273780541978.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 1" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeLibraryItem2" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/albums/DJ-Jesus-died-for-your-spins.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 2" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeLibraryItem3" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/albums/rick_james_001_0001.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 3" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeLibraryItem4" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/albums/william tell.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 4" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+        </WrapPanel>
+        
+
+        <WrapPanel x:Name="mainWindowPhotoList" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonDown">
+            <StackPanel x:Name="fakeAlbumItem1" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/albums/1273780541978.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 1 Image 1" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeAlbumItem2" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/1274690326350.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 2 Image 2" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeAlbumItem3" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/1274229280767.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 3 Image 3" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeAlbumItem4" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/Come_at_me_bro.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 4 Image 4" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeAlbumItem5" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/n48902260_33124661_8701.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 1 Image 1" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeAlbumItem6" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/n500378757_19111_6593.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 2 Image 2" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeAlbumItem7" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/n502794868_2059_4472.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 3 Image 3" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeAlbumItem8" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/stoptheinternet.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 4 Image 4" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeAlbumItem9" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/Picture group 1 023.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 4 Image 4" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+            <StackPanel x:Name="fakeAlbumItem10" Width="200" Height="200">
+                <Image Source="FakeImageLibrary/Picture group 1 027.jpg" VerticalAlignment="Top" Height="174"/>
+                <Label Content="Album 4 Image 4" VerticalAlignment="Bottom" Foreground="#FFDADADA"/>
+            </StackPanel>
+        </WrapPanel>
+        -->
+
+        <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="0,0,25,0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
+        <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" Height="48" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <DockPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#C7000000" Offset="1"/>
@@ -46,8 +151,8 @@
                     <GradientStop Color="#C7A7A7A7" Offset="0.372" />
                 </LinearGradientBrush>
             </DockPanel.Background>
-            <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <Image x:Name="libraryDockButtonImage" Source="Images\112_UpArrowLong_Grey_48x48_72.png" Stretch="None"/>
+            <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1">
+                <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                 <Button.Background>
                     <RadialGradientBrush>
                         <GradientStop Color="#BD767676" Offset="0.698" />
@@ -57,8 +162,8 @@
                     </RadialGradientBrush>
                 </Button.Background>
             </Button>
-            <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <Image x:Name="clipboardDockButtonImage" Source="Images\1435_ClipBoard.png" Stretch="None"/>
+            <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1">
+                <Image x:Name="libraryDockButtonImage" Source="ImagesResources2012/Arrow_UndoRevertRestore_16xLG.png" Width="32" Height="32"/>
                 <Button.Background>
                     <RadialGradientBrush>
                         <GradientStop Color="#BD767676" Offset="0.698" />
@@ -68,8 +173,8 @@
                     </RadialGradientBrush>
                 </Button.Background>
             </Button>
-            <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <Image x:Name="addDockButtonImage" Source="Images\112_Plus_Grey_48x48_72.png" Stretch="None"/>
+            <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1">
+                <Image x:Name="clipboardDockButtonImage" Source="ImagesResources2012/WorkItem_32xLG.png" Stretch="None" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 <Button.Background>
                     <RadialGradientBrush>
                         <GradientStop Color="#BD767676" Offset="0.698" />
@@ -79,10 +184,53 @@
                     </RadialGradientBrush>
                 </Button.Background>
             </Button>
-            <StackPanel Height="68" Name="stackPanel1" Width="121" DockPanel.Dock="Right">
-                <Label Content="Thumbnail Size" Height="28" Name="label1" HorizontalContentAlignment="Center" Margin="0,5,0,0" />
-                <Slider Height="23" Name="slider1" Width="100" />
+            <Button x:Name="spareDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Hidden">
+                <Image x:Name="spareDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#BD767676" Offset="0.698" />
+                        <GradientStop Color="#00C4C4C4" Offset="1" />
+                        <GradientStop Color="#AAFFFFFF" Offset="0.39" />
+                        <GradientStop Color="#B5000000" Offset="0.855" />
+                    </RadialGradientBrush>
+                </Button.Background>
+            </Button>
+
+            <StackPanel Name="stackPanel1" Width="107">
+                <Label Content="Thumbnail Size" Height="20" Name="thumbnailSizeLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" />
+                <Slider Height="23" Name="thumbnailSizeSlider" Width="100" />
             </StackPanel>
+            <Button x:Name="aboutDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" Click="exitDockButton_Click">
+                <Image x:Name="aboutDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/PhotoBomberlogo2.png" Opacity="0.8"/>
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#BD767676" Offset="0.698" />
+                        <GradientStop Color="#00C4C4C4" Offset="1" />
+                        <GradientStop Color="#AAFFFFFF" Offset="0.39" />
+                        <GradientStop Color="#B5000000" Offset="0.855" />
+                    </RadialGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button x:Name="exitDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Right" Click="exitDockButton_Click">
+                <Image x:Name="exitDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Symbols_Critical_32xLG.png"/>
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#BD767676" Offset="0.698" />
+                        <GradientStop Color="#00C4C4C4" Offset="1" />
+                        <GradientStop Color="#AAFFFFFF" Offset="0.39" />
+                        <GradientStop Color="#B5000000" Offset="0.855" />
+                    </RadialGradientBrush>
+                </Button.Background>
+            </Button>
         </DockPanel>
+        <ProgressBar HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57">
+            <ProgressBar.Background>
+                <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                    <GradientStop Color="#CC706767" Offset="0"/>
+                    <GradientStop Color="#CCA2A2A2" Offset="0.5"/>
+                    <GradientStop Color="#CC706767" Offset="1"/>
+                </LinearGradientBrush>
+            </ProgressBar.Background>
+        </ProgressBar>
     </Grid>
 </Window>

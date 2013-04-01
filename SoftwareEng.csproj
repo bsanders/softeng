@@ -62,20 +62,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="addAlbumWindow.xaml.cs">
+      <DependentUpon>addAlbumWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="customRadialPanel.cs" />
-    <Compile Include="Images\ViewImage.xaml.cs">
+    <Compile Include="LightResize.cs" />
+    <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LightResize.cs" />
     <Compile Include="RadialStackPanelItem.xaml.cs">
       <DependentUpon>RadialStackPanelItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="XmlParser.cs" />
+    <Page Include="addAlbumWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AlbumList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Images\ViewImage.xaml">
+    <Page Include="ViewImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,36 +144,50 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\112_Plus_Blue_48x48_72.png" />
-    <Resource Include="Images\112_Plus_Green_48x48_72.png" />
-    <Resource Include="Images\112_Plus_Grey_48x48_72.png" />
-    <Resource Include="Images\Book_Green_256x256.png" />
-    <Resource Include="Images\delete.png" />
-    <Resource Include="Images\paste.png" />
+    <Resource Include="ImagesResources2012\action_add_16xLG.png" />
+    <Resource Include="ImagesResources2012\action_Cancel_16xLG.png" />
+    <Resource Include="ImagesResources2012\asset_media-element-control_on_24X24.png" />
+    <Resource Include="ImagesResources2012\Camera_16xLG.png" />
+    <Resource Include="ImagesResources2012\Camera_32xLG.png" />
+    <Resource Include="ImagesResources2012\Close_16xLG.png" />
+    <Resource Include="ImagesResources2012\eye_16xLG.png" />
+    <Resource Include="ImagesResources2012\filmstrip_16xLG.png" />
+    <Resource Include="ImagesResources2012\filmstrip_32xLG.png" />
+    <Resource Include="ImagesResources2012\house_16xLG.png" />
+    <Resource Include="ImagesResources2012\Monitor_Screen_32xLG.png" />
+    <Resource Include="ImagesResources2012\pencil_005_16xLG.png" />
+    <Resource Include="ImagesResources2012\resource_16xLG.png" />
+    <Resource Include="ImagesResources2012\resource_32xLG.png" />
+    <Resource Include="ImagesResources2012\scissors_16xLG.png" />
+    <Resource Include="ImagesResources2012\screwdriver_16xLG.png" />
+    <Resource Include="ImagesResources2012\screwdriver_32xLG.png" />
+    <Resource Include="ImagesResources2012\StatusAnnotations_Play_32xLG.png" />
+    <Resource Include="ImagesResources2012\StatusAnnotations_Play_32xLG_color.png" />
+    <Resource Include="ImagesResources2012\StatusAnnotations_Stop_32xLG.png" />
+    <Resource Include="ImagesResources2012\StatusAnnotations_Stop_32xLG_color.png" />
+    <Resource Include="ImagesResources2012\Symbols_Critical_16xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Critical_32xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Next_16xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Next_32xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Stop_16xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Stop_32xLG.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\112_Plus_Orange_48x48_72.png" />
-    <Resource Include="Images\112_RightArrowLong_Blue_48x48_72.png" />
-    <Resource Include="Images\112_RightArrowLong_Green_48x48_72.png" />
-    <Resource Include="Images\112_RightArrowLong_Grey_48x48_72.png" />
-    <Resource Include="Images\112_RightArrowLong_Orange_48x48_72.png" />
-    <Resource Include="Images\112_UpArrowLong_Blue_48x48_72.png" />
-    <Resource Include="Images\112_UpArrowLong_Green_48x48_72.png" />
-    <Resource Include="Images\112_UpArrowLong_Grey_48x48_72.png" />
-    <Resource Include="Images\112_UpArrowLong_Orange_48x48_72.png" />
-    <Resource Include="Images\138_PushPin_32x42_72.png" />
-    <Resource Include="Images\138_PushPin_48x48_72.png" />
-    <Resource Include="Images\1435_ClipBoard.png" />
-    <Resource Include="Images\1462_Pencil_256x256.png" />
-    <Resource Include="Images\1462_Pencil_48x48.png" />
-    <Resource Include="Images\1549_Paper_clip_blue.png" />
-    <Resource Include="Images\1549_Paper_clip_gray.png" />
-    <Resource Include="Images\1549_Paper_clip_gray_128x128.png" />
-    <Resource Include="Images\check.png" />
-    <Resource Include="Images\cut.png" />
-    <Resource Include="Images\Move.png" />
-    <Resource Include="Images\Rename.png" />
-    <Resource Include="Images\view.png" />
+    <Resource Include="ImagesResources2012\Arrow_UndoRevertRestore_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\WorkItem_16xLG.png" />
+    <Resource Include="ImagesResources2012\WorkItem_32xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\Actions_5847.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\Symbols_Prev_16xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Prev_32xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\PhotoBomberlogo2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

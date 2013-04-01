@@ -11,6 +11,15 @@ using System.Text;
 using System.Xml.Linq;
 using System.ComponentModel;
 
+/*
+ * PhotoBomb TODO:
+ *  implement album renaming
+ *  implement reference counting for photos in library
+ *  Switch pictures in picdb away from UID to hash?
+ *    and then pics in albdb get an albumID?
+ * 
+ */
+
 namespace SoftwareEng
 {
     //This is a PARTIAL class,
@@ -119,9 +128,9 @@ namespace SoftwareEng
         //This method returns a list of Album objects to the
         //callback given by the parameter.
         //PARAM 1 = a gui callback (see PhotoBombDelegates.cs).
-        public void getAllUserAlbumNames(getAllUserAlbumNames_callback guiCallback)
+        public void getAllAlbums(getAllAlbumNames_callback guiCallback)
         {
-            getAllUserAlbumNames_backend(guiCallback);
+            getAllAlbums_backend(guiCallback);
         }
 
         //----------------------------------------------
@@ -144,9 +153,9 @@ namespace SoftwareEng
         //
         //This method will return a complex photo data object
         //filled out with the data of one photo referenced by the uid param.
-        public void getPictureByGUID(getPhotoByGUID_callback guiCallback, string guid)
+        public void getPhoto(getPhotoByUID_callback guiCallback, int photoUID, int albumUID)
         {
-            getPictureByGUID_backend(guiCallback, guid);
+            getPhoto_backend(guiCallback, photoUID, albumUID);
         }
 
         //----------------------------------------------
@@ -166,6 +175,31 @@ namespace SoftwareEng
             addNewPicture_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum);
         }
 
+        //----------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 3/26/13
+        /// <summary>
+        /// This function removes the specified photo from the specified album.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="uid">The UID of the photo</param>
+        /// <param name="albumUID">The UID of the album</param>
+        public void removePictureFromAlbum(generic_callback guiCallback, int uid, int albumUID)
+        {
+            removePictureFromAlbum_backend(guiCallback, uid, albumUID);
+        }
+
+        //By: Bill Sanders
+        //Edited Last: 3/28/13
+        /// <summary>
+        /// This function removes the specified album.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The UID of the album</param>
+        public void removeAlbum(generic_callback guiCallback, int albumUID)
+        {
+            removeAlbum_backend(guiCallback, albumUID);
+        }
 
         //----------------------------------------------
         //By: Ryan Moe
@@ -187,9 +221,9 @@ namespace SoftwareEng
         //an album.
         //PARAM 4 = data class for you to fill out.
         //UNTESTED/UNFINISHED.
-        public void addExistingPictureToAlbum(generic_callback guiCallback, string pictureGUID, int albumUID, String SimplePhotoData)
+        public void addExistingPictureToAlbum(generic_callback guiCallback, int pictureUID, int albumUID, String SimplePhotoData)
         {
-            addExistingPictureToAlbum_backend(guiCallback, pictureGUID, albumUID, SimplePhotoData);
+            addExistingPictureToAlbum_backend(guiCallback, pictureUID, albumUID, SimplePhotoData);
         }
 
         //---------------------------------------------
@@ -210,9 +244,9 @@ namespace SoftwareEng
         //
         //Change the name of a photo (its name in a single album) in the
         //database and save the change to disk.
-        public void changePhotoNameByUID(generic_callback guiCallback, int albumUID, string photoGUID, String newName)
+        public void changePhotoNameByUID(generic_callback guiCallback, int albumUID, int photoUID, String newName)
         {
-            changePhotoNameByUID_backend(guiCallback, albumUID, photoGUID, newName);
+            changePhotoNameByUID_backend(guiCallback, albumUID, photoUID, newName);
         }
 
         //------------------------------------------------
@@ -258,19 +292,53 @@ namespace SoftwareEng
     //This is a data class that will be used
     //to send a calling gui a list of albums.
     //This class is a SINGLE element of that list.
-    //Edited Date: 3/28/13
-    //Edited By: Ryan Causey
+    //Last Edited By: Ryan Causey
+    //Last Edited Date: 3/31/13
+    /*
+     * Changelog:
+     * 3/31/31 Ryan Causey: converted this classes public datamembers into properties to facilitate databinding
+     */
     public class SimpleAlbumData
     {
-        public String albumName;
-        public int UID;
+        private String albumNameValue;
+        private int UIDValue;
         //add more information here if needed...
+
+        public string albumName
+        {
+            set
+            {
+                if (value != this.albumNameValue)
+                {
+                    albumNameValue = value;
+                }
+            }
+            get
+            {
+                return this.albumNameValue;
+            }
+        }
+
+        public int UID
+        {
+            set
+            {
+                if (value != this.UIDValue)
+                {
+                    UIDValue = value;
+                }
+            }
+            get
+            {
+                return this.UIDValue;
+            }
+        }
 
         //initialize vars.
         public SimpleAlbumData()
         {
-            albumName = "";
-            UID = -1;//indicates UID not set.
+            albumNameValue = "";
+            UIDValue = -1;//indicates UID not set.
         }
     }
 
@@ -282,14 +350,12 @@ namespace SoftwareEng
     public class SimplePhotoData
     {
         public String picturesNameInAlbum;
-        public string GUID;
         public int UID;
 
         public SimplePhotoData()
         {
             picturesNameInAlbum = "";
             UID = -1;
-            GUID = "";
             //path = "";
         }
     }
@@ -297,32 +363,29 @@ namespace SoftwareEng
     //--------------------------------
     //More complex photo data returned by functions like getPhotoDataByUID().
     //By: Ryan Moe
-    //Edited Last: Bill Sanders, added a GUID field
+    //Edited Last: Bill Sanders, added a fields for hash, caption, ref count
     public class ComplexPhotoData
     {
         //the name of the picture in the album, displayed by the gui
         public int UID;
-        public string GUID;
+        public byte[] hash;
         public String path;
         public String extension;
+        public String caption;
+        public int refCount;
         //... add more stuff here when we have more metadata
 
         public ComplexPhotoData()
         {
             UID = -1;
-            GUID = "";
+            hash = null;
             path = "";
             extension = "";
+            caption = "";
+            refCount = 0;
         }
+
+        // Add a toXML function here?
     }
-
-
-
-
-
-
-
-
-
 
 }//namespace

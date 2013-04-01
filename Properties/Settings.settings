@@ -23,5 +23,8 @@
     <Setting Name="XMLRootElement" Type="System.String" Scope="User">
       <Value Profile="(Default)">database</Value>
     </Setting>
+    <Setting Name="OrgName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PhotoBomber Studios</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -106,5 +106,17 @@ namespace SoftwareEng.Properties {
                 this["XMLRootElement"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PhotoBomber Studios")]
+        public string OrgName {
+            get {
+                return ((string)(this["OrgName"]));
+            }
+            set {
+                this["OrgName"] = value;
+            }
+        }
     }
 }

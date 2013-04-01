@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,12 +18,11 @@ namespace SoftwareEng
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
-    /// Last Edited Date: 3/28/13
-    /// Last Edited By: Ryan Causey
     /// </summary> 
     public partial class MainWindow : Window
     {
-        private List<SimpleAlbumData> listOfAlbums;
+        //DATABINDING SOURCE 
+        ReadOnlyObservableCollection<SimpleAlbumData> listOfAlbums;
 
         //--didn't know what to call it, so I named it the literal spanish translation
         public SoftwareEng.PhotoBomb bombaDeFotos;
@@ -46,26 +46,10 @@ namespace SoftwareEng
             bombaDeFotos = new PhotoBomb();
             bombaDeFotos.init(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", libraryPath);
 
-            listOfAlbums = new List<SimpleAlbumData>();
-
             
 
             populateAlbumView(true);
         }
-
-        /*
-         * Public property to enable WPF to databind to this list of simple album datas
-         * Last edited by Ryan Causey
-         * Last Edited Date: 3/28/13
-         */
-        public List<SimpleAlbumData> ListOfAlbumsProperty
-        {
-            get
-            {
-                return listOfAlbums;
-            }
-        }
-
 
 
         /*********************************************************************************************
@@ -132,7 +116,7 @@ namespace SoftwareEng
 
             if (refreshView == true)
             {
-                bombaDeFotos.getAllUserAlbumNames(new getAllUserAlbumNames_callback(guiAlbumsRetrieved));
+                bombaDeFotos.getAllAlbums(new getAllAlbumNames_callback(guiAlbumsRetrieved));
             }
 
 
@@ -145,22 +129,18 @@ namespace SoftwareEng
         *   and a list <type is SimpleAlbumData> containing data to identify all albums requested
         * return type: void
         * purpose: list of albums returned from the backend
-        * Last Edited Date: 3/28/13
-        * Last Edited By: Ryan Causey
         *********************************************************************************************/
-        public void guiAlbumsRetrieved(ErrorReport status, List<SimpleAlbumData> albumsRetrieved)
+        public void guiAlbumsRetrieved(ErrorReport status, ReadOnlyObservableCollection<SimpleAlbumData> albumsRetrieved)
         {
             if (status.reportID == ErrorReport.SUCCESS)
             {
                 listOfAlbums = albumsRetrieved;
 
-                mainWindowAlbumList.listItemsControl.ItemsSource = listOfAlbums;
+                mainWindowAlbumList.ItemsSource = listOfAlbums;
 
-                mainWindowAlbumList.listItemsControl.DataContext = listOfAlbums;
+                //mainWindowAlbumList.listItemsControl.DataContext = listOfAlbums;
 
-                
 
-                //mainWindowAlbumList.albumListView.ItemsSource = listOfAlbums;
 
                 
 
@@ -210,22 +190,34 @@ namespace SoftwareEng
 
         private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
         {
-            mainWindowDock.Height = 1;
-        }
-
-        private void Grid_MouseRightButtonDown_1(object sender, MouseButtonEventArgs e)
-        {
-            mainWindowContextMenu.IsOpen = true;
+            //mainWindowDock.Height = 1;
         }
 
         private void mainWindowContextMenu_LostMouseCapture(object sender, MouseEventArgs e)
         {
-            mainWindowContextMenu.IsOpen = false;
+            libraryContextMenu.IsOpen = false;
         }
 
         private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
         {
             mainWindowDock.Height = Double.NaN;
+        }
+
+        private void exitDockButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void mainWindowAlbumList_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            libraryContextMenu.IsOpen = true;
+        }
+
+        private void addMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            SoftwareEng.ViewImage imageViewer = new ViewImage();
+
+            imageViewer.Show();
         }
     }
 }

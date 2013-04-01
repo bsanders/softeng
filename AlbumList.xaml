@@ -10,17 +10,29 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <ScrollViewer >
-        <VirtualizingStackPanel>
-        <ItemsControl x:Name="listItemsControl" ItemTemplate="{StaticResource AlbumListItemTemplate}">
+        <!--
+        <ItemsControl x:Name="listItemsControl" ItemTemplate="{StaticResource ListItemTemplate}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    <WrapPanel/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        </VirtualizingStackPanel>
+        -->
+        
+        <ListBox x:Name="listItemsControl" ItemTemplate="{StaticResource ListItemTemplate}" Background="#FF1C2327" BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
     </ScrollViewer>
 </UserControl>

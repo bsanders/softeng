@@ -11,21 +11,22 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.IO;
+using System.Security.Cryptography; //Namespace for SHA1
 
 namespace SoftwareEng
 {
-
-
-
     public partial class PhotoBomb
     {
-
-
         //----------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //RETURN: the element that has the param uid from the picture database.
-        private XElement util_getComplexPictureByGUID(ErrorReport error, string guid)
+        //By: Bill Sanders
+        //Edited Last: 3/28/13
+        /// <summary>
+        /// Query the Photo DB for a photo by hash
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="hash"></param>
+        /// <returns>An XElement object representing the photo in the PhotoDB</returns>
+        private XElement util_getPhotoDBNode(ErrorReport error, string hash)
         {
             if (util_checkPicturesDatabase(error))
             {
@@ -36,8 +37,8 @@ namespace SoftwareEng
                     //for(from) every c in the database's children (all albums),
                     //see if it's attribute uid is the one we want,
                     //and if so return the first instance of a match.
-                    specificPicture = (from c in _picturesDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements()
-                                       where (string)c.Attribute("guid") == guid
+                    specificPicture = (from c in _picturesDatabase.Elements()
+                                       where (string)c.Attribute("sha1") == hash
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
                 //failed to find the picture
@@ -59,13 +60,145 @@ namespace SoftwareEng
             }
         }//method
 
+        
+        //----------------------------------------------------------
+        //By: Ryan Moe
+        //Edited Last: Bill Sanders, 3/29/13
+        /// <summary>
+        /// Query the Photo DB for a photo by hash
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="photoUID"></param>
+        /// <returns>An XElement object representing the photo in the PhotoDB</returns>
+        private XElement util_getPhotoDBNode(ErrorReport error, int photoUID)
+        {
+            if (util_checkPicturesDatabase(error))
+            {
+                //Try searching for the album with the uid specified.
+                XElement specificPicture;
+                try
+                {
+                    //for(from) every c in the database's children (all albums),
+                    //see if it's attribute uid is the one we want,
+                    //and if so return the first instance of a match.
+                    specificPicture = (from c in _picturesDatabase.Elements()
+                                       where (int)c.Attribute("uid") == photoUID
+                                       select c).Single();//NOTE: this will throw error if more than one OR none at all.
+                }
+                //failed to find the picture
+                catch
+                {
+                    error.reportID = ErrorReport.FAILURE;
+                    error.description = "Failed to find the picture specified.";
+                    return null;
+                }
+                //success!
+                return specificPicture;
+            }
+
+            //database is not clean!
+            else
+            {
+                //error object already filled out by integrity checker.
+                return null;
+            }
+        }//method
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/28/13
+        /// <summary>
+        /// Retrieves a specific photo instance from a combination of the AlbumID and its Photo ID in that album
+        /// </summary>
+        /// <param name="albumID">The unique ID of the album</param>
+        /// <param name="photoID">The unique ID of the image in that album</param>
+        /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
+        private XElement util_getAlbumDBPhotoNode(int albumID, int photoID)
+        {
+            ErrorReport errorReport = new ErrorReport();
+
+            // first get the album by albumID
+            XElement albumNode = util_getAlbum(errorReport, albumID);
+
+            // Then get the photo node from that.
+            XElement photoInstance = util_getAlbumDBPhotoNode(errorReport, albumNode, photoID);
+            return photoInstance;
+        }
+
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/28/13
+        // 
+        // TODO: Examine possible speed up by using a byte-array instead of string comparison in LINQ?
+        // TODO2: Add errorreport
+        /// <summary>
+        /// Retrieves a specific photo instance from a combination of the AlbumID and its hash
+        /// </summary>
+        /// <param name="albumID">The unique ID of the album</param>
+        /// <param name="hash">A hex string representation of the hash of the photo</param>
+        /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
+        private XElement util_getAlbumDBPhotoNode(int albumID, string hash)
+        {
+            XElement photoInstance = null;
+            try
+            {
+                // Try to find a photo hash in this album by hash.
+                // Note: this may be working inefficiently.
+                // Join every picture element from both databases, where the pictures have the same sha1
+                // Of those, we only care about the ones where the picture has the sha1 we're looking for
+                // finally, of those, we only care about the cases where the that match exists in the album we're interested in.
+                // This query then returns a single xml instance matching these criteria, or throws an exception if 0 or more than 1 are found
+                photoInstance = (from picDB in _picturesDatabase.Elements("picture")
+                                      join picAlbDB in _albumsDatabase.Descendants("picture")
+                                      on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
+                                      where (string)picDB.Attribute("sha1") == hash
+                                           && (int)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
+                                      select picAlbDB).Single();
+            }
+            catch // We only get here if the database is already messed up (two of the same photo in an album)
+            {
+                throw new ArgumentNullException();
+            }
+            // If the query returned a single node
+            return photoInstance;
+        }
+
+        //--------------------------------------------------------------------------
+        //By: Ryan Moe, comments by Bill Sanders
+        //Edited Last: 3/24/13
+        /// <summary>
+        /// Searches for a photo by UID in the specified album.
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="albumNode"></param>
+        /// <param name="photoUID"></param>
+        /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
+        private XElement util_getAlbumDBPhotoNode(ErrorReport error, XElement albumNode, int photoUID)
+        {
+            try
+            {
+                // Search through a specific album for a specific photo by ID
+                // Return an (XElement) picture with the matching uid if it exists
+                // Throws exception if it doesn't find exactly 1 match
+                return (from c in albumNode.Element("albumPhotos").Elements("picture")
+                        where (int)c.Attribute("uid") == photoUID
+                        select c).Single();
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Failed to find a single picture by UID.";
+                return null;
+            }
+        }
 
         //--------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
+        //Edited Last: Bill Sanders, 3/29/13
         //This adds a picture to JUST the picture database.
         //Does not use the UID or the albumName from the newPictureData.
-        private ErrorReport util_addPicToPicDatabase(ErrorReport errorReport, ComplexPhotoData newPictureData)
+        private ErrorReport util_addPicToPhotoDB(ErrorReport errorReport, ComplexPhotoData newPictureData)
         {
 
             //if picture extension is not valid
@@ -87,12 +220,13 @@ namespace SoftwareEng
             //make the object that will go into the xml database.
             XElement newPicRoot = new XElement("picture",
                 new XAttribute("uid", newPictureData.UID),
-                new XAttribute("guid", newPictureData.GUID),
+                new XAttribute("sha1", ByteArrayToString(newPictureData.hash)),
+                new XAttribute("refCount", newPictureData.refCount),
                 new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.path)
                 );
 
             //add to the database (in memory, not on disk).
-            _picturesDatabase.Element(Properties.Settings.Default.XMLRootElement).Add(newPicRoot);
+            _picturesDatabase.Add(newPicRoot);
             return errorReport;
         }
 
@@ -101,13 +235,13 @@ namespace SoftwareEng
         //Edited Last:
         //This adds a picture to JUST the album database.
         //Does not use the UID or the albumName from the newPictureData.
-        private void util_addPicToAlbumDatabase(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID, String albumName)
+        private void util_addPicToAlbumDB(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID, String albumName)
         {
             //Get the specific album we will be adding to.
             XElement specificAlbum;
             try
             {
-                specificAlbum = (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements()
+                specificAlbum = (from c in _albumsDatabase.Elements()
                                  where (int)c.Attribute("uid") == albumUID
                                  select c).Single();//NOTE: this will throw error if more than one OR none at all.
             }
@@ -129,8 +263,9 @@ namespace SoftwareEng
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
                                             new XAttribute("uid", newPicture.UID),
-                                            new XAttribute("guid", newPicture.GUID),
-                                            new XElement("name", albumName));
+                                            new XAttribute("sha1", ByteArrayToString(newPicture.hash)),
+                                            new XElement("name", albumName),
+                                            new XElement("caption", newPicture.caption));
 
 
             specificAlbum.Element("albumPhotos").Add(newPhotoElem);
@@ -148,6 +283,76 @@ namespace SoftwareEng
                 return true;
             return false;
         }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/24/13
+        // TODO: Speed up by using a byte-array instead of string comparison in LINQ?
+        // could make this function return empty list (null?) if hash not found, photo ID if found
+        // (photo ID list! what if multiple photos, but not in the album we're adding into)
+        /// <summary>
+        /// Checks to see if the photo is unique (using a SHA1 hash) to the library
+        /// </summary>
+        /// <param name="hash">A hex string representation of the hash</param>
+        /// <returns></returns>
+        private Boolean util_checkPhotoUnique(string hash)
+        {
+            try
+            {
+                // Try to find a duplicate hash.
+                // throws exception if we find NO matching names.
+                (from c in _picturesDatabase.Elements("picture")
+                 where (String)c.Attribute("sha1") == hash
+                 select c).First();
+            }
+            // Did not find a matching hash, photo is unique
+            catch
+            {
+                return true;
+            }
+            // Otherwise we found at least one match
+            return false;
+        }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/25/13
+        // Possible alternate strategy: Add the photo anyway?  If found, see if it is in a different album.
+        // If so, get its XElement, give it a new UID, but keep the rest.
+        // TODO: Examine possible speed up by using a byte-array instead of string comparison in LINQ?
+        /// <summary>
+        /// Checks to see if the photo is unique (using a SHA1 hash) to a given album
+        /// </summary>
+        /// <param name="albumID">The unique ID of the album</param>
+        /// <param name="hash">A hex string representation of the hash of the photo</param>
+        /// <returns>False if the photo already exists in this album, otherwise true.</returns>
+        private Boolean util_checkPhotoIsUniqueToAlbum(int albumID, string hash)
+        {
+            // start by assuming the photo does not exist in this album
+            Boolean photoExistsInAlbum = false;
+            try
+            {
+                // Try to find a duplicate hash in this album.
+                // Note: this may be working inefficiently.
+                // Join every picture element from both databases, where the pictures have the same sha1
+                // Of those, we only care about the ones where the picture has the sha1 we're looking for
+                // finally, of those, we only care about the cases where the that match exists in the album we're interested in.
+                // This query then returns true if it found an item matching these criteria, or false if it did not.
+                photoExistsInAlbum = (from picDB in _picturesDatabase.Elements("picture")
+                           join picAlbDB in _albumsDatabase.Descendants("picture")
+                           on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
+                           where (string)picDB.Attribute("sha1") == hash
+                                && (int)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
+                           select picDB).Any();
+            }
+            catch // we shouldn't be able to get here, as long as the databases exist
+            {
+                //throw new ArgumentNullException();
+            }
+            // If the query returned true, the picture is already in the album, and therefore NOT unique
+            return !photoExistsInAlbum;
+        }
+
         //--------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
@@ -192,13 +397,103 @@ namespace SoftwareEng
         }
 
         /// <summary>
-        /// Create's a GUID for an object
+        /// Looks up the photo by hash in the Photos XML database, returns the number of appearances in the Album database.
         /// </summary>
-        /// <returns>A string representation of the GUID</returns>
-        private string util_getNewPicGUID()
+        /// <param name="hash">A string representing the hash value of the file.</param>
+        /// <returns>An integer representing the number of times this photo appears in the the Album database</returns>
+        private int util_getPicRefCount(string hash)
         {
-            string guid = System.Guid.NewGuid().ToString();
-            return guid;
+            ErrorReport errorReport = new ErrorReport();
+
+            XElement specificPhoto = util_getPhotoDBNode(errorReport, hash);
+
+            int refCount;
+            if (specificPhoto == null)
+            {
+                refCount = 0;
+            }
+            else
+            {
+                refCount = (int)specificPhoto.Attribute("refCount");
+            }
+
+            return refCount;
+        }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/23/13
+        // Should be parallelizeable 
+        /// <summary>
+        /// Compute the SHA1 Hash of a file
+        /// </summary>
+        /// <param name="fullFilePath">The path and file name of the file to SHA1</param>
+        /// <returns>A byte array representation of the SHA1</returns>
+        private byte[] util_getHashOfFile(string fullFilePath)
+        {
+            // fileHash will hold a byte array representation of the SHA1 hash.
+            byte[] fileHash = null;
+
+            // Read the file in as a stream
+            try
+            {
+                using (FileStream fs = new FileStream(fullFilePath, FileMode.Open, FileAccess.Read))
+                using (BufferedStream bs = new BufferedStream(fs))
+                {
+                    // SHA1Managed is the .NET class that actually holds the hashing logic
+                    using (SHA1Managed sha1 = new SHA1Managed())
+                    {
+                        fileHash = sha1.ComputeHash(bs);
+                    }
+                }
+            }
+            // If there's some file error, just leave it set to null.
+            catch (IOException)
+            {
+                fileHash = null;
+            }
+
+            return fileHash;
+        }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/23/13
+        /// <summary>
+        /// Convert an array of bytes to a HexString
+        /// </summary>
+        /// <param name="byteArray"></param>
+        /// <returns>The hexadecimal string representation of a byte array</returns>
+        public static string ByteArrayToString(byte[] byteArray)
+        {
+            StringBuilder hexStr = new StringBuilder(byteArray.Length * 2);
+            foreach (byte b in byteArray)
+            {
+                hexStr.AppendFormat("{0:x2}", b);
+            }
+            return hexStr.ToString();
+        }
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 3/23/13
+        // Should be parallelizeable 
+        /// <summary>
+        /// Convert a HexString (such as a SHA1 hash) to an array of Bytes
+        /// </summary>
+        /// <param name="hexStr"></param>
+        /// <returns>a byte array</returns>
+        private static byte[] StringToByteArray(String hexStr)
+        {
+            int NumberChars = hexStr.Length / 2;
+            byte[] bytes = new byte[NumberChars];
+            StringReader sr = new StringReader(hexStr);
+            for (int i = 0; i < NumberChars; i++)
+            {
+                bytes[i] = Convert.ToByte(new string(new char[2] { (char)sr.Read(), (char)sr.Read() }), 16);
+            }
+            sr.Dispose();
+            return bytes;
         }
 
         //--------------------------------------------------------
@@ -233,7 +528,7 @@ namespace SoftwareEng
                     //if one or more (hope not more!) uid's are found
                     //to match our testing uid, then incriment the testing
                     //uid and try again.
-                    (from c in _picturesDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("picture")
+                    (from c in _picturesDatabase.Elements("picture")
                      where (int)c.Attribute("uid") == newUID
                      select c).First();
                     ++newUID;
@@ -259,7 +554,7 @@ namespace SoftwareEng
         {
             try
             {
-                _albumsDatabase = XDocument.Load(albumsDatabasePath);
+                _albumsDatabase = XDocument.Load(albumsDatabasePath).Element(Properties.Settings.Default.XMLRootElement);
             }
             catch
             {
@@ -281,7 +576,7 @@ namespace SoftwareEng
         {
             try
             {
-                _picturesDatabase = XDocument.Load(picturesDatabasePath);
+                _picturesDatabase = XDocument.Load(picturesDatabasePath).Element(Properties.Settings.Default.XMLRootElement);
             }
             catch
             {
@@ -314,7 +609,7 @@ namespace SoftwareEng
                     //if one or more (hope not more!) uid's are found
                     //to match our testing uid, then incriment the testing
                     //uid and try again.
-                    (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("album")
+                    (from c in _albumsDatabase.Elements("album")
                      where (int)c.Attribute("uid") == newUID
                      select c).First();
                     ++newUID;
@@ -335,7 +630,7 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //add an album to the database in memory ONLY.
-        private void util_addAlbumToAlbumDatabase(ErrorReport errorReport, SimpleAlbumData albumData)
+        private void util_addAlbumToAlbumDB(ErrorReport errorReport, SimpleAlbumData albumData)
         {
             //make sure the album database is valid.
             if (!util_checkAlbumDatabase(errorReport))
@@ -350,7 +645,7 @@ namespace SoftwareEng
                                             new XElement("albumPhotos"));
 
             //add to the database in memory.
-            _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Add(newAlbum);
+            _albumsDatabase.Add(newAlbum);
         }//method
 
         //-------------------------------------------------------------------
@@ -358,7 +653,7 @@ namespace SoftwareEng
         //Edited Last:
         //use this to convert a photo element into a complexPhotoData data class.
         //Try and keep this updated if new fields are added to complexPhotoData.
-        private ComplexPhotoData util_convertPhotoElemToComplexStruct(ErrorReport errorReport, XElement elem)
+        private ComplexPhotoData util_convertPhotoNodeToComplexPhotoData(ErrorReport errorReport, XElement elem)
         {
             ComplexPhotoData data = new ComplexPhotoData();
 
@@ -366,7 +661,8 @@ namespace SoftwareEng
             try
             {
                 data.UID = (int)elem.Attribute("UID");
-                data.GUID = (string)elem.Attribute("GUID");
+                data.hash = StringToByteArray((string)elem.Attribute("SHA1"));
+                data.refCount = (int)elem.Attribute("refCount");
                 data.path = elem.Element("filePath").Value;
                 data.extension = (String)elem.Element("filePath").Attribute("extension");
             }
@@ -393,7 +689,6 @@ namespace SoftwareEng
             try
             {
                 data.UID = (int)elem.Attribute("UID");
-                data.GUID = (string)elem.Attribute("GUID");
                 data.picturesNameInAlbum = elem.Element("name").Value;
 
             }
@@ -417,7 +712,7 @@ namespace SoftwareEng
             {
                 //try and find a matching album name.
                 //throws exception if we find NO matching names.
-                (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("album")
+                (from c in _albumsDatabase.Elements("album")
                  where (String)c.Element("albumName") == albumName
                  select c).First();
             }
@@ -456,7 +751,13 @@ namespace SoftwareEng
             //make the full picture path.
             String newPath = System.IO.Path.Combine(libraryPath, picNameInLibrary);
 
+            // I haven't thought much about whether or not this is the right place to put this
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
+            // specifies a maximum height resolution constraint 
+            resizeJob.Height = 120;
+            // Actually processes the image, copying it to the new location, should go in a try/catch for IO
+            // One of Build's overloads allows you to use file streams instead of filepaths.
+            // If images have to be resized on-the-fly instead of stored, that may work as well.
             resizeJob.Build(
                 picturePath,
                 System.IO.Path.Combine(
@@ -522,43 +823,23 @@ namespace SoftwareEng
                 error.description = "Failed to change the name of a photo.";
             }
         }
-        //--------------------------------------------------------------------------
-
-        //By: Ryan Moe
-        //Edited Last:
-        //returns the xelement that represents the requested photo,
-        //gets this xelement from the parameter xelement that represents
-        //the album that the picture might be in.
-        private XElement util_getPhotoFromAlbumElemByUID(ErrorReport error, XElement albumElem, string photoGUID)
-        {
-            try
-            {
-                //find and return a picture whos uid is the one we are looking for.
-                //Throws exception if none or more than one match is found.
-                return (from c in albumElem.Element("albumPhotos").Elements("picture")
-                        where (string)c.Attribute("guid") == photoGUID
-                        select c).Single();
-            }
-            catch
-            {
-                error.reportID = ErrorReport.FAILURE;
-                error.description = "Failed to find a single picture by UID.";
-                return null;
-            }
-        }
 
         //--------------------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
-        //returns an xelement representing an album, gets it
-        //from the album database in memory.
-        private XElement util_getAlbumByUID(ErrorReport error, int albumUID)
+        //Edited Last: Bill Sanders, 3/29/13
+        /// <summary>
+        /// Queries the Album database for the specified album.
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="albumUID">The Unique ID of the album</param>
+        /// <returns>An XElement object referring to the specified album, or null if not found.</returns>
+        private XElement util_getAlbum(ErrorReport error, int albumUID)
         {
             try
             {
                 //find and return an album whos uid is the one we are looking for.
                 //Throws exception if none or more than one match is found.
-                return (from c in _albumsDatabase.Element(Properties.Settings.Default.XMLRootElement).Elements("album")
+                return (from c in _albumsDatabase.Elements("album")
                         where (int)c.Attribute("uid") == albumUID
                         select c).Single();
             }
@@ -568,7 +849,6 @@ namespace SoftwareEng
                 error.description = "Failed to find a single album by UID.";
                 return null;
             }
-
         }
 
         //---------------------------------------------------------------------------
@@ -605,11 +885,5 @@ namespace SoftwareEng
 
             return true;
         }
-
-
-
-
-
-
     }//class
 }
