@@ -33,5 +33,5 @@ namespace SoftwareEng
 
     //
     public delegate void threadUpdateDelegate(int processed);
-    
+
 }

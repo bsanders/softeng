@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Ribbon;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -117,7 +118,7 @@ namespace SoftwareEng
 
             if (refreshView == true)
             {
-                bombaDeFotos.getAllAlbums(new getAllAlbumNames_callback(guiAlbumsRetrieved));
+                bombaDeFotos.getAllUserAlbumNames(new getAllUserAlbumNames_callback(guiAlbumsRetrieved));
             }
 
 
@@ -298,18 +299,6 @@ namespace SoftwareEng
         private void main(object sender, MouseButtonEventArgs e)
         {
 
-        }
-
-        private void Border_IsMouseDirectlyOverChanged_1(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (mainWindowFrame.IsMouseDirectlyOver == true)
-            {
-                mainWindowFrame.Cursor= Cursors.SizeNS;
-            }
-            else
-            {
-                mainWindowFrame.Cursor= Cursors.Arrow;
-            }
         }
 
     }

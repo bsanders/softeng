@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SoftwareEng</RootNamespace>
     <AssemblyName>SoftwareEng</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,19 +36,17 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>NewIconClipart-tiny-square.ico</ApplicationIcon>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Controls" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -66,7 +65,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="customRadialPanel.cs" />
-    <Compile Include="LightResize.cs" />
     <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>
@@ -126,31 +124,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ImagesResources2012\Actions_5847.png" />
-    <Resource Include="ImagesResources2012\action_Accept_16xLG.png" />
     <Resource Include="ImagesResources2012\action_add_16xLG.png" />
     <Resource Include="ImagesResources2012\action_Cancel_16xLG.png" />
-    <Resource Include="ImagesResources2012\application_16xLG.png" />
-    <Resource Include="ImagesResources2012\application_32xLG.png" />
-    <Resource Include="ImagesResources2012\Arrow_UndoRevertRestore_16xLG.png" />
     <Resource Include="ImagesResources2012\asset_media-element-control_on_24X24.png" />
     <Resource Include="ImagesResources2012\Camera_16xLG.png" />
     <Resource Include="ImagesResources2012\Camera_32xLG.png" />
-    <Resource Include="ImagesResources2012\checkbox_16xLG.png" />
-    <Resource Include="ImagesResources2012\Clearallrequests_8816.png" />
     <Resource Include="ImagesResources2012\Close_16xLG.png" />
     <Resource Include="ImagesResources2012\eye_16xLG.png" />
     <Resource Include="ImagesResources2012\filmstrip_16xLG.png" />
     <Resource Include="ImagesResources2012\filmstrip_32xLG.png" />
     <Resource Include="ImagesResources2012\house_16xLG.png" />
-    <Resource Include="ImagesResources2012\KeyDown_8461.png" />
-    <Resource Include="ImagesResources2012\LockControls_322.png" />
     <Resource Include="ImagesResources2012\Monitor_Screen_32xLG.png" />
-    <Resource Include="ImagesResources2012\NewIconClipart-tiny-square.png" />
-    <Resource Include="ImagesResources2012\NewIconClipart-tiny.png" />
-    <Resource Include="ImagesResources2012\NewIconClipart.png" />
     <Resource Include="ImagesResources2012\pencil_005_16xLG.png" />
-    <Resource Include="ImagesResources2012\PhotoBomberlogo2.png" />
     <Resource Include="ImagesResources2012\resource_16xLG.png" />
     <Resource Include="ImagesResources2012\resource_32xLG.png" />
     <Resource Include="ImagesResources2012\scissors_16xLG.png" />
@@ -160,21 +145,54 @@
     <Resource Include="ImagesResources2012\StatusAnnotations_Play_32xLG_color.png" />
     <Resource Include="ImagesResources2012\StatusAnnotations_Stop_32xLG.png" />
     <Resource Include="ImagesResources2012\StatusAnnotations_Stop_32xLG_color.png" />
-    <Resource Include="ImagesResources2012\Symbols_Blocked_16xLG.png" />
-    <Resource Include="ImagesResources2012\Symbols_Blocked_32xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Critical_16xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Critical_32xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Next_16xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Next_32xLG.png" />
-    <Resource Include="ImagesResources2012\Symbols_Prev_16xLG.png" />
-    <Resource Include="ImagesResources2012\Symbols_Prev_32xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Stop_16xLG.png" />
     <Resource Include="ImagesResources2012\Symbols_Stop_32xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\Arrow_UndoRevertRestore_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="ImagesResources2012\WorkItem_16xLG.png" />
     <Resource Include="ImagesResources2012\WorkItem_32xLG.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="NewIconClipart-tiny-square.ico" />
+    <Resource Include="ImagesResources2012\Actions_5847.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\Symbols_Prev_16xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Prev_32xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\PhotoBomberlogo2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\application_16xLG.png" />
+    <Resource Include="ImagesResources2012\application_32xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Blocked_16xLG.png" />
+    <Resource Include="ImagesResources2012\Symbols_Blocked_32xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\NewIconClipart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\NewIconClipart-tiny.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\NewIconClipart-tiny-square.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\checkbox_16xLG.png" />
+    <Resource Include="ImagesResources2012\Clearallrequests_8816.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\action_Accept_16xLG.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
