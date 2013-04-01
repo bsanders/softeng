@@ -3,7 +3,12 @@
  * These are the function calls for the GUI to call.
  * 
  * Keep these functions short to keep it easier on the gui builder.
- **/
+ * 
+ ****************************************************************************************************************
+ * Changelog:
+ * 3/31/31 Ryan Causey: converted SimpleAlbumData's public datamembers into properties to facilitate databinding
+ * 4/1/13 Ryan Causey: converting the rest of the data class's public datamember into properties
+ ***************************************************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -295,21 +300,17 @@ namespace SoftwareEng
     //This class is a SINGLE element of that list.
     //Last Edited By: Ryan Causey
     //Last Edited Date: 3/31/13
-    /*
-     * Changelog:
-     * 3/31/31 Ryan Causey: converted this classes public datamembers into properties to facilitate databinding
-     */
     public class SimpleAlbumData
     {
         private String albumNameValue;
         private int UIDValue;
         //add more information here if needed...
 
-        public string albumName
+        public String albumName
         {
             set
             {
-                if (value != this.albumNameValue)
+                if (value != albumNameValue)
                 {
                     albumNameValue = value;
                 }
@@ -324,14 +325,14 @@ namespace SoftwareEng
         {
             set
             {
-                if (value != this.UIDValue)
+                if (value != UIDValue)
                 {
                     UIDValue = value;
                 }
             }
             get
             {
-                return this.UIDValue;
+                return UIDValue;
             }
         }
 
@@ -347,16 +348,47 @@ namespace SoftwareEng
     //-----------------------------------
     //Simple photo data returned by functions like getAllPhotosInAlbum().
     //By: Ryan Moe
-    //Edited Last:
+    //Edited Last By: Ryan Causey
+    //Edited Date: 4/1/13
     public class SimplePhotoData
     {
-        public String picturesNameInAlbum;
-        public int UID;
+        public String picturesNameInAlbumValue;
+        public int UIDValue;
+
+        public String picturesNameInAlbum
+        {
+            set
+            {
+                if (value != picturesNameInAlbumValue)
+                {
+                    picturesNameInAlbumValue = value;
+                }
+            }
+            get
+            {
+                return picturesNameInAlbumValue;
+            }
+        }
+
+        public int UID
+        {
+            set
+            {
+                if (value != UIDValue)
+                {
+                    UIDValue = value;
+                }
+            }
+            get
+            {
+                return UIDValue;
+            }
+        }
 
         public SimplePhotoData()
         {
-            picturesNameInAlbum = "";
-            UID = -1;
+            picturesNameInAlbumValue = "";
+            UIDValue = -1;
             //path = "";
         }
     }
@@ -365,25 +397,121 @@ namespace SoftwareEng
     //More complex photo data returned by functions like getPhotoDataByUID().
     //By: Ryan Moe
     //Edited Last: Bill Sanders, added a fields for hash, caption, ref count
+    //Edited Last By: Ryan Causey
+    //Edited Date: 4/1/13
     public class ComplexPhotoData
     {
         //the name of the picture in the album, displayed by the gui
-        public int UID;
-        public byte[] hash;
-        public String path;
-        public String extension;
-        public String caption;
-        public int refCount;
+        public int UIDValue;
+        public byte[] hashValue;
+        public String pathValue;
+        public String extensionValue;
+        public String captionValue;
+        public int refCountValue;
         //... add more stuff here when we have more metadata
+
+        public int UID
+        {
+            set
+            {
+                if (value != UIDValue)
+                {
+                    UIDValue = value;
+                }
+            }
+            get
+            {
+                return UIDValue;
+            }
+        }
+
+        public byte[] hash
+        {
+            set
+            {
+                if (value != hashValue)
+                {
+                    hashValue = value;
+                }
+            }
+            get
+            {
+                return hashValue;
+            }
+        }
+
+        public String path
+        {
+            set
+            {
+                if (value != pathValue)
+                {
+                    pathValue = value;
+                }
+            }
+
+            get
+            {
+                return pathValue;
+            }
+        }
+
+        public String extension
+        {
+            set
+            {
+                if (value != extensionValue)
+                {
+                    extensionValue = value;
+                }
+            }
+
+            get
+            {
+                return extensionValue;
+            }
+        }
+
+        public string caption
+        {
+            set
+            {
+                if (value != captionValue)
+                {
+                    captionValue = value;
+                }
+            }
+
+            get
+            {
+                return captionValue;
+            }
+        }
+
+        public int refCount
+        {
+            set
+            {
+                if (value != refCountValue)
+                {
+                    refCountValue = value;
+                }
+            }
+
+            get
+            {
+                return refCountValue;
+            }
+        }
 
         public ComplexPhotoData()
         {
-            UID = -1;
-            hash = null;
-            path = "";
-            extension = "";
-            caption = "";
-            refCount = 0;
+            UIDValue = -1;
+            hashValue = null;
+            pathValue = "";
+            extensionValue = "";
+            captionValue = "";
+            refCountValue = 0;
         }
 
         // Add a toXML function here?
