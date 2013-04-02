@@ -360,12 +360,7 @@
                         </Button.Background>
                         <Image x:Name="spareDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Button>
-
-                    <StackPanel x:Name="stackPanel1" Width="107">
-                        <Label Content="Thumbnail Size" Height="20" x:Name="thumbnailSizeLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" />
-                        <Slider Height="23" x:Name="thumbnailSizeSlider" Width="100" />
-                    </StackPanel>
-                    <Button x:Name="aboutDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" Click="exitDockButton_Click">
+                    <Button x:Name="aboutDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" Click="exitDockButton_Click" IsEnabled="False" Visibility="Hidden">
                         <Button.Background>
                             <RadialGradientBrush>
                                 <GradientStop Color="#BD767676" Offset="0.698" />
@@ -376,6 +371,11 @@
                         </Button.Background>
                         <Image x:Name="aboutDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart.png" Opacity="0.8"/>
                     </Button>
+                    <StackPanel x:Name="stackPanel1" Width="107">
+                        <Label Content="Thumbnail Size" Height="20" x:Name="thumbnailSizeLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" />
+                        <Slider Height="23" x:Name="thumbnailSizeSlider" Width="100" />
+                    </StackPanel>
+
 
                 </DockPanel>
                 <ProgressBar HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden">
@@ -391,7 +391,7 @@
 
             </Grid>
         </Border>
-        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1">
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" HorizontalAlignment="Center">
             <DockPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FF979797" Offset="0.641"/>
@@ -400,7 +400,7 @@
                     <GradientStop Color="Black" Offset="1"/>
                 </LinearGradientBrush>
             </DockPanel.Background>
-            <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="6,6,0,0">
+            <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="6,6,0,0" Click="aboutButtonPressed_eventHandler">
                 <Button.Background>
                     <RadialGradientBrush>
                         <GradientStop Color="#AAFFFFFF" Offset="1" />
@@ -415,7 +415,7 @@
             <Button x:Name="maximizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="maximizeToolbarButton_Click" >
                 <Image x:Name="maximizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/application_16xLG.png"/>
             </Button>
-            <Button x:Name="minimizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" >
+            <Button x:Name="minimizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="minimizeButton_Click" >
                 <Image x:Name="minimizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Symbols_Blocked_16xLG.png"/>
             </Button>
 

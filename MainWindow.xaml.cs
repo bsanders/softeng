@@ -243,7 +243,7 @@ namespace SoftwareEng
                 }
                 else
                 {
-                    Application.Current.MainWindow.DragMove();
+                    this.DragMove();
                 }
             }
         }
@@ -534,6 +534,26 @@ namespace SoftwareEng
                 this.Width = MinWidth + 1;
             }
         }
+
+        private void aboutButtonPressed_eventHandler(object sender, RoutedEventArgs e)
+        {
+            aboutWindow someWindow = new aboutWindow();
+
+            someWindow.ShowDialog();
+        }
+
+        private void minimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(this.WindowState == WindowState.Minimized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                this.WindowState = WindowState.Minimized;
+            }
+        }
+        
         /**************************************************************************************************
          * end region of thumb bar resize events
         **************************************************************************************************/

@@ -27,5 +27,37 @@ namespace SoftwareEng
         {
             this.Close();
         }
+
+        private void okButton_click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void DockPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                if (e.ClickCount == 2)
+                {
+                    toggleWindowState();
+                }
+                else
+                {
+                    this.DragMove();
+                }
+            }
+        }
+
+        private void toggleWindowState()
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+            }
+        }
     }
 }
