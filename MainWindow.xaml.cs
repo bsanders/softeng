@@ -295,22 +295,138 @@ namespace SoftwareEng
             libraryContextMenu.IsOpen = true;
         }
 
-        private void main(object sender, MouseButtonEventArgs e)
+        /**************************************************************************************************
+         * start region of thumb bar resize events
+        **************************************************************************************************/
+        private void bottomThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
-
-        }
-
-        private void Border_IsMouseDirectlyOverChanged_1(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (mainWindowFrame.IsMouseDirectlyOver == true)
+            //resize from bottom
+            if (this.Height > this.MinHeight)
             {
-                mainWindowFrame.Cursor= Cursors.SizeNS;
+                this.Height += e.VerticalChange;
             }
             else
             {
-                mainWindowFrame.Cursor= Cursors.Arrow;
+                this.Height = MinHeight + 1;
+            }
+
+        }
+
+        private void topThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+
+            //resize from top
+            if (this.Height > this.MinHeight)
+            {
+                this.Height -= e.VerticalChange;
+                this.Top += e.VerticalChange;
+            }
+            else
+            {
+                this.Height = MinHeight + 1;
+                this.Top -= e.VerticalChange;
             }
         }
 
+        private void rightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            //resize from right
+            if (this.Width > this.MinWidth)
+            {
+                this.Width += e.HorizontalChange;
+            }
+            else
+            {
+                this.Width = MinWidth + 1;
+            }
+        }
+
+        private void leftThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            //resize from Left
+            if (this.Width > this.MinWidth)
+            {
+                this.Width -= e.HorizontalChange;
+                this.Left += e.HorizontalChange;
+            }
+            else
+            {
+                this.Width = MinWidth + 1;
+            }
+        }
+
+        private void bottomRightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            //resize from bottom
+            if (this.Height > this.MinHeight)
+            {
+                this.Height += e.VerticalChange;
+            }
+            else
+            {
+                this.Height = MinHeight + 1;
+            }
+
+            //resize from right
+            if (this.Width > this.MinWidth)
+            {
+                this.Width += e.HorizontalChange;
+            }
+            else
+            {
+                this.Width = MinWidth + 1;
+            }
+        }
+
+        private void topRightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            //resize from top
+            if (this.Height > this.MinHeight)
+            {
+                this.Height -= e.VerticalChange;
+                this.Top += e.VerticalChange;
+            }
+            else
+            {
+                this.Height = MinHeight + 1;
+            }
+
+            //resize from right
+            if (this.Width > this.MinWidth)
+            {
+                this.Width += e.HorizontalChange;
+            }
+            else
+            {
+                this.Width = MinWidth + 1;
+            }
+        }
+
+        private void bottomLeftThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            //resize from bottom
+            if (this.Height > this.MinHeight)
+            {
+                this.Height += e.VerticalChange;
+            }
+            else
+            {
+                this.Height = MinHeight + 1;
+            }
+
+            //resize from left
+            if (this.Width > this.MinWidth)
+            {
+                this.Width -= e.HorizontalChange;
+                this.Left += e.HorizontalChange;
+            }
+            else
+            {
+                this.Width = MinWidth + 1;
+            }
+        }
+        /**************************************************************************************************
+         * end region of thumb bar resize events
+        **************************************************************************************************/
     }
 }

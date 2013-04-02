@@ -246,7 +246,7 @@
 
 
     <Grid>
-        <Border x:Name="mainWindowFrame" Padding="4" Background="White" IsMouseDirectlyOverChanged="Border_IsMouseDirectlyOverChanged_1">
+        <Border x:Name="mainWindowFrame" Padding="6" Background="#001C2327">
             <Grid>
                 <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture">
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
@@ -307,7 +307,7 @@
 
 
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="0,0,25,0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
-                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" Height="1" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                     <DockPanel.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#C7000000" Offset="1"/>
@@ -317,7 +317,6 @@
                         </LinearGradientBrush>
                     </DockPanel.Background>
                     <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1">
-                        <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                         <Button.Background>
                             <RadialGradientBrush>
                                 <GradientStop Color="#BD767676" Offset="0.698" />
@@ -326,9 +325,9 @@
                                 <GradientStop Color="#B5000000" Offset="0.855" />
                             </RadialGradientBrush>
                         </Button.Background>
+                        <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1">
-                        <Image x:Name="libraryDockButtonImage" Source="ImagesResources2012/Arrow_UndoRevertRestore_16xLG.png" Width="32" Height="32"/>
                         <Button.Background>
                             <RadialGradientBrush>
                                 <GradientStop Color="#BD767676" Offset="0.698" />
@@ -337,9 +336,9 @@
                                 <GradientStop Color="#B5000000" Offset="0.855" />
                             </RadialGradientBrush>
                         </Button.Background>
+                        <Image x:Name="libraryDockButtonImage" Source="ImagesResources2012/Arrow_UndoRevertRestore_16xLG.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1">
-                        <Image x:Name="clipboardDockButtonImage" Source="ImagesResources2012/WorkItem_32xLG.png" Stretch="None" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="32" Height="32"/>
                         <Button.Background>
                             <RadialGradientBrush>
                                 <GradientStop Color="#BD767676" Offset="0.698" />
@@ -348,9 +347,9 @@
                                 <GradientStop Color="#B5000000" Offset="0.855" />
                             </RadialGradientBrush>
                         </Button.Background>
+                        <Image x:Name="clipboardDockButtonImage" Source="ImagesResources2012/WorkItem_32xLG.png" Stretch="None" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="spareDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Hidden">
-                        <Image x:Name="spareDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         <Button.Background>
                             <RadialGradientBrush>
                                 <GradientStop Color="#BD767676" Offset="0.698" />
@@ -359,14 +358,14 @@
                                 <GradientStop Color="#B5000000" Offset="0.855" />
                             </RadialGradientBrush>
                         </Button.Background>
+                        <Image x:Name="spareDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Button>
 
-                    <StackPanel Name="stackPanel1" Width="107">
-                        <Label Content="Thumbnail Size" Height="20" Name="thumbnailSizeLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" />
-                        <Slider Height="23" Name="thumbnailSizeSlider" Width="100" />
+                    <StackPanel x:Name="stackPanel1" Width="107">
+                        <Label Content="Thumbnail Size" Height="20" x:Name="thumbnailSizeLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" />
+                        <Slider Height="23" x:Name="thumbnailSizeSlider" Width="100" />
                     </StackPanel>
                     <Button x:Name="aboutDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" Click="exitDockButton_Click">
-                        <Image x:Name="aboutDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart.png" Opacity="0.8"/>
                         <Button.Background>
                             <RadialGradientBrush>
                                 <GradientStop Color="#BD767676" Offset="0.698" />
@@ -375,6 +374,7 @@
                                 <GradientStop Color="#B5000000" Offset="0.855" />
                             </RadialGradientBrush>
                         </Button.Background>
+                        <Image x:Name="aboutDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart.png" Opacity="0.8"/>
                     </Button>
 
                 </DockPanel>
@@ -387,48 +387,56 @@
                         </LinearGradientBrush>
                     </ProgressBar.Background>
                 </ProgressBar>
-                <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Height="27">
-                    <DockPanel.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="#FF979797" Offset="0.641"/>
-                            <GradientStop Color="#FF979797" Offset="0.249"/>
-                            <GradientStop Color="#FF343434"/>
-                            <GradientStop Color="Black" Offset="1"/>
-                        </LinearGradientBrush>
-                    </DockPanel.Background>
-                    <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                        <Button.Background>
-                            <RadialGradientBrush>
-                                <GradientStop Color="#AAFFFFFF" Offset="1" />
-                                <GradientStop Color="#00000000" Offset="1" />
-                            </RadialGradientBrush>
-                        </Button.Background>
-                        <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart-tiny-square.png"/>
-                    </Button>
-                    <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitDockButton_Click">
-                        <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Close_16xLG.png"/>
-                    </Button>
-                    <Button x:Name="maximizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="maximizeToolbarButton_Click" >
-                        <Image x:Name="maximizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/application_16xLG.png"/>
-                    </Button>
-                    <Button x:Name="minimizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" >
-                        <Image x:Name="minimizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Symbols_Blocked_16xLG.png"/>
-                    </Button>
 
-
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,150,0">
-                        <Label x:Name="generalPurposeLabel" Content="New Album Name" HorizontalAlignment="Left" Foreground="#FFE8E8E8" FontSize="13" FontWeight="Bold"/>
-                        <TextBox x:Name="generalPurposeTextBox" TextWrapping="Wrap" Width="120" Height="20" Text="Test" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" AcceptsReturn="True" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False"/>
-                        <Button x:Name="cancelAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="cancelAddToolbarButton_Click" IsCancel="True" >
-                            <Image x:Name="cancelAddToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_Cancel_16xLG.png"/>
-                        </Button>
-                        <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" >
-                            <Image x:Name="acceptAddToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/checkbox_16xLG.png"/>
-                        </Button>
-                    </StackPanel>
-                </DockPanel>
 
             </Grid>
         </Border>
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Height="27">
+            <DockPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF979797" Offset="0.641"/>
+                    <GradientStop Color="#FF979797" Offset="0.249"/>
+                    <GradientStop Color="#FF343434"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </DockPanel.Background>
+            <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#AAFFFFFF" Offset="1" />
+                        <GradientStop Color="#00000000" Offset="1" />
+                    </RadialGradientBrush>
+                </Button.Background>
+                <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart-tiny-square.png"/>
+            </Button>
+            <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitDockButton_Click">
+                <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Close_16xLG.png"/>
+            </Button>
+            <Button x:Name="maximizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="maximizeToolbarButton_Click" >
+                <Image x:Name="maximizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/application_16xLG.png"/>
+            </Button>
+            <Button x:Name="minimizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" >
+                <Image x:Name="minimizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Symbols_Blocked_16xLG.png"/>
+            </Button>
+
+
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,150,0">
+                <Label x:Name="generalPurposeLabel" Content="New Album Name" HorizontalAlignment="Left" Foreground="#FFE8E8E8" FontSize="13" FontWeight="Bold"/>
+                <TextBox x:Name="generalPurposeTextBox" TextWrapping="Wrap" Width="120" Height="20" Text="Test" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" AcceptsReturn="True" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False"/>
+                <Button x:Name="cancelAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="cancelAddToolbarButton_Click" IsCancel="True" >
+                    <Image x:Name="cancelAddToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_Cancel_16xLG.png"/>
+                </Button>
+                <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" >
+                    <Image x:Name="acceptAddToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/checkbox_16xLG.png"/>
+                </Button>
+            </StackPanel>
+        </DockPanel>
+        <Thumb x:Name="topThumb" Background="#001C2327" Height="6" VerticalAlignment="Top" Cursor="SizeNS" Margin="27,0,0,0" DragDelta="topThumb_DragDeltaHandler" Opacity="0"/>
+        <Thumb x:Name="bottomThumb" Background="#001C2327" Height="6" VerticalAlignment="Bottom" Cursor="SizeNS" DragDelta="bottomThumb_DragDeltaHandler" Opacity="0"/>
+        <Thumb x:Name="rightThumb" Background="#001C2327" Width="6" HorizontalAlignment="Right" Cursor="SizeWE" DragDelta="rightThumb_DragDeltaHandler" Opacity="0"/>
+        <Thumb x:Name="leftThumb" Background="#001C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeWE" Margin="0,27,0,0" DragDelta="leftThumb_DragDeltaHandler" Opacity="0"/>
+        <Thumb x:Name="bottomRightThumb" Background="#001C2327" Cursor="SizeNWSE" HorizontalAlignment="Right" Width="6" DragDelta="bottomRightThumb_DragDeltaHandler" Height="6" VerticalAlignment="Bottom" Opacity="0"/>
+        <Thumb x:Name="topRightThumb" Background="#001C2327" HorizontalAlignment="Right" Width="6" VerticalAlignment="Top" Height="6" Cursor="SizeNESW" DragDelta="topRightThumb_DragDeltaHandler" Opacity="0"/>
+        <Thumb x:Name="bottomLeftThumb" Background="#001C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeNESW" DragDelta="bottomLeftThumb_DragDeltaHandler" VerticalAlignment="Bottom" Height="6" Opacity="0"/>
     </Grid>
 </Window>
