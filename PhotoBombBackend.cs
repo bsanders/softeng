@@ -711,6 +711,7 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
+            //error prone code here if XElement returned is null. An unhandled exception was raised here while I was testing program -Ryan Causey
             XElement picFromPicsDB = util_getPhotoDBNode(errorReport, (string)pictureElement.Attribute("sha1"));
             
             int refCount = (int)picFromPicsDB.Attribute("refCount");
@@ -796,6 +797,7 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
+            //error prone code here if there is no album with that UID. An unhandled exception was raised here during testing. -Ryan Causey
             XElement specificAlbum = util_getAlbum(errorReport, albumUID);
             List<XElement> pictureElements = specificAlbum.Element("albumPhotos").Elements("picture").ToList();
             // linq returns a lazy evaluated ienumberable, which foreach apparently doesn't like, so we convert to a list.
@@ -831,7 +833,8 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/1/13
         private void addNewAlbum_backend(generic_callback guiCallback, SimpleAlbumData albumData)
         {
             ErrorReport errorReport = new ErrorReport();
@@ -851,6 +854,9 @@ namespace SoftwareEng
 
             //save to disk.
             saveAlbumsXML_backend(null);
+
+            //need to update the _albumsToReturn observableCollection to reflect this addition in the GUI
+            _albumsToReturn.Add(albumData); //adds to end of collection
 
             guiCallback(errorReport);
 
