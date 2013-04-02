@@ -5,6 +5,12 @@
  * These functions should be written in a "conductor" sort of
  * way, in that they should try and call as many small functions
  * as they can other classes (like the utils class).
+ * 
+ * *******************************************************************************
+ * Changelog:
+ * 4/1/13 Ryan Causey: changing the remove/add album backend functions to manipulate
+ *                     the observableCollection of albums as this is one-way data bound
+ *                     and will automatically update the GUI.
  **/
 using System;
 using System.Collections.Generic;
@@ -235,7 +241,8 @@ namespace SoftwareEng
 
         //-----------------------------------------------------------------
         // By: Bill Sanders, based on Ryan Moe's earlier function
-        // last edited: 3/24/13
+        // last edited: 3/31/13
+        // Last Edited By: Ryan Causey
         /// <summary>
         /// Retrieves a list of all albums in the albums.xml file, sent back via the callback.
         /// </summary>
@@ -778,7 +785,8 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 3/28/13
+        //Edited Last: 4/1/13
+        //Edited Last By: Ryan Causey
         /// <summary>
         /// Removes the specified album
         /// </summary>
@@ -804,6 +812,17 @@ namespace SoftwareEng
             // now sync to the disk
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
+
+            //need to update _albumsToReturn observable collection by removing the album with this UID
+            for (int i = 0; i < _albumsToReturn.Count; ++i)
+            {
+                //if this is the album we are looking for
+                if (_albumsToReturn[i].UID == albumUID)
+                {
+                    //remove it from the observableCollection
+                    _albumsToReturn.RemoveAt(i);
+                }
+            }
 
             return errorReport;
         }

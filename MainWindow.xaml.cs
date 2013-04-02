@@ -553,6 +553,17 @@ namespace SoftwareEng
                 this.WindowState = WindowState.Minimized;
             }
         }
+
+        /********************************************************************
+         * TEST FUNCTION SECTION
+         * Author: Ryan Causey
+         * I am using the following functions to test backend functionality
+         * Destroy these when done testing
+         *******************************************************************/ 
+
+        /*******************************************************************
+         * End Test Functions
+         ******************************************************************/
         
         /**************************************************************************************************
          * end region of thumb bar resize events
