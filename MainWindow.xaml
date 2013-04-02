@@ -8,7 +8,7 @@
     
         xmlns:SoftwareEngControls="clr-namespace:SoftwareEng"
     
-        Title="PhotoBomber" Height="362.256" Width="638.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}">
+        Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}">
     
     <Window.Resources>
 
@@ -391,7 +391,7 @@
 
             </Grid>
         </Border>
-        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" HorizontalAlignment="Center">
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1">
             <DockPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FF979797" Offset="0.641"/>
