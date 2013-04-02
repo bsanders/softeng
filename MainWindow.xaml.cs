@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*********************************************************************************
+ * This is the code-behind file for the main program window
+ * 
+ * Changelog:
+ * 4/1/13 Ryan Causey: Added checks for the DragDeltaHandlers to fix a error case
+ *                     where the width/height value for the window could become
+ *                     negative.
+ */ 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -298,12 +306,24 @@ namespace SoftwareEng
         /**************************************************************************************************
          * start region of thumb bar resize events
         **************************************************************************************************/
+        /*
+         *Created By: Alejandro Sosa
+         *Last Edited By: Ryan Causey
+         *Last Edited Date: 4/1/13
+         *This handles the resizing via dragging from the bottom edge of the window, making sure the window height
+         *does not go below a certain minimum
+         */
         private void bottomThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from bottom
             if (this.Height > this.MinHeight)
             {
-                this.Height += e.VerticalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative height.
+                if ((this.Height + e.VerticalChange) > this.MinHeight)
+                {
+                    this.Height += e.VerticalChange;
+                }
             }
             else
             {
@@ -312,14 +332,26 @@ namespace SoftwareEng
 
         }
 
+        /*
+         *Created By: Alejandro Sosa
+         *Last Edited By: Ryan Causey
+         *Last Edited Date: 4/1/13
+         *This handles the resizing via dragging from the top edge of the window, making sure the window height
+         *does not go below a certain minimum
+         */
         private void topThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
 
             //resize from top
             if (this.Height > this.MinHeight)
             {
-                this.Height -= e.VerticalChange;
-                this.Top += e.VerticalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative height.
+                if ((this.Height - e.VerticalChange) > this.MinHeight)
+                {
+                    this.Height -= e.VerticalChange;
+                    this.Top += e.VerticalChange;
+                }
             }
             else
             {
@@ -328,12 +360,24 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         *Created By: Alejandro Sosa
+         *Last Edited By: Ryan Causey
+         *Last Edited Date: 4/1/13
+         *This handles the resizing via dragging from the right edge of the window, making sure the window width
+         *does not go below a certain minimum
+         */
         private void rightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from right
             if (this.Width > this.MinWidth)
             {
-                this.Width += e.HorizontalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative width.
+                if ((this.Width + e.HorizontalChange) > this.MinWidth)
+                {
+                    this.Width += e.HorizontalChange;
+                }
             }
             else
             {
@@ -341,13 +385,25 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         *Created By: Alejandro Sosa
+         *Last Edited By: Ryan Causey
+         *Last Edited Date: 4/1/13
+         *This handles the resizing via dragging from the left edge of the window, making sure the window width
+         *does not go below a certain minimum
+         */
         private void leftThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from Left
             if (this.Width > this.MinWidth)
             {
-                this.Width -= e.HorizontalChange;
-                this.Left += e.HorizontalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative width.
+                if ((this.Width - e.HorizontalChange) > this.MinWidth)
+                {
+                    this.Width -= e.HorizontalChange;
+                    this.Left += e.HorizontalChange;
+                }
             }
             else
             {
@@ -355,12 +411,24 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         *Created By: Alejandro Sosa
+         *Last Edited By: Ryan Causey
+         *Last Edited Date: 4/1/13
+         *This handles the resizing via dragging from the bottom right corner of the window, making sure the window height
+         *and width do not go below a certain minimum
+         */
         private void bottomRightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from bottom
             if (this.Height > this.MinHeight)
             {
-                this.Height += e.VerticalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative height.
+                if ((this.Height + e.VerticalChange) > this.MinHeight)
+                {
+                    this.Height += e.VerticalChange;
+                }
             }
             else
             {
@@ -370,7 +438,12 @@ namespace SoftwareEng
             //resize from right
             if (this.Width > this.MinWidth)
             {
-                this.Width += e.HorizontalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative width.
+                if ((this.Width + e.HorizontalChange) > this.MinWidth)
+                {
+                    this.Width += e.HorizontalChange;
+                }
             }
             else
             {
@@ -378,13 +451,25 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         *Created By: Alejandro Sosa
+         *Last Edited By: Ryan Causey
+         *Last Edited Date: 4/1/13
+         *This handles the resizing via dragging from the top right corner of the window, making sure the window height
+         *and width do not go below a certain minimum
+         */
         private void topRightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from top
             if (this.Height > this.MinHeight)
             {
-                this.Height -= e.VerticalChange;
-                this.Top += e.VerticalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative height.
+                if ((this.Height - e.VerticalChange) > this.MinHeight)
+                {
+                    this.Height -= e.VerticalChange;
+                    this.Top += e.VerticalChange;
+                }
             }
             else
             {
@@ -394,7 +479,12 @@ namespace SoftwareEng
             //resize from right
             if (this.Width > this.MinWidth)
             {
-                this.Width += e.HorizontalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative width.
+                if ((this.Width + e.HorizontalChange) > this.MinWidth)
+                {
+                    this.Width += e.HorizontalChange;
+                }
             }
             else
             {
@@ -402,12 +492,24 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         *Created By: Alejandro Sosa
+         *Last Edited By: Ryan Causey
+         *Last Edited Date: 4/1/13
+         *This handles the resizing via dragging from the bottom left corner of the window, making sure the window height
+         *and width do not go below a certain minimum
+         */
         private void bottomLeftThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from bottom
             if (this.Height > this.MinHeight)
             {
-                this.Height += e.VerticalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative height.
+                if ((this.Height + e.VerticalChange) > this.MinHeight)
+                {
+                    this.Height += e.VerticalChange;
+                }
             }
             else
             {
@@ -417,8 +519,13 @@ namespace SoftwareEng
             //resize from left
             if (this.Width > this.MinWidth)
             {
-                this.Width -= e.HorizontalChange;
-                this.Left += e.HorizontalChange;
+                //Handles an error case where trying to drag the window too small with a jerking motion would give
+                //a negative width.
+                if ((this.Width - e.HorizontalChange) > this.MinWidth)
+                {
+                    this.Width -= e.HorizontalChange;
+                    this.Left += e.HorizontalChange;
+                }
             }
             else
             {
