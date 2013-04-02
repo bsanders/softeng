@@ -559,8 +559,17 @@ namespace SoftwareEng
          * Author: Ryan Causey
          * I am using the following functions to test backend functionality
          * Destroy these when done testing
-         *******************************************************************/ 
+         *******************************************************************/
+        private void testEvent(object sender, RoutedEventArgs e)
+        {
+            SimpleAlbumData testData = new SimpleAlbumData();
+            testData.albumName = "LOOKITDISNAME";
+            bombaDeFotos.addNewAlbum(new generic_callback(dummyCallback), testData);
+        }
 
+        public void dummyCallback(ErrorReport er)
+        {
+        }
         /*******************************************************************
          * End Test Functions
          ******************************************************************/
