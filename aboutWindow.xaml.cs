@@ -37,14 +37,7 @@ namespace SoftwareEng
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                if (e.ClickCount == 2)
-                {
-                    toggleWindowState();
-                }
-                else
-                {
-                    this.DragMove();
-                }
+                this.DragMove();
             }
         }
 
