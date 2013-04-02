@@ -8,7 +8,7 @@
     
         xmlns:SoftwareEngControls="clr-namespace:SoftwareEng"
     
-        Title="PhotoBomber" Height="362.256" Width="638.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None">
+        Title="PhotoBomber" Height="362.256" Width="638.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}">
     
     <Window.Resources>
 
@@ -391,7 +391,7 @@
 
             </Grid>
         </Border>
-        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Height="27">
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1">
             <DockPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FF979797" Offset="0.641"/>
@@ -400,7 +400,7 @@
                     <GradientStop Color="Black" Offset="1"/>
                 </LinearGradientBrush>
             </DockPanel.Background>
-            <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+            <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="6,6,0,0">
                 <Button.Background>
                     <RadialGradientBrush>
                         <GradientStop Color="#AAFFFFFF" Offset="1" />
@@ -421,7 +421,7 @@
 
 
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,150,0">
-                <Label x:Name="generalPurposeLabel" Content="New Album Name" HorizontalAlignment="Left" Foreground="#FFE8E8E8" FontSize="13" FontWeight="Bold"/>
+                <Label x:Name="generalPurposeLabel" Content="New Album Name" HorizontalAlignment="Left" Foreground="#FFE8E8E8" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5"/>
                 <TextBox x:Name="generalPurposeTextBox" TextWrapping="Wrap" Width="120" Height="20" Text="Test" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" AcceptsReturn="True" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False"/>
                 <Button x:Name="cancelAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="cancelAddToolbarButton_Click" IsCancel="True" >
                     <Image x:Name="cancelAddToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_Cancel_16xLG.png"/>
@@ -430,6 +430,7 @@
                     <Image x:Name="acceptAddToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/checkbox_16xLG.png"/>
                 </Button>
             </StackPanel>
+            <Label Content="PhotoBomber" Height="27" VerticalAlignment="Top" Foreground="#FFE8E8E8" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center"/>
         </DockPanel>
         <Thumb x:Name="topThumb" Background="#001C2327" Height="6" VerticalAlignment="Top" Cursor="SizeNS" Margin="27,0,0,0" DragDelta="topThumb_DragDeltaHandler" Opacity="0"/>
         <Thumb x:Name="bottomThumb" Background="#001C2327" Height="6" VerticalAlignment="Bottom" Cursor="SizeNS" DragDelta="bottomThumb_DragDeltaHandler" Opacity="0"/>

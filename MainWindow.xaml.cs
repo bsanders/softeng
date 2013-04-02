@@ -331,7 +331,7 @@ namespace SoftwareEng
         private void rightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from right
-            if (this.Width > this.MinWidth)
+            if (this.Width > this.MinWidth )
             {
                 this.Width += e.HorizontalChange;
             }
@@ -347,7 +347,7 @@ namespace SoftwareEng
             if (this.Width > this.MinWidth)
             {
                 this.Width -= e.HorizontalChange;
-                this.Left += e.HorizontalChange;
+                //this.Left += e.HorizontalChange;
             }
             else
             {
@@ -384,7 +384,7 @@ namespace SoftwareEng
             if (this.Height > this.MinHeight)
             {
                 this.Height -= e.VerticalChange;
-                this.Top += e.VerticalChange;
+                //this.Top += e.VerticalChange;
             }
             else
             {

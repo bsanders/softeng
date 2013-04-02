@@ -65,12 +65,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="aboutWindow.xaml.cs">
+      <DependentUpon>aboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="customRadialPanel.cs" />
     <Compile Include="LightResize.cs" />
     <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="XmlParser.cs" />
+    <Page Include="aboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
