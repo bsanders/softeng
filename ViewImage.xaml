@@ -6,10 +6,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="d" 
         Title="ViewImage" Height="319"
-        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="ThreeDBorderWindow" ShowInTaskbar="False" SizeToContent="WidthAndHeight" Background="#FF404040">
+        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" SizeToContent="WidthAndHeight" Background="#FF404040" FontFamily="monofur" AllowsTransparency="True">
     
     
     <Grid>
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" Height="27">
+            <DockPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF979797" Offset="0.641"/>
+                    <GradientStop Color="#FF979797" Offset="0.249"/>
+                    <GradientStop Color="#FF343434"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </DockPanel.Background>
+            <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitButtonClick" ToolTip="Close">
+                <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Close_16xLG.png"/>
+            </Button>
+            <Label Content="&lt;Image Name&gt;" Height="27" VerticalAlignment="Top" Padding="5" VerticalContentAlignment="Center" Margin="0" Foreground="#FFE2E2E2" FontWeight="Bold" TextOptions.TextFormattingMode="Display"/>
+            <Button x:Name="maximizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="maximizeToolbarButton_Click" ToolTip="Maximize" >
+                <Image x:Name="maximizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/application_16xLG.png"/>
+            </Button>
+            <Button x:Name="minimizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="minimizeButton_Click" ToolTip="Minimize" >
+                <Image x:Name="minimizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Symbols_Blocked_16xLG.png"/>
+            </Button>
+        </DockPanel>
         <Popup x:Name="imageWindowContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade">
             <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
                 <Button x:Name="addMenuItemButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -45,7 +65,7 @@
                     <GradientStop Color="#C7A7A7A7" Offset="0.372" />
                 </LinearGradientBrush>
             </DockPanel.Background>
-            <Button x:Name="slideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1">
+            <Button x:Name="slideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Play slideshow">
                 <Image x:Name="slideShowDockButtonImage" Source="ImagesResources2012/Actions_5847.png" Width="32" Height="32"/>
                 <Button.Background>
                     <RadialGradientBrush>
@@ -56,7 +76,7 @@
                     </RadialGradientBrush>
                 </Button.Background>
             </Button>
-            <Button x:Name="prevDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1">
+            <Button x:Name="prevDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Previous">
                 <Image x:Name="prevDockButtonImage" Source="ImagesResources2012/Symbols_Prev_32xLG.png" Width="32" Height="32"/>
                 <Button.Background>
                     <RadialGradientBrush>
@@ -67,7 +87,7 @@
                     </RadialGradientBrush>
                 </Button.Background>
             </Button>
-            <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1">
+            <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Next">
                 <Image x:Name="nextDockButtonImage" Source="ImagesResources2012/Symbols_Next_32xLG.png" Width="32" Height="32"/>
                 <Button.Background>
                     <RadialGradientBrush>
@@ -89,28 +109,10 @@
                     </RadialGradientBrush>
                 </Button.Background>
             </Button>
-            <StackPanel Name="stackPanel1" Width="107">
-                <Label Content="Slideshow Speed" Height="20" Name="slideShowSpeedLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" Foreground="Black" >
-                    <Label.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FF4D4D4D" Offset="0.055"/>
-                            <GradientStop Color="#B2A6A6A6" Offset="0.405"/>
-                        </LinearGradientBrush>
-                    </Label.Background>
-                </Label>
+            <StackPanel Name="stackPanel1" Width="107" ToolTip="Seconds between slides">
+                <Label Content="Slideshow Speed" Height="20" Name="slideShowSpeedLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" Foreground="Black" />
                 <Slider Height="23" Name="slider1" Width="100" />
             </StackPanel>
-            <Button x:Name="closeDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" DockPanel.Dock="Right">
-                <Image x:Name="closeDockButtonImage" Source="ImagesResources2012/Symbols_Critical_32xLG.png" Width="32" Height="32"/>
-                <Button.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="#BD767676" Offset="0.698" />
-                        <GradientStop Color="#00C4C4C4" Offset="1" />
-                        <GradientStop Color="#AAFFFFFF" Offset="0.39" />
-                        <GradientStop Color="#B5000000" Offset="0.855" />
-                    </RadialGradientBrush>
-                </Button.Background>
-            </Button>
         </DockPanel>
     </Grid>
 </Window>

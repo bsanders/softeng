@@ -226,9 +226,9 @@ namespace SoftwareEng
         {
             showAddAlbumBox();
             
-            //SoftwareEng.ViewImage imageViewer = new ViewImage();
+            SoftwareEng.ViewImage imageViewer = new ViewImage();
 
-            //imageViewer.Show();
+            imageViewer.Show();
 
             
         }

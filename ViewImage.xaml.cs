@@ -22,5 +22,55 @@ namespace SoftwareEng
         {
             InitializeComponent();
         }
+
+        private void exitButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void DockPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                if (e.ClickCount == 2)
+                {
+                    toggleWindowState();
+                }
+                else
+                {
+                    this.DragMove();
+                }
+            }
+        }
+
+        private void maximizeToolbarButton_Click(object sender, RoutedEventArgs e)
+        {
+            toggleWindowState();
+        }
+
+        private void minimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                this.WindowState = WindowState.Minimized;
+            }
+        }
+
+        private void toggleWindowState()
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+            }
+        }
+
     }
 }
