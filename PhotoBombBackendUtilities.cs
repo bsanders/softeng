@@ -764,11 +764,10 @@ namespace SoftwareEng
                 return "";
             }
 
-            //make the full picture path.
+            // Create the full path where the picture will go
             String newPath = System.IO.Path.Combine(libraryPath, picNameInLibrary);
 
-            util_generateThumbnail(errorReport, srcPicFullFilepath, picNameInLibrary, 120);
-
+            // Wrapped in a try primarily in case of IO errors
             try
             {
                 //copy the photo to the library.
@@ -780,6 +779,11 @@ namespace SoftwareEng
                 errorReport.description = "Unable to make a copy of the photo in the library.";
                 return "";
             }
+
+            // Pre-generate thumbnails...
+            util_generateThumbnail(errorReport, newPath, picNameInLibrary, Settings.smThumbSize);
+            util_generateThumbnail(errorReport, newPath, picNameInLibrary, Settings.medThumbSize);
+            util_generateThumbnail(errorReport, newPath, picNameInLibrary, Settings.lrgThumbSize);
 
             //new library path
             return newPath;
@@ -894,12 +898,40 @@ namespace SoftwareEng
             return true;
         }
 
-        private ErrorReport util_generateThumbnail(ErrorReport error, string srcPath, string picName, int height)
+        //---------------------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 4/3/13
+        /// <summary>
+        /// Generates a thumbnail for a specified image file and places it in an appropriate sub directory
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="srcPath"></param>
+        /// <param name="picName"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        private ErrorReport util_generateThumbnail(ErrorReport error, string srcPath, string picName, int size)
         {
             // I haven't thought much about whether or not this is the right place to put this
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
-            // specifies a maximum height resolution constraint 
-            resizeJob.Height = height;
+            string thumbSubDir = "";
+
+            // Which sub directory of thumbs_db to put this in...
+            if (size == Settings.smThumbSize)
+            {
+                thumbSubDir = Settings.smThumbDir;
+            }
+            else if (size == Settings.medThumbSize)
+            {
+                thumbSubDir = Settings.medThumbDir;
+            }
+            else if (size == Settings.lrgThumbSize)
+            {
+                thumbSubDir = Settings.lrgThumbDir;
+            }
+
+            // Specifies a maximum height resolution constraint to scale the image down to
+            resizeJob.Height = size;
+
             // Actually processes the image, copying it to the new location, should go in a try/catch for IO
             // One of Build's overloads allows you to use file streams instead of filepaths.
             // If images have to be resized on-the-fly instead of stored, that may work as well.
@@ -908,6 +940,7 @@ namespace SoftwareEng
                 System.IO.Path.Combine(
                     libraryPath,
                     Settings.PhotoLibraryThumbsDir,
+                    thumbSubDir,
                     picName),
                 Imazen.LightResize.JobOptions.CreateParentDirectory
             );

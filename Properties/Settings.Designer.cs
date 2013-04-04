@@ -12,7 +12,7 @@ namespace SoftwareEng.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "10.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -116,6 +116,78 @@ namespace SoftwareEng.Properties {
             }
             set {
                 this["OrgName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
+        public int smThumbSize {
+            get {
+                return ((int)(this["smThumbSize"]));
+            }
+            set {
+                this["smThumbSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("240")]
+        public int medThumbSize {
+            get {
+                return ((int)(this["medThumbSize"]));
+            }
+            set {
+                this["medThumbSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("480")]
+        public int lrgThumbSize {
+            get {
+                return ((int)(this["lrgThumbSize"]));
+            }
+            set {
+                this["lrgThumbSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("sm")]
+        public string smThumbDir {
+            get {
+                return ((string)(this["smThumbDir"]));
+            }
+            set {
+                this["smThumbDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("med")]
+        public string medThumbDir {
+            get {
+                return ((string)(this["medThumbDir"]));
+            }
+            set {
+                this["medThumbDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("lrg")]
+        public string lrgThumbDir {
+            get {
+                return ((string)(this["lrgThumbDir"]));
+            }
+            set {
+                this["lrgThumbDir"] = value;
             }
         }
     }
