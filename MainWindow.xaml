@@ -248,7 +248,7 @@
     <Grid>
         <Border x:Name="mainWindowFrame" Padding="6" Background="#001C2327">
             <Grid>
-                <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture">
+                <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonDown">
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
                         <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemLibraryButton_Click">
                             <Image x:Name="addButtonLibraryImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
