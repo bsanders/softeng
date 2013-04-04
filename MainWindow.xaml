@@ -284,7 +284,7 @@
                         <Button x:Name="copyMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <Image x:Name="copyButtonLibraryImage" Source="ImagesResources2012/WorkItem_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="deleteMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button x:Name="deleteMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemLibraryButton_Click">
                             <Image x:Name="deleteButtonLibraryImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
