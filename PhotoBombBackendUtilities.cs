@@ -737,14 +737,19 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
-        //copies a picture into our picture library.
-        //DOES NOT CHECK picturePath or picName, please do before hand.
-        private String util_copyPicToLibrary(ErrorReport errorReport, String picturePath, String picNameInLibrary)
+        //Edited Last: Bill Sanders, added comments (4/3/13)
+        /// <summary>
+        /// Copies a picture from a source to the library on the filesystem.
+        /// </summary>
+        /// <param name="errorReport"></param>
+        /// <param name="srcPicFullFilepath"></param>
+        /// <param name="picNameInLibrary"></param>
+        /// <returns></returns>
+        private String util_copyPicToLibrary(ErrorReport errorReport, String srcPicFullFilepath, String picNameInLibrary)
         {
             //check if file exists first!!!
             //if the picture does NOT exist.
-            if (!File.Exists(picturePath))
+            if (!File.Exists(srcPicFullFilepath))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Can't find the new picture to import to the library.";
@@ -762,26 +767,12 @@ namespace SoftwareEng
             //make the full picture path.
             String newPath = System.IO.Path.Combine(libraryPath, picNameInLibrary);
 
-            // I haven't thought much about whether or not this is the right place to put this
-            Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
-            // specifies a maximum height resolution constraint 
-            resizeJob.Height = 120;
-            // Actually processes the image, copying it to the new location, should go in a try/catch for IO
-            // One of Build's overloads allows you to use file streams instead of filepaths.
-            // If images have to be resized on-the-fly instead of stored, that may work as well.
-            resizeJob.Build(
-                picturePath,
-                System.IO.Path.Combine(
-                    libraryPath,
-                    Properties.Settings.Default.PhotoLibraryThumbsDir,
-                    picNameInLibrary),
-                Imazen.LightResize.JobOptions.CreateParentDirectory
-            );
+            util_generateThumbnail(errorReport, srcPicFullFilepath, picNameInLibrary, 120);
 
             try
             {
                 //copy the photo to the library.
-                System.IO.File.Copy(picturePath, newPath, true);
+                System.IO.File.Copy(srcPicFullFilepath, newPath, true);
             }
             catch
             {
@@ -901,6 +892,28 @@ namespace SoftwareEng
             //put more checks here.
 
             return true;
+        }
+
+        private ErrorReport util_generateThumbnail(ErrorReport error, string srcPath, string picName, int height)
+        {
+            // I haven't thought much about whether or not this is the right place to put this
+            Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
+            // specifies a maximum height resolution constraint 
+            resizeJob.Height = height;
+            // Actually processes the image, copying it to the new location, should go in a try/catch for IO
+            // One of Build's overloads allows you to use file streams instead of filepaths.
+            // If images have to be resized on-the-fly instead of stored, that may work as well.
+            resizeJob.Build(
+                srcPath,
+                System.IO.Path.Combine(
+                    libraryPath,
+                    Properties.Settings.Default.PhotoLibraryThumbsDir,
+                    picName),
+                Imazen.LightResize.JobOptions.CreateParentDirectory
+            );
+
+
+            return error;
         }
     }//class
 }
