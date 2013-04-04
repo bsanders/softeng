@@ -11,6 +11,8 @@
  * 4/1/13 Ryan Causey: changing the remove/add album backend functions to manipulate
  *                     the observableCollection of albums as this is one-way data bound
  *                     and will automatically update the GUI.
+ * 4/4/13 Ryan Causey: changed the existing rebuild database function and added supporting functions to
+ *                     take all the existing photos and consolidate them into a single backup album.
  **/
 using System;
 using System.Collections.Generic;
@@ -91,13 +93,18 @@ namespace SoftwareEng
 
         //-----------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
-        // I understand what this function does, but not entirely when/why it does it
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/4/13
+        /// <summary>
+        /// This function blows out the existing database(normally due to it being corrupted)
+        /// and creates a new one, consolidating all the photos into a Recovery Album.
+        /// </summary>
+        /// <param name="guiCallback">GUI supplied callback</param>
         private void rebuildBackendOnFilesystem_backend(generic_callback guiCallback)
         {
             ErrorReport errorReport = new ErrorReport();
 
-            //if the library folder existed, rename it.
+            /*/if the library folder existed, rename it.
             if (Directory.Exists(libraryPath))
             {
                 //if a backup already exists, throw error.
@@ -112,9 +119,9 @@ namespace SoftwareEng
                     guiCallback(errorReport);
                     return;
                 }
-            }//if
+            }//if*/
 
-            //now make a new library folder
+            /*/now make a new library folder
             try
             {
                 Directory.CreateDirectory(libraryPath);
@@ -125,7 +132,7 @@ namespace SoftwareEng
                 errorReport.description = "Unable to create the new library folder.";
                 guiCallback(errorReport);
                 return;
-            }
+            }*/
 
             //make the new database xml files
             XDocument initDB = new XDocument();
@@ -158,7 +165,159 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
 
+            //build the backup album
+            buildBackupAlbum(errorReport);
+
+            //add all the photos to that album
+            addPhotoBackup(errorReport, _albumsCollection.First().UID);
+
             guiCallback(errorReport);
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/4/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// will clear the existing album collection and create a new Recovery Album
+        /// and add it to the previously cleared collection.
+        /// </summary>
+        /// <param name="errorReport">ErrorReport object to be updated</param>
+        /// <returns>ErrorReport</returns>
+        private ErrorReport buildBackupAlbum(ErrorReport errorReport)
+        {
+            //empty the existing album collection
+            _albumsCollection.Clear();
+
+            //create the backup album
+            SimpleAlbumData backupAlbum = new SimpleAlbumData();
+
+            //set the name
+            backupAlbum.albumName = "Recovery Album";
+
+            //get a new uid for the new album.
+            backupAlbum.UID = util_getNextUID(_albumsDatabase, "album", 1);
+
+            //add the album to the memory database.
+            util_addAlbumToAlbumDB(errorReport, backupAlbum);
+
+            //if adding to the album database failed
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                return errorReport;
+            }
+
+            //save to disk.
+            saveAlbumsXML_backend(null);
+
+            //need to update the _albumsCollection observableCollection to reflect this addition in the GUI
+            _albumsCollection.Add(backupAlbum); //adds to end of collection
+
+            return errorReport;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/4/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Adds all the photos from the library into the *hopefully* already created
+        /// Recovery Album.
+        /// </summary>
+        /// <param name="errorReport">ErrorReport object to be updated</param>
+        /// <param name="albumUID">UID of the Recovery Album</param>
+        /// <returns>ErrorReport</returns>
+        private ErrorReport addPhotoBackup(ErrorReport errorReport, int albumUID)
+        {
+            //set up a directory info object from the path
+            DirectoryInfo libraryDir = new DirectoryInfo(libraryPath);
+
+            //set up an array of files
+            FileInfo[] files = libraryDir.GetFiles();
+
+            foreach (FileInfo fi in files)
+            {
+                ComplexPhotoData newPicture = new ComplexPhotoData();
+
+                // Compute the hash for this picture, and then check to make sure it is unique
+                newPicture.hash = util_getHashOfFile(fi.FullName);
+                if (!util_checkPhotoIsUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
+                {
+                    errorReport.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    errorReport.description = "Picture is not unique.";
+                    errorReport.warnings.Add("Picture is not unique: " + fi.FullName);
+                    return errorReport;
+                }
+
+                //probably should check that the file extension is supported...
+                newPicture.extension = fi.Extension;
+
+                //get a unique ID for this photo and update its 
+                //data object to reflect this new UID.
+                newPicture.UID = util_getNextUID(_picturesDatabase, "picture", 1);
+                // error checking the call
+                if (!util_checkUIDIsValid(newPicture.UID))
+                {
+                    errorReport.reportID = ErrorReport.FAILURE;
+                    errorReport.description = "Failed to get a UID for a new picture.";
+                    return errorReport;
+                }
+
+                String pictureNameInAlbum = Settings.DefaultImageName + " " + newPicture.UID.ToString();
+
+                //Change me if you want to start naming the pictures differently in the library.
+                String picNameInLibrary = newPicture.UID.ToString() + fi.Extension;
+
+                //probably should check that the file extension is supported...
+                newPicture.extension = fi.Extension;
+
+                //rename the file
+                fi.MoveTo(Path.Combine(libraryPath, picNameInLibrary));
+
+                newPicture.path = fi.FullName;
+
+                // Get the refcount (will get zero if the pic is brand new) and increment it.
+                newPicture.refCount = util_getPicRefCount(ByteArrayToString(newPicture.hash));
+                newPicture.refCount++;
+                // if this is a new picture, we add it to the db
+                if (newPicture.refCount == 1)
+                {
+                    util_addPicToPhotoDB(errorReport, newPicture);
+                }
+                else
+                {
+                    // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
+                    XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(newPicture.hash));
+                    thisPic.Attribute("refCount").Value = newPicture.refCount.ToString();
+                }
+
+                //if adding to the picture database failed
+                if (errorReport.reportID == ErrorReport.FAILURE)
+                {
+                    return errorReport;
+                }
+
+                util_addPicToAlbumDB(errorReport, newPicture, albumUID, pictureNameInAlbum);
+
+                //if adding to the album database failed
+                if (errorReport.reportID == ErrorReport.FAILURE)
+                {
+                    return errorReport;
+                }
+
+                //save to disk.
+                savePicturesXML_backend(null);
+                saveAlbumsXML_backend(null); 
+               
+                //when we have the photos collection implemented need to update it here and
+                //if necessary blow it out up above.
+            }
+
+            return errorReport;
         }
 
         //BS: Commenting this function out: its never used 03/23/13
