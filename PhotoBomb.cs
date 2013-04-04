@@ -32,6 +32,8 @@ namespace SoftwareEng
     //it is the public part of the PhotoBomb class.
     public partial class PhotoBomb
     {
+        // A handy shortcut to the settings class...
+        Properties.Settings Settings = Properties.Settings.Default;
         //----------------------------------------------
 
         //By: Ryan Moe
@@ -369,54 +371,53 @@ namespace SoftwareEng
     //-----------------------------------
     //Simple photo data returned by functions like getAllPhotosInAlbum().
     //By: Ryan Moe
-    //Edited Last By: Ryan Causey
-    //Edited Date: 4/1/13
+    //Edited Last By: Bill Sanders (4/4/13), dropped member variables entirely, renamed UID -> idInAlbum
+    //Edited Last By: Ryan Causey (4/1/13)
     public class SimplePhotoData : INotifyPropertyChanged
     {
-        public String picturesNameInAlbumValue;
-        public int UIDValue;
         //event for changing a property
+        private string _Name;
+        private int _idInAlbum;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public String picturesNameInAlbum
+        public String Name
         {
-            set
-            {
-                if (value != picturesNameInAlbumValue)
-                {
-                    picturesNameInAlbumValue = value;
-                    //call on property changed to update the GUI(hopefully)
-                    OnPropertyChanged("picturesNameInAlbum");
-                }
-            }
             get
             {
-                return picturesNameInAlbumValue;
+                return _Name;
+            }
+            set
+            {
+                if (value != _Name)
+                {
+                    _Name = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("Name");
+                }
             }
         }
 
-        public int UID
+        public int idInAlbum
         {
-            set
-            {
-                if (value != UIDValue)
-                {
-                    UIDValue = value;
-                    //call on property changed to update the GUI(hopefully)
-                    OnPropertyChanged("UID");
-                }
-            }
             get
             {
-                return UIDValue;
+                return _idInAlbum;
+            }
+            set
+            {
+                if (value != _idInAlbum)
+                {
+                    _idInAlbum = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("idInAlbum");
+                }
             }
         }
 
         public SimplePhotoData()
         {
-            picturesNameInAlbumValue = "";
-            UIDValue = -1;
-            //path = "";
+            idInAlbum = -1;
+            Name = "";
         }
 
         /*
@@ -443,129 +444,151 @@ namespace SoftwareEng
     public class ComplexPhotoData : INotifyPropertyChanged
     {
         //the name of the picture in the album, displayed by the gui
-        public int UIDValue;
-        public byte[] hashValue;
-        public String pathValue;
-        public String extensionValue;
-        public String captionValue;
-        public int refCountValue;
-
+        
+        private int _UID;
+        private int _idInAlbum;
+        private byte[] _hash;
+        private String _path;
+        private String _extension;
+        private String _caption;
+        private int _refCount;
+        
         //event for changing a property
         public event PropertyChangedEventHandler PropertyChanged;
         //... add more stuff here when we have more metadata
 
+        //
+        // Public properties of this class.
+        //
+
+
+
         public int UID
         {
+            get
+            {
+                return _UID;
+            }
             set
             {
-                if (value != UIDValue)
+                if (value != _UID)
                 {
-                    UIDValue = value;
+                    _UID = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("UID");
                 }
             }
+        }
+
+        public int idInAlbum
+        {
             get
             {
-                return UIDValue;
+                return _idInAlbum;
+            }
+            set
+            {
+                if (value != _idInAlbum)
+                {
+                    _idInAlbum = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("idInAlbum");
+                }
             }
         }
 
         public byte[] hash
         {
+            get
+            {
+                return _hash;
+            }
             set
             {
-                if (value != hashValue)
+                if (value != _hash)
                 {
-                    hashValue = value;
+                    _hash = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("hash");
                 }
-            }
-            get
-            {
-                return hashValue;
             }
         }
 
         public String path
         {
+            get
+            {
+                return _path;
+            }
             set
             {
-                if (value != pathValue)
+                if (value != _path)
                 {
-                    pathValue = value;
+                    _path = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("path");
                 }
-            }
-
-            get
-            {
-                return pathValue;
             }
         }
 
         public String extension
         {
+            get
+            {
+                return _extension;
+            }
             set
             {
-                if (value != extensionValue)
+                if (value != _extension)
                 {
-                    extensionValue = value;
+                    _extension = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("extension");
                 }
-            }
-
-            get
-            {
-                return extensionValue;
             }
         }
 
         public string caption
         {
+            get
+            {
+                return _caption;
+            }
             set
             {
-                if (value != captionValue)
+                if (value != _caption)
                 {
-                    captionValue = value;
+                    _caption = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("caption");
                 }
-            }
-
-            get
-            {
-                return captionValue;
             }
         }
 
         public int refCount
         {
-            set
-            {
-                if (value != refCountValue)
-                {
-                    refCountValue = value;
-                }
-            }
-
             get
             {
-                return refCountValue;
+                return _refCount;
+            }
+            set
+            {
+                if (value != _refCount)
+                {
+                    _refCount = value;
+                }
             }
         }
 
         public ComplexPhotoData()
         {
-            UIDValue = -1;
-            hashValue = null;
-            pathValue = "";
-            extensionValue = "";
-            captionValue = "";
-            refCountValue = 0;
+            UID = -1;
+            idInAlbum = -1;
+            hash = null;
+            path = "";
+            extension = "";
+            caption = "";
+            refCount = 0;
         }
 
         /*

@@ -11,6 +11,8 @@
  * 4/1/13 Ryan Causey: changing the remove/add album backend functions to manipulate
  *                     the observableCollection of albums as this is one-way data bound
  *                     and will automatically update the GUI.
+ * 4/4/13 Ryan Causey: changed the existing rebuild database function and added supporting functions to
+ *                     take all the existing photos and consolidate them into a single backup album.
  **/
 using System;
 using System.Collections.Generic;
@@ -91,19 +93,24 @@ namespace SoftwareEng
 
         //-----------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
-        // I understand what this function does, but not entirely when/why it does it
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/4/13
+        /// <summary>
+        /// This function blows out the existing database(normally due to it being corrupted)
+        /// and creates a new one, consolidating all the photos into a Recovery Album.
+        /// </summary>
+        /// <param name="guiCallback">GUI supplied callback</param>
         private void rebuildBackendOnFilesystem_backend(generic_callback guiCallback)
         {
             ErrorReport errorReport = new ErrorReport();
 
-            //if the library folder existed, rename it.
+            /*/if the library folder existed, rename it.
             if (Directory.Exists(libraryPath))
             {
                 //if a backup already exists, throw error.
                 try
                 {
-                    Directory.Move(libraryPath, (libraryPath + Properties.Settings.Default.PhotoLibraryBackupName));
+                    Directory.Move(libraryPath, (libraryPath + Settings.PhotoLibraryBackupName));
                 }
                 catch
                 {
@@ -112,9 +119,9 @@ namespace SoftwareEng
                     guiCallback(errorReport);
                     return;
                 }
-            }//if
+            }//if*/
 
-            //now make a new library folder
+            /*/now make a new library folder
             try
             {
                 Directory.CreateDirectory(libraryPath);
@@ -125,11 +132,11 @@ namespace SoftwareEng
                 errorReport.description = "Unable to create the new library folder.";
                 guiCallback(errorReport);
                 return;
-            }
+            }*/
 
             //make the new database xml files
             XDocument initDB = new XDocument();
-            XElement root = new XElement(Properties.Settings.Default.XMLRootElement);
+            XElement root = new XElement(Settings.XMLRootElement);
             initDB.Add(root);
             try
             {
@@ -158,7 +165,155 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
 
+            //build the backup album
+            buildBackupAlbum(errorReport);
+
+            //add all the photos to that album
+            addPhotoBackup(errorReport, _albumsCollection.First().UID);
+
             guiCallback(errorReport);
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/4/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// will clear the existing album collection and create a new Recovery Album
+        /// and add it to the previously cleared collection.
+        /// </summary>
+        /// <param name="errorReport">ErrorReport object to be updated</param>
+        /// <returns>ErrorReport</returns>
+        private ErrorReport buildBackupAlbum(ErrorReport errorReport)
+        {
+            //empty the existing album collection
+            _albumsCollection.Clear();
+
+            //create the backup album
+            SimpleAlbumData backupAlbum = new SimpleAlbumData();
+
+            //set the name
+            backupAlbum.albumName = Settings.PhotoLibraryBackupName;
+
+            //get a new uid for the new album.
+            backupAlbum.UID = util_getNextUID(_albumsDatabase, "album", 1);
+
+            //add the album to the memory database.
+            util_addAlbumToAlbumDB(errorReport, backupAlbum);
+
+            //if adding to the album database failed
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                return errorReport;
+            }
+
+            //save to disk.
+            saveAlbumsXML_backend(null);
+
+            //need to update the _albumsCollection observableCollection to reflect this addition in the GUI
+            _albumsCollection.Add(backupAlbum); //adds to end of collection
+
+            return errorReport;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/4/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Adds all the photos from the library into the *hopefully* already created
+        /// Recovery Album.
+        /// </summary>
+        /// <param name="errorReport">ErrorReport object to be updated</param>
+        /// <param name="albumUID">UID of the Recovery Album</param>
+        /// <returns>ErrorReport</returns>
+        private ErrorReport addPhotoBackup(ErrorReport errorReport, int albumUID)
+        {
+            //set up a directory info object from the path
+            DirectoryInfo libraryDir = new DirectoryInfo(libraryPath);
+
+            //set up an array of files
+            foreach (FileInfo fi in libraryDir.GetFiles())
+            {
+                ComplexPhotoData newPicture = new ComplexPhotoData();
+
+                // Compute the hash for this picture, and then check to make sure it is unique
+                newPicture.hash = util_getHashOfFile(fi.FullName);
+                if (!util_checkPhotoIsUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
+                {
+                    errorReport.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    errorReport.description = "Picture is not unique.";
+                    errorReport.warnings.Add("Picture is not unique: " + fi.FullName);
+                    return errorReport;
+                }
+
+                //probably should check that the file extension is supported...
+                newPicture.extension = fi.Extension;
+
+                //get a unique ID for this photo and update its 
+                //data object to reflect this new UID.
+                newPicture.UID = util_getNextUID(_picturesDatabase, "picture", 1);
+                // error checking the call
+                if (!util_checkIDIsValid(newPicture.UID))
+                {
+                    errorReport.reportID = ErrorReport.FAILURE;
+                    errorReport.description = "Failed to get a UID for a new picture.";
+                    return errorReport;
+                }
+
+                //Change me if you want to start naming the pictures differently in the library.
+                String picNameInLibrary = newPicture.UID.ToString() + fi.Extension;
+
+                //probably should check that the file extension is supported...
+                newPicture.extension = fi.Extension;
+
+                //rename the file
+                fi.MoveTo(Path.Combine(libraryPath, picNameInLibrary));
+
+                newPicture.path = fi.FullName;
+
+                // Get the refcount (will get zero if the pic is brand new) and increment it.
+                newPicture.refCount = util_getPicRefCount(ByteArrayToString(newPicture.hash));
+                newPicture.refCount++;
+                // if this is a new picture, we add it to the db
+                if (newPicture.refCount == 1)
+                {
+                    util_addPicToPhotoDB(errorReport, newPicture);
+                }
+                else
+                {
+                    // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
+                    XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(newPicture.hash));
+                    thisPic.Attribute("refCount").Value = newPicture.refCount.ToString();
+                }
+
+                //if adding to the picture database failed
+                if (errorReport.reportID == ErrorReport.FAILURE)
+                {
+                    return errorReport;
+                }
+
+                util_addPicToAlbumDB(errorReport, newPicture, albumUID);
+
+                //if adding to the album database failed
+                if (errorReport.reportID == ErrorReport.FAILURE)
+                {
+                    return errorReport;
+                }
+
+                //save to disk.
+                savePicturesXML_backend(null);
+                saveAlbumsXML_backend(null); 
+               
+                //when we have the photos collection implemented need to update it here and
+                //if necessary blow it out up above.
+            }
+
+            return errorReport;
         }
 
         //BS: Commenting this function out: its never used 03/23/13
@@ -396,6 +551,7 @@ namespace SoftwareEng
         //-----------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last: Bill Sanders, 3/27/13
+        // NOTE: this function is no longer sufficient (SimplePhotoData doesn't have the file path to display thumbnails, for example...)
         private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback, int AlbumUID)
         {
             ErrorReport error = new ErrorReport();
@@ -408,8 +564,7 @@ namespace SoftwareEng
             }
 
             //Try searching for the album with the uid specified.
-            XElement specificAlbum;
-            specificAlbum = util_getAlbum(error, AlbumUID);
+            XElement specificAlbum = util_getAlbum(error, AlbumUID);
             // Commenting out the below in favor of a util class. - BillSanders
             //try
             //{
@@ -436,8 +591,8 @@ namespace SoftwareEng
                 SimplePhotoData pic = new SimplePhotoData();
                 try
                 {
-                    pic.UID = (int)subElement.Attribute("uid");
-                    pic.picturesNameInAlbum = (string)subElement.Element("name").Value;
+                    pic.idInAlbum = (int)subElement.Attribute("idInAlbum");
+                    pic.Name = (string)subElement.Element("name").Value;
                     _list.Add(pic);
                 }
                 catch
@@ -454,22 +609,23 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last:
-        private void getPhoto_backend(getPhotoByUID_callback guiCallback, int photoUID, int albumUID)
+        private void getPhoto_backend(getPhotoByUID_callback guiCallback, int idInAlbum, int albumUID)
         {
             ErrorReport error = new ErrorReport();
 
-            // beware: this function assumes uid in album.xml == uid in photo.xml
-            // change to lookup by hash?
-            //get the picture from the picture database.
+            // To get a photo from the photoDB knowing only an albumID and its ID in that album
+            // We have to first retrieve the album...
             XElement albumNode = util_getAlbum(error, albumUID);
-            XElement albumPicElement = util_getAlbumDBPhotoNode(error, albumNode, photoUID);
+            // ... then with that, we can get the picture element from that album...
+            XElement albumPicElement = util_getAlbumDBPhotoNode(error, albumNode, idInAlbum);
+            // ... which we use to get the hash of the photo to do a lookup in the PhotoDB!
             XElement picElement = util_getPhotoDBNode(error, (string)albumPicElement.Attribute("sha1").Value);
-            
+
             //if the picture finding function reported success.
             if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
                 ComplexPhotoData photo = new ComplexPhotoData();
-                //ComplexPhotoData MOE MARKER MOE MARKER MOE MARKER MOE MARKER!!!!!!
+                
                 try
                 {
                     photo.hash = StringToByteArray((string)picElement.Attribute("sha1"));
@@ -593,7 +749,6 @@ namespace SoftwareEng
             String photoUserPath, 
             String photoExtension, 
             int albumUID, 
-            String pictureNameInAlbum, 
             int searchStartingPoint = 1)
         {
             ComplexPhotoData newPicture = new ComplexPhotoData();
@@ -612,7 +767,7 @@ namespace SoftwareEng
             //data object to reflect this new UID.
             newPicture.UID = util_getNextUID(_picturesDatabase, "picture", searchStartingPoint);
             // error checking the call
-            if (!util_checkUIDIsValid(newPicture.UID))
+            if (!util_checkIDIsValid(newPicture.UID))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Failed to get a UID for a new picture.";
@@ -621,12 +776,6 @@ namespace SoftwareEng
 
             //Change me if you want to start naming the pictures differently in the library.
             String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
-
-            //Change me if you want the default album name to be different.
-            if (pictureNameInAlbum == "")
-            {
-                pictureNameInAlbum = Properties.Settings.Default.DefaultImageName + " " + newPicture.UID.ToString();
-            }
 
             //Move picture and get a new path for the picture in our storage.
             newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
@@ -659,7 +808,7 @@ namespace SoftwareEng
                 return errorReport;
             }
 
-            util_addPicToAlbumDB(errorReport, newPicture, albumUID, pictureNameInAlbum);
+            util_addPicToAlbumDB(errorReport, newPicture, albumUID);
 
             //if adding to the album database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -681,15 +830,15 @@ namespace SoftwareEng
         /// Removes the specified photo from the specified album
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="PhotoID">The photo's ID</param>
+        /// <param name="idInAlbum">The photo's ID</param>
         /// <param name="albumUID">The album's UID</param>
-        private ErrorReport removePictureFromAlbum_backend(generic_callback guiCallback, int PhotoID, int albumUID)
+        private ErrorReport removePictureFromAlbum_backend(generic_callback guiCallback, int idInAlbum, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
             
             // these two lines are kind of redundant, at the moment
             // First get the instance of the photo (from the album DB!)
-            XElement thisPicture = util_getAlbumDBPhotoNode(albumUID, PhotoID);
+            XElement thisPicture = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
 
             // Now delete that node
             errorReport = removePictureElement_backend(null, thisPicture);
@@ -797,7 +946,7 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 4/1/13
+        //Edited Last: 4/3/13
         //Edited Last By: Ryan Causey
         /// <summary>
         /// Removes the specified album
@@ -832,17 +981,26 @@ namespace SoftwareEng
             // now sync to the disk
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
+            
+            // Searches through the albumsCollection and finds the first album with a matching UID
+            var albumToRemove = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
+            // ... and then deletes it.
+            _albumsCollection.Remove(albumToRemove);
+            // _albumsCollection is an ObservableCollection and should be updated automatically
 
-            //need to update _albumsCollection observable collection by removing the album with this UID
-            for (int i = 0; i < _albumsCollection.Count; ++i)
-            {
-                //if this is the album we are looking for
-                if (_albumsCollection[i].UID == albumUID)
-                {
-                    //remove it from the observableCollection
-                    _albumsCollection.RemoveAt(i);
-                }
-            }
+            // Commenting this out, as the above should be more efficient.
+            ////need to update _albumsCollection observable collection by removing the album with this UID
+            //for (int i = 0; i < _albumsCollection.Count; ++i)
+            //{
+            //    //if this is the album we are looking for
+            //    if (_albumsCollection[i].UID == albumUID)
+            //    {
+            //        //remove it from the observableCollection
+            //        _albumsCollection.RemoveAt(i);
+            //        //end the loop as there are no more albums to remove
+            //        break;
+            //    }
+            //}
 
             return errorReport;
         }
@@ -895,7 +1053,7 @@ namespace SoftwareEng
                 return;
             }
 
-            util_addPicToAlbumDB(errorReport, null, albumUID, SimplePhotoData);
+            util_addPicToAlbumDB(errorReport, null, albumUID);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
                 guiCallback(errorReport);
@@ -929,7 +1087,7 @@ namespace SoftwareEng
         //--------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void changePhotoNameByUID_backend(generic_callback guiCallback, int albumUID, int photoUID, String newName)
+        private void changePhotoNameByUID_backend(generic_callback guiCallback, int albumUID, int idInAlbum, String newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -943,7 +1101,7 @@ namespace SoftwareEng
             }
 
             //Get the photo from the album.
-            XElement photo = util_getAlbumDBPhotoNode(errorReport, album, photoUID);
+            XElement photoElem = util_getAlbumDBPhotoNode(errorReport, album, idInAlbum);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
@@ -952,7 +1110,7 @@ namespace SoftwareEng
             }
 
             //change the photo's name.
-            util_renamePhoto(errorReport, photo, newName);
+            util_renamePhoto(errorReport, photoElem, newName);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {

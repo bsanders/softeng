@@ -15,7 +15,7 @@
       <Value Profile="(Default)">photo library</Value>
     </Setting>
     <Setting Name="PhotoLibraryBackupName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">_backup</Value>
+      <Value Profile="(Default)">Recovery Album</Value>
     </Setting>
     <Setting Name="PhotoLibraryThumbsDir" Type="System.String" Scope="User">
       <Value Profile="(Default)">thumbs_db</Value>
@@ -25,6 +25,24 @@
     </Setting>
     <Setting Name="OrgName" Type="System.String" Scope="User">
       <Value Profile="(Default)">PhotoBomber Studios</Value>
+    </Setting>
+    <Setting Name="smThumbSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">120</Value>
+    </Setting>
+    <Setting Name="medThumbSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">240</Value>
+    </Setting>
+    <Setting Name="lrgThumbSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">480</Value>
+    </Setting>
+    <Setting Name="smThumbDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">sm</Value>
+    </Setting>
+    <Setting Name="medThumbDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">med</Value>
+    </Setting>
+    <Setting Name="lrgThumbDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">lrg</Value>
     </Setting>
   </Settings>
 </SettingsFile>
