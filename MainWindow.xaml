@@ -270,7 +270,7 @@
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
-                <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture">
+         <!--       <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
                         <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
@@ -291,7 +291,7 @@
                             <Image x:Name="viewButtonAlbumImage" Source="ImagesResources2012/resource_32xLG.png" Stretch="Fill"/>
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
-                </Popup>
+                </Popup>   -->
 
 
                 <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" MouseRightButtonDown="VirtualizingStackPanel_MouseRightButtonDown_1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
