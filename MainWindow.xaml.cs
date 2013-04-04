@@ -49,14 +49,19 @@ namespace SoftwareEng
         {
             InitializeComponent();
 
-            //for now the gui will determine filepaths(set to same folder as exe) in case it is ever made a user choice
-            String libraryPath = System.IO.Path.Combine(Environment.CurrentDirectory, "photo library");
+            // Set the library path to be in the User's application data folder under "PhotoBomber Studios" for now.
+            String libraryPath = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                Properties.Settings.Default.OrgName, 
+                Properties.Settings.Default.PhotoLibraryName);
+
             bombaDeFotos = new PhotoBomb();
-            bombaDeFotos.init(guiConstructorCallback, "albumRC1.xml", "photoRC1.xml", libraryPath);
+            bombaDeFotos.init(guiConstructorCallback,
+                Properties.Settings.Default.AlbumXMLFile,
+                Properties.Settings.Default.PhotoXMLFile,
+                libraryPath);
 
             hideAddAlbumBox();
-
-            
 
             populateAlbumView(true);
         }
