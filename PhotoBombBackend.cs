@@ -51,7 +51,7 @@ namespace SoftwareEng
         /******************************************************************************
          * added for data binding
         ******************************************************************************/
-        private ObservableCollection<SimpleAlbumData> _albumsToReturn;
+        private ObservableCollection<SimpleAlbumData> _albumsCollection;
 
 
         //-----------------------------------------------------------------
@@ -84,7 +84,7 @@ namespace SoftwareEng
             util_checkLibraryDirectory(errorReport);
 
             //the list of all albums to return to the gui.
-            _albumsToReturn = new ObservableCollection<SimpleAlbumData>();
+            _albumsCollection = new ObservableCollection<SimpleAlbumData>();
 
             guiCallback(errorReport);
         }
@@ -299,9 +299,9 @@ namespace SoftwareEng
                     continue; // We'll keep going if one album is invalid
                 }
 
-                _albumsToReturn.Add(userAlbum);
+                _albumsCollection.Add(userAlbum);
             }
-            ReadOnlyObservableCollection<SimpleAlbumData> readOnlyAlbumList = new ReadOnlyObservableCollection<SimpleAlbumData>(_albumsToReturn);
+            ReadOnlyObservableCollection<SimpleAlbumData> readOnlyAlbumList = new ReadOnlyObservableCollection<SimpleAlbumData>(_albumsCollection);
             guiCallback(error, readOnlyAlbumList);
         }
 
@@ -815,14 +815,14 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
 
-            //need to update _albumsToReturn observable collection by removing the album with this UID
-            for (int i = 0; i < _albumsToReturn.Count; ++i)
+            //need to update _albumsCollection observable collection by removing the album with this UID
+            for (int i = 0; i < _albumsCollection.Count; ++i)
             {
                 //if this is the album we are looking for
-                if (_albumsToReturn[i].UID == albumUID)
+                if (_albumsCollection[i].UID == albumUID)
                 {
                     //remove it from the observableCollection
-                    _albumsToReturn.RemoveAt(i);
+                    _albumsCollection.RemoveAt(i);
                 }
             }
 
@@ -855,8 +855,8 @@ namespace SoftwareEng
             //save to disk.
             saveAlbumsXML_backend(null);
 
-            //need to update the _albumsToReturn observableCollection to reflect this addition in the GUI
-            _albumsToReturn.Add(albumData); //adds to end of collection
+            //need to update the _albumsCollection observableCollection to reflect this addition in the GUI
+            _albumsCollection.Add(albumData); //adds to end of collection
 
             guiCallback(errorReport);
 
