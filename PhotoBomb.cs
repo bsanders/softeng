@@ -376,16 +376,21 @@ namespace SoftwareEng
     public class SimplePhotoData : INotifyPropertyChanged
     {
         //event for changing a property
+        private string _Name;
+        private int _idInAlbum;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public String Name
         {
-            get;
+            get
+            {
+                return _Name;
+            }
             set
             {
-                if (value != Name)
+                if (value != _Name)
                 {
-                    Name = value;
+                    _Name = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("Name");
                 }
@@ -394,12 +399,15 @@ namespace SoftwareEng
 
         public int idInAlbum
         {
-            get;
+            get
+            {
+                return _idInAlbum;
+            }
             set
             {
-                if (value != idInAlbum)
+                if (value != _idInAlbum)
                 {
-                    idInAlbum = value;
+                    _idInAlbum = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("idInAlbum");
                 }
@@ -436,7 +444,7 @@ namespace SoftwareEng
     public class ComplexPhotoData : INotifyPropertyChanged
     {
         //the name of the picture in the album, displayed by the gui
-        /*
+        
         private int _UID;
         private int _idInAlbum;
         private byte[] _hash;
@@ -444,7 +452,7 @@ namespace SoftwareEng
         private String _extension;
         private String _caption;
         private int _refCount;
-        */
+        
         //event for changing a property
         public event PropertyChangedEventHandler PropertyChanged;
         //... add more stuff here when we have more metadata
@@ -457,12 +465,15 @@ namespace SoftwareEng
 
         public int UID
         {
-            get;
+            get
+            {
+                return _UID;
+            }
             set
             {
-                if (value != UID)
+                if (value != _UID)
                 {
-                    UID = value;
+                    _UID = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("UID");
                 }
@@ -471,12 +482,15 @@ namespace SoftwareEng
 
         public int idInAlbum
         {
-            get;
+            get
+            {
+                return _idInAlbum;
+            }
             set
             {
-                if (value != idInAlbum)
+                if (value != _idInAlbum)
                 {
-                    idInAlbum = value;
+                    _idInAlbum = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("idInAlbum");
                 }
@@ -485,12 +499,15 @@ namespace SoftwareEng
 
         public byte[] hash
         {
-            get;
+            get
+            {
+                return _hash;
+            }
             set
             {
-                if (value != hash)
+                if (value != _hash)
                 {
-                    hash = value;
+                    _hash = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("hash");
                 }
@@ -499,12 +516,15 @@ namespace SoftwareEng
 
         public String path
         {
-            get;
+            get
+            {
+                return _path;
+            }
             set
             {
-                if (value != path)
+                if (value != _path)
                 {
-                    path = value;
+                    _path = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("path");
                 }
@@ -513,12 +533,15 @@ namespace SoftwareEng
 
         public String extension
         {
-            get;
+            get
+            {
+                return _extension;
+            }
             set
             {
-                if (value != extension)
+                if (value != _extension)
                 {
-                    extension = value;
+                    _extension = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("extension");
                 }
@@ -527,12 +550,15 @@ namespace SoftwareEng
 
         public string caption
         {
-            get;
+            get
+            {
+                return _caption;
+            }
             set
             {
-                if (value != caption)
+                if (value != _caption)
                 {
-                    caption = value;
+                    _caption = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("caption");
                 }
@@ -541,12 +567,15 @@ namespace SoftwareEng
 
         public int refCount
         {
-            get;
+            get
+            {
+                return _refCount;
+            }
             set
             {
-                if (value != refCount)
+                if (value != _refCount)
                 {
-                    refCount = value;
+                    _refCount = value;
                 }
             }
         }
