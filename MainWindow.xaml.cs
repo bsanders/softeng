@@ -62,17 +62,17 @@ namespace SoftwareEng
         {
             InitializeComponent();
 
-            // Set the library path to be in the User's application data folder under "PhotoBomber Studios" for now.
-            String libraryPath = System.IO.Path.Combine(
+            // Set the base path for all data to be in the User's application data folder under "PhotoBomber Studios" for now.
+            // This is equivalent to whatever %localappdata% resolves to in Explorer
+            string basePath = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Settings.OrgName, 
-                Settings.PhotoLibraryName);
+                Settings.OrgName);
 
             bombaDeFotos = new PhotoBomb();
             bombaDeFotos.init(guiConstructorCallback,
-                Settings.AlbumXMLFile,
-                Settings.PhotoXMLFile,
-                libraryPath);
+                System.IO.Path.Combine(basePath, Settings.AlbumXMLFile),
+                System.IO.Path.Combine(basePath, Settings.PhotoXMLFile),
+                System.IO.Path.Combine(basePath, Settings.PhotoLibraryName));
 
             hideAddAlbumBox();
 
