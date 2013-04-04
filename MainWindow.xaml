@@ -47,13 +47,13 @@
             <Grid x:Name="albumItemFrontGrid" Background="#FF1C2327">
                 <Image Margin="0,0,0,44" Name="image1" Stretch="Fill" Source="{Binding}"/>
                 <Label Height="40" Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Background="#00E4E4E4" Width="Auto" Content="{Binding albumName}" Foreground="#AAFFFFFF" />
-
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="LibraryListItemFrontTemplate">
             <Grid x:Name="albumItemBackGrid" Background="#FF1C2327">
-                
+                <Image Margin="0,0,0,44" Name="image1" Stretch="Fill" Source="{Binding}"/>
+                <Label Height="40" Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Background="#00E4E4E4" Width="Auto" Content="{Binding albumName}" Foreground="#AAFFFFFF" />
             </Grid>
         </DataTemplate>
 
@@ -126,7 +126,7 @@
                 </Border>
 
                 <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0">
-                    <Border x:Name="ItemBackSide"  Background="Transparent" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonDown">
+                    <Border x:Name="ItemBackSide"  Background="Transparent" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonUp">
                         <Border.Triggers>
                             <EventTrigger RoutedEvent="Grid.MouseLeftButtonDown">
                                 <BeginStoryboard>
@@ -248,7 +248,7 @@
     <Grid>
         <Border x:Name="mainWindowFrame" Padding="6" Background="#001C2327">
             <Grid>
-                <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonDown">
+                <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" >
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
                         <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemLibraryButton_Click">
                             <Image x:Name="addButtonLibraryImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
@@ -294,8 +294,8 @@
                 </Popup>   -->
 
 
-                <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" MouseRightButtonDown="VirtualizingStackPanel_MouseRightButtonDown_1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                    <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource ListItemTemplate}" Background="#FF1C2327" BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="mainWindowAlbumList_MouseDoubleClick" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonDown" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay}">
+                <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource ListItemTemplate}" Background="#FF1C2327" BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay}" PreviewMouseRightButtonUp="mainWindowAlbumList_MouseRightButtonUp">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel/>

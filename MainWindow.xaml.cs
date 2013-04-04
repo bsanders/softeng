@@ -342,7 +342,7 @@ namespace SoftwareEng
             Close();
         }
 
-        private void mainWindowAlbumList_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void mainWindowAlbumList_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             libraryContextMenu.IsOpen = true;
         }
@@ -423,10 +423,7 @@ namespace SoftwareEng
             
         }
 
-        private void VirtualizingStackPanel_MouseRightButtonDown_1(object sender, MouseButtonEventArgs e)
-        {
-            libraryContextMenu.IsOpen = true;
-        }
+
 
         /**************************************************************************************************
          * start region of thumb bar resize events
