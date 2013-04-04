@@ -171,7 +171,7 @@ namespace SoftwareEng
             {
                 validator.Validate(stringToValidate);
             }
-            catch (ArgumentException argException)
+            catch (ArgumentException)
             {
                 return false;
             }
