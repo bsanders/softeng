@@ -5,9 +5,12 @@
  * 4/1/13 Ryan Causey: Added checks for the DragDeltaHandlers to fix a error case
  *                     where the width/height value for the window could become
  *                     negative.
- * 4/3/13 Ryan Causey: Implementing validation of album names.
+ * 4/3/13 Ryan Causey: Implementing validation of album names and GUI functions to handle
+ *                     when the user wants to make a new album.
  *                     Made sure the new album name text box got cleared when the user
  *                     pressed the X to cancel creation.
+ *                     Implementing gui functions to delete an album via the context menu's
+ *                     delete button(X button).
  */ 
 using System;
 using System.Collections.Generic;
@@ -187,7 +190,7 @@ namespace SoftwareEng
          */
         private void guiValidateAlbumName(String validationRegex)
         {
-            generalPurposeTextBox.Text.Trim();
+            generalPurposeTextBox.Text = generalPurposeTextBox.Text.Trim();
 
             if (validateTheString(validationRegex, generalPurposeTextBox.Text))
             {
@@ -252,16 +255,58 @@ namespace SoftwareEng
         /*
          * Author: Ryan Causey
          * Created on: 4/3/13
-         * Callback for guiCreateNewAlbum. Not sure at the moment what to do if the error report is failure
-         * since that means something really really bad happened.
          * Last Edited By:
          * Last Edited Date:
          */
+        /// <summary>
+        /// Callback for guiCreateNewAlbum. If there is an error something really bad happened.
+        /// Notify the user, rebuild the database, and consolidate all photographs into a single backup album
+        /// </summary>
+        /// <param name="error">Error report from the back end.</param>
         public void guiCreateNewAlbum_Callback(ErrorReport error)
         {
             if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
                 //something really bad happened
+                //notify the user, rebuild the database and consolidate all photographs into a single backup album
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created On: 4/3/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Deletes the selected album from the program.
+        /// </summary>
+        private void guiDeleteSelectedAlbum()
+        {
+            //make sure an item is selected
+            if (mainWindowAlbumList.SelectedItem != null)
+            {
+                bombaDeFotos.removeAlbum(new generic_callback(guiDeleteSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID); 
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created On: 4/3/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Callback for guiDeleteSelectedAlbum. If there is an error something really bad happened.
+        /// Notify the user, rebuild the database and consolidate all photographs into a single backup album.
+        /// </summary>
+        /// <param name="error">Error report from the back end.</param>
+        public void guiDeleteSelectedAlbum_Callback(ErrorReport error)
+        {
+            if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            {
+                //something really bad happened
+                //notify the user, rebuild the database and consolidate all photographs into a single backup album
             }
         }
 
@@ -291,15 +336,16 @@ namespace SoftwareEng
             libraryContextMenu.IsOpen = true;
         }
 
-        private void addMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        /*
+         * Created By: Ryan Causey
+         * Created On: 4/3/13
+         * Event Handler for the large + button on the dock. Shows the add new album box.
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        private void addDockButton_Click(object sender, RoutedEventArgs e)
         {
             showAddAlbumBox();
-            
-            //SoftwareEng.ViewImage imageViewer = new ViewImage();
-
-            //imageViewer.Show();
-
-            
         }
 
         private void DockPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
@@ -638,6 +684,23 @@ namespace SoftwareEng
         private void acceptAddToolBarButton_Click(object sender, RoutedEventArgs e)
         {
             guiValidateAlbumName(albumValidationRegex);
+        }
+
+        /*
+         * Created by: Ryan Causey
+         * Created Date: 4/3/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Event handler for the Click event on the delete button on the context menu.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event Args</param>
+        private void deleteMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            //call a function here.
+            guiDeleteSelectedAlbum();
         }
 
         /********************************************************************

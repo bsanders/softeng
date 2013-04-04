@@ -797,7 +797,7 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 4/1/13
+        //Edited Last: 4/3/13
         //Edited Last By: Ryan Causey
         /// <summary>
         /// Removes the specified album
@@ -841,6 +841,8 @@ namespace SoftwareEng
                 {
                     //remove it from the observableCollection
                     _albumsCollection.RemoveAt(i);
+                    //end the loop as there are no more albums to remove
+                    break;
                 }
             }
 
