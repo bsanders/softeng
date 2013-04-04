@@ -688,11 +688,10 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
             
             // these two lines are kind of redundant, at the moment
-            // First get the actual instance of the photo (from the pictures DB!)
-            XElement thisPicture = util_getAlbumDBPhotoNode(albumUID, PhotoID); //util_getPhotoDBNode(errorReport, uid);
-            // Now get that photo from the album DB!
-//            thisPicture = util_getAlbumDBPhotoNode(albumUID, (string)thisPicture.Attribute("sha1"));
-            //thisPicture = 
+            // First get the instance of the photo (from the album DB!)
+            XElement thisPicture = util_getAlbumDBPhotoNode(albumUID, PhotoID);
+
+            // Now delete that node
             errorReport = removePictureElement_backend(null, thisPicture);
 
             return errorReport;
@@ -713,23 +712,32 @@ namespace SoftwareEng
 
             //error prone code here if XElement returned is null. An unhandled exception was raised here while I was testing program -Ryan Causey
             XElement picFromPicsDB = util_getPhotoDBNode(errorReport, (string)pictureElement.Attribute("sha1"));
-            
+            // added error handling code, but how is this call even happening on a photo that doesn't exist..?
+            // a db integrity issue?
+
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                return errorReport;
+            }
+
+            // From the photo database, get the number of references remaining to this photo.
             int refCount = (int)picFromPicsDB.Attribute("refCount");
-            refCount--;
             
             // Delete this instance of the photo from the in-memory xml database
             try
             {
-                // delete this instance of the picture from the album db
+                // delete this instance of the picture from the album db, and decrement the refCounter
                 pictureElement.Remove();
+                refCount--;
+
                 if (refCount == 0)
                 {
-                    // This was the last reference to the picture.
+                    // This was the last reference to the picture, delete it from the photoDB and the filesystem
                     removePictureFromPicsDB_backend(null, picFromPicsDB);
                 }
                 else
                 {
-                    // update xml with new refcount
+                    // The photo is still in the albumDB somewhere, so just update xml with new refcount
                     picFromPicsDB.Attribute("refCount").Value = refCount.ToString();
                 }
                 // TODO: move these two calls out of here for efficiency in removing multiple files!
@@ -748,7 +756,7 @@ namespace SoftwareEng
         //By: Bill Sanders
         //Edited Last: 3/28/13
         /// <summary>
-        /// Removes the specified photo from the specified album
+        /// Removes the specified photo from the PhotoDB as well as the filesystem
         /// </summary>
         /// <param name="guiCallback"></param>
         /// <param name="pictureElement"></param>
@@ -757,17 +765,20 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
+            // First try to delete it from the filesystem
             try
             {
                 File.Delete(pictureElement.Element("filePath").Value);
             }
             catch
             {
+                // the path was probably wrong...
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Failed to delete the photo file from the filesystem";
                 return errorReport;
             }
-            // Delete this instance of the photo from the in-memory xml database
+            // Now delete this instance of the photo from the in-memory photo database
+            // If we've gotten here, we've already deleted it from the albums database
             try
             {
                 pictureElement.Remove();
@@ -799,8 +810,15 @@ namespace SoftwareEng
 
             //error prone code here if there is no album with that UID. An unhandled exception was raised here during testing. -Ryan Causey
             XElement specificAlbum = util_getAlbum(errorReport, albumUID);
-            List<XElement> pictureElements = specificAlbum.Element("albumPhotos").Elements("picture").ToList();
+
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                return errorReport;
+            }
+
             // linq returns a lazy evaluated ienumberable, which foreach apparently doesn't like, so we convert to a list.
+            List<XElement> pictureElements = specificAlbum.Element("albumPhotos").Elements("picture").ToList();
+
             foreach (XElement subElement in pictureElements)
             {
                 // remove the picture element
@@ -808,7 +826,7 @@ namespace SoftwareEng
             }
 
             // now delete the album itself.
-            // Since we're deleting every photo in the album, we can just remove the node.
+            // Since we've deleted every photo in the album, we can just remove the node.
             specificAlbum.Remove();
 
             // now sync to the disk
