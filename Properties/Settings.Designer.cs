@@ -73,7 +73,7 @@ namespace SoftwareEng.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("_backup")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Recovery Album")]
         public string PhotoLibraryBackupName {
             get {
                 return ((string)(this["PhotoLibraryBackupName"]));

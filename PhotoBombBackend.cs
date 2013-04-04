@@ -195,7 +195,7 @@ namespace SoftwareEng
             SimpleAlbumData backupAlbum = new SimpleAlbumData();
 
             //set the name
-            backupAlbum.albumName = "Recovery Album";
+            backupAlbum.albumName = Settings.PhotoLibraryBackupName;
 
             //get a new uid for the new album.
             backupAlbum.UID = util_getNextUID(_albumsDatabase, "album", 1);
