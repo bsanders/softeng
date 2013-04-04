@@ -113,26 +113,6 @@ namespace SoftwareEng
         private void populateAlbumView(bool refreshView)
         {
 
-            /*
-            ListViewItem.ListViewSubItem[] itemHolderSubitems;
-            ListViewItem itemHolder = null;
-
-            albumListView.Items.Clear();
-
-            //--code from here to the if statement is to regenerate the 
-            //--the "add new album icon" as it's not an album
-            itemHolderSubitems = new ListViewItem.ListViewSubItem[]{
-                new ListViewItem.ListViewSubItem(itemHolder, "Add New Album"),
-                new ListViewItem.ListViewSubItem(itemHolder, addAlbumID.ToString() )
-                };
-
-            itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
-            albumListView.Items.Add(itemHolder);
-
-            */
-
-
-
             if (refreshView == true)
             {
                 bombaDeFotos.getAllAlbums(new getAllAlbumNames_callback(guiAlbumsRetrieved));
@@ -157,53 +137,12 @@ namespace SoftwareEng
 
                 mainWindowAlbumList.ItemsSource = listOfAlbums;
 
-                //mainWindowAlbumList.listItemsControl.DataContext = listOfAlbums;
-
-
-
-                
-
             }
             else
             {
                 //show an Error
             }
 
-
-
-                /*
-                //--stops the drawing of albumListView
-                albumListView.BeginUpdate();
-
-                ListViewItem itemHolder = null;
-                ListViewItem.ListViewSubItem[] itemHolderSubitems;
-
-                foreach (SimpleAlbumData singleAlbum in albumsRetrieved)
-                {
-                    try
-                    {
-                        itemHolderSubitems = new ListViewItem.ListViewSubItem[]{
-                            new ListViewItem.ListViewSubItem(itemHolder, singleAlbum.albumName),
-                            new ListViewItem.ListViewSubItem(itemHolder, singleAlbum.UID.ToString() )
-                            };
-
-                        itemHolder = new ListViewItem(itemHolderSubitems, defaultAlbumImageListIndex);
-                        albumListView.Items.Add(itemHolder);
-                    }
-                    catch (Exception)
-                    {
-                        showError("Error: Album Missing");
-                    }
-                }
-
-                //--resumes drawing of albumListView
-                albumListView.EndUpdate();
-            }
-            else if (status.reportID == ErrorReport.FAILURE)
-            {
-                showError("Error: Album Missing");
-            }
-            */
         }
 
         /*
@@ -351,9 +290,9 @@ namespace SoftwareEng
         {
             showAddAlbumBox();
             
-            SoftwareEng.ViewImage imageViewer = new ViewImage();
+            //SoftwareEng.ViewImage imageViewer = new ViewImage();
 
-            imageViewer.Show();
+            //imageViewer.Show();
 
             
         }
@@ -416,11 +355,6 @@ namespace SoftwareEng
         private void cancelAddToolbarButton_Click(object sender, RoutedEventArgs e)
         {
             hideAddAlbumBox();
-        }
-
-        private void mainWindowAlbumList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            
         }
 
 
@@ -656,6 +590,11 @@ namespace SoftwareEng
                 this.Width = MinWidth + 1;
             }
         }
+        /**************************************************************************************************
+         * end region of thumb bar resize events
+        **************************************************************************************************/
+
+
 
         private void aboutButtonPressed_eventHandler(object sender, RoutedEventArgs e)
         {
@@ -709,8 +648,6 @@ namespace SoftwareEng
          * End Test Functions
          ******************************************************************/
         
-        /**************************************************************************************************
-         * end region of thumb bar resize events
-        **************************************************************************************************/
+
     }
 }
