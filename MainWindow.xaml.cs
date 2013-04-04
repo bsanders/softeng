@@ -6,6 +6,8 @@
  *                     where the width/height value for the window could become
  *                     negative.
  * 4/3/13 Ryan Causey: Implementing validation of album names.
+ *                     Made sure the new album name text box got cleared when the user
+ *                     pressed the X to cancel creation.
  */ 
 using System;
 using System.Collections.Generic;
@@ -352,9 +354,16 @@ namespace SoftwareEng
             cancelAddToolbarButton.Visibility = Visibility.Hidden;
         }
 
+        /*
+         * Created By: Alejandro Sosa
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/3/13
+         */
         private void cancelAddToolbarButton_Click(object sender, RoutedEventArgs e)
         {
             hideAddAlbumBox();
+            //make sure to clear the text box.
+            generalPurposeTextBox.Clear();
         }
 
 
