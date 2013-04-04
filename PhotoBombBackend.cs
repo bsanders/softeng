@@ -237,9 +237,7 @@ namespace SoftwareEng
             DirectoryInfo libraryDir = new DirectoryInfo(libraryPath);
 
             //set up an array of files
-            FileInfo[] files = libraryDir.GetFiles();
-
-            foreach (FileInfo fi in files)
+            foreach (FileInfo fi in libraryDir.GetFiles())
             {
                 ComplexPhotoData newPicture = new ComplexPhotoData();
 
@@ -260,14 +258,12 @@ namespace SoftwareEng
                 //data object to reflect this new UID.
                 newPicture.UID = util_getNextUID(_picturesDatabase, "picture", 1);
                 // error checking the call
-                if (!util_checkUIDIsValid(newPicture.UID))
+                if (!util_checkIDIsValid(newPicture.UID))
                 {
                     errorReport.reportID = ErrorReport.FAILURE;
                     errorReport.description = "Failed to get a UID for a new picture.";
                     return errorReport;
                 }
-
-                String pictureNameInAlbum = Settings.DefaultImageName + " " + newPicture.UID.ToString();
 
                 //Change me if you want to start naming the pictures differently in the library.
                 String picNameInLibrary = newPicture.UID.ToString() + fi.Extension;
@@ -301,7 +297,7 @@ namespace SoftwareEng
                     return errorReport;
                 }
 
-                util_addPicToAlbumDB(errorReport, newPicture, albumUID, pictureNameInAlbum);
+                util_addPicToAlbumDB(errorReport, newPicture, albumUID);
 
                 //if adding to the album database failed
                 if (errorReport.reportID == ErrorReport.FAILURE)
@@ -753,7 +749,6 @@ namespace SoftwareEng
             String photoUserPath, 
             String photoExtension, 
             int albumUID, 
-            String pictureNameInAlbum, 
             int searchStartingPoint = 1)
         {
             ComplexPhotoData newPicture = new ComplexPhotoData();
@@ -781,12 +776,6 @@ namespace SoftwareEng
 
             //Change me if you want to start naming the pictures differently in the library.
             String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
-
-            //Change me if you want the default album name to be different.
-            if (pictureNameInAlbum == "")
-            {
-                pictureNameInAlbum = Settings.DefaultImageName + " " + newPicture.UID.ToString();
-            }
 
             //Move picture and get a new path for the picture in our storage.
             newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
@@ -819,7 +808,7 @@ namespace SoftwareEng
                 return errorReport;
             }
 
-            util_addPicToAlbumDB(errorReport, newPicture, albumUID, pictureNameInAlbum);
+            util_addPicToAlbumDB(errorReport, newPicture, albumUID);
 
             //if adding to the album database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
@@ -1064,7 +1053,7 @@ namespace SoftwareEng
                 return;
             }
 
-            util_addPicToAlbumDB(errorReport, null, albumUID, SimplePhotoData);
+            util_addPicToAlbumDB(errorReport, null, albumUID);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
                 guiCallback(errorReport);

@@ -46,22 +46,28 @@ namespace SoftwareEng
                 //if we didn't get a cancel command...
                 if (data.errorReport.reportID != ErrorReport.FAILURE && !worker.CancellationPending)
                 {
+                    // Is all this unnecessary?  Leaving it here in case someday we want to prompt the user
+                    // to provide a default image name for a set of importing photos, I guess?
                     String pictureName;
                     if (data.pictureNameInAlbum == null)
+                    {
                         pictureName = "";
+                    }
                     else if (data.pictureNameInAlbum.ElementAt(i) == "")
                     {
                         pictureName = "";
                     }
                     else
+                    {
                         pictureName = data.pictureNameInAlbum.ElementAt(i);
+                    }
 
                     //use backend function to add a single photo.
                     addNewPicture_backend(data.errorReport,
                         data.photoUserPath.ElementAt(i),
                         data.photoExtension.ElementAt(i),
                         data.albumUID,
-                        pictureName,
+                    //    pictureName,
                         (initialSearchingLocation + i)
                         );
 

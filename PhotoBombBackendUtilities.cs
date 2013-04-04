@@ -253,7 +253,7 @@ namespace SoftwareEng
         /// <param name="newPicture"></param>
         /// <param name="albumUID"></param>
         /// <param name="albumName"></param>
-        private void util_addPicToAlbumDB(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID, String albumName)
+        private void util_addPicToAlbumDB(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID)
         {
             //Get the specific album we will be adding to.
             XElement specificAlbum = util_getAlbum(errorReport, albumUID);
@@ -275,11 +275,14 @@ namespace SoftwareEng
                 return;
             }
 
+            // Note as per requirements, the default photo name is the name of the album, plus its id number
+            string nameInLibrary = specificAlbum.Name + " " + newPicture.idInAlbum;
+
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
                                             new XAttribute("idInAlbum", newPicture.idInAlbum),
                                             new XAttribute("sha1", ByteArrayToString(newPicture.hash)),
-                                            new XElement("name", albumName),
+                                            new XElement("name", nameInLibrary),
                                             new XElement("caption", newPicture.caption));
 
             // Now add it to the albums database in memory
