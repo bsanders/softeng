@@ -5,10 +5,12 @@
  * 4/1/13 Ryan Causey: Added checks for the DragDeltaHandlers to fix a error case
  *                     where the width/height value for the window could become
  *                     negative.
+ * 4/3/13 Ryan Causey: Implementing validation of album names.
  */ 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -40,6 +42,9 @@ namespace SoftwareEng
 
         //--used to specify the UID of the "add new album" icon
         private const int addAlbumID = 0;
+
+        //The regex for validation of album names
+        private String albumValidationRegex = @"^[\w\d][\w\d ]{0,31}$"; //must be at least 1 character, max 32 in length
 
         //--A more stable storage for the ID of the user album instead
         //-- of relying on a form's selected items collection
@@ -199,6 +204,121 @@ namespace SoftwareEng
                 showError("Error: Album Missing");
             }
             */
+        }
+
+        /*
+         * Author: Ryan Causey
+         * Created: 4/3/13
+         * Function to validate a string against the given regex.
+         * @Return: True = the string is valid, False = the string is not valid
+         * @Params: Regex = the regular expression by which to evaluate the string
+         * stringToValidate = the string which we will validate against the regex
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        private bool validateTheString(String regex, String stringToValidate)
+        {
+            RegexStringValidator validator = new RegexStringValidator(regex);
+
+            try
+            {
+                validator.Validate(stringToValidate);
+            }
+            catch (ArgumentException argException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /*
+         * Author: Ryan Causey
+         * Created on: 4/3/13
+         * Function for validating that a new album name is valid and unique.
+         * @Params: validationRegex = regex to be used to validate the album name
+         * albumName = the desired album name
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        private void guiValidateAlbumName(String validationRegex)
+        {
+            generalPurposeTextBox.Text.Trim();
+
+            if (validateTheString(validationRegex, generalPurposeTextBox.Text))
+            {
+                //check to see if the album name is unique in the program
+                bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), generalPurposeTextBox.Text);
+            }
+            else
+            {
+                //apply error template to the text box.
+                MessageBox.Show("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
+                //focus the text box and select all the text
+                generalPurposeTextBox.Focus();
+                generalPurposeTextBox.SelectAll();
+            }
+        }
+
+        /*
+         * Author: Ryan Causey
+         * Created on: 4/3/13
+         * Callback for checking uniqueness of a new album name. This will be called after the back end finishes checking if the album
+         * name is unique
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        public void guiValidateAlbumName_Callback(ErrorReport error)
+        {
+            //if the album name was not unique
+            if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            {
+                //apply error template to the text box
+                MessageBox.Show("This is a temporary error check message box. Failed at guiValidateAlbumName_Callback");//temporary as fuuuu
+                //focus the text box and select all the text
+                generalPurposeTextBox.Focus();
+                generalPurposeTextBox.SelectAll();
+            }
+            //it was unique, great success!
+            else
+            {
+                guiCreateNewAlbum(generalPurposeTextBox.Text);
+                hideAddAlbumBox();
+                generalPurposeTextBox.Clear();
+            }
+        }
+
+        /*
+         * Author: Ryan Causey
+         * Created on: 4/3/13
+         * Function for creating a new album name. Only to be called after the album name is validated.
+         * @Param: albumName = the name for the new album being created
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        private void guiCreateNewAlbum(String albumName)
+        {
+            SimpleAlbumData newAlbum = new SimpleAlbumData();
+
+            newAlbum.albumName = albumName;
+
+            bombaDeFotos.addNewAlbum(new generic_callback(guiCreateNewAlbum_Callback), newAlbum);
+        }
+
+        /*
+         * Author: Ryan Causey
+         * Created on: 4/3/13
+         * Callback for guiCreateNewAlbum. Not sure at the moment what to do if the error report is failure
+         * since that means something really really bad happened.
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        public void guiCreateNewAlbum_Callback(ErrorReport error)
+        {
+            if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            {
+                //something really bad happened
+            }
         }
 
 
@@ -557,6 +677,19 @@ namespace SoftwareEng
             {
                 this.WindowState = WindowState.Minimized;
             }
+        }
+
+        /*
+         * Created by: Ryan Causey
+         * Created on: 4/3/13
+         * Event handler for when the user clicks the checkbox for creating a new album with the name
+         * they specified in the text box.
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        private void acceptAddToolBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            guiValidateAlbumName(albumValidationRegex);
         }
 
         /********************************************************************
