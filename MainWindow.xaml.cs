@@ -5,7 +5,8 @@
  * 4/1/13 Ryan Causey: Added checks for the DragDeltaHandlers to fix a error case
  *                     where the width/height value for the window could become
  *                     negative.
- * 4/3/13 Ryan Causey: Implementing validation of album names.
+ * 4/3/13 Ryan Causey: Implementing validation of album names and GUI functions to handle
+ *                     when the user wants to make a new album.
  *                     Made sure the new album name text box got cleared when the user
  *                     pressed the X to cancel creation.
  */ 
@@ -184,7 +185,7 @@ namespace SoftwareEng
          */
         private void guiValidateAlbumName(String validationRegex)
         {
-            generalPurposeTextBox.Text.Trim();
+            generalPurposeTextBox.Text = generalPurposeTextBox.Text.Trim();
 
             if (validateTheString(validationRegex, generalPurposeTextBox.Text))
             {
@@ -288,15 +289,16 @@ namespace SoftwareEng
             libraryContextMenu.IsOpen = true;
         }
 
-        private void addMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        /*
+         * Created By: Ryan Causey
+         * Created On: 4/3/13
+         * Event Handler for the large + button on the dock. Shows the add new album box.
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        private void addDockButton_Click(object sender, RoutedEventArgs e)
         {
             showAddAlbumBox();
-            
-            //SoftwareEng.ViewImage imageViewer = new ViewImage();
-
-            //imageViewer.Show();
-
-            
         }
 
         private void DockPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
