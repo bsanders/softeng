@@ -396,6 +396,7 @@ namespace SoftwareEng
         //-----------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last: Bill Sanders, 3/27/13
+        // NOTE: this function is no longer sufficient (SimplePhotoData doesn't have the file path to display thumbnails, for example...)
         private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback, int AlbumUID)
         {
             ErrorReport error = new ErrorReport();
@@ -408,8 +409,7 @@ namespace SoftwareEng
             }
 
             //Try searching for the album with the uid specified.
-            XElement specificAlbum;
-            specificAlbum = util_getAlbum(error, AlbumUID);
+            XElement specificAlbum = util_getAlbum(error, AlbumUID);
             // Commenting out the below in favor of a util class. - BillSanders
             //try
             //{
@@ -436,8 +436,8 @@ namespace SoftwareEng
                 SimplePhotoData pic = new SimplePhotoData();
                 try
                 {
-                    pic.UID = (int)subElement.Attribute("uid");
-                    pic.picturesNameInAlbum = (string)subElement.Element("name").Value;
+                    pic.idInAlbum = (int)subElement.Attribute("idInAlbum");
+                    pic.Name = (string)subElement.Element("name").Value;
                     _list.Add(pic);
                 }
                 catch
@@ -454,22 +454,23 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last:
-        private void getPhoto_backend(getPhotoByUID_callback guiCallback, int photoUID, int albumUID)
+        private void getPhoto_backend(getPhotoByUID_callback guiCallback, int idInAlbum, int albumUID)
         {
             ErrorReport error = new ErrorReport();
 
-            // beware: this function assumes uid in album.xml == uid in photo.xml
-            // change to lookup by hash?
-            //get the picture from the picture database.
+            // To get a photo from the photoDB knowing only an albumID and its ID in that album
+            // We have to first retrieve the album...
             XElement albumNode = util_getAlbum(error, albumUID);
-            XElement albumPicElement = util_getAlbumDBPhotoNode(error, albumNode, photoUID);
+            // ... then with that, we can get the picture element from that album...
+            XElement albumPicElement = util_getAlbumDBPhotoNode(error, albumNode, idInAlbum);
+            // ... which we use to get the hash of the photo to do a lookup in the PhotoDB!
             XElement picElement = util_getPhotoDBNode(error, (string)albumPicElement.Attribute("sha1").Value);
-            
+
             //if the picture finding function reported success.
             if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
                 ComplexPhotoData photo = new ComplexPhotoData();
-                //ComplexPhotoData MOE MARKER MOE MARKER MOE MARKER MOE MARKER!!!!!!
+                
                 try
                 {
                     photo.hash = StringToByteArray((string)picElement.Attribute("sha1"));
@@ -612,7 +613,7 @@ namespace SoftwareEng
             //data object to reflect this new UID.
             newPicture.UID = util_getNextUID(_picturesDatabase, "picture", searchStartingPoint);
             // error checking the call
-            if (!util_checkUIDIsValid(newPicture.UID))
+            if (!util_checkIDIsValid(newPicture.UID))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Failed to get a UID for a new picture.";
@@ -681,15 +682,15 @@ namespace SoftwareEng
         /// Removes the specified photo from the specified album
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="PhotoID">The photo's ID</param>
+        /// <param name="idInAlbum">The photo's ID</param>
         /// <param name="albumUID">The album's UID</param>
-        private ErrorReport removePictureFromAlbum_backend(generic_callback guiCallback, int PhotoID, int albumUID)
+        private ErrorReport removePictureFromAlbum_backend(generic_callback guiCallback, int idInAlbum, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
             
             // these two lines are kind of redundant, at the moment
             // First get the instance of the photo (from the album DB!)
-            XElement thisPicture = util_getAlbumDBPhotoNode(albumUID, PhotoID);
+            XElement thisPicture = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
 
             // Now delete that node
             errorReport = removePictureElement_backend(null, thisPicture);
@@ -832,19 +833,23 @@ namespace SoftwareEng
             // now sync to the disk
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
+            
+            var albumToRemove = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
+            _albumsCollection.Remove(albumToRemove);
 
-            //need to update _albumsCollection observable collection by removing the album with this UID
-            for (int i = 0; i < _albumsCollection.Count; ++i)
-            {
-                //if this is the album we are looking for
-                if (_albumsCollection[i].UID == albumUID)
-                {
-                    //remove it from the observableCollection
-                    _albumsCollection.RemoveAt(i);
-                    //end the loop as there are no more albums to remove
-                    break;
-                }
-            }
+            // Commenting this out, as the above should be more efficient.
+            ////need to update _albumsCollection observable collection by removing the album with this UID
+            //for (int i = 0; i < _albumsCollection.Count; ++i)
+            //{
+            //    //if this is the album we are looking for
+            //    if (_albumsCollection[i].UID == albumUID)
+            //    {
+            //        //remove it from the observableCollection
+            //        _albumsCollection.RemoveAt(i);
+            //        //end the loop as there are no more albums to remove
+            //        break;
+            //    }
+            //}
 
             return errorReport;
         }
@@ -931,7 +936,7 @@ namespace SoftwareEng
         //--------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
-        private void changePhotoNameByUID_backend(generic_callback guiCallback, int albumUID, int photoUID, String newName)
+        private void changePhotoNameByUID_backend(generic_callback guiCallback, int albumUID, int idInAlbum, String newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -945,7 +950,7 @@ namespace SoftwareEng
             }
 
             //Get the photo from the album.
-            XElement photo = util_getAlbumDBPhotoNode(errorReport, album, photoUID);
+            XElement photoElem = util_getAlbumDBPhotoNode(errorReport, album, idInAlbum);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
@@ -954,7 +959,7 @@ namespace SoftwareEng
             }
 
             //change the photo's name.
-            util_renamePhoto(errorReport, photo, newName);
+            util_renamePhoto(errorReport, photoElem, newName);
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {

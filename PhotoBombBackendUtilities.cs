@@ -19,7 +19,7 @@ namespace SoftwareEng
     {
         //----------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 3/28/13
+        //Edited Last: 4/4/13, clarified the error situations
         /// <summary>
         /// Query the Photo DB for a photo by hash
         /// </summary>
@@ -41,14 +41,20 @@ namespace SoftwareEng
                                        where (string)c.Attribute("sha1") == hash
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
-                //failed to find the picture
-                catch
+                // There were multiple pictures...
+                catch (InvalidOperationException)
                 {
                     error.reportID = ErrorReport.FAILURE;
-                    error.description = "Failed to find the picture specified.";
+                    error.description = "Found more than one picture with that hash!";
                     return null;
                 }
-                //success!
+                catch (ArgumentNullException)
+                {
+                    error.reportID = ErrorReport.FAILURE;
+                    error.description = "Found no pictures with that hash!";
+                    return null;
+                }
+                // Otherwise, success!
                 return specificPicture;
             }
 
@@ -108,12 +114,12 @@ namespace SoftwareEng
         // By: Bill Sanders
         // Edited Last: 3/28/13
         /// <summary>
-        /// Retrieves a specific photo instance from a combination of the AlbumID and its Photo ID in that album
+        /// Retrieves a specific photo instance from a combination of the AlbumID and the photo's ID in that album
         /// </summary>
         /// <param name="albumID">The unique ID of the album</param>
-        /// <param name="photoID">The unique ID of the image in that album</param>
+        /// <param name="idInAlbum">The ID number of the image in that album</param>
         /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
-        private XElement util_getAlbumDBPhotoNode(int albumID, int photoID)
+        private XElement util_getAlbumDBPhotoNode(int albumID, int idInAlbum)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -124,7 +130,7 @@ namespace SoftwareEng
             XElement photoInstance = null;
             try
             {
-                photoInstance = util_getAlbumDBPhotoNode(errorReport, albumNode, photoID);
+                photoInstance = util_getAlbumDBPhotoNode(errorReport, albumNode, idInAlbum);
             }
             catch
             {
@@ -180,9 +186,9 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="error"></param>
         /// <param name="albumNode"></param>
-        /// <param name="photoUID"></param>
+        /// <param name="idInAlbum"></param>
         /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
-        private XElement util_getAlbumDBPhotoNode(ErrorReport error, XElement albumNode, int photoUID)
+        private XElement util_getAlbumDBPhotoNode(ErrorReport error, XElement albumNode, int idInAlbum)
         {
             try
             {
@@ -190,7 +196,7 @@ namespace SoftwareEng
                 // Return an (XElement) picture with the matching uid if it exists
                 // Throws exception if it doesn't find exactly 1 match
                 return (from c in albumNode.Element("albumPhotos").Elements("picture")
-                        where (int)c.Attribute("uid") == photoUID
+                        where (int)c.Attribute("idInAlbum") == idInAlbum
                         select c).Single();
             }
             catch
@@ -204,8 +210,7 @@ namespace SoftwareEng
         //--------------------------------------------------------
         //By: Ryan Moe
         //Edited Last: Bill Sanders, 3/29/13
-        //This adds a picture to JUST the picture database.
-        //Does not use the UID or the albumName from the newPictureData.
+        // This adds a picture to JUST the picture database.
         private ErrorReport util_addPicToPhotoDB(ErrorReport errorReport, ComplexPhotoData newPictureData)
         {
 
@@ -260,26 +265,25 @@ namespace SoftwareEng
                 return;
             }
 
-            // UID for a photo is unique to an album in the albums database.
-            newPicture.UID = util_getNextUID(specificAlbum.Element("albumPhotos"), "picture", 1);
+            // idInAlbum for a photo is unique to an album in the albums database.
+            newPicture.idInAlbum = util_getNextUID(specificAlbum.Element("albumPhotos"), "picture", 1);
             // check to make sure we got a valid number back...
-            if (!util_checkUIDIsValid(newPicture.UID))
+            if (!util_checkIDIsValid(newPicture.idInAlbum))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Photo UID is not valid.";
+                errorReport.description = "Photo id for album is not valid.";
                 return;
             }
 
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
-                                            new XAttribute("uid", newPicture.UID),
+                                            new XAttribute("idInAlbum", newPicture.idInAlbum),
                                             new XAttribute("sha1", ByteArrayToString(newPicture.hash)),
                                             new XElement("name", albumName),
                                             new XElement("caption", newPicture.caption));
 
-            // Now add it to the albums database
+            // Now add it to the albums database in memory
             specificAlbum.Element("albumPhotos").Add(newPhotoElem);
-
         }
 
         //--------------------------------------------------------
@@ -287,41 +291,36 @@ namespace SoftwareEng
         //Edited Last:
         //Check UID's here.
         //RETURN: true if the uid is valid, false otherwise.
-        private Boolean util_checkUIDIsValid(int uid)
+        private Boolean util_checkIDIsValid(int id)
         {
-            if (uid > 0 && uid < UID_MAX_SIZE)
+            if (id > 0 && id < UID_MAX_SIZE)
                 return true;
             return false;
         }
 
         //--------------------------------------------------------
         // By: Bill Sanders
-        // Edited Last: 3/24/13
-        // TODO: Speed up by using a byte-array instead of string comparison in LINQ?
-        // could make this function return empty list (null?) if hash not found, photo ID if found
-        // (photo ID list! what if multiple photos, but not in the album we're adding into)
+        // Edited Last: 4/4/13
+        // Scrapped the lookup query in favor of calling a function
         /// <summary>
         /// Checks to see if the photo is unique (using a SHA1 hash) to the library
         /// </summary>
         /// <param name="hash">A hex string representation of the hash</param>
         /// <returns></returns>
-        private Boolean util_checkPhotoIsUnique(string hash)
+        private Boolean util_checkPhotoIsUniquetoLibrary(string hash)
         {
-            try
-            {
-                // Try to find a duplicate hash.
-                // throws exception if we find NO matching names.
-                (from c in _picturesDatabase.Elements("picture")
-                 where (String)c.Attribute("sha1") == hash
-                 select c).First();
-            }
-            // Did not find a matching hash, photo is unique
-            catch
+            var Element = util_getPhotoDBNode(null, hash);
+
+            // If the query returned null, we did not find a match, so the photo is unique
+            if (Element == null)
             {
                 return true;
             }
-            // Otherwise we found at least one match
-            return false;
+            // The query returned an element, which means this photo already exists.
+            else
+            {
+                return false;
+            }
         }
 
         //--------------------------------------------------------
@@ -357,7 +356,7 @@ namespace SoftwareEng
             }
             catch // we shouldn't be able to get here, as long as the databases exist
             {
-                //throw new ArgumentNullException();
+                throw new ArgumentNullException();
             }
             // If the query returned true, the picture is already in the album, and therefore NOT unique
             return !photoExistsInAlbum;
@@ -513,7 +512,7 @@ namespace SoftwareEng
             int newUID;//the UID we will search against and return eventually.
 
             //error checking the starting point.
-            if (util_checkUIDIsValid(potentialUID))
+            if (util_checkIDIsValid(potentialUID))
             {
                 newUID = potentialUID;
             }
@@ -556,9 +555,10 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
+        //Edited Last: Bill Sanders 4/1/13
         //load the database from disk into memory.
         // BS: This function is being slated for merging with util_openPicturesXML
+        // Note that this does not set the in-memory DB to an XDocument, but rather the first element in it
         private void util_openAlbumsXML(ErrorReport error)
         {
             try
@@ -578,9 +578,10 @@ namespace SoftwareEng
 
         //-------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
+        //Edited Last: Bill Sanders 4/1/13
         //load the database from disk into memory.
         // BS: This function is being slated for merging with util_openAlbumXML
+        // Note that this does not set the in-memory DB to an XDocument, but rather the first element in it
         private void util_openPicturesXML(ErrorReport error)
         {
             try
@@ -666,25 +667,25 @@ namespace SoftwareEng
         //Try and keep this updated if new fields are added to complexPhotoData.
         private ComplexPhotoData util_convertPhotoNodeToComplexPhotoData(ErrorReport errorReport, XElement elem)
         {
-            ComplexPhotoData data = new ComplexPhotoData();
+            ComplexPhotoData photoObj = new ComplexPhotoData();
 
             //TRANSFER ALL DATA TO THE DATA CLASS HERE.
             try
             {
-                data.UID = (int)elem.Attribute("UID");
-                data.hash = StringToByteArray((string)elem.Attribute("SHA1"));
-                data.refCount = (int)elem.Attribute("refCount");
-                data.path = elem.Element("filePath").Value;
-                data.extension = (String)elem.Element("filePath").Attribute("extension");
+                photoObj.UID = (int)elem.Attribute("UID");
+                photoObj.hash = StringToByteArray((string)elem.Attribute("SHA1"));
+                photoObj.refCount = (int)elem.Attribute("refCount");
+                photoObj.path = elem.Element("filePath").Value;
+                photoObj.extension = (String)elem.Element("filePath").Attribute("extension");
             }
             catch
             {
                 errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Error converting XElement to struct.";
+                errorReport.description = "Error converting XElement to data object.";
                 return null;
             }
 
-            return data;
+            return photoObj;
         }
 
         //----------------------------------------------------------------------
@@ -692,15 +693,15 @@ namespace SoftwareEng
         //Edited Last:
         //use this to convert a photo element into a simplePhotoData data class.
         //Try and keep this updated if new fields are added to simplePhotoData.
-        private SimplePhotoData util_convertPhotoElemToSimpleStruct(ErrorReport errorReport, XElement elem)
+        private SimplePhotoData util_convertPhotoElemToSimplePhotoData(ErrorReport errorReport, XElement elem)
         {
-            SimplePhotoData data = new SimplePhotoData();
+            SimplePhotoData photoObj = new SimplePhotoData();
 
             //TRANSFER ALL DATA TO THE DATA CLASS HERE.
             try
             {
-                data.UID = (int)elem.Attribute("UID");
-                data.picturesNameInAlbum = elem.Element("name").Value;
+                photoObj.idInAlbum = (int)elem.Attribute("idInAlbum");
+                photoObj.Name = elem.Element("name").Value;
 
             }
             catch
@@ -710,7 +711,7 @@ namespace SoftwareEng
                 return null;
             }
 
-            return data;
+            return photoObj;
         }
 
         //-------------------------------------------------------------------------
@@ -737,14 +738,15 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last: Bill Sanders, added comments (4/3/13)
+        //Edited Last: Bill Sanders, added comments (4/3/13), thumbnail generation
+        // Currently, as a side effect, this function also generates thumbnails.
         /// <summary>
         /// Copies a picture from a source to the library on the filesystem.
         /// </summary>
         /// <param name="errorReport"></param>
         /// <param name="srcPicFullFilepath"></param>
         /// <param name="picNameInLibrary"></param>
-        /// <returns></returns>
+        /// <returns>A string representing the path of the new file.</returns>
         private String util_copyPicToLibrary(ErrorReport errorReport, String srcPicFullFilepath, String picNameInLibrary)
         {
             //check if file exists first!!!
