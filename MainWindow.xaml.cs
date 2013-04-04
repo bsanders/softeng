@@ -33,6 +33,9 @@ namespace SoftwareEng
     /// </summary> 
     public partial class MainWindow : Window
     {
+        // A handy shortcut to the settings class...
+        Properties.Settings Settings = Properties.Settings.Default;
+
         //DATABINDING SOURCE 
         ReadOnlyObservableCollection<SimpleAlbumData> listOfAlbums;
 
@@ -59,13 +62,13 @@ namespace SoftwareEng
             // Set the library path to be in the User's application data folder under "PhotoBomber Studios" for now.
             String libraryPath = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Properties.Settings.Default.OrgName, 
-                Properties.Settings.Default.PhotoLibraryName);
+                Settings.OrgName, 
+                Settings.PhotoLibraryName);
 
             bombaDeFotos = new PhotoBomb();
             bombaDeFotos.init(guiConstructorCallback,
-                Properties.Settings.Default.AlbumXMLFile,
-                Properties.Settings.Default.PhotoXMLFile,
+                Settings.AlbumXMLFile,
+                Settings.PhotoXMLFile,
                 libraryPath);
 
             hideAddAlbumBox();

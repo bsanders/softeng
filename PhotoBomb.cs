@@ -32,6 +32,8 @@ namespace SoftwareEng
     //it is the public part of the PhotoBomb class.
     public partial class PhotoBomb
     {
+        // A handy shortcut to the settings class...
+        Properties.Settings Settings = Properties.Settings.Default;
         //----------------------------------------------
 
         //By: Ryan Moe

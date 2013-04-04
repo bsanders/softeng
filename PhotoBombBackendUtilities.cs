@@ -563,7 +563,7 @@ namespace SoftwareEng
         {
             try
             {
-                _albumsDatabase = XDocument.Load(albumsDatabasePath).Element(Properties.Settings.Default.XMLRootElement);
+                _albumsDatabase = XDocument.Load(albumsDatabasePath).Element(Settings.XMLRootElement);
             }
             catch
             {
@@ -585,7 +585,7 @@ namespace SoftwareEng
         {
             try
             {
-                _picturesDatabase = XDocument.Load(picturesDatabasePath).Element(Properties.Settings.Default.XMLRootElement);
+                _picturesDatabase = XDocument.Load(picturesDatabasePath).Element(Settings.XMLRootElement);
             }
             catch
             {
@@ -907,11 +907,10 @@ namespace SoftwareEng
                 srcPath,
                 System.IO.Path.Combine(
                     libraryPath,
-                    Properties.Settings.Default.PhotoLibraryThumbsDir,
+                    Settings.PhotoLibraryThumbsDir,
                     picName),
                 Imazen.LightResize.JobOptions.CreateParentDirectory
             );
-
 
             return error;
         }

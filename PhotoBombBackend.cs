@@ -103,7 +103,7 @@ namespace SoftwareEng
                 //if a backup already exists, throw error.
                 try
                 {
-                    Directory.Move(libraryPath, (libraryPath + Properties.Settings.Default.PhotoLibraryBackupName));
+                    Directory.Move(libraryPath, (libraryPath + Settings.PhotoLibraryBackupName));
                 }
                 catch
                 {
@@ -129,7 +129,7 @@ namespace SoftwareEng
 
             //make the new database xml files
             XDocument initDB = new XDocument();
-            XElement root = new XElement(Properties.Settings.Default.XMLRootElement);
+            XElement root = new XElement(Settings.XMLRootElement);
             initDB.Add(root);
             try
             {
@@ -625,7 +625,7 @@ namespace SoftwareEng
             //Change me if you want the default album name to be different.
             if (pictureNameInAlbum == "")
             {
-                pictureNameInAlbum = Properties.Settings.Default.DefaultImageName + " " + newPicture.UID.ToString();
+                pictureNameInAlbum = Settings.DefaultImageName + " " + newPicture.UID.ToString();
             }
 
             //Move picture and get a new path for the picture in our storage.
