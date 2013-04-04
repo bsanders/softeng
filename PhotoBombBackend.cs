@@ -993,8 +993,11 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
             
+            // Searches through the albumsCollection and finds the first album with a matching UID
             var albumToRemove = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
+            // ... and then deletes it.
             _albumsCollection.Remove(albumToRemove);
+            // _albumsCollection is an ObservableCollection and should be updated automatically
 
             // Commenting this out, as the above should be more efficient.
             ////need to update _albumsCollection observable collection by removing the album with this UID
