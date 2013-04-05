@@ -11,6 +11,7 @@
  *                     pressed the X to cancel creation.
  *                     Implementing gui functions to delete an album via the context menu's
  *                     delete button(X button).
+ * 4/4/13 Ryan Causey: Fixed a bug where on recovery two recovery albums would appear in the library view.
  */ 
 using System;
 using System.Collections.Generic;
@@ -269,6 +270,7 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(dummyCallback));
             }
         }
 
@@ -307,6 +309,7 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(dummyCallback));
             }
         }
 
