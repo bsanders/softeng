@@ -14,6 +14,7 @@
  * 4/4/13 Ryan Causey: changed the existing rebuild database function and added supporting functions to
  *                     take all the existing photos and consolidate them into a single backup album.
  *                     Fixed a bug with rebuildBackend function that caused two recovery albums to appear.
+ *                     Fixed a bug where backend would not initialize properly on first program start.
  **/
 using System;
 using System.Collections.Generic;
@@ -108,36 +109,25 @@ namespace SoftwareEng
         private void rebuildBackendOnFilesystem_backend(generic_callback guiCallback)
         {
             ErrorReport errorReport = new ErrorReport();
+            bool recover = true;
 
-            /*/if the library folder existed, rename it.
-            if (Directory.Exists(libraryPath))
+            //if the library folder does not exist, we are not recovering because there is nothing to recover. Sorry =(
+            if (!Directory.Exists(libraryPath))
             {
-                //if a backup already exists, throw error.
+                //now make a new library folder
                 try
                 {
-                    Directory.Move(libraryPath, (libraryPath + Settings.PhotoLibraryBackupName));
+                    Directory.CreateDirectory(libraryPath);
                 }
                 catch
                 {
                     errorReport.reportID = ErrorReport.FAILURE;
-                    errorReport.description = "Couldn't backup (rename) the old library folder.  If you have a library backup already, please remove it.";
+                    errorReport.description = "Unable to create the new library folder.";
                     guiCallback(errorReport);
                     return;
                 }
-            }//if*/
-
-            /*/now make a new library folder
-            try
-            {
-                Directory.CreateDirectory(libraryPath);
-            }
-            catch
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Unable to create the new library folder.";
-                guiCallback(errorReport);
-                return;
-            }*/
+                recover = false;
+            }            
 
             //make the new database xml files
             XDocument initDB = new XDocument();
@@ -170,8 +160,11 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
 
-            //build the backup album and add all the photos to that album
-            addPhotoBackup(errorReport, buildBackupAlbum(errorReport));
+            //build the backup album and add all the photos to that album if we can
+            if (recover)
+            {
+                addPhotoBackup(errorReport, buildBackupAlbum(errorReport)); 
+            }
 
             guiCallback(errorReport);
         }
