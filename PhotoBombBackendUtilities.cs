@@ -372,16 +372,30 @@ namespace SoftwareEng
         private Boolean util_checkPhotoIsUniqueToAlbum(int albumID, string hash)
         {
             // start by assuming the photo does not exist in this album
-            Boolean photoExistsInAlbum = false;
+            //Boolean photoExistsInAlbum = false;
+            XElement photo = util_getAlbumDBPhotoNode(albumID, hash);
+            
+            // If the photo lookup returns null, the photo is not in this album, so the photo woudl be unique to this album
+            if (photo == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            /*
             try
             {
+//                XElement album = util_getAlbum(null, albumID);
                 // Try to find a duplicate hash in this album.
                 // Note: this may be working inefficiently.
                 // Join every picture element from both databases, where the pictures have the same sha1
                 // Of those, we only care about the ones where the picture has the sha1 we're looking for
                 // finally, of those, we only care about the cases where the that match exists in the album we're interested in.
                 // This query then returns true if it found an item matching these criteria, or false if it did not.
-                photoExistsInAlbum = (from picDB in _picturesDatabase.Elements("picture")
+                photoExistsInAlbum =
+                          (from picDB in _picturesDatabase.Elements("picture")
                            join picAlbDB in _albumsDatabase.Descendants("picture")
                            on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
                            where (string)picDB.Attribute("sha1") == hash
@@ -394,6 +408,7 @@ namespace SoftwareEng
             }
             // If the query returned true, the picture is already in the album, and therefore NOT unique
             return !photoExistsInAlbum;
+            */
         }
 
         //--------------------------------------------------------
