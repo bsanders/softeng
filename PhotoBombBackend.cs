@@ -13,6 +13,7 @@
  *                     and will automatically update the GUI.
  * 4/4/13 Ryan Causey: changed the existing rebuild database function and added supporting functions to
  *                     take all the existing photos and consolidate them into a single backup album.
+ *                     Fixed a bug with rebuildBackend function that caused two recovery albums to appear.
  **/
 using System;
 using System.Collections.Generic;
@@ -165,11 +166,8 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
 
-            //build the backup album
-            buildBackupAlbum(errorReport);
-
-            //add all the photos to that album
-            addPhotoBackup(errorReport, _albumsCollection.First().UID);
+            //build the backup album and add all the photos to that album
+            addPhotoBackup(errorReport, buildBackupAlbum(errorReport));
 
             guiCallback(errorReport);
         }
@@ -186,7 +184,7 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="errorReport">ErrorReport object to be updated</param>
         /// <returns>ErrorReport</returns>
-        private ErrorReport buildBackupAlbum(ErrorReport errorReport)
+        private int buildBackupAlbum(ErrorReport errorReport)
         {
             //empty the existing album collection
             _albumsCollection.Clear();
@@ -206,16 +204,13 @@ namespace SoftwareEng
             //if adding to the album database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                return errorReport;
+                return -1;
             }
 
             //save to disk.
             saveAlbumsXML_backend(null);
 
-            //need to update the _albumsCollection observableCollection to reflect this addition in the GUI
-            _albumsCollection.Add(backupAlbum); //adds to end of collection
-
-            return errorReport;
+            return backupAlbum.UID;
         }
 
         /*
@@ -233,6 +228,13 @@ namespace SoftwareEng
         /// <returns>ErrorReport</returns>
         private ErrorReport addPhotoBackup(ErrorReport errorReport, int albumUID)
         {
+            if (albumUID == -1)
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Failed to create recovery album";
+                return errorReport;
+            }
+
             //set up a directory info object from the path
             DirectoryInfo libraryDir = new DirectoryInfo(libraryPath);
 
