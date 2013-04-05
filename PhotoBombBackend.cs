@@ -873,7 +873,7 @@ namespace SoftwareEng
                         // util_convertPhotoNodeToComplexPhotoData() currently expects a node from the picsDB
                         secondPhotoInAlbum = util_getPhotoDBNode(null, (string)secondPhotoInAlbum.Attribute("sha1"));
                         // Set the thumbnail.
-                        util_setAlbumThumbnail(thisAlbum, util_convertPhotoNodeToComplexPhotoData(null, secondPhotoInAlbum));
+                        util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(errorReport, secondPhotoInAlbum, albumUID));
                     }
                     catch (Exception ex)
                     {
@@ -967,6 +967,7 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
+            // TODO: implement deleting thumbnails, too.
             // First try to delete it from the filesystem
             try
             {

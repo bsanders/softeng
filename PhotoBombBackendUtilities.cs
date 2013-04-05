@@ -309,14 +309,22 @@ namespace SoftwareEng
         /// <param name="photoObject"></param>
         private void util_setAlbumThumbnail(XElement albumNode, ComplexPhotoData photoObject)
         {
-            string thumbPath = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Settings.OrgName,
-                Settings.PhotoLibraryThumbsDir,
-                Settings.lrgThumbDir,
-                photoObject.UID.ToString(),
-                photoObject.extension
-                );
+            string thumbPath;
+            if ((albumNode != null) && (photoObject != null))
+            {
+                thumbPath = System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    Settings.OrgName,
+                    Settings.PhotoLibraryThumbsDir,
+                    Settings.lrgThumbDir,
+                    photoObject.UID.ToString(),
+                    photoObject.extension
+                    );
+            }
+            else
+            {
+                thumbPath = "";
+            }
             albumNode.Element("thumbnailPath").Value = thumbPath;
         }
 
@@ -713,6 +721,7 @@ namespace SoftwareEng
         //-------------------------------------------------------------------
         //By: Bill Sanders
         //Edited Last: 4/5/13
+        // This function replaces the function util_convertPhotoNodeToComplexPhotoData() below.
         /// <summary>
         /// Combines the data from both databases for a specific photo instance.
         /// </summary>
@@ -752,7 +761,7 @@ namespace SoftwareEng
             return photoObj;
         }
 
-
+        // BS: (4/5/13) Commenting this function out, as util_getComplexPhotoData() now suits the programs needs better.
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
@@ -764,28 +773,28 @@ namespace SoftwareEng
         /// <param name="errorReport"></param>
         /// <param name="elem"></param>
         /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
-        private ComplexPhotoData util_convertPhotoNodeToComplexPhotoData(ErrorReport errorReport, XElement elem)
-        {
-            ComplexPhotoData photoObj = new ComplexPhotoData();
-
-            //TRANSFER ALL DATA TO THE DATA CLASS HERE.
-            try
-            {
-                photoObj.UID = (int)elem.Attribute("UID");
-                photoObj.hash = StringToByteArray((string)elem.Attribute("SHA1"));
-                photoObj.refCount = (int)elem.Attribute("refCount");
-                photoObj.path = elem.Element("filePath").Value;
-                photoObj.extension = (String)elem.Element("filePath").Attribute("extension");
-            }
-            catch
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Error converting XElement to data object.";
-                return null;
-            }
-
-            return photoObj;
-        }
+        //private ComplexPhotoData util_convertPhotoNodeToComplexPhotoData(ErrorReport errorReport, XElement elem)
+        //{
+        //    ComplexPhotoData photoObj = new ComplexPhotoData();
+        //
+        //    //TRANSFER ALL DATA TO THE DATA CLASS HERE.
+        //    try
+        //    {
+        //        photoObj.UID = (int)elem.Attribute("UID");
+        //        photoObj.hash = StringToByteArray((string)elem.Attribute("SHA1"));
+        //        photoObj.refCount = (int)elem.Attribute("refCount");
+        //        photoObj.path = elem.Element("filePath").Value;
+        //        photoObj.extension = (String)elem.Element("filePath").Attribute("extension");
+        //    }
+        //    catch
+        //    {
+        //        errorReport.reportID = ErrorReport.FAILURE;
+        //        errorReport.description = "Error converting XElement to data object.";
+        //        return null;
+        //    }
+        //
+        //    return photoObj;
+        //}
         
         //----------------------------------------------------------------------
         //By: Ryan Moe
