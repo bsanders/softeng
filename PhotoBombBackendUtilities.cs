@@ -711,6 +711,49 @@ namespace SoftwareEng
         }//method
 
         //-------------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 4/5/13
+        /// <summary>
+        /// Combines the data from both databases for a specific photo instance.
+        /// </summary>
+        /// <param name="errorReport"></param>
+        /// <param name="albumDBPhotoNode">An XElement of a picture from the Album DB</param>
+        /// <param name="albumUID">The unique ID number of the album the photo instance is in</param>
+        /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
+        private ComplexPhotoData util_getComplexPhotoData(ErrorReport errorReport, XElement albumDBPhotoNode, int albumUID)
+        {
+            // We have all the data we need from the AlbumDB,
+            // but the PhotoDB has important data as well.
+            XElement photoDBNode = util_getPhotoDBNode(errorReport, (string)albumDBPhotoNode.Attribute("sha1"));
+
+            ComplexPhotoData photoObj = new ComplexPhotoData();
+
+            //TRANSFER ALL DATA TO THE DATA CLASS HERE.
+            try
+            {
+                // PhotoDB data
+                photoObj.UID = (int)photoDBNode.Attribute("UID");
+                photoObj.hash = StringToByteArray((string)photoDBNode.Attribute("SHA1"));
+                photoObj.refCount = (int)photoDBNode.Attribute("refCount");
+                photoObj.path = photoDBNode.Element("filePath").Value;
+                photoObj.extension = (String)photoDBNode.Element("filePath").Attribute("extension");
+                // AlbumDB data
+                photoObj.idInAlbum = (int)albumDBPhotoNode.Attribute("idInAlbum");
+                photoObj.name = albumDBPhotoNode.Element("name").Value;
+                photoObj.caption = albumDBPhotoNode.Element("caption").Value;
+            }
+            catch
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Error converting XElement to data object.";
+                return null;
+            }
+
+            return photoObj;
+        }
+
+
+        //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
         //use this to convert a photo element into a complexPhotoData data class.
@@ -743,7 +786,7 @@ namespace SoftwareEng
 
             return photoObj;
         }
-
+        
         //----------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
