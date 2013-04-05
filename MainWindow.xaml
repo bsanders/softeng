@@ -6,11 +6,11 @@
     
         xmlns:SoftwareEngControls="clr-namespace:SoftwareEng"
     
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" x:Name="mainWindow" 
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects" xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" x:Name="mainWindow" 
         mc:Ignorable="d" 
         x:Class="SoftwareEng.MainWindow"
     
-        Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}">
+        Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}">
     
     <Window.Resources>
 
@@ -62,22 +62,85 @@
 
         <DataTemplate x:Key="LibraryListItemFrontTemplate">
             <Grid x:Name="libraryItemBackGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}">
+            	<VisualStateManager.CustomVisualStateManager>
+            		<ei:ExtendedVisualStateManager/>
+            	</VisualStateManager.CustomVisualStateManager>
+            	<VisualStateManager.VisualStateGroups>
+            		<VisualStateGroup x:Name="ItemSelectedState">
+            			<VisualStateGroup.Transitions>
+            				<VisualTransition GeneratedDuration="0:0:1" To="VisualState">
+            					<VisualTransition.GeneratedEasingFunction>
+            						<CircleEase EasingMode="EaseIn"/>
+            					</VisualTransition.GeneratedEasingFunction>
+            					<ei:ExtendedVisualStateManager.TransitionEffect>
+            						<ee:RippleTransitionEffect/>
+            					</ei:ExtendedVisualStateManager.TransitionEffect>
+            					<Storyboard>
+            						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="libraryItemBackGrid">
+            							<EasingColorKeyFrame KeyTime="0:0:0.6" Value="#FF224161"/>
+            						</ColorAnimationUsingKeyFrames>
+            						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="image1">
+            							<EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0.9"/>
+            						</DoubleAnimationUsingKeyFrames>
+            						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="image1">
+            							<EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0.9"/>
+            						</DoubleAnimationUsingKeyFrames>
+            					</Storyboard>
+            				</VisualTransition>
+            				<VisualTransition From="VisualState" GeneratedDuration="0:0:1"/>
+            			</VisualStateGroup.Transitions>
+            			<VisualState x:Name="VisualState">
+            				<Storyboard>
+            					<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="image1">
+            						<EasingDoubleKeyFrame KeyTime="0" Value="0.9"/>
+            					</DoubleAnimationUsingKeyFrames>
+            					<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="image1">
+            						<EasingDoubleKeyFrame KeyTime="0" Value="0.9"/>
+            					</DoubleAnimationUsingKeyFrames>
+            					<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="libraryItemBackGrid" RepeatBehavior="Forever">
+            						<EasingColorKeyFrame KeyTime="0" Value="#FF224161">
+            							<EasingColorKeyFrame.EasingFunction>
+            								<CircleEase EasingMode="EaseIn"/>
+            							</EasingColorKeyFrame.EasingFunction>
+            						</EasingColorKeyFrame>
+            						<EasingColorKeyFrame KeyTime="0:0:0.6" Value="#FF1C2327">
+            							<EasingColorKeyFrame.EasingFunction>
+            								<CircleEase EasingMode="EaseIn"/>
+            							</EasingColorKeyFrame.EasingFunction>
+            						</EasingColorKeyFrame>
+            					</ColorAnimationUsingKeyFrames>
+            				</Storyboard>
+            			</VisualState>
+            		</VisualStateGroup>
+            	</VisualStateManager.VisualStateGroups>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="37"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.Background>
-                    <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+                    <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
                 
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="White" FontFamily="monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0">
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0">
                     <TextBlock.Background>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                     </TextBlock.Background>
                 </TextBlock>
-                <Image x:Name="image1" Stretch="UniformToFill" Source="ImagesResources2012/missing Image.png" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" />
+                <Image x:Name="image1" Stretch="UniformToFill" Source="ImagesResources2012/missing Image.png" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
+                	<Image.RenderTransform>
+                		<TransformGroup>
+                			<ScaleTransform/>
+                			<SkewTransform/>
+                			<RotateTransform/>
+                			<TranslateTransform/>
+                		</TransformGroup>
+                	</Image.RenderTransform>
+                </Image>
                 
             </Grid>
+        	<DataTemplate.Triggers>
+        		<Trigger Property="ContentControl.Content" Value="{x:Null}"/>
+        	</DataTemplate.Triggers>
         </DataTemplate>
 
 
@@ -315,7 +378,7 @@
                             <Image x:Name="slideshowButtonLibraryImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="viewMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemLibraryButton_Click">
-                            <Image x:Name="viewButtonLibraryImage" Source="ImagesResources2012/resource_32xLG.png" Stretch="Fill"/>
+                            <Image x:Name="viewButtonLibraryImage" Source="ImagesResources2012/resource_16xLG.png" Stretch="Fill"/>
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
@@ -353,9 +416,7 @@
                     </ListBox.ItemsPanel>
                 </ListBox>
                 
-                <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" Margin="0,25,0,0">
-
-                </VirtualizingStackPanel>
+                <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" Margin="0,25,0,0"/>
 
 
 
@@ -388,6 +449,11 @@
                 
                 
                 <ProgressBar HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden" Background="{DynamicResource PhotoBomberProgressBarBrush}"/>
+                <Popup AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                	<Grid Background="#FFE5E5E5">
+                		<ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200"/>
+                	</Grid>
+                </Popup>
 
 
             </Grid>
