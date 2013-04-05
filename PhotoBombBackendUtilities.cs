@@ -797,31 +797,32 @@ namespace SoftwareEng
         //    return photoObj;
         //}
         
+        // Bill: (4/5/13) Function is unused, commenting out for now
         //----------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
         //use this to convert a photo element into a simplePhotoData data class.
         //Try and keep this updated if new fields are added to simplePhotoData.
-        private SimplePhotoData util_convertPhotoElemToSimplePhotoData(ErrorReport errorReport, XElement elem)
-        {
-            SimplePhotoData photoObj = new SimplePhotoData();
-
-            //TRANSFER ALL DATA TO THE DATA CLASS HERE.
-            try
-            {
-                photoObj.idInAlbum = (int)elem.Attribute("idInAlbum");
-                photoObj.Name = elem.Element("name").Value;
-
-            }
-            catch
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Error getting required data from photo element.";
-                return null;
-            }
-
-            return photoObj;
-        }
+        //private SimplePhotoData util_convertPhotoElemToSimplePhotoData(ErrorReport errorReport, XElement elem)
+        //{
+        //    SimplePhotoData photoObj = new SimplePhotoData();
+        //
+        //    //TRANSFER ALL DATA TO THE DATA CLASS HERE.
+        //    try
+        //    {
+        //        photoObj.idInAlbum = (int)elem.Attribute("idInAlbum");
+        //        photoObj.Name = elem.Element("name").Value;
+        //
+        //    }
+        //    catch
+        //    {
+        //        errorReport.reportID = ErrorReport.FAILURE;
+        //        errorReport.description = "Error getting required data from photo element.";
+        //        return null;
+        //    }
+        //
+        //    return photoObj;
+        //}
 
         //-------------------------------------------------------------------------
         //By: Ryan Moe
