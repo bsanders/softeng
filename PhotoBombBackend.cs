@@ -276,7 +276,7 @@ namespace SoftwareEng
                 newPicture.path = fi.FullName;
 
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
-                newPicture.refCount = util_getPicRefCount(ByteArrayToString(newPicture.hash));
+                newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
                 newPicture.refCount++;
                 // if this is a new picture, we add it to the db
                 if (newPicture.refCount == 1)
@@ -780,7 +780,7 @@ namespace SoftwareEng
             String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
 
             //Move picture and get a new path for the picture in our storage.
-            newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
+            newPicture.path = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
             //error checking
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
@@ -790,7 +790,7 @@ namespace SoftwareEng
             newPicture.extension = photoExtension;
 
             // Get the refcount (will get zero if the pic is brand new) and increment it.
-            newPicture.refCount = util_getPicRefCount(ByteArrayToString(newPicture.hash));
+            newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
             newPicture.refCount++;
             // if this is a new picture, we add it to the db
             if (newPicture.refCount == 1)
