@@ -16,161 +16,168 @@
 
 
         <DataTemplate x:Key="AlbumListItemBackTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
-            <Grid x:Name="albumItemBackGrid" Background="#FF404040">
-                <Label Content="Name:" Height="28" HorizontalAlignment="Left" Margin="0,46.5,0,0" x:Name="nameLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="44.154,46.5,0,0" x:Name="nameLabelBack" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <Label Content="UID:" Height="28" HorizontalAlignment="Left" Margin="0,80,0,0" x:Name="UidLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="38,80,0,0" x:Name="UidLabel" VerticalAlignment="Top" Background="#FFE4E4E4" />
+            <Grid x:Name="albumItemBackGrid">
+                <Grid.Background>
+                    <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
+                </Grid.Background>
+                <TextBlock Text="Name:" Height="28" HorizontalAlignment="Left" Margin="0,46.5,0,0" x:Name="nameLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="Label" Height="28" HorizontalAlignment="Left" Margin="44.154,46.5,0,0" x:Name="nameLabelBack" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="UID:" Height="28" HorizontalAlignment="Left" Margin="0,80,0,0" x:Name="UidLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="Label" Height="28" HorizontalAlignment="Left" Margin="38,80,0,0" x:Name="UidLabel" VerticalAlignment="Top" Background="#FFE4E4E4" />
 
                 <!--
-                <Label Content="Date Created:" Height="28" HorizontalAlignment="Left" Margin="0,114,0,0" Name="creationDateTag" VerticalAlignment="Top" />
-                <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="88,114,0,0" Name="dateLabel" VerticalAlignment="Top" />
+                <TextBlock Text="Date Created:" Height="28" HorizontalAlignment="Left" Margin="0,114,0,0" Name="creationDateTag" VerticalAlignment="Top" />
+                <TextBlock Text="Label" Height="28" HorizontalAlignment="Left" Margin="88,114,0,0" Name="dateLabel" VerticalAlignment="Top" />
         
-                <Label Content="Number of Photos" Height="28" HorizontalAlignment="Left" Margin="0,148,0,0" Name="label3" VerticalAlignment="Top" />
-                <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="114,148,0,0" Name="numberLabel" VerticalAlignment="Top" />
-                -->
+                <TextBlock Text="Number of Photos" Height="28" HorizontalAlignment="Left" Margin="0,148,0,0" Name="label3" VerticalAlignment="Top" />
+                <TextBlock Text="Label" Height="28" HorizontalAlignment="Left" Margin="114,148,0,0" Name="numberLabel" VerticalAlignment="Top" />
+                
 
                 <Ellipse Fill="#FFB0CBEF" Stroke="Black" Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="32" Margin="0,0,7,7"/>
+                -->
             </Grid>
         </DataTemplate>
 
 
 
         <DataTemplate x:Key="AlbumListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:SimplePhotoData}">
-            <Grid x:Name="albumItemFrontGrid" Background="#FF404040">
+            <Grid x:Name="albumItemFrontGrid">
+                <Grid.Background>
+                    <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
+                </Grid.Background>
                 <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill"/>
-                <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,44,0" Background="#FFE4E4E4" Width="Auto" Content="" />
-                <Ellipse Fill="#FFB0CBEF" HorizontalAlignment="Right" Height="32" Margin="0,0,7,7" Stroke="Black" VerticalAlignment="Bottom" Width="32"/>
+                <TextBlock Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,44,0" Background="#FFE4E4E4" Width="Auto"/>
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="LibraryListItemBackTemplate" DataType="{x:Type SoftwareEngControls:SimpleAlbumData}">
-            <Grid x:Name="albumItemFrontGrid" Background="#FF1C2327">
+            <Grid x:Name="libraryItemFrontGrid">
+                <Grid.Background>
+                    <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
+                </Grid.Background>
                 <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding}"/>
                 <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Background="#00E4E4E4" Width="Auto" Content="{Binding albumName}" Foreground="#AAFFFFFF" />
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="LibraryListItemFrontTemplate">
-            <Grid x:Name="albumItemBackGrid" Background="#FF1C2327">
-                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding}"/>
-                <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Background="#00E4E4E4" Width="Auto" Content="{Binding albumName}" Foreground="#AAFFFFFF" />
+            <Grid x:Name="libraryItemBackGrid" Margin="-2,0" Height="{Binding Value, ElementName=thumbnailSizeSlider}">
+                <Grid.Background>
+                    <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+                </Grid.Background>
+                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Uniform" Source="ImagesResources2012/missing Image.png" />
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Width="Auto" Text="{Binding albumName}" Foreground="White" FontFamily="monofur" TextWrapping="Wrap" Padding="0,0,4,0" >
+                    <TextBlock.Background>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
+                    </TextBlock.Background>
+                </TextBlock>
             </Grid>
         </DataTemplate>
 
 
 
         <DataTemplate x:Key="ListItemTemplate">
-            <Grid x:Name="grid">
-                <Border x:Name="ItemFrontSideContainer" Width="200" Margin="0" Height="200">
-                    <Border x:Name="ItemFrontSide"  Background="Transparent">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="Control.PreviewMouseDoubleClick">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <!-- Make the Viewport3D visible only for the duration of the rotation. -->
-                                        <ObjectAnimationUsingKeyFrames
+            <DataTemplate.Resources>
+                    <Storyboard x:Key="flipToBackAnimation">
+                        <!-- Make the Viewport3D visible only for the duration of the rotation. -->
+                        <ObjectAnimationUsingKeyFrames
                                            Storyboard.TargetName="object3D"
                                            Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+                            <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
+                        </ObjectAnimationUsingKeyFrames>
 
-                                        <!-- Make the background element visible. (It won't actually appear until it is faded in right at the end of the animation.) -->
-                                        <ObjectAnimationUsingKeyFrames
+                        <!-- Make the background element visible. (It won't actually appear until it is faded in right at the end of the animation.) -->
+                        <ObjectAnimationUsingKeyFrames
                                            Storyboard.TargetName="ItemBackSideContainer"
                                            Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
-                                        </ObjectAnimationUsingKeyFrames>
+                            <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
+                        </ObjectAnimationUsingKeyFrames>
 
 
-                                        <!-- Hide the foreground element. It will already be invisible by this time
+                        <!-- Hide the foreground element. It will already be invisible by this time
                                          because we fade it out right at the start of the animation. However, until
                                          we set its Visibility to Hidden, it will still be visible to the mouse... -->
-                                        <ObjectAnimationUsingKeyFrames
+                        <ObjectAnimationUsingKeyFrames
                                            Storyboard.TargetName="ItemFrontSideContainer"
                                            Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
+                        </ObjectAnimationUsingKeyFrames>
 
 
-                                        <!-- Fade the front wrapper out. The Viewport3D is behind us, so it'll fade into
+                        <!-- Fade the front wrapper out. The Viewport3D is behind us, so it'll fade into
                                          view at this point. The reason for fading is to avoid a visible step as we
                                          switch from the real UI to the copy projected onto the 3D model. -->
-                                        <DoubleAnimation To="0" Duration="0:0:0.05"
+                        <DoubleAnimation To="0" Duration="0:0:0.05"
                                            Storyboard.TargetName="ItemFrontSideContainer"
                                            Storyboard.TargetProperty="Opacity" />
 
-                                        <!-- Fade the back wrapper in. Once the spin completes, we fade the real back UI
+                        <!-- Fade the back wrapper in. Once the spin completes, we fade the real back UI
                                          in over the Viewport3D - using a fade to avoid a sudden jolt between the
                                          slightly fuzzy 3D look and the real UI. -->
-                                        <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05" To="1"
+                        <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05" To="1"
                                            Storyboard.TargetName="ItemBackSideContainer"
                                            Storyboard.TargetProperty="Opacity" />
 
-                                        <!-- 3D animation. Move the camera out slightly as we spin, so the model fits entirely
+                        <!-- 3D animation. Move the camera out slightly as we spin, so the model fits entirely
                                         within the field of view. Rotate the model 180 degrees. -->
-                                        <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
+                        <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
                                            BeginTime="0:0:0.05" Duration="0:0:0.5" AutoReverse="True" DecelerationRatio="0.3"
                                            Storyboard.TargetName="camera"
                                            Storyboard.TargetProperty="(ProjectionCamera.Position)" />
-                                        <DoubleAnimation From="0" To="180" AccelerationRatio="0.3" DecelerationRatio="0.3"
+                        <DoubleAnimation From="0" To="180" AccelerationRatio="0.3" DecelerationRatio="0.3"
                                            BeginTime="0:0:0.05" Duration="0:0:1"
                                            Storyboard.TargetName="rotate"
                                            Storyboard.TargetProperty="Angle" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
-                        <ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource LibraryListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
-                    </Border>
-                </Border>
+                    </Storyboard>
 
-                <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0">
-                    <Border x:Name="ItemBackSide"  Background="Transparent" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonUp">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="UIElement.MouseLeftButtonDown">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames
+                <Storyboard x:Key="flipToFrontAnimation">
+                    <ObjectAnimationUsingKeyFrames
                            Storyboard.TargetName="object3D"
                            Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
 
-                                        <ObjectAnimationUsingKeyFrames
+                    <ObjectAnimationUsingKeyFrames
                            Storyboard.TargetName="ItemFrontSideContainer"
                            Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
+                    </ObjectAnimationUsingKeyFrames>
+                    <ObjectAnimationUsingKeyFrames
                            Storyboard.TargetName="ItemBackSideContainer"
                            Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
 
-                                        <DoubleAnimation To="0" Duration="0:0:0.05"
+                    <DoubleAnimation To="0" Duration="0:0:0.05"
                            Storyboard.TargetName="ItemBackSideContainer"
                            Storyboard.TargetProperty="Opacity" />
-                                        <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05"
+                    <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05"
                            Storyboard.TargetName="ItemFrontSideContainer"
                            Storyboard.TargetProperty="Opacity" />
 
-                                        <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
+                    <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
                            BeginTime="0:0:0.05" Duration="0:0:0.5" AutoReverse="True" DecelerationRatio="0.3"
                            Storyboard.TargetName="camera"
                            Storyboard.TargetProperty="(ProjectionCamera.Position)" />
-                                        <DoubleAnimation From="180" To="360" AccelerationRatio="0.3" DecelerationRatio="0.3"
+                    <DoubleAnimation From="180" To="360" AccelerationRatio="0.3" DecelerationRatio="0.3"
                            BeginTime="0:0:0.05" Duration="0:0:1"
                            Storyboard.TargetName="rotate"
                            Storyboard.TargetProperty="Angle" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
+                </Storyboard>
+            </DataTemplate.Resources>
+            <Grid x:Name="grid" Margin="-2,0" Width="200" Height="200">
+                <Border x:Name="ItemFrontSideContainer" Width="Auto" Margin="0" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Label x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
+                        <ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource LibraryListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
+                    </Label>
+                </Border>
+
+                <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0">
+                    <Label x:Name="ItemBackSide"  Background="Transparent" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonUp" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                         <ContentPresenter x:Name="contentPresenterBack" ContentTemplate="{DynamicResource LibraryListItemBackTemplate}" Content="{Binding}"/>
-                    </Border>
+                    </Label>
                 </Border>
 
                 <Viewport3D Grid.Column="0" x:Name="object3D" Visibility="Hidden">
@@ -238,6 +245,14 @@
                 </Viewport3D>
 
             </Grid>
+        	<DataTemplate.Triggers>
+        		<EventTrigger RoutedEvent="Selector.Selected" SourceName="ItemFrontSide">
+        			<BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
+        		</EventTrigger>
+        		<EventTrigger RoutedEvent="Selector.Selected" SourceName="ItemBackSide">
+        			<BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
+        		</EventTrigger>
+        	</DataTemplate.Triggers>
         </DataTemplate>
         <Storyboard x:Key="DockAppear">
         	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
@@ -322,8 +337,11 @@
                 </Popup>   -->
 
 
-                <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0,25,0,0">
-                    <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource ListItemTemplate}" Background="#FF1C2327" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" PreviewMouseRightButtonUp="mainWindowAlbumList_MouseRightButtonUp" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" SelectionMode="Extended">
+                <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" Margin="0,25,0,0">
+                    <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" PreviewMouseRightButtonUp="mainWindowAlbumList_MouseRightButtonUp" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" SelectionMode="Extended" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.Background>
+                            <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+                        </ListBox.Background>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel/>
@@ -335,101 +353,39 @@
 
 
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="0,0,25,0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
-                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="1" Visibility="Hidden">
-                    <DockPanel.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#C7000000" Offset="1"/>
-                            <GradientStop Color="#C7383838"/>
-                            <GradientStop Color="#C7A7A7A7" Offset="0.581" />
-                            <GradientStop Color="#C7A7A7A7" Offset="0.372" />
-                        </LinearGradientBrush>
-                    </DockPanel.Background>
-                    <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addDockButton_Click">
-                        <Button.Background>
-                            <RadialGradientBrush>
-                                <GradientStop Color="#BD767676" Offset="0.698" />
-                                <GradientStop Color="#00C4C4C4" Offset="1" />
-                                <GradientStop Color="#AAFFFFFF" Offset="0.39" />
-                                <GradientStop Color="#B5000000" Offset="0.855" />
-                            </RadialGradientBrush>
-                        </Button.Background>
+                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="1" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockBrush}">
+                    <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addDockButton_Click" Background="{DynamicResource PhotoBomberDockButtonBrush}">
+
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48">
-                        <Button.Background>
-                            <RadialGradientBrush>
-                                <GradientStop Color="#BD767676" Offset="0.698" />
-                                <GradientStop Color="#00C4C4C4" Offset="1" />
-                                <GradientStop Color="#AAFFFFFF" Offset="0.39" />
-                                <GradientStop Color="#B5000000" Offset="0.855" />
-                            </RadialGradientBrush>
-                        </Button.Background>
+                    <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}">
+
                         <Image x:Name="libraryDockButtonImage" Source="ImagesResources2012/Arrow_UndoRevertRestore_16xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48">
-                        <Button.Background>
-                            <RadialGradientBrush>
-                                <GradientStop Color="#BD767676" Offset="0.698" />
-                                <GradientStop Color="#00C4C4C4" Offset="1" />
-                                <GradientStop Color="#AAFFFFFF" Offset="0.39" />
-                                <GradientStop Color="#B5000000" Offset="0.855" />
-                            </RadialGradientBrush>
-                        </Button.Background>
+                    <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                         <Image x:Name="clipboardDockButtonImage" Source="ImagesResources2012/WorkItem_32xLG.png" Stretch="None" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="aboutDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" Click="exitDockButton_Click" IsEnabled="False" Visibility="Hidden">
-                        <Button.Background>
-                            <RadialGradientBrush>
-                                <GradientStop Color="#BD767676" Offset="0.698" />
-                                <GradientStop Color="#00C4C4C4" Offset="1" />
-                                <GradientStop Color="#AAFFFFFF" Offset="0.39" />
-                                <GradientStop Color="#B5000000" Offset="0.855" />
-                            </RadialGradientBrush>
-                        </Button.Background>
+                    <Button x:Name="aboutDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" Click="exitDockButton_Click" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                         <Image x:Name="aboutDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Actions_5847.png" Opacity="0.8"/>
                     </Button>
-                    <Button x:Name="spareDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Collapsed">
-                        <Button.Background>
-                            <RadialGradientBrush>
-                                <GradientStop Color="#BD767676" Offset="0.698" />
-                                <GradientStop Color="#00C4C4C4" Offset="1" />
-                                <GradientStop Color="#AAFFFFFF" Offset="0.39" />
-                                <GradientStop Color="#B5000000" Offset="0.855" />
-                            </RadialGradientBrush>
-                        </Button.Background>
+                    <Button x:Name="spareDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Collapsed" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                         <Image x:Name="spareDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Button>
  
                     <StackPanel x:Name="ThumbnailControlStackPanel" Width="107" ToolTip="Controls the thumbnail size ">
                         <Label Content="Thumbnail Size" Height="20" x:Name="thumbnailSizeLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" FontWeight="Normal" />
-                        <Slider Height="23" x:Name="thumbnailSizeSlider" Width="100" />
+                        <Slider Height="23" x:Name="thumbnailSizeSlider" Width="100" TickPlacement="BottomRight" SmallChange="50" Maximum="250" Minimum="150" TickFrequency="50" LargeChange="97" IsSnapToTickEnabled="True" />
                     </StackPanel>
 
                 </DockPanel>
                 
                 
-                <ProgressBar HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden">
-                    <ProgressBar.Background>
-                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                            <GradientStop Color="#CC706767" Offset="0"/>
-                            <GradientStop Color="#CCA2A2A2" Offset="0.5"/>
-                            <GradientStop Color="#CC706767" Offset="1"/>
-                        </LinearGradientBrush>
-                    </ProgressBar.Background>
-                </ProgressBar>
+                <ProgressBar HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden" Background="{DynamicResource PhotoBomberProgressBarBrush}"/>
 
 
             </Grid>
         </Border>
-        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1">
-            <DockPanel.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FF979797" Offset="0.641"/>
-                    <GradientStop Color="#FF979797" Offset="0.249"/>
-                    <GradientStop Color="#FF343434"/>
-                    <GradientStop Color="Black" Offset="1"/>
-                </LinearGradientBrush>
-            </DockPanel.Background>
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Background="{DynamicResource PhotoBomberTitleBarBrush}">
             <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="6,6,0,0" Click="aboutButtonPressed_eventHandler" ToolTip="About PhotoBomber">
                 <Button.Background>
                     <RadialGradientBrush>
