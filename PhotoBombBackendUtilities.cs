@@ -700,6 +700,12 @@ namespace SoftwareEng
         //Edited Last:
         //use this to convert a photo element into a complexPhotoData data class.
         //Try and keep this updated if new fields are added to complexPhotoData.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="errorReport"></param>
+        /// <param name="elem"></param>
+        /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
         private ComplexPhotoData util_convertPhotoNodeToComplexPhotoData(ErrorReport errorReport, XElement elem)
         {
             ComplexPhotoData photoObj = new ComplexPhotoData();
