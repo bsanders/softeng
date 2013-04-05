@@ -305,8 +305,9 @@ namespace SoftwareEng
     //Last Edited Date: 3/31/13
     public class SimpleAlbumData : INotifyPropertyChanged
     {
-        private String albumNameValue;
-        private int UIDValue;
+        private String _albumName;
+        private int _UID;
+        private string _thumbnailPath;
         //add more information here if needed...
         //event for changing a property
         public event PropertyChangedEventHandler PropertyChanged;
@@ -315,16 +316,16 @@ namespace SoftwareEng
         {
             set
             {
-                if (value != albumNameValue)
+                if (value != _albumName)
                 {
-                    albumNameValue = value;
+                    _albumName = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("albumName");
                 }
             }
             get
             {
-                return this.albumNameValue;
+                return _albumName;
             }
         }
 
@@ -332,24 +333,42 @@ namespace SoftwareEng
         {
             set
             {
-                if (value != UIDValue)
+                if (value != _UID)
                 {
-                    UIDValue = value;
+                    _UID = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("UID");
                 }
             }
             get
             {
-                return UIDValue;
+                return _UID;
+            }
+        }
+
+        public string thumbnailPath
+        {
+            get
+            {
+                return _thumbnailPath;
+            }
+            set
+            {
+                if (value != _thumbnailPath)
+                {
+                    _thumbnailPath = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("thumbnailPath");
+                }
             }
         }
 
         //initialize vars.
         public SimpleAlbumData()
         {
-            albumNameValue = "";
-            UIDValue = -1;//indicates UID not set.
+            _albumName = "";
+            _UID = -1;//indicates UID not set.
+            _thumbnailPath = "";
         }
 
         /*
