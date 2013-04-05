@@ -358,9 +358,20 @@
 
 
     <Grid>
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="VisualStateGroup">
+    			<VisualState x:Name="VisualState">
+    				<Storyboard>
+    					<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="generalPurposeTextBox">
+    						<EasingColorKeyFrame KeyTime="0" Value="#FF057CF3"/>
+    					</ColorAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <Border x:Name="mainWindowFrame" Padding="6" Background="#001C2327">
             <Grid x:Name="grid">
-                <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" VerticalOffset="-60" HorizontalOffset="-60" >
+                <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" VerticalOffset="-60" HorizontalOffset="-60" PreviewMouseUp="PopupMouseClick_Handler" >
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#4DFFFFFF" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="False">
                         <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <Image x:Name="addButtonLibraryImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>

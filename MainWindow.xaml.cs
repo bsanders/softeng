@@ -827,6 +827,11 @@ namespace SoftwareEng
         public void dummyCallback(ErrorReport er)
         {
         }
+
+        private void PopupMouseClick_Handler(object sender, MouseButtonEventArgs e)
+        {
+            libraryContextMenu.IsOpen = false;
+        }
         /*******************************************************************
          * End Test Functions
          ******************************************************************/
