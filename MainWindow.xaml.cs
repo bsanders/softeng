@@ -329,7 +329,7 @@ namespace SoftwareEng
             //make sure an item is selected
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                //call another function that does shit here.
+                //call the backend to get all photos in this album.
                 bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
             }
         }
@@ -344,8 +344,8 @@ namespace SoftwareEng
         /// Callback for guiEnterAlbumView. Takes the returned ReadOnlyObservableCollection and binds the listView to it
         /// as well as swaps the data template.
         /// </summary>
-        /// <param name="error"></param>
-        /// <param name="picturesInAlbum"></param>
+        /// <param name="error">Error report from backend</param>
+        /// <param name="picturesInAlbum">Collection of photos in the album.</param>
         public void guiEnterAlbumView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
         {
             if (error.reportID == ErrorReport.FAILURE)
