@@ -436,6 +436,9 @@ namespace SoftwareEng
                 SimpleAlbumData userAlbum = new SimpleAlbumData();
 
                 userAlbum.UID = (int)thisAlbum.Attribute("uid");
+                
+                userAlbum.thumbnailPath = Convert.ToInt32(thisAlbum.Element("thumbnailImage").Value);
+
                 try
                 {
                     // Throws an exception if there is not exactly one albumName for a given album.
@@ -837,10 +840,54 @@ namespace SoftwareEng
         private ErrorReport removePictureFromAlbum_backend(generic_callback guiCallback, int idInAlbum, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
-            
-            // these two lines are kind of redundant, at the moment
+
+            XElement thisAlbum = util_getAlbum(errorReport, albumUID);
+
             // First get the instance of the photo (from the album DB!)
-            XElement thisPicture = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
+            XElement thisPicture = util_getAlbumDBPhotoNode(errorReport, thisAlbum, idInAlbum);
+
+            // check to see if we're removing the first photo in the album.
+            XElement firstPhotoInAlbum = (from c in thisAlbum.Descendants("picture") select c).FirstOrDefault();
+
+            // if we are deleting the first...
+            if ((int)firstPhotoInAlbum.Attribute("idInAlbum") == idInAlbum)
+            {
+                // if this is the first *and* last photo, set the thumbnailpath to empty string
+                if (thisAlbum.Descendants("picture").Count() == 1)
+                {
+                    thisAlbum.Element("thumbnailPath").Value = "";
+                }
+                else
+                {
+                    // Otherwise, we'll have to actually add the new thumbnail.
+
+                    XElement secondPhotoInAlbum = null;
+                    try
+                    {
+                        // Get the second element (soon to be first) and set it to be the thumbnail
+                        secondPhotoInAlbum = thisAlbum.Descendants("picture").ElementAt(1); // (0-indexed)
+                        // util_convertPhotoNodeToComplexPhotoData() currently expects a node from the picsDB
+                        secondPhotoInAlbum = util_getPhotoDBNode(null, (string)secondPhotoInAlbum.Attribute("sha1"));
+                        // Set the thumbnail.
+                        util_setAlbumThumbnail(thisAlbum, util_convertPhotoNodeToComplexPhotoData(null, secondPhotoInAlbum));
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex is ArgumentNullException ||
+                            ex is ArgumentOutOfRangeException)
+                        {
+                            // Don't stop removing this photo though...
+                            errorReport.reportID = ErrorReport.FAILURE;
+                            errorReport.warnings.Add("Failed to get second photo in the album, though count() returned >1.");
+                        }
+                        else
+                        {
+                            // Otherwise I'm not sure what the exception was, so re-throw it.
+                            throw;
+                        }
+                    }
+                }
+            }
 
             // Now delete that node
             errorReport = removePictureElement_backend(null, thisPicture);
