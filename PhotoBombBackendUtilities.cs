@@ -712,7 +712,7 @@ namespace SoftwareEng
             //construct the object we will be adding to the database.
             XElement newAlbum = new XElement("album",
                                             new XAttribute("uid", albumData.UID),
-                                            new XElement("thumbnailImage", albumData.thumbnailPath),
+                                            new XElement("thumbnailPath", albumData.thumbnailPath),
                                             new XElement("albumName", albumData.albumName),
                                             new XElement("albumPhotos"));
 
