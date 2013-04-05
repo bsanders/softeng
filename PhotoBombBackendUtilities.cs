@@ -42,22 +42,23 @@ namespace SoftwareEng
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
                 // There were multiple pictures...
-                catch (InvalidOperationException)
+                catch (Exception ex)
                 {
-                    error.reportID = ErrorReport.FAILURE;
-                    error.description = "Found more than one picture with that hash!";
-                    return null;
-                }
-                catch (ArgumentNullException)
-                {
-                    error.reportID = ErrorReport.FAILURE;
-                    error.description = "Found no pictures with that hash!";
-                    return null;
+                    if (ex is InvalidOperationException ||
+                        ex is ArgumentNullException)
+                    {
+                        error.reportID = ErrorReport.FAILURE;
+                        error.description = "Found more than one picture with that hash!";
+                        return null;
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
                 // Otherwise, success!
                 return specificPicture;
             }
-
             //database is not clean!
             else
             {
