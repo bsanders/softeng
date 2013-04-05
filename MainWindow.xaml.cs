@@ -443,6 +443,8 @@ namespace SoftwareEng
 
             acceptAddToolbarButton.Visibility = Visibility.Visible;
             cancelAddToolbarButton.Visibility = Visibility.Visible;
+
+            Keyboard.Focus(generalPurposeTextBox);
         }
 
         private void hideAddAlbumBox()

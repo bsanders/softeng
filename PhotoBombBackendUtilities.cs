@@ -275,6 +275,15 @@ namespace SoftwareEng
                 return;
             }
 
+            // check to see if this is going to be the first photo in an otherwise empty library...
+            XElement photoNeighbor = (from c in specificAlbum.Descendants("picture") select c).FirstOrDefault();
+            // ... If there are no neighbors, this is the solo photo in the album, and thus the first...
+            if (photoNeighbor == null)
+            {
+                // ... so set it to be the album thumbnail
+                util_setAlbumThumbnail(specificAlbum, newPicture);
+            }
+
             // Note as per requirements, the default photo name is the name of the album, plus its id number
             string nameInLibrary = specificAlbum.Name + " " + newPicture.idInAlbum;
 
@@ -287,6 +296,28 @@ namespace SoftwareEng
 
             // Now add it to the albums database in memory
             specificAlbum.Element("albumPhotos").Add(newPhotoElem);
+        }
+
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 4/4/13
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="albumNode"></param>
+        /// <param name="photoObject"></param>
+        private void util_setAlbumThumbnail(XElement albumNode, ComplexPhotoData photoObject)
+        {
+            string thumbPath = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                Settings.OrgName,
+                Settings.PhotoLibraryThumbsDir,
+                Settings.lrgThumbDir,
+                photoObject.UID.ToString(),
+                photoObject.extension
+                );
+            albumNode.Element("thumbnailPath").Value = thumbPath;
         }
 
         //--------------------------------------------------------
@@ -341,16 +372,30 @@ namespace SoftwareEng
         private Boolean util_checkPhotoIsUniqueToAlbum(int albumID, string hash)
         {
             // start by assuming the photo does not exist in this album
-            Boolean photoExistsInAlbum = false;
+            //Boolean photoExistsInAlbum = false;
+            XElement photo = util_getAlbumDBPhotoNode(albumID, hash);
+            
+            // If the photo lookup returns null, the photo is not in this album, so the photo woudl be unique to this album
+            if (photo == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            /*
             try
             {
+//                XElement album = util_getAlbum(null, albumID);
                 // Try to find a duplicate hash in this album.
                 // Note: this may be working inefficiently.
                 // Join every picture element from both databases, where the pictures have the same sha1
                 // Of those, we only care about the ones where the picture has the sha1 we're looking for
                 // finally, of those, we only care about the cases where the that match exists in the album we're interested in.
                 // This query then returns true if it found an item matching these criteria, or false if it did not.
-                photoExistsInAlbum = (from picDB in _picturesDatabase.Elements("picture")
+                photoExistsInAlbum =
+                          (from picDB in _picturesDatabase.Elements("picture")
                            join picAlbDB in _albumsDatabase.Descendants("picture")
                            on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
                            where (string)picDB.Attribute("sha1") == hash
@@ -363,6 +408,7 @@ namespace SoftwareEng
             }
             // If the query returned true, the picture is already in the album, and therefore NOT unique
             return !photoExistsInAlbum;
+            */
         }
 
         //--------------------------------------------------------
@@ -656,6 +702,7 @@ namespace SoftwareEng
             //construct the object we will be adding to the database.
             XElement newAlbum = new XElement("album",
                                             new XAttribute("uid", albumData.UID),
+                                            new XElement("thumbnailImage", albumData.thumbnailPath),
                                             new XElement("albumName", albumData.albumName),
                                             new XElement("albumPhotos"));
 
@@ -668,6 +715,12 @@ namespace SoftwareEng
         //Edited Last:
         //use this to convert a photo element into a complexPhotoData data class.
         //Try and keep this updated if new fields are added to complexPhotoData.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="errorReport"></param>
+        /// <param name="elem"></param>
+        /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
         private ComplexPhotoData util_convertPhotoNodeToComplexPhotoData(ErrorReport errorReport, XElement elem)
         {
             ComplexPhotoData photoObj = new ComplexPhotoData();
