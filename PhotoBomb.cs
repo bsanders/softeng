@@ -470,6 +470,7 @@ namespace SoftwareEng
         private String _path;
         private String _extension;
         private String _caption;
+        private String _name;
         private int _refCount;
         
         //event for changing a property
@@ -584,6 +585,23 @@ namespace SoftwareEng
             }
         }
 
+        public string name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (value != _name)
+                {
+                    _name = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("name");
+                }
+            }
+        }
+
         public int refCount
         {
             get
@@ -607,6 +625,7 @@ namespace SoftwareEng
             path = "";
             extension = "";
             caption = "";
+            name = "";
             refCount = 0;
         }
 
