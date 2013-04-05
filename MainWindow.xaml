@@ -308,7 +308,7 @@
                         <Button x:Name="slideshowMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <Image x:Name="slideshowButtonLibraryImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="viewMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button x:Name="viewMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemLibraryButton_Click">
                             <Image x:Name="viewButtonLibraryImage" Source="ImagesResources2012/resource_32xLG.png" Stretch="Fill"/>
                         </Button>
                     </SoftwareEngControls:customRadialPanel>

@@ -5,6 +5,10 @@
  * callbacks so that the gui does not have to wait for the
  * backend to return some value (and block the user) it can
  * keep going and when a callback happens it can display that data.
+ * ******************************************************************************
+ * Changelog:
+ * 4/4/13 Ryan Causey: Edited the getAllPhotosInAlbum_callback delegate to support
+ *                     new ReadOnlyObservableCollection required for new GUI.
  **/
 
 using System;
@@ -22,7 +26,7 @@ namespace SoftwareEng
     //callback used with the getAllUserAlbumNames method.
     public delegate void getAllAlbumNames_callback(ErrorReport error, ReadOnlyObservableCollection<SimpleAlbumData> _albums);
 
-    public delegate void getAllPhotosInAlbum_callback(ErrorReport error, List<SimplePhotoData> _pictures);
+    public delegate void getAllPhotosInAlbum_callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> _pictures);
 
     public delegate void getPhotoByUID_callback(ErrorReport error, ComplexPhotoData picture);
 
