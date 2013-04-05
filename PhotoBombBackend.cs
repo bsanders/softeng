@@ -94,6 +94,9 @@ namespace SoftwareEng
             //the list of all albums to return to the gui.
             _albumsCollection = new ObservableCollection<SimpleAlbumData>();
 
+            //the list of photographs to be used to populate the album view
+            _photosCollection = new ObservableCollection<ComplexPhotoData>();
+
             guiCallback(errorReport);
         }
 
@@ -559,6 +562,9 @@ namespace SoftwareEng
         {
             ErrorReport error = new ErrorReport();
 
+            //first thing to do is clear the old data out of the photoCollection
+            _photosCollection.Clear();
+
             //make sure the album database is valid.
             if (!util_checkAlbumDatabase(error))
             {
@@ -594,7 +600,7 @@ namespace SoftwareEng
                 try
                 {
                     //bills new swanky function here
-                    _photosCollection.Add(pic);
+                    _photosCollection.Add(util_getComplexPhotoData(error, subElement, AlbumUID));
                 }
                 catch
                 {

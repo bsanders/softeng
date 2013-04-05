@@ -43,6 +43,7 @@ namespace SoftwareEng
 
         //DATABINDING SOURCE 
         ReadOnlyObservableCollection<SimpleAlbumData> listOfAlbums;
+        ReadOnlyObservableCollection<ComplexPhotoData> listOfPhotos;
 
         //--didn't know what to call it, so I named it the literal spanish translation
         public SoftwareEng.PhotoBomb bombaDeFotos;
@@ -351,13 +352,16 @@ namespace SoftwareEng
             {
                 //show user an error message that retrieving the pictures did not work
             }
-            else if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
-            {
-                //show the user an error message that some of the pictures could not be retrieved
-            }
             else
             {
+                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    //show the user a notification that some pictures are not displayed
+                }
                 //swap data templates and change bindings.
+                mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
+                listOfPhotos = picturesInAlbum;
+                mainWindowAlbumList.ItemsSource = listOfPhotos;
             }
         }
 
