@@ -13,6 +13,8 @@
  *                     delete button(X button).
  * 4/4/13 Ryan Causey: Fixed a bug where on recovery two recovery albums would appear in the library view.
  *                     Implementing switching to the album view on the album view context menu click.
+ * 4/5/13 Ryan Causey: Implemented GUI function to provide a means to transition back to the Library View from
+ *                     the album view.
  */ 
 using System;
 using System.Collections.Generic;
@@ -43,6 +45,7 @@ namespace SoftwareEng
 
         //DATABINDING SOURCE 
         ReadOnlyObservableCollection<SimpleAlbumData> listOfAlbums;
+        ReadOnlyObservableCollection<ComplexPhotoData> listOfPhotos;
 
         //--didn't know what to call it, so I named it the literal spanish translation
         public SoftwareEng.PhotoBomb bombaDeFotos;
@@ -328,7 +331,7 @@ namespace SoftwareEng
             //make sure an item is selected
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                //call another function that does shit here.
+                //call the backend to get all photos in this album.
                 bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
             }
         }
@@ -343,22 +346,40 @@ namespace SoftwareEng
         /// Callback for guiEnterAlbumView. Takes the returned ReadOnlyObservableCollection and binds the listView to it
         /// as well as swaps the data template.
         /// </summary>
-        /// <param name="error"></param>
-        /// <param name="picturesInAlbum"></param>
+        /// <param name="error">Error report from backend</param>
+        /// <param name="picturesInAlbum">Collection of photos in the album.</param>
         public void guiEnterAlbumView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
         {
             if (error.reportID == ErrorReport.FAILURE)
             {
                 //show user an error message that retrieving the pictures did not work
             }
-            else if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
-            {
-                //show the user an error message that some of the pictures could not be retrieved
-            }
             else
             {
+                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    //show the user a notification that some pictures are not displayed
+                }
                 //swap data templates and change bindings.
+                mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
+                listOfPhotos = picturesInAlbum;
+                mainWindowAlbumList.ItemsSource = listOfPhotos;
             }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function to transition back to the library view by changing the data template and item source.
+        /// </summary>
+        private void guiReturnToLibraryView()
+        {
+            mainWindowAlbumList.ItemTemplate = this.Resources["LibraryListItemFrontTemplate"] as DataTemplate;
+            mainWindowAlbumList.ItemsSource = listOfAlbums;
         }
 
 
@@ -771,6 +792,23 @@ namespace SoftwareEng
         {
             //there shall be a function call that does shit
             guiEnterAlbumView();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Event handler for the return to library view button on the dock.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void clipBoardDockButton_Click(object sender, RoutedEventArgs e)
+        {
+            //call some goddamned function here
+            guiReturnToLibraryView();
         }
 
         /********************************************************************

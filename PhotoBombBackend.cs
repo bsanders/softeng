@@ -14,6 +14,7 @@
  * 4/4/13 Ryan Causey: changed the existing rebuild database function and added supporting functions to
  *                     take all the existing photos and consolidate them into a single backup album.
  *                     Fixed a bug with rebuildBackend function that caused two recovery albums to appear.
+ *                     Fixed a bug where backend would not initialize properly on first program start.
  **/
 using System;
 using System.Collections.Generic;
@@ -93,6 +94,9 @@ namespace SoftwareEng
             //the list of all albums to return to the gui.
             _albumsCollection = new ObservableCollection<SimpleAlbumData>();
 
+            //the list of photographs to be used to populate the album view
+            _photosCollection = new ObservableCollection<ComplexPhotoData>();
+
             guiCallback(errorReport);
         }
 
@@ -108,36 +112,25 @@ namespace SoftwareEng
         private void rebuildBackendOnFilesystem_backend(generic_callback guiCallback)
         {
             ErrorReport errorReport = new ErrorReport();
+            bool recover = true;
 
-            /*/if the library folder existed, rename it.
-            if (Directory.Exists(libraryPath))
+            //if the library folder does not exist, we are not recovering because there is nothing to recover. Sorry =(
+            if (!Directory.Exists(libraryPath))
             {
-                //if a backup already exists, throw error.
+                //now make a new library folder
                 try
                 {
-                    Directory.Move(libraryPath, (libraryPath + Settings.PhotoLibraryBackupName));
+                    Directory.CreateDirectory(libraryPath);
                 }
                 catch
                 {
                     errorReport.reportID = ErrorReport.FAILURE;
-                    errorReport.description = "Couldn't backup (rename) the old library folder.  If you have a library backup already, please remove it.";
+                    errorReport.description = "Unable to create the new library folder.";
                     guiCallback(errorReport);
                     return;
                 }
-            }//if*/
-
-            /*/now make a new library folder
-            try
-            {
-                Directory.CreateDirectory(libraryPath);
-            }
-            catch
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Unable to create the new library folder.";
-                guiCallback(errorReport);
-                return;
-            }*/
+                recover = false;
+            }            
 
             //make the new database xml files
             XDocument initDB = new XDocument();
@@ -170,8 +163,11 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
 
-            //build the backup album and add all the photos to that album
-            addPhotoBackup(errorReport, buildBackupAlbum(errorReport));
+            //build the backup album and add all the photos to that album if we can
+            if (recover)
+            {
+                addPhotoBackup(errorReport, buildBackupAlbum(errorReport)); 
+            }
 
             guiCallback(errorReport);
         }
@@ -283,7 +279,7 @@ namespace SoftwareEng
                 newPicture.path = fi.FullName;
 
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
-                newPicture.refCount = util_getPicRefCount(ByteArrayToString(newPicture.hash));
+                newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
                 newPicture.refCount++;
                 // if this is a new picture, we add it to the db
                 if (newPicture.refCount == 1)
@@ -566,6 +562,9 @@ namespace SoftwareEng
         {
             ErrorReport error = new ErrorReport();
 
+            //first thing to do is clear the old data out of the photoCollection
+            _photosCollection.Clear();
+
             //make sure the album database is valid.
             if (!util_checkAlbumDatabase(error))
             {
@@ -601,7 +600,7 @@ namespace SoftwareEng
                 try
                 {
                     //bills new swanky function here
-                    _photosCollection.Add(pic);
+                    _photosCollection.Add(util_getComplexPhotoData(error, subElement, AlbumUID));
                 }
                 catch
                 {
@@ -787,7 +786,7 @@ namespace SoftwareEng
             String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
 
             //Move picture and get a new path for the picture in our storage.
-            newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
+            newPicture.path = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
             //error checking
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
@@ -797,7 +796,7 @@ namespace SoftwareEng
             newPicture.extension = photoExtension;
 
             // Get the refcount (will get zero if the pic is brand new) and increment it.
-            newPicture.refCount = util_getPicRefCount(ByteArrayToString(newPicture.hash));
+            newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
             newPicture.refCount++;
             // if this is a new picture, we add it to the db
             if (newPicture.refCount == 1)
@@ -873,7 +872,7 @@ namespace SoftwareEng
                         // util_convertPhotoNodeToComplexPhotoData() currently expects a node from the picsDB
                         secondPhotoInAlbum = util_getPhotoDBNode(null, (string)secondPhotoInAlbum.Attribute("sha1"));
                         // Set the thumbnail.
-                        util_setAlbumThumbnail(thisAlbum, util_convertPhotoNodeToComplexPhotoData(null, secondPhotoInAlbum));
+                        util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(errorReport, secondPhotoInAlbum, albumUID));
                     }
                     catch (Exception ex)
                     {
@@ -967,6 +966,7 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
+            // TODO: implement deleting thumbnails, too.
             // First try to delete it from the filesystem
             try
             {

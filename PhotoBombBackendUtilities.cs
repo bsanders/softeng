@@ -42,22 +42,23 @@ namespace SoftwareEng
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
                 // There were multiple pictures...
-                catch (InvalidOperationException)
+                catch (Exception ex)
                 {
-                    error.reportID = ErrorReport.FAILURE;
-                    error.description = "Found more than one picture with that hash!";
-                    return null;
-                }
-                catch (ArgumentNullException)
-                {
-                    error.reportID = ErrorReport.FAILURE;
-                    error.description = "Found no pictures with that hash!";
-                    return null;
+                    if (ex is InvalidOperationException ||
+                        ex is ArgumentNullException)
+                    {
+                        error.reportID = ErrorReport.FAILURE;
+                        error.description = "Found more than one picture with that hash!";
+                        return null;
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
                 // Otherwise, success!
                 return specificPicture;
             }
-
             //database is not clean!
             else
             {
@@ -215,7 +216,7 @@ namespace SoftwareEng
         {
 
             //if picture extension is not valid
-            if (!util_checkPictureExtension(newPictureData.extension))
+            if (!util_checkPhotoExtension(newPictureData.extension))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Extension is not valid.";
@@ -223,7 +224,7 @@ namespace SoftwareEng
             }
 
             //if path is not valid
-            if (!util_checkPicturePath(newPictureData.path))
+            if (!util_checkFilePath(newPictureData.path))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Path is not valid.";
@@ -250,9 +251,8 @@ namespace SoftwareEng
         /// Adds a photo to a specific album in the album database 
         /// </summary>
         /// <param name="errorReport"></param>
-        /// <param name="newPicture"></param>
-        /// <param name="albumUID"></param>
-        /// <param name="albumName"></param>
+        /// <param name="newPicture">An object with all the data necessary to create the picture in both DBs</param>
+        /// <param name="albumUID">The unique ID of the album</param>
         private void util_addPicToAlbumDB(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID)
         {
             //Get the specific album we will be adding to.
@@ -303,20 +303,30 @@ namespace SoftwareEng
         // By: Bill Sanders
         // Edited Last: 4/4/13
         /// <summary>
-        /// 
+        /// Sets the thumbnail path for an album.
         /// </summary>
-        /// <param name="albumNode"></param>
-        /// <param name="photoObject"></param>
+        /// <param name="albumNode">An XElement of the album to change the thumbnail of</param>
+        /// <param name="photoObject">A ComplexPhotoData object which contains the path information</param>
         private void util_setAlbumThumbnail(XElement albumNode, ComplexPhotoData photoObject)
         {
-            string thumbPath = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Settings.OrgName,
-                Settings.PhotoLibraryThumbsDir,
-                Settings.lrgThumbDir,
-                photoObject.UID.ToString(),
-                photoObject.extension
-                );
+            string thumbPath;
+            // If the objects look good, set up the (long...) path.
+            if ((albumNode != null) && (photoObject != null))
+            {
+                thumbPath = System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    Settings.OrgName,
+                    Settings.PhotoLibraryThumbsDir,
+                    Settings.lrgThumbDir,
+                    photoObject.UID.ToString(),
+                    photoObject.extension
+                    );
+            }
+            // If either of these objects is null, just invalidate the path
+            else
+            {
+                thumbPath = "";
+            }
             albumNode.Element("thumbnailPath").Value = thumbPath;
         }
 
@@ -340,8 +350,8 @@ namespace SoftwareEng
         /// Checks to see if the photo is unique (using a SHA1 hash) to the library
         /// </summary>
         /// <param name="hash">A hex string representation of the hash</param>
-        /// <returns></returns>
-        private Boolean util_checkPhotoIsUniquetoLibrary(string hash)
+        /// <returns>Returns True if the photo does not already exist in the library</returns>
+        private Boolean util_checkPhotoIsUniqueToLibrary(string hash)
         {
             var Element = util_getPhotoDBNode(null, hash);
 
@@ -416,7 +426,7 @@ namespace SoftwareEng
         //Edited Last:
         //Check a pictures extension.
         //RETURN: true if the extension is valid, false otherwise.
-        private Boolean util_checkPictureExtension(String extension)
+        private Boolean util_checkPhotoExtension(String extension)
         {
             //This is not being use right now because
             //this job has been given to the gui.
@@ -437,7 +447,7 @@ namespace SoftwareEng
         //Edited Last:
         //Check a picture's path.
         //RETURN: true if the uid is valid, false otherwise.
-        private Boolean util_checkPicturePath(String path)
+        private Boolean util_checkFilePath(String path)
         {
             if (path != "")
                 return true;
@@ -449,7 +459,7 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="hash">A string representing the hash value of the file.</param>
         /// <returns>An integer representing the number of times this photo appears in the the Album database</returns>
-        private int util_getPicRefCount(string hash)
+        private int util_getPhotoRefCount(string hash)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -713,6 +723,7 @@ namespace SoftwareEng
         //-------------------------------------------------------------------
         //By: Bill Sanders
         //Edited Last: 4/5/13
+        // This function replaces the function util_convertPhotoNodeToComplexPhotoData() below.
         /// <summary>
         /// Combines the data from both databases for a specific photo instance.
         /// </summary>
@@ -752,7 +763,7 @@ namespace SoftwareEng
             return photoObj;
         }
 
-
+        // BS: (4/5/13) Commenting this function out, as util_getComplexPhotoData() now suits the programs needs better.
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
@@ -764,54 +775,55 @@ namespace SoftwareEng
         /// <param name="errorReport"></param>
         /// <param name="elem"></param>
         /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
-        private ComplexPhotoData util_convertPhotoNodeToComplexPhotoData(ErrorReport errorReport, XElement elem)
-        {
-            ComplexPhotoData photoObj = new ComplexPhotoData();
-
-            //TRANSFER ALL DATA TO THE DATA CLASS HERE.
-            try
-            {
-                photoObj.UID = (int)elem.Attribute("UID");
-                photoObj.hash = StringToByteArray((string)elem.Attribute("SHA1"));
-                photoObj.refCount = (int)elem.Attribute("refCount");
-                photoObj.path = elem.Element("filePath").Value;
-                photoObj.extension = (String)elem.Element("filePath").Attribute("extension");
-            }
-            catch
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Error converting XElement to data object.";
-                return null;
-            }
-
-            return photoObj;
-        }
+        //private ComplexPhotoData util_convertPhotoNodeToComplexPhotoData(ErrorReport errorReport, XElement elem)
+        //{
+        //    ComplexPhotoData photoObj = new ComplexPhotoData();
+        //
+        //    //TRANSFER ALL DATA TO THE DATA CLASS HERE.
+        //    try
+        //    {
+        //        photoObj.UID = (int)elem.Attribute("UID");
+        //        photoObj.hash = StringToByteArray((string)elem.Attribute("SHA1"));
+        //        photoObj.refCount = (int)elem.Attribute("refCount");
+        //        photoObj.path = elem.Element("filePath").Value;
+        //        photoObj.extension = (String)elem.Element("filePath").Attribute("extension");
+        //    }
+        //    catch
+        //    {
+        //        errorReport.reportID = ErrorReport.FAILURE;
+        //        errorReport.description = "Error converting XElement to data object.";
+        //        return null;
+        //    }
+        //
+        //    return photoObj;
+        //}
         
+        // Bill: (4/5/13) Function is unused, commenting out for now
         //----------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
         //use this to convert a photo element into a simplePhotoData data class.
         //Try and keep this updated if new fields are added to simplePhotoData.
-        private SimplePhotoData util_convertPhotoElemToSimplePhotoData(ErrorReport errorReport, XElement elem)
-        {
-            SimplePhotoData photoObj = new SimplePhotoData();
-
-            //TRANSFER ALL DATA TO THE DATA CLASS HERE.
-            try
-            {
-                photoObj.idInAlbum = (int)elem.Attribute("idInAlbum");
-                photoObj.Name = elem.Element("name").Value;
-
-            }
-            catch
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Error getting required data from photo element.";
-                return null;
-            }
-
-            return photoObj;
-        }
+        //private SimplePhotoData util_convertPhotoElemToSimplePhotoData(ErrorReport errorReport, XElement elem)
+        //{
+        //    SimplePhotoData photoObj = new SimplePhotoData();
+        //
+        //    //TRANSFER ALL DATA TO THE DATA CLASS HERE.
+        //    try
+        //    {
+        //        photoObj.idInAlbum = (int)elem.Attribute("idInAlbum");
+        //        photoObj.Name = elem.Element("name").Value;
+        //
+        //    }
+        //    catch
+        //    {
+        //        errorReport.reportID = ErrorReport.FAILURE;
+        //        errorReport.description = "Error getting required data from photo element.";
+        //        return null;
+        //    }
+        //
+        //    return photoObj;
+        //}
 
         //-------------------------------------------------------------------------
         //By: Ryan Moe
@@ -846,7 +858,7 @@ namespace SoftwareEng
         /// <param name="srcPicFullFilepath"></param>
         /// <param name="picNameInLibrary"></param>
         /// <returns>A string representing the path of the new file.</returns>
-        private String util_copyPicToLibrary(ErrorReport errorReport, String srcPicFullFilepath, String picNameInLibrary)
+        private String util_copyPhotoToLibrary(ErrorReport errorReport, String srcPicFullFilepath, String picNameInLibrary)
         {
             //check if file exists first!!!
             //if the picture does NOT exist.
