@@ -437,7 +437,7 @@ namespace SoftwareEng
 
                 userAlbum.UID = (int)thisAlbum.Attribute("uid");
                 
-                userAlbum.thumbnailPath = thisAlbum.Element("thumbnailImage").Value;
+                userAlbum.thumbnailPath = thisAlbum.Element("thumbnailPath").Value;
 
                 try
                 {
