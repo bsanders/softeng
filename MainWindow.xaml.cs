@@ -13,6 +13,8 @@
  *                     delete button(X button).
  * 4/4/13 Ryan Causey: Fixed a bug where on recovery two recovery albums would appear in the library view.
  *                     Implementing switching to the album view on the album view context menu click.
+ * 4/5/13 Ryan Causey: Implemented GUI function to provide a means to transition back to the Library View from
+ *                     the album view.
  */ 
 using System;
 using System.Collections.Generic;
@@ -363,6 +365,21 @@ namespace SoftwareEng
                 listOfPhotos = picturesInAlbum;
                 mainWindowAlbumList.ItemsSource = listOfPhotos;
             }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function to transition back to the library view by changing the data template and item source.
+        /// </summary>
+        private void guiReturnToLibraryView()
+        {
+            mainWindowAlbumList.ItemTemplate = this.Resources["LibraryListItemFrontTemplate"] as DataTemplate;
+            mainWindowAlbumList.ItemsSource = listOfAlbums;
         }
 
 
@@ -775,6 +792,23 @@ namespace SoftwareEng
         {
             //there shall be a function call that does shit
             guiEnterAlbumView();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Event handler for the return to library view button on the dock.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void clipBoardDockButton_Click(object sender, RoutedEventArgs e)
+        {
+            //call some goddamned function here
+            guiReturnToLibraryView();
         }
 
         /********************************************************************
