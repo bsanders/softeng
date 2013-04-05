@@ -22,8 +22,8 @@
                 </Grid.Background>
                 <TextBlock Text="Name:" Height="28" HorizontalAlignment="Left" Margin="0,46.5,0,0" x:Name="nameLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
                 <TextBlock Text="Label" Height="28" HorizontalAlignment="Left" Margin="44.154,46.5,0,0" x:Name="nameLabelBack" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Text="UID:" Height="28" HorizontalAlignment="Left" Margin="0,80,0,0" x:Name="UidLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Text="Label" Height="28" HorizontalAlignment="Left" Margin="38,80,0,0" x:Name="UidLabel" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="UID:" Height="28" HorizontalAlignment="Left" Margin="0,80,0,0" x:Name="commentLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="Label" Height="28" HorizontalAlignment="Left" Margin="38,80,0,0" x:Name="commentLabel" VerticalAlignment="Top" Background="#FFE4E4E4" />
 
                 <!--
                 <TextBlock Text="Date Created:" Height="28" HorizontalAlignment="Left" Margin="0,114,0,0" Name="creationDateTag" VerticalAlignment="Top" />
@@ -65,8 +65,8 @@
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
                 </Grid.Background>
-                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Uniform" Source="ImagesResources2012/missing Image.png" />
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Width="Auto" Text="{Binding albumName}" Foreground="White" FontFamily="monofur" TextWrapping="Wrap" Padding="0,0,4,0" >
+                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Uniform" Source="ImagesResources2012/missing Image.png" HorizontalAlignment="Left" />
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="White" FontFamily="monofur" TextWrapping="WrapWithOverflow" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" ToolTip="{Binding albumName}">
                     <TextBlock.Background>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                     </TextBlock.Background>
@@ -290,7 +290,7 @@
 
     <Grid>
         <Border x:Name="mainWindowFrame" Padding="6" Background="#001C2327">
-            <Grid>
+            <Grid x:Name="grid">
                 <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" VerticalOffset="-60" HorizontalOffset="-60" >
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#4DFFFFFF" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="False">
                         <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -336,18 +336,19 @@
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>   -->
 
-
+                <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" PreviewMouseRightButtonUp="mainWindowAlbumList_MouseRightButtonUp" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" SelectionMode="Extended" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay, NotifyOnSourceUpdated=True}">
+                    <ListBox.Background>
+                        <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+                    </ListBox.Background>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+                
                 <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" Margin="0,25,0,0">
-                    <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" PreviewMouseRightButtonUp="mainWindowAlbumList_MouseRightButtonUp" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" SelectionMode="Extended" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListBox.Background>
-                            <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
-                        </ListBox.Background>
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                    </ListBox>
+
                 </VirtualizingStackPanel>
 
 
