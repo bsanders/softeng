@@ -275,6 +275,15 @@ namespace SoftwareEng
                 return;
             }
 
+            // check to see if this is going to be the first photo in an otherwise empty library...
+            XElement photoNeighbor = (from c in specificAlbum.Descendants("picture") select c).FirstOrDefault();
+            // ... If there are no neighbors, this is the solo photo in the album, and thus the first...
+            if (photoNeighbor == null)
+            {
+                // ... so set it to be the album thumbnail
+                util_setAlbumThumbnail(specificAlbum, newPicture);
+            }
+
             // Note as per requirements, the default photo name is the name of the album, plus its id number
             string nameInLibrary = specificAlbum.Name + " " + newPicture.idInAlbum;
 
@@ -287,6 +296,28 @@ namespace SoftwareEng
 
             // Now add it to the albums database in memory
             specificAlbum.Element("albumPhotos").Add(newPhotoElem);
+        }
+
+
+        //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last: 4/4/13
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="albumNode"></param>
+        /// <param name="photoObject"></param>
+        private void util_setAlbumThumbnail(XElement albumNode, ComplexPhotoData photoObject)
+        {
+            string thumbPath = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                Settings.OrgName,
+                Settings.PhotoLibraryThumbsDir,
+                Settings.lrgThumbDir,
+                photoObject.UID.ToString(),
+                photoObject.extension
+                );
+            albumNode.Element("thumbnailPath").Value = thumbPath;
         }
 
         //--------------------------------------------------------
@@ -656,6 +687,7 @@ namespace SoftwareEng
             //construct the object we will be adding to the database.
             XElement newAlbum = new XElement("album",
                                             new XAttribute("uid", albumData.UID),
+                                            new XElement("thumbnailImage", albumData.thumbnailPath),
                                             new XElement("albumName", albumData.albumName),
                                             new XElement("albumPhotos"));
 
