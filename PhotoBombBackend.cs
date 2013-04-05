@@ -54,7 +54,11 @@ namespace SoftwareEng
         /******************************************************************************
          * added for data binding
         ******************************************************************************/
+        //observable collection for albums
         private ObservableCollection<SimpleAlbumData> _albumsCollection;
+
+        //observable collection for pictures
+        private ObservableCollection<ComplexPhotoData> _photosCollection;
 
 
         //-----------------------------------------------------------------
@@ -552,7 +556,8 @@ namespace SoftwareEng
 
         //-----------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last: Bill Sanders, 3/27/13
+        //Edited Last: Ryan Causey
+        //Edited Date: 4/4/13
         // NOTE: this function is no longer sufficient (SimplePhotoData doesn't have the file path to display thumbnails, for example...)
         private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback, int AlbumUID)
         {
@@ -587,15 +592,13 @@ namespace SoftwareEng
 
             //Now lets get all the picture data from
             //the album and fill out the picture object list.
-            List<SimplePhotoData> _list = new List<SimplePhotoData>();
             foreach (XElement subElement in specificAlbum.Element("albumPhotos").Elements("picture"))
             {
-                SimplePhotoData pic = new SimplePhotoData();
+                ComplexPhotoData pic = new ComplexPhotoData();
                 try
                 {
-                    pic.idInAlbum = (int)subElement.Attribute("idInAlbum");
-                    pic.Name = (string)subElement.Element("name").Value;
-                    _list.Add(pic);
+                    //bills new swanky function here
+                    _photosCollection.Add(pic);
                 }
                 catch
                 {
@@ -604,7 +607,8 @@ namespace SoftwareEng
                 }
             }//foreach
 
-            guiCallback(error, _list);
+            ReadOnlyObservableCollection<ComplexPhotoData> picturesToGui = new ReadOnlyObservableCollection<ComplexPhotoData>(_photosCollection);
+            guiCallback(error, picturesToGui);
         }//method
 
         //----------------------------------------------------------------------

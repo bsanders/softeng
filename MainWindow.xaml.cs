@@ -12,6 +12,7 @@
  *                     Implementing gui functions to delete an album via the context menu's
  *                     delete button(X button).
  * 4/4/13 Ryan Causey: Fixed a bug where on recovery two recovery albums would appear in the library view.
+ *                     Implementing switching to the album view on the album view context menu click.
  */ 
 using System;
 using System.Collections.Generic;
@@ -310,6 +311,53 @@ namespace SoftwareEng
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(dummyCallback));
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created On: 4/4/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function to begin the transition to the album view from the library view.
+        /// </summary>
+        private void guiEnterAlbumView()
+        {
+            //make sure an item is selected
+            if (mainWindowAlbumList.SelectedItem != null)
+            {
+                //call another function that does shit here.
+                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created On: 4/4/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Callback for guiEnterAlbumView. Takes the returned ReadOnlyObservableCollection and binds the listView to it
+        /// as well as swaps the data template.
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="picturesInAlbum"></param>
+        public void guiEnterAlbumView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
+        {
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                //show user an error message that retrieving the pictures did not work
+            }
+            else if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            {
+                //show the user an error message that some of the pictures could not be retrieved
+            }
+            else
+            {
+                //swap data templates and change bindings.
             }
         }
 
@@ -704,6 +752,23 @@ namespace SoftwareEng
         {
             //call a function here.
             guiDeleteSelectedAlbum();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/4/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Event handler for the Click event on the view album button on the context menu.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void viewMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            //there shall be a function call that does shit
+            guiEnterAlbumView();
         }
 
         /********************************************************************
