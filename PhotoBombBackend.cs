@@ -419,7 +419,7 @@ namespace SoftwareEng
 
         //-----------------------------------------------------------------
         // By: Bill Sanders, based on Ryan Moe's earlier function
-        // last edited: 3/31/13
+        // last edited: 4/6/13
         // Last Edited By: Ryan Causey
         /// <summary>
         /// Retrieves a list of all albums in the albums.xml file, sent back via the callback.
@@ -428,6 +428,9 @@ namespace SoftwareEng
         private void getAllAlbums_backend(getAllAlbumNames_callback guiCallback)
         {
             ErrorReport error = new ErrorReport();
+
+            //clear the collection as we are refreshing it
+            _albumsCollection.Clear();
 
             // Ensure the database is valid before proceeding
             if (!util_checkAlbumDatabase(error))

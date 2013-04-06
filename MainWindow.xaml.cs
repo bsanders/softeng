@@ -130,6 +130,8 @@ namespace SoftwareEng
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
+        * Edited Last By: Ryan Causey
+        * Edited Last Date: 4/6/13
         * parameters: bool that determines whether list is cleared or repopulated
         * return type: void
         * purpose: refreshes list of albums
@@ -417,6 +419,8 @@ namespace SoftwareEng
         private void guiReturnToLibraryView()
         {
             mainWindowAlbumList.ItemTemplate = this.Resources["LibraryListItemFrontTemplate"] as DataTemplate;
+            //refresh the view to make sure we update with new album thumbnails
+            populateAlbumView(true);
             mainWindowAlbumList.ItemsSource = listOfAlbums;
             //collapse the go back button
             libraryDockButton.Visibility = Visibility.Collapsed;

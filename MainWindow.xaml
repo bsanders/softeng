@@ -55,7 +55,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                     </TextBlock.Background>
                 </TextBlock>
-                <Image x:Name="image1" Stretch="UniformToFill" Source="{Binding medThumbPath}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
+                <Image x:Name="image1" Stretch="UniformToFill" Source="{Binding lgThumbPath}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
                 </Image>
             </Grid>
         </DataTemplate>
