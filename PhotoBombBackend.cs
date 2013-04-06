@@ -152,6 +152,15 @@ namespace SoftwareEng
                 return;
             }
 
+            createDefaultXML(errorReport);
+
+            // Check the XML creation for bugs
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
             //Load the new databases into memory.
             // BS: These functions are being slated for merging together
             util_openAlbumsXML(errorReport);
@@ -163,8 +172,9 @@ namespace SoftwareEng
                 return;
             }
 
-            saveAlbumsXML_backend(null);
-            savePicturesXML_backend(null);
+            // Not needed, createDefaultXML() saves these.
+            //saveAlbumsXML_backend(null);
+            //savePicturesXML_backend(null);
 
             //build the backup album and add all the photos to that album if we can
             if (recover)

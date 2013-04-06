@@ -115,7 +115,7 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                showErrorMessage("Failed at guiConstructorCallback"); //super temporary
+                //showErrorMessage("Failed at guiConstructorCallback"); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }

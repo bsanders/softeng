@@ -59,5 +59,32 @@ namespace SoftwareEng {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string newAlbumNameLabel {
+            get {
+                return ResourceManager.GetString("newAlbumNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string newImageCommentLabel {
+            get {
+                return ResourceManager.GetString("newImageCommentLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string newImageNameLabel {
+            get {
+                return ResourceManager.GetString("newImageNameLabel", resourceCulture);
+            }
+        }
     }
 }
