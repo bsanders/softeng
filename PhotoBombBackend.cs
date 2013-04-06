@@ -272,17 +272,17 @@ namespace SoftwareEng
                 //Change me if you want to start naming the pictures differently in the library.
                 String picNameInLibrary = newPicture.UID.ToString() + fi.Extension;
 
-                //rename the file
-                fi.MoveTo(Path.Combine(libraryPath, picNameInLibrary));
-
-                newPicture.fullPath = fi.FullName;
-
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
                 newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
                 newPicture.refCount++;
                 // if this is a new picture, we add it to the db
                 if (newPicture.refCount == 1)
                 {
+                    //rename the file
+                    fi.MoveTo(Path.Combine(libraryPath, picNameInLibrary));
+
+                    newPicture.fullPath = fi.FullName;
+
                     util_addPicToPhotoDB(errorReport, newPicture);
                 }
                 else
@@ -807,19 +807,6 @@ namespace SoftwareEng
             //Change me if you want to start naming the pictures differently in the library.
             String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
 
-            //Move picture and get a new path for the picture in our storage.
-            newPicture.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
-            //error checking
-            if (errorReport.reportID == ErrorReport.FAILURE)
-            {
-                return errorReport;
-            }
-
-            //generate the thumbnails and get their path.
-            newPicture.smThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.smThumbSize);
-            newPicture.medThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.medThumbSize);
-            newPicture.lgThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.lrgThumbSize);
-
             newPicture.extension = photoExtension;
 
             // Get the refcount (will get zero if the pic is brand new) and increment it.
@@ -828,7 +815,18 @@ namespace SoftwareEng
             // if this is a new picture, we add it to the db
             if (newPicture.refCount == 1)
             {
+                newPicture.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
+                //error checking
+                if (errorReport.reportID == ErrorReport.FAILURE)
+                {
+                    return errorReport;
+                }
                 util_addPicToPhotoDB(errorReport, newPicture);
+                //Move picture and get a new path for the picture in our storage.
+                //generate the thumbnails and get their path.
+                newPicture.smThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.smThumbSize);
+                newPicture.medThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.medThumbSize);
+                newPicture.lgThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.lrgThumbSize);
             }
             else
             {
