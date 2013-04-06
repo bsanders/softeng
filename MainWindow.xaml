@@ -480,11 +480,15 @@
 
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}">
+                    <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed">
+
+                        <Image x:Name="addPhotosDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
+                    </Button>
+                    <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="libraryDockButton_Click">
 
                         <Image x:Name="libraryDockButtonImage" Source="ImagesResources2012/Arrow_UndoRevertRestore_16xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="clipBoardDockButton_Click">
+                    <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                         <Image x:Name="clipboardDockButtonImage" Source="ImagesResources2012/WorkItem_32xLG.png" Stretch="None" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="aboutDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" Click="exitDockButton_Click" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">

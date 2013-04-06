@@ -14,7 +14,7 @@
  * 4/4/13 Ryan Causey: Fixed a bug where on recovery two recovery albums would appear in the library view.
  *                     Implementing switching to the album view on the album view context menu click.
  * 4/5/13 Ryan Causey: Implemented GUI function to provide a means to transition back to the Library View from
- *                     the album view.
+ *                     the album view. Also making sure the correct dock buttons are displayed between views.
  */ 
 using System;
 using System.Collections.Generic;
@@ -350,7 +350,7 @@ namespace SoftwareEng
 
         /*
          * Created By: Ryan Causey
-         * Created On: 4/4/13
+         * Created On: 4/5/13
          * Last Edited By:
          * Last Edited Date:
          */
@@ -376,6 +376,12 @@ namespace SoftwareEng
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
                 listOfPhotos = picturesInAlbum;
                 mainWindowAlbumList.ItemsSource = listOfPhotos;
+                //show the return to library view button on the dock
+                libraryDockButton.Visibility = Visibility.Visible;
+                //show the addPhotos dock button
+                addPhotosDockButton.Visibility = Visibility.Visible;
+                //hide the add new album button on the dock
+                addDockButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -392,6 +398,12 @@ namespace SoftwareEng
         {
             mainWindowAlbumList.ItemTemplate = this.Resources["LibraryListItemFrontTemplate"] as DataTemplate;
             mainWindowAlbumList.ItemsSource = listOfAlbums;
+            //collapse the go back button
+            libraryDockButton.Visibility = Visibility.Collapsed;
+            //collapse the addPhotos button
+            addPhotosDockButton.Visibility = Visibility.Collapsed;
+            //show the add album dock button
+            addDockButton.Visibility = Visibility.Visible;
         }
 
 
@@ -817,7 +829,7 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="sender">Sender object</param>
         /// <param name="e">Event args</param>
-        private void clipBoardDockButton_Click(object sender, RoutedEventArgs e)
+        private void libraryDockButton_Click(object sender, RoutedEventArgs e)
         {
             //call some goddamned function here
             guiReturnToLibraryView();
