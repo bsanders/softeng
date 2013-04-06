@@ -118,8 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="addAlbumFailure" xml:space="preserve">
-    <value>Photobomber failed to create the album.</value>
-    <comment>used when adding an album fails</comment>
+    <value>PhotoBomber failed to create the album.</value>
+    <comment>used when adding an album fails and no more info can be provided or is not advisable.</comment>
+  </data>
+  <data name="addImageFailure" xml:space="preserve">
+    <value>PhotoBomber failed to add the image.</value>
+    <comment>used when adding an image fails and no more info can be provided or is not advisable.</comment>
   </data>
   <data name="invalidAlbumNameCharacter" xml:space="preserve">
     <value>Album names can only contain letters, numbers and spaces.</value>

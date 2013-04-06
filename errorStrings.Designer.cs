@@ -61,11 +61,20 @@ namespace SoftwareEng {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photobomber failed to create the album..
+        ///   Looks up a localized string similar to PhotoBomber failed to create the album..
         /// </summary>
         internal static string addAlbumFailure {
             get {
                 return ResourceManager.GetString("addAlbumFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PhotoBomber failed to add the image..
+        /// </summary>
+        internal static string addImageFailure {
+            get {
+                return ResourceManager.GetString("addImageFailure", resourceCulture);
             }
         }
         
