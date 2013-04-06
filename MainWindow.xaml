@@ -575,7 +575,7 @@
                 <Image x:Name="cancelAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_Cancel_16xLG.png"/>
             </Button>
         </DockPanel>
-        <Popup x:Name="invalidInputPopup" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0" PlacementTarget="{Binding ElementName=nameTextBox, Mode=OneWay}" Placement="Top" HorizontalOffset="200" AllowsTransparency="True">
+        <Popup x:Name="invalidInputPopup" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0" PlacementTarget="{Binding ElementName=nameTextBox, Mode=OneWay}" Placement="Top" HorizontalOffset="200" AllowsTransparency="True" VerticalOffset="10">
         	<Grid MinWidth="210" Height="120">
         		<ed:Callout x:Name="errorBalloon" AnchorPoint="0.017,1.375" Content="Errors messages should come from errorStrings.resx" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200" FontWeight="Normal" Fill="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" Padding="3,0,3,3" FontSize="14" Margin="1,2,1,37">
         			<ed:Callout.Stroke>
