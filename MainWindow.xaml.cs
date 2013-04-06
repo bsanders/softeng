@@ -23,6 +23,7 @@
  *                     as to not lock the file reference causing issues on delete.
  *                     Added functionality to disable the addNewPhotos button while an import operation is in progress.
  *                     User can still browse around and add more albums however.
+ *                     Updated handler for the close window operation to stop any import operations if they are occurring.
  */ 
 using System;
 using System.Collections.Generic;
@@ -529,11 +530,17 @@ namespace SoftwareEng
                     //warn about shit
                     showErrorMessage("Warning at guiImportPhotos_Callback"); //super temporary
                 }
+                //let the gui know we are done with an import
+                isImporting = false;
 
+                //reset the progress bar.
                 progressBar.Visibility = Visibility.Collapsed;
+                progressBar.Value = 0;
                 //if we are in the album we are importing photos too then get all the photos and refresh the view
                 if (currentAlbumUID == albumUID)
                 {
+                    //also show the addPhotosButton again
+                    addPhotosDockButton.Visibility = Visibility.Visible;
                     bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID); 
                 }
             }
@@ -631,9 +638,36 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
+        /*
+         * Created By: Alejandro Sosa
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/6/13
+         */
+        /// <summary>
+        /// Event handler for the exit button click event.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
         private void exitDockButton_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            //if we are importing we need to handle stopping the thread.
+            if (isImporting)
+            {
+                ErrorReport error = bombaDeFotos.cancelAddNewPicturesThread();
+                //if the thread failed to be stopped.
+                if (error.reportID == ErrorReport.FAILURE)
+                {
+                    showErrorMessage(error.description);
+                }
+                //else we are all good to close
+                {
+                    Close();
+                }
+            }
+            else
+            {
+                Close(); 
+            }
         }
 
         /**************************************************************************************************************************

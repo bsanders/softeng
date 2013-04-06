@@ -137,4 +137,8 @@
     <value>An image in this album already has this name.</value>
     <comment>used when imagename is not unique</comment>
   </data>
+  <data name="stopImportFailure" xml:space="preserve">
+    <value>Failed to stop picture import.</value>
+    <comment>used when the import pictures thread cannot be cancelled.</comment>
+  </data>
 </root>

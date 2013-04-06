@@ -104,5 +104,14 @@ namespace SoftwareEng {
                 return ResourceManager.GetString("invalidImageNameUnique", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to stop picture import..
+        /// </summary>
+        internal static string stopImportFailure {
+            get {
+                return ResourceManager.GetString("stopImportFailure", resourceCulture);
+            }
+        }
     }
 }

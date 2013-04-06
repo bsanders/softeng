@@ -1281,7 +1281,7 @@ namespace SoftwareEng
             catch
             {
                 error.reportID = ErrorReport.FAILURE;
-                error.description = "Failed to stop the thread.";
+                error.description = errorStrings.stopImportFailure;
             }
             return error;
         }
