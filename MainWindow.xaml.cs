@@ -27,11 +27,13 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
@@ -203,20 +205,24 @@ namespace SoftwareEng
          */
         private void guiValidateAlbumName(String validationRegex)
         {
-            generalPurposeTextBox.Text = generalPurposeTextBox.Text.Trim();
+            nameTextBox.Text = nameTextBox.Text.Trim();
 
-            if (validateTheString(validationRegex, generalPurposeTextBox.Text))
+            if (validateTheString(validationRegex, nameTextBox.Text))
             {
                 //check to see if the album name is unique in the program
-                bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), generalPurposeTextBox.Text);
+                bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), nameTextBox.Text);
             }
             else
             {
+                //this is how to call a storyboard defined in resources from the code
+                //this storyboard is for the name box
+                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+                nameTextBoxErrorAnimation.Begin();
                 //apply error template to the text box.
-                MessageBox.Show("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
+                //MessageBox.Show("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
                 //focus the text box and select all the text
-                generalPurposeTextBox.Focus();
-                generalPurposeTextBox.SelectAll();
+                nameTextBox.Focus();
+                nameTextBox.SelectAll();
             }
         }
 
@@ -233,18 +239,24 @@ namespace SoftwareEng
             //if the album name was not unique
             if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
+                //this is how to call a storyboard defined in resources from the code
+                //this storyboard is for the name box
+                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+                nameTextBoxErrorAnimation.Begin();
+
+                invalidInputPopup.IsOpen = true;
                 //apply error template to the text box
-                MessageBox.Show("This is a temporary error check message box. Failed at guiValidateAlbumName_Callback");//temporary as fuuuu
+                //MessageBox.Show("This is a temporary error check message box. Failed at guiValidateAlbumName_Callback");//temporary as fuuuu
                 //focus the text box and select all the text
-                generalPurposeTextBox.Focus();
-                generalPurposeTextBox.SelectAll();
+                nameTextBox.Focus();
+                nameTextBox.SelectAll();
             }
             //it was unique, great success!
             else
             {
-                guiCreateNewAlbum(generalPurposeTextBox.Text);
+                guiCreateNewAlbum(nameTextBox.Text);
                 hideAddAlbumBox();
-                generalPurposeTextBox.Clear();
+                nameTextBox.Clear();
             }
         }
 
@@ -596,19 +608,19 @@ namespace SoftwareEng
 
         private void showAddAlbumBox()
         {
-            generalPurposeLabel.Visibility = Visibility.Visible;
-            generalPurposeTextBox.Visibility = Visibility.Visible;
+            NameTextBlock.Visibility = Visibility.Visible;
+            nameTextBox.Visibility = Visibility.Visible;
 
             acceptAddToolbarButton.Visibility = Visibility.Visible;
             cancelAddToolbarButton.Visibility = Visibility.Visible;
 
-            Keyboard.Focus(generalPurposeTextBox);
+            Keyboard.Focus(nameTextBox);
         }
 
         private void hideAddAlbumBox()
         {
-            generalPurposeLabel.Visibility= Visibility.Hidden;
-            generalPurposeTextBox.Visibility = Visibility.Hidden;
+            NameTextBlock.Visibility= Visibility.Hidden;
+            nameTextBox.Visibility = Visibility.Hidden;
 
             acceptAddToolbarButton.Visibility = Visibility.Hidden;
             cancelAddToolbarButton.Visibility = Visibility.Hidden;
@@ -623,7 +635,7 @@ namespace SoftwareEng
         {
             hideAddAlbumBox();
             //make sure to clear the text box.
-            generalPurposeTextBox.Clear();
+            nameTextBox.Clear();
         }
 
 
@@ -981,6 +993,10 @@ namespace SoftwareEng
         {
         }
 
+        private void PopupMouseClick_Handler(object sender, MouseButtonEventArgs e)
+        {
+            libraryContextMenu.IsOpen = false;
+        }
         /*******************************************************************
          * End Test Functions
          ******************************************************************/
