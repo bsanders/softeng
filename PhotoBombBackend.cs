@@ -198,7 +198,7 @@ namespace SoftwareEng
             backupAlbum.albumName = Settings.PhotoLibraryBackupName;
 
             //get a new uid for the new album.
-            backupAlbum.UID = util_getNextUID(_albumsDatabase, "album", 1);
+            backupAlbum.UID = util_getNextUID(_albumsDatabase, "album", "uid", 1);
 
             //add the album to the memory database.
             util_addAlbumToAlbumDB(errorReport, backupAlbum);
@@ -260,7 +260,7 @@ namespace SoftwareEng
 
                 //get a unique ID for this photo and update its 
                 //data object to reflect this new UID.
-                newPicture.UID = util_getNextUID(_picturesDatabase, "picture", 1);
+                newPicture.UID = util_getNextUID(_picturesDatabase, "picture", "uid", 1);
                 // error checking the call
                 if (!util_checkIDIsValid(newPicture.UID))
                 {
@@ -272,17 +272,17 @@ namespace SoftwareEng
                 //Change me if you want to start naming the pictures differently in the library.
                 String picNameInLibrary = newPicture.UID.ToString() + fi.Extension;
 
-                //rename the file
-                fi.MoveTo(Path.Combine(libraryPath, picNameInLibrary));
-
-                newPicture.fullPath = fi.FullName;
-
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
                 newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
                 newPicture.refCount++;
                 // if this is a new picture, we add it to the db
                 if (newPicture.refCount == 1)
                 {
+                    //rename the file
+                    fi.MoveTo(Path.Combine(libraryPath, picNameInLibrary));
+
+                    newPicture.fullPath = fi.FullName;
+
                     util_addPicToPhotoDB(errorReport, newPicture);
                 }
                 else
@@ -798,7 +798,7 @@ namespace SoftwareEng
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            newPicture.UID = util_getNextUID(_picturesDatabase, "picture", searchStartingPoint);
+            newPicture.UID = util_getNextUID(_picturesDatabase, "picture", "uid", searchStartingPoint);
             // error checking the call
             if (!util_checkIDIsValid(newPicture.UID))
             {
@@ -810,19 +810,6 @@ namespace SoftwareEng
             //Change me if you want to start naming the pictures differently in the library.
             String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
 
-            //Move picture and get a new path for the picture in our storage.
-            newPicture.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
-            //error checking
-            if (errorReport.reportID == ErrorReport.FAILURE)
-            {
-                return errorReport;
-            }
-
-            //generate the thumbnails and get their path.
-            newPicture.smThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.smThumbSize);
-            newPicture.medThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.medThumbSize);
-            newPicture.lgThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.lrgThumbSize);
-
             newPicture.extension = photoExtension;
 
             // Get the refcount (will get zero if the pic is brand new) and increment it.
@@ -831,7 +818,18 @@ namespace SoftwareEng
             // if this is a new picture, we add it to the db
             if (newPicture.refCount == 1)
             {
+                newPicture.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
+                //error checking
+                if (errorReport.reportID == ErrorReport.FAILURE)
+                {
+                    return errorReport;
+                }
                 util_addPicToPhotoDB(errorReport, newPicture);
+                //Move picture and get a new path for the picture in our storage.
+                //generate the thumbnails and get their path.
+                newPicture.smThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.smThumbSize);
+                newPicture.medThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.medThumbSize);
+                newPicture.lgThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.lrgThumbSize);
             }
             else
             {
@@ -1102,7 +1100,7 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             //get a new uid for the new album.
-            albumData.UID = util_getNextUID(_albumsDatabase, "album", 1);
+            albumData.UID = util_getNextUID(_albumsDatabase, "album", "uid", 1);
 
             //add the album to the memory database.
             util_addAlbumToAlbumDB(errorReport, albumData);
