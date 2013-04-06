@@ -40,12 +40,12 @@
 
 
 
-        <DataTemplate x:Key="AlbumListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:SimplePhotoData}">
+        <DataTemplate x:Key="AlbumListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
             <Grid x:Name="albumItemFrontGrid">
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
                 </Grid.Background>
-                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill"/>
+                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding path}"/>
                 <TextBlock Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,44,0" Background="#FFE4E4E4" Width="Auto"/>
             </Grid>
         </DataTemplate>
@@ -55,7 +55,7 @@
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
-                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding}"/>
+                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" />
                 <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Background="#00E4E4E4" Width="Auto" Content="{Binding albumName}" Foreground="#AAFFFFFF" />
             </Grid>
         </DataTemplate>
