@@ -299,7 +299,7 @@ namespace SoftwareEng
             }
 
             // Note as per requirements, the default photo name is the name of the album, plus its id number
-            string nameInLibrary = specificAlbum.Name + " " + newPicture.idInAlbum;
+            string nameInLibrary = specificAlbum.Element("albumName").Value + " " + newPicture.idInAlbum;
 
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
