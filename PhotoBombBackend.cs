@@ -271,9 +271,6 @@ namespace SoftwareEng
                 //Change me if you want to start naming the pictures differently in the library.
                 String picNameInLibrary = newPicture.UID.ToString() + fi.Extension;
 
-                //probably should check that the file extension is supported...
-                newPicture.extension = fi.Extension;
-
                 //rename the file
                 fi.MoveTo(Path.Combine(libraryPath, picNameInLibrary));
 

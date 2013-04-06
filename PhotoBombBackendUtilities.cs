@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using System.IO;
 using System.Security.Cryptography; //Namespace for SHA1
 
@@ -200,7 +201,7 @@ namespace SoftwareEng
                 // Throws exception if it doesn't find exactly 1 match
                 return (from c in albumNode.Element("albumPhotos").Elements("picture")
                         where (int)c.Attribute("idInAlbum") == idInAlbum
-                        select c).Single();
+                        select c).SingleOrDefault();
             }
             catch
             {
@@ -1011,6 +1012,23 @@ namespace SoftwareEng
             //put more checks here.
 
             return true;
+        }
+
+        private void createDefaultXML(ErrorReport errorReport)
+        {
+            XDocument initDB = new XDocument();
+            XElement root = new XElement(Settings.XMLRootElement);
+            initDB.Add(root);
+            try
+            {
+                initDB.Save(albumsDatabasePath);
+                initDB.Save(picturesDatabasePath);
+            }
+            catch
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Unable to create the new database files.";
+            }
         }
 
         //---------------------------------------------------------------------------
