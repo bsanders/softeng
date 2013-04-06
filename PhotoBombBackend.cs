@@ -1007,12 +1007,15 @@ namespace SoftwareEng
             try
             {
                 File.Delete(pictureElement.Element("filePath").Value);
+                File.Delete(pictureElement.Element("smThumbPath").Value);
+                File.Delete(pictureElement.Element("medThumbPath").Value);
+                File.Delete(pictureElement.Element("lgThumbPath").Value);
             }
             catch
             {
                 // the path was probably wrong...
                 errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Failed to delete the photo file from the filesystem";
+                errorReport.description = "Failed to delete the photo file or a thumbnail from the filesystem";
                 return errorReport;
             }
             // Now delete this instance of the photo from the in-memory photo database
