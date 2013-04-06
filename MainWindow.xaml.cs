@@ -173,7 +173,7 @@ namespace SoftwareEng
 
         }
 
-        /*
+        /**************************************************************************************************************************
          * Author: Ryan Causey
          * Created: 4/3/13
          * Function to validate a string against the given regex.
@@ -182,7 +182,7 @@ namespace SoftwareEng
          * stringToValidate = the string which we will validate against the regex
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         private bool validateTheString(String regex, String stringToValidate)
         {
             RegexStringValidator validator = new RegexStringValidator(regex);
@@ -199,7 +199,7 @@ namespace SoftwareEng
             return true;
         }
 
-        /*
+        /**************************************************************************************************************************
          * Author: Ryan Causey
          * Created on: 4/3/13
          * Function for validating that a new album name is valid and unique.
@@ -207,7 +207,7 @@ namespace SoftwareEng
          * albumName = the desired album name
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         private void guiValidateAlbumName(String validationRegex)
         {
             nameTextBox.Text = nameTextBox.Text.Trim();
@@ -234,14 +234,14 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Author: Ryan Causey
          * Created on: 4/3/13
          * Callback for checking uniqueness of a new album name. This will be called after the back end finishes checking if the album
          * name is unique
          * Last Edited By: Ryan Causey
          * Last Edited Date: 4/5/13
-         */
+         **************************************************************************************************************************/
         public void guiValidateAlbumName_Callback(ErrorReport error)
         {
             //if the album name was not unique
@@ -268,14 +268,14 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Author: Ryan Causey
          * Created on: 4/3/13
          * Function for creating a new album name. Only to be called after the album name is validated.
          * @Param: albumName = the name for the new album being created
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         private void guiCreateNewAlbum(String albumName)
         {
             SimpleAlbumData newAlbum = new SimpleAlbumData();
@@ -285,12 +285,12 @@ namespace SoftwareEng
             bombaDeFotos.addNewAlbum(new generic_callback(guiCreateNewAlbum_Callback), newAlbum);
         }
 
-        /*
+        /**************************************************************************************************************************
          * Author: Ryan Causey
          * Created on: 4/3/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiCreateNewAlbum. If there is an error something really bad happened.
         /// Notify the user, rebuild the database, and consolidate all photographs into a single backup album
@@ -307,12 +307,12 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/3/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Deletes the selected album from the program.
         /// </summary>
@@ -325,12 +325,12 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/3/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiDeleteSelectedAlbum. If there is an error something really bad happened.
         /// Notify the user, rebuild the database and consolidate all photographs into a single backup album.
@@ -347,12 +347,12 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/4/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// GUI function to begin the transition to the album view from the library view.
         /// </summary>
@@ -367,12 +367,12 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/5/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiEnterAlbumView. Takes the returned ReadOnlyObservableCollection and binds the listView to it
         /// as well as swaps the data template.
@@ -412,12 +412,12 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// GUI function to transition back to the library view by changing the data template and item source.
         /// </summary>
@@ -443,12 +443,12 @@ namespace SoftwareEng
             currentAlbumUID = -1;
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// GUI function that shows a file dialogue and then calls the back end to add the selected photographs
         /// </summary>
@@ -488,12 +488,12 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiImportPhotos which recieves the error report from the back end.
         /// </summary>
@@ -519,12 +519,12 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         public void guiImportPhotosRefreshView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
         {
             if (error.reportID == ErrorReport.FAILURE)
@@ -543,12 +543,12 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/6/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// GUI function to delete the selecte photograph from the current album.
         /// If multiple photos are selected, it will remove the first selected item.
@@ -562,6 +562,8 @@ namespace SoftwareEng
             }
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         public void guiDeleteSelectedPhoto_Callback(ErrorReport error)
         {
             if (error.reportID == ErrorReport.FAILURE)
@@ -570,12 +572,12 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Function to increment the progress bar as photos import.
         /// </summary>
@@ -586,43 +588,55 @@ namespace SoftwareEng
             ++progressBar.Value;
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
         {
             mainWindowDock.Height = 1;
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void mainWindowContextMenu_LostMouseCapture(object sender, MouseEventArgs e)
         {
             libraryContextMenu.IsOpen = false;
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
         {
             mainWindowDock.Height = Double.NaN;
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void exitDockButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void mainWindowAlbumList_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             libraryContextMenu.IsOpen = true;
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/3/13
          * Event Handler for the large + button on the dock. Shows the add new album box.
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         private void addDockButton_Click(object sender, RoutedEventArgs e)
         {
             showAddAlbumBox();
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void DockPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -638,6 +652,8 @@ namespace SoftwareEng
             }
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void maximizeToolbarButton_Click(object sender, RoutedEventArgs e)
         {
             toggleWindowState();
@@ -647,7 +663,8 @@ namespace SoftwareEng
 
 
 
-
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void toggleWindowState()
         {
             if(this.WindowState == WindowState.Maximized)
@@ -660,11 +677,11 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Alejandro Sosa
          * Edited Last By: Ryan Causey
          * Edited Last Date: 4/5/13
-         */
+         **************************************************************************************************************************/
         private void showAddAlbumBox()
         {
             ItemAddOrEditDialogBar.Visibility = Visibility.Visible;
@@ -678,11 +695,11 @@ namespace SoftwareEng
             Keyboard.Focus(nameTextBox);
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Alejandro Sosa
          * Edited Last By: Ryan Causey
          * Edited Last Date: 4/5/13
-         */
+         **************************************************************************************************************************/
         private void hideAddAlbumBox()
         {
             ItemAddOrEditDialogBar.Visibility = Visibility.Collapsed;
@@ -694,11 +711,11 @@ namespace SoftwareEng
             cancelAddToolbarButton.Visibility = Visibility.Hidden;
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Alejandro Sosa
          * Last Edited By: Ryan Causey
          * Last Edited Date: 4/3/13
-         */
+         **************************************************************************************************************************/
         private void cancelAddToolbarButton_Click(object sender, RoutedEventArgs e)
         {
             hideAddAlbumBox();
@@ -713,16 +730,19 @@ namespace SoftwareEng
 
 
 
-        /**************************************************************************************************
+        /*****************************************
          * start region of thumb bar resize events
-        **************************************************************************************************/
-        /*
+        *****************************************/
+
+
+
+        /**************************************************************************************************************************
          *Created By: Alejandro Sosa
          *Last Edited By: Ryan Causey
          *Last Edited Date: 4/1/13
          *This handles the resizing via dragging from the bottom edge of the window, making sure the window height
          *does not go below a certain minimum
-         */
+         **************************************************************************************************************************/
         private void bottomThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from bottom
@@ -742,13 +762,13 @@ namespace SoftwareEng
 
         }
 
-        /*
+        /**************************************************************************************************************************
          *Created By: Alejandro Sosa
          *Last Edited By: Ryan Causey
          *Last Edited Date: 4/1/13
          *This handles the resizing via dragging from the top edge of the window, making sure the window height
          *does not go below a certain minimum
-         */
+         **************************************************************************************************************************/
         private void topThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
 
@@ -770,13 +790,13 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          *Created By: Alejandro Sosa
          *Last Edited By: Ryan Causey
          *Last Edited Date: 4/1/13
          *This handles the resizing via dragging from the right edge of the window, making sure the window width
          *does not go below a certain minimum
-         */
+         **************************************************************************************************************************/
         private void rightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from right
@@ -795,13 +815,13 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          *Created By: Alejandro Sosa
          *Last Edited By: Ryan Causey
          *Last Edited Date: 4/1/13
          *This handles the resizing via dragging from the left edge of the window, making sure the window width
          *does not go below a certain minimum
-         */
+         **************************************************************************************************************************/
         private void leftThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from Left
@@ -822,13 +842,13 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          *Created By: Alejandro Sosa
          *Last Edited By: Ryan Causey
          *Last Edited Date: 4/1/13
          *This handles the resizing via dragging from the bottom right corner of the window, making sure the window height
          *and width do not go below a certain minimum
-         */
+         **************************************************************************************************************************/
         private void bottomRightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from bottom
@@ -862,13 +882,13 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          *Created By: Alejandro Sosa
          *Last Edited By: Ryan Causey
          *Last Edited Date: 4/1/13
          *This handles the resizing via dragging from the top right corner of the window, making sure the window height
          *and width do not go below a certain minimum
-         */
+         **************************************************************************************************************************/
         private void topRightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from top
@@ -904,13 +924,13 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          *Created By: Alejandro Sosa
          *Last Edited By: Ryan Causey
          *Last Edited Date: 4/1/13
          *This handles the resizing via dragging from the bottom left corner of the window, making sure the window height
          *and width do not go below a certain minimum
-         */
+         **************************************************************************************************************************/
         private void bottomLeftThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from bottom
@@ -944,12 +964,13 @@ namespace SoftwareEng
                 this.Width = MinWidth + 1;
             }
         }
-        /**************************************************************************************************
+        /***************************************
          * end region of thumb bar resize events
-        **************************************************************************************************/
+        ***************************************/
 
 
-
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void aboutButtonPressed_eventHandler(object sender, RoutedEventArgs e)
         {
             aboutWindow someWindow = new aboutWindow();
@@ -957,6 +978,8 @@ namespace SoftwareEng
             someWindow.ShowDialog();
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
         {
             if(this.WindowState == WindowState.Minimized)
@@ -969,25 +992,25 @@ namespace SoftwareEng
             }
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created by: Ryan Causey
          * Created on: 4/3/13
          * Event handler for when the user clicks the checkbox for creating a new album with the name
          * they specified in the text box.
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         private void acceptAddToolBarButton_Click(object sender, RoutedEventArgs e)
         {
             guiValidateAlbumName(albumValidationRegex);
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created by: Ryan Causey
          * Created Date: 4/3/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Event handler for the Click event on the delete button on the context menu.
         /// </summary>
@@ -999,12 +1022,12 @@ namespace SoftwareEng
             guiDeleteSelectedAlbum();
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/4/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Event handler for the Click event on the view album button on the context menu.
         /// </summary>
@@ -1016,12 +1039,12 @@ namespace SoftwareEng
             guiEnterAlbumView();
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Event handler for the return to library view button on the dock.
         /// </summary>
@@ -1033,12 +1056,12 @@ namespace SoftwareEng
             guiReturnToLibraryView();
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         /// <summary>
         /// Event handler for the add photos button click.
         /// </summary>
@@ -1050,11 +1073,15 @@ namespace SoftwareEng
             guiImportPhotos();
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void PopupMouseClick_Handler(object sender, MouseButtonEventArgs e)
         {
             libraryContextMenu.IsOpen = false;
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void handleNameErrorPopup(bool showIt, string errorMessage)
         {
             if (showIt == false)
@@ -1068,6 +1095,8 @@ namespace SoftwareEng
 
         }
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
         private void showErrorMessage(String messageOfDoom)
         {
             ErrorWindow bearerOfBadNews = new ErrorWindow(messageOfDoom);
@@ -1075,12 +1104,12 @@ namespace SoftwareEng
             bearerOfBadNews.ShowDialog();
         }
 
-        /*
+        /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/6/13
          * Last Edited By:
          * Last Edited Date:
-         */
+         **************************************************************************************************************************/
         private void deleteMenuItemPhotoButton_Click(object sender, RoutedEventArgs e)
         {
             //call guideletephoto function here.
