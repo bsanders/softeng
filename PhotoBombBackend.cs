@@ -17,6 +17,7 @@
  *                     Fixed a bug where backend would not initialize properly on first program start.
  * 4/5/13 Ryan Causey: Updating addNewPicture and addNewPictures functions to work with new GUI.
  *                     Handled an error case where an unhandled exception would be thrown in saveAlbums/PicturesXML
+ * 4/6/13 Ryan Causey: Edited the removePhoto backend function to update the observable collection.
  **/
 using System;
 using System.Collections.Generic;
@@ -930,6 +931,16 @@ namespace SoftwareEng
 
             // Now delete that node
             errorReport = removePictureElement_backend(null, thisPicture);
+
+            //Now update the collection(linear searches are the best! <_< NO FUTURE!)
+            for (int i = 0; i < _photosCollection.Count; ++i)
+            {
+                if (_photosCollection[i].UID == idInAlbum)
+                {
+                    _photosCollection.RemoveAt(i);
+                    break;
+                }
+            }
 
             return errorReport;
         }

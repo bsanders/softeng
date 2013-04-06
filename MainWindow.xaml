@@ -142,6 +142,7 @@
                         <Binding Path="thumbnailPath">
                             <Binding.FallbackValue>
                                 <ImageSource>
+                                    <!-- This image looks much swankier than the missing image png-->
                                     ImagesResources2012/NewIconClipart-tiny-square.png
                                 </ImageSource>                                
                             </Binding.FallbackValue>
@@ -433,6 +434,9 @@
                         </Button>
                         <Button x:Name="deleteMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemLibraryButton_Click">
                             <Image x:Name="deleteButtonLibraryImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
+                        </Button>
+                        <Button x:Name="deleteMenuItemPhotoButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Visibility="Collapsed" Click="deleteMenuItemPhotoButton_Click">
+                            <Image x:Name="deleteButtonPhotoImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <Image x:Name="renameButtonLibraryImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>

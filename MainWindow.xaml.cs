@@ -18,6 +18,7 @@
  *                     Added temporary messagebox.show()'s for debugging.
  *                     Fixing the error for the new album name/enter comments GUI element not appearing and
  *                     dissapearing correctly.
+ * 4/6/13 Ryan Causey: Implemented delete photo context menu button and gui functions. Can now delete photos.
  */ 
 using System;
 using System.Collections.Generic;
@@ -404,6 +405,10 @@ namespace SoftwareEng
                 addDockButton.Visibility = Visibility.Collapsed;
                 //temporary fix to prevent an unhandled exception
                 viewMenuItemLibraryButton.Visibility = Visibility.Collapsed;
+                //hide the delete album button
+                deleteMenuItemLibraryButton.Visibility = Visibility.Collapsed;
+                //show the delete photo button
+                deleteMenuItemPhotoButton.Visibility = Visibility.Visible;
             }
         }
 
@@ -430,6 +435,10 @@ namespace SoftwareEng
             addDockButton.Visibility = Visibility.Visible;
             //temporary fix to prevent an unhandled exception
             viewMenuItemLibraryButton.Visibility = Visibility.Visible;
+            //show the delete album button
+            deleteMenuItemLibraryButton.Visibility = Visibility.Visible;
+            //hide the delete photo button
+            deleteMenuItemPhotoButton.Visibility = Visibility.Collapsed;
 
             currentAlbumUID = -1;
         }
@@ -536,10 +545,42 @@ namespace SoftwareEng
 
         /*
          * Created By: Ryan Causey
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function to delete the selecte photograph from the current album.
+        /// If multiple photos are selected, it will remove the first selected item.
+        /// Can probably do multiple delete later if we have time...
+        /// </summary>
+        private void guiDeleteSelectedPhoto()
+        {
+            if (mainWindowAlbumList.SelectedItem != null)
+            {
+                bombaDeFotos.removePictureFromAlbum(new generic_callback(guiDeleteSelectedPhoto_Callback), ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, currentAlbumUID);
+            }
+        }
+
+        public void guiDeleteSelectedPhoto_Callback(ErrorReport error)
+        {
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                showErrorMessage(error.description);
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By:
          * Last Edited Date:
          */
+        /// <summary>
+        /// Function to increment the progress bar as photos import.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
         public void guiUpdateProgressBar_Callback(object sender, ProgressChangedEventArgs e)
         {
             ++progressBar.Value;
@@ -1014,11 +1055,6 @@ namespace SoftwareEng
             libraryContextMenu.IsOpen = false;
         }
 
-
-        /*******************************************************************
-         * End Test Functions
-         ******************************************************************/
-
         private void handleNameErrorPopup(bool showIt, string errorMessage)
         {
             if (showIt == false)
@@ -1037,6 +1073,18 @@ namespace SoftwareEng
             ErrorWindow bearerOfBadNews = new ErrorWindow(messageOfDoom);
 
             bearerOfBadNews.ShowDialog();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        private void deleteMenuItemPhotoButton_Click(object sender, RoutedEventArgs e)
+        {
+            //call guideletephoto function here.
+            guiDeleteSelectedPhoto();
         }
     }
 }
