@@ -210,6 +210,9 @@ namespace SoftwareEng
                 //this storyboard is for the name box
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
+
+                handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameUnique);
+
                 //apply error template to the text box.
                 //MessageBox.Show("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
                 //focus the text box and select all the text
@@ -236,7 +239,7 @@ namespace SoftwareEng
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
 
-                
+                handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameUnique);
                 //apply error template to the text box
                 //MessageBox.Show("This is a temporary error check message box. Failed at guiValidateAlbumName_Callback");//temporary as fuuuu
                 //focus the text box and select all the text
@@ -509,8 +512,13 @@ namespace SoftwareEng
         private void cancelAddToolbarButton_Click(object sender, RoutedEventArgs e)
         {
             hideAddAlbumBox();
-            //make sure to clear the text box.
+            //make sure to clear the text box and close error popup
             nameTextBox.Clear();
+            invalidInputPopup.IsOpen = false;
+
+            //stop any error animations
+            Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+            nameTextBoxErrorAnimation.Stop();
         }
 
 
@@ -861,7 +869,7 @@ namespace SoftwareEng
          * End Test Functions
          ******************************************************************/
 
-        private void handleNameErrorPopup(bool showIt, bool forAlbum)
+        private void handleNameErrorPopup(bool showIt, string errorMessage)
         {
             if (showIt == false)
             {
@@ -869,11 +877,9 @@ namespace SoftwareEng
                 return;
             }
 
-            if (forAlbum == true)
-            {
-                
-            }
+            errorBalloon.Content = errorMessage;
             invalidInputPopup.IsOpen = true;
+
         }
     }
 }

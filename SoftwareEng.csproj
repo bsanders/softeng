@@ -76,15 +76,24 @@
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Controls">
       <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Expression.Drawing" />
-    <Reference Include="Microsoft.Expression.Effects" />
-    <Reference Include="Microsoft.Expression.Interactions" />
+    <Reference Include="Microsoft.Expression.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Effects">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Interactivity" />
+    <Reference Include="System.Windows.Interactivity">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -106,6 +115,11 @@
       <DependentUpon>aboutWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="customRadialPanel.cs" />
+    <Compile Include="errorStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>errorStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="LightResize.cs" />
     <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
@@ -146,20 +160,11 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\errorStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>errorStrings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\errorStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>errorStrings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -230,6 +235,12 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="errorStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>errorStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

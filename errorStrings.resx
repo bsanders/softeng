@@ -122,14 +122,18 @@
   </data>
   <data name="errorString_InvalidAlbumNameCharacter" xml:space="preserve">
     <value>Album names can only contain letters, numbers and spaces.</value>
+    <comment>used when album name has invalid characters</comment>
   </data>
   <data name="errorString_InvalidAlbumNameUnique" xml:space="preserve">
     <value>Album names must be unique.</value>
+    <comment>used when album name is not unique</comment>
   </data>
   <data name="errorString_InvalidImageNameCharacter" xml:space="preserve">
     <value>Image names can only contain letters, numbers and spaces.</value>
+    <comment>used when imagename has invalid characters</comment>
   </data>
   <data name="errorString_InvalidImageNameUnique" xml:space="preserve">
     <value>Image names must be unique.</value>
+    <comment>used when imagename is not unique</comment>
   </data>
 </root>
