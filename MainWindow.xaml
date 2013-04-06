@@ -315,10 +315,10 @@
 
             </Grid>
         	<DataTemplate.Triggers>
-        		<EventTrigger RoutedEvent="UIElement.MouseLeftButtonDown" SourceName="ItemFrontSideContainer">
+        		<EventTrigger RoutedEvent="Control.MouseDoubleClick" SourceName="ItemFrontSide">
         			<BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
         		</EventTrigger>
-        		<EventTrigger RoutedEvent="UIElement.MouseLeftButtonDown" SourceName="ItemBackSideContainer">
+        		<EventTrigger RoutedEvent="Control.MouseDoubleClick" SourceName="ItemBackSide">
         			<BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
         		</EventTrigger>
         	</DataTemplate.Triggers>
