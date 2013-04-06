@@ -273,7 +273,7 @@ namespace SoftwareEng
         //                or you can have "" for a single element for a single default name.
         //PARAM 6 = a callback for the thread to send progress updates to.
         //PARAM 7 = the number of pictures to add BEFORE sending a progress update.
-        public void addNewPictures(getAllPhotosInAlbum_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+        public void addNewPictures(generic_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addNewPictures_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum, updateCallback, updateAmount);
         }

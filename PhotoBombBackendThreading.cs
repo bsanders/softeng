@@ -105,9 +105,9 @@ namespace SoftwareEng
         {
             addPhotosThreadData results = (addPhotosThreadData)e.Result;
 
-            ReadOnlyObservableCollection<ComplexPhotoData> photosToGui = new ReadOnlyObservableCollection<ComplexPhotoData>(results.photoCollection);
+            //ReadOnlyObservableCollection<ComplexPhotoData> photosToGui = new ReadOnlyObservableCollection<ComplexPhotoData>(results.photoCollection);
 
-            results.guiCallback(results.errorReport, photosToGui);
+            results.guiCallback(results.errorReport/*, photosToGui*/);
         }
 
         //------------------------------------------
@@ -126,14 +126,14 @@ namespace SoftwareEng
     public class addPhotosThreadData
     {
         public ErrorReport errorReport;
-        public getAllPhotosInAlbum_callback guiCallback;
+        public generic_callback guiCallback;
         public List<String> photoUserPath;
         public List<String> photoExtension;
         public int albumUID;
         public List<String> pictureNameInAlbum;
         public threadUpdateDelegate guiUpdateCallback;
         public int updateAmount;//number of photos to process before calling guiUpdate.
-        public ObservableCollection<ComplexPhotoData> photoCollection;
+        //public ObservableCollection<ComplexPhotoData> photoCollection;
     }//data class
 
 }//namespace

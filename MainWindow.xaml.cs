@@ -15,6 +15,7 @@
  *                     Implementing switching to the album view on the album view context menu click.
  * 4/5/13 Ryan Causey: Implemented GUI function to provide a means to transition back to the Library View from
  *                     the album view. Also making sure the correct dock buttons are displayed between views.
+ *                     Added temporary messagebox.show()'s for debugging
  */ 
 using System;
 using System.Collections.Generic;
@@ -99,6 +100,7 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
+                MessageBox.Show("Failed at guiConstructorCallback"); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
@@ -113,6 +115,7 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
+                MessageBox.Show("failed at guiGenericErrorFunction"); //super temporary
                 if (Directory.Exists("photo library_backup"))
                 {
                     Directory.Delete("photo library_backup", true);
@@ -158,6 +161,7 @@ namespace SoftwareEng
             else
             {
                 //show an Error
+                MessageBox.Show("Failed at guiAlbumsRetrieved"); //super temporary
             }
 
         }
@@ -278,6 +282,7 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
+                MessageBox.Show("Failed at guiCreateNewAlbum_Callback"); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(dummyCallback));
             }
         }
@@ -317,6 +322,7 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
+                MessageBox.Show("Failed at guiDeleteSelectedAlbum_Callback"); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(dummyCallback));
             }
         }
@@ -358,12 +364,14 @@ namespace SoftwareEng
             if (error.reportID == ErrorReport.FAILURE)
             {
                 //show user an error message that retrieving the pictures did not work
+                MessageBox.Show("Failed at guiEnterAlbumView_Callback"); //super temporary
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //show the user a notification that some pictures are not displayed
+                    MessageBox.Show("Warnings at guiEnterAlbumView_Callback"); //super temporary
                 }
                 //swap data templates and change bindings.
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
@@ -442,7 +450,7 @@ namespace SoftwareEng
 
                 //pass all the files names to a backend function call to start adding the files.
                 //fix the function parameters before releasing.
-                bombaDeFotos.addNewPictures(new getAllPhotosInAlbum_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1); 
+                bombaDeFotos.addNewPictures(new generic_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1); 
             }
         }
 
@@ -456,24 +464,57 @@ namespace SoftwareEng
         /// Callback for guiImportPhotos which recieves the error report from the back end.
         /// </summary>
         /// <param name="error">Error report from the back end addNewPictures function.</param>
-        public void guiImportPhotos_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> photosForAlbum)
+        public void guiImportPhotos_Callback(ErrorReport error)
         {
             //deal with it
             if (error.reportID == ErrorReport.FAILURE)
             {
                 //shit done fucked up
+                MessageBox.Show("Failed at guiImportPhotos_Callback"); //super temporary
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //warn about shit
+                    MessageBox.Show("Warning at guiImportPhotos_Callback"); //super temporary
                 }
 
-                listOfPhotos = photosForAlbum;
+                progressBar.Visibility = Visibility.Collapsed;
+                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
             }
         }
 
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        public void guiImportPhotosRefreshView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
+        {
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                //show user an error message that retrieving the pictures did not work
+                MessageBox.Show("Failed at guiImportPhotosRefreshView_Callback"); //super temporary
+            }
+            else
+            {
+                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    //show the user a notification that some pictures are not displayed
+                    MessageBox.Show("Warnings at guiImportPhotosRefreshView_Callback"); //super temporary
+                }
+                listOfPhotos = picturesInAlbum;
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
         public void guiUpdateProgressBar_Callback(object sender, ProgressChangedEventArgs e)
         {
             ++progressBar.Value;

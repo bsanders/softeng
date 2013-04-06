@@ -831,7 +831,7 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
 
             //update the photosCollection
-            _photosCollection.Add(newPicture);
+            //_photosCollection.Add(newPicture);
 
             return errorReport;
         }
@@ -1183,7 +1183,7 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last By: Ryan Causey
         //Edited Last Date: 4/5/13
-        private void addNewPictures_backend(getAllPhotosInAlbum_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+        private void addNewPictures_backend(generic_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addPhotosThread = new BackgroundWorker();
 
@@ -1197,7 +1197,7 @@ namespace SoftwareEng
             data.albumUID = albumUID;
             data.pictureNameInAlbum = pictureNameInAlbum;
             data.updateAmount = updateAmount;
-            data.photoCollection = _photosCollection;
+            //data.photoCollection = _photosCollection;
 
             //setup the worker.
             addPhotosThread.WorkerReportsProgress = true;
