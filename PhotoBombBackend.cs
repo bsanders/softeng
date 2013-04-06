@@ -870,7 +870,8 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 3/29/13
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/6/13
         /// <summary>
         /// Removes the specified photo from the specified album
         /// </summary>
@@ -932,6 +933,14 @@ namespace SoftwareEng
             // Now delete that node
             errorReport = removePictureElement_backend(null, thisPicture);
 
+            //copying bills swanky code
+            //get the photo to remove
+            var photoToRemove = _photosCollection.FirstOrDefault(photo => photo.UID == idInAlbum);
+            //and remove it
+            _photosCollection.Remove(photoToRemove);
+
+            /*
+             * commenting out because possibly more efficient code above.
             //Now update the collection(linear searches are the best! <_< NO FUTURE!)
             for (int i = 0; i < _photosCollection.Count; ++i)
             {
@@ -940,7 +949,7 @@ namespace SoftwareEng
                     _photosCollection.RemoveAt(i);
                     break;
                 }
-            }
+            }*/
 
             return errorReport;
         }

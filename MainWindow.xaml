@@ -47,6 +47,10 @@
 
 
         <DataTemplate x:Key="AlbumListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
+            <!--Define the converter resource-->
+            <DataTemplate.Resources>
+                <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
+            </DataTemplate.Resources>
             <Grid x:Name="albumItemFrontGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" MaxHeight="{Binding Value, ElementName=thumbnailSizeSlider}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="37"/>
@@ -63,7 +67,7 @@
                 </TextBlock>
                 <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
                     <Image.Source>
-                        <Binding Path="lgThumbPath">
+                        <Binding Path="lgThumbPath" Converter="{StaticResource ImagePathConverter}">
                             <Binding.FallbackValue>
                                 <ImageSource>
                                     <!-- This image looks much swankier than the missing image png-->
