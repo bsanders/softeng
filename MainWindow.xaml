@@ -569,7 +569,7 @@
         </DockPanel>
         <Popup x:Name="invalidInputPopup" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="342.496,197.128,354.496,209.128" AllowsTransparency="True" HorizontalAlignment="Center" VerticalAlignment="Center" PlacementTarget="{Binding ElementName=nameTextBox, Mode=OneWay}" Placement="Top" HorizontalOffset="200">
         	<Grid Background="#FFE5E5E5" HorizontalAlignment="Center" VerticalAlignment="Center">
-        		<ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200" FontWeight="Normal"/>
+        		<ed:Callout x:Name="errorBalloon" AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200" FontWeight="Normal"/>
         	</Grid>
         </Popup>
     </Grid>

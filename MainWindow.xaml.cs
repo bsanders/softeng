@@ -236,7 +236,7 @@ namespace SoftwareEng
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
 
-                invalidInputPopup.IsOpen = true;
+                
                 //apply error template to the text box
                 //MessageBox.Show("This is a temporary error check message box. Failed at guiValidateAlbumName_Callback");//temporary as fuuuu
                 //focus the text box and select all the text
@@ -860,7 +860,20 @@ namespace SoftwareEng
         /*******************************************************************
          * End Test Functions
          ******************************************************************/
-        
 
+        private void handleNameErrorPopup(bool showIt, bool forAlbum)
+        {
+            if (showIt == false)
+            {
+                invalidInputPopup.IsOpen = false;
+                return;
+            }
+
+            if (forAlbum == true)
+            {
+                
+            }
+            invalidInputPopup.IsOpen = true;
+        }
     }
 }
