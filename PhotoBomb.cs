@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.ComponentModel;
+using System.IO;
 
 /*
  * PhotoBomb TODO:
@@ -476,7 +477,9 @@ namespace SoftwareEng
         private String _caption;
         private String _name;
         private int _refCount;
-        
+
+        Properties.Settings Settings = Properties.Settings.Default;
+
         //event for changing a property
         public event PropertyChangedEventHandler PropertyChanged;
         //... add more stuff here when we have more metadata
@@ -559,6 +562,10 @@ namespace SoftwareEng
         {
             get
             {
+                if (!File.Exists(_smThumbPath))
+                {
+                    _smThumbPath = regenerateThumbnail(fullPath, Path.GetFileName(fullPath), Settings.smThumbSize);
+                }
                 return _smThumbPath;
             }
             set
@@ -576,6 +583,10 @@ namespace SoftwareEng
         {
             get
             {
+                if (!File.Exists(_medThumbPath))
+                {
+                    _medThumbPath = regenerateThumbnail(fullPath, Path.GetFileName(fullPath), Settings.medThumbSize);
+                }
                 return _medThumbPath;
             }
             set
@@ -593,6 +604,10 @@ namespace SoftwareEng
         {
             get
             {
+                if (!File.Exists(_lgThumbPath))
+                {
+                    _lgThumbPath = regenerateThumbnail(fullPath, Path.GetFileName(fullPath), Settings.lrgThumbSize);
+                }
                 return _lgThumbPath;
             }
             set
@@ -682,6 +697,50 @@ namespace SoftwareEng
             caption = "";
             name = "";
             refCount = 0;
+        }
+
+        private string regenerateThumbnail(string source, string filename, int size)
+        {
+            Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
+            string thumbSubDir = "";
+            string fullThumbPath = "";
+
+            // Which sub directory of thumbs_db to put this in...
+            if (size == Settings.smThumbSize)
+            {
+                thumbSubDir = Settings.smThumbDir;
+            }
+            else if (size == Settings.medThumbSize)
+            {
+                thumbSubDir = Settings.medThumbDir;
+            }
+            else if (size == Settings.lrgThumbSize)
+            {
+                thumbSubDir = Settings.lrgThumbDir;
+            }
+
+            // Specifies a maximum height resolution constraint to scale the image down to
+            resizeJob.Height = size;
+            resizeJob.Width = size;
+
+            //get the full path
+            fullThumbPath = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                Settings.OrgName,
+                Settings.PhotoLibraryThumbsDir,
+                thumbSubDir,
+                filename);
+
+            // Actually processes the image, copying it to the new location, should go in a try/catch for IO
+            // One of Build's overloads allows you to use file streams instead of filepaths.
+            // If images have to be resized on-the-fly instead of stored, that may work as well.
+            resizeJob.Build(
+                source,
+                fullThumbPath,
+                Imazen.LightResize.JobOptions.CreateParentDirectory
+            );
+
+            return fullThumbPath;
         }
 
         /*
