@@ -99,7 +99,7 @@ namespace SoftwareEng
         //------------------------------------------
         //By: Ryan Moe
         //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/5/13
+        //Edited Last Date: 4/6/13
         //This gets called when addPhotosThread_DoWork() is complete.
         private void addPhotosThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -107,7 +107,7 @@ namespace SoftwareEng
 
             //ReadOnlyObservableCollection<ComplexPhotoData> photosToGui = new ReadOnlyObservableCollection<ComplexPhotoData>(results.photoCollection);
 
-            results.guiCallback(results.errorReport/*, photosToGui*/);
+            results.guiCallback(results.errorReport, results.albumUID);
         }
 
         //------------------------------------------
@@ -122,11 +122,12 @@ namespace SoftwareEng
     //--------------------------------------------------------------------------
 
     //By: Ryan Moe
-    //Edited Last:
+    //Edited Last By: Ryan Causey
+    //Edited Last Date: 4/6/13
     public class addPhotosThreadData
     {
         public ErrorReport errorReport;
-        public generic_callback guiCallback;
+        public addNewPictures_callback guiCallback;
         public List<String> photoUserPath;
         public List<String> photoExtension;
         public int albumUID;

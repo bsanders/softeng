@@ -21,6 +21,8 @@
  * 4/6/13 Ryan Causey: Implemented delete photo context menu button and gui functions. Can now delete photos.
  *                     Implemented an IValueConverter interface to allow us to bind to caches of image files
  *                     as to not lock the file reference causing issues on delete.
+ *                     Added functionality to disable the addNewPhotos button while an import operation is in progress.
+ *                     User can still browse around and add more albums however.
  */ 
 using System;
 using System.Collections.Generic;
@@ -69,7 +71,11 @@ namespace SoftwareEng
         //The regex for validation of album names
         private String albumValidationRegex = @"^[\w\d][\w\d ]{0,31}$"; //must be at least 1 character, max 32 in length
 
+        //current album UID, defaults to a invalid value(because we eont be in an album)
         private int currentAlbumUID = -1;
+
+        //keep track of if an import operation is occurring
+        private bool isImporting = false;
 
         //--A more stable storage for the ID of the user album instead
         //-- of relying on a form's selected items collection
@@ -372,8 +378,8 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/5/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/6/13
          **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiEnterAlbumView. Takes the returned ReadOnlyObservableCollection and binds the listView to it
@@ -401,8 +407,11 @@ namespace SoftwareEng
                 mainWindowAlbumList.ItemsSource = listOfPhotos;
                 //show the return to library view button on the dock
                 libraryDockButton.Visibility = Visibility.Visible;
-                //show the addPhotos dock button
-                addPhotosDockButton.Visibility = Visibility.Visible;
+                //show the addPhotos dock button if we are not running an import operation
+                if (!isImporting)
+                {
+                    addPhotosDockButton.Visibility = Visibility.Visible;
+                }
                 //hide the add new album button on the dock
                 addDockButton.Visibility = Visibility.Collapsed;
                 //temporary fix to prevent an unhandled exception
@@ -470,6 +479,11 @@ namespace SoftwareEng
             //if the user selected files
             if ((bool)openFilesResult)
             {
+                //tell the GUI at large we are importing
+                isImporting = true;
+                //hide the addPhotosDockButton
+                addPhotosDockButton.Visibility = Visibility.Collapsed;
+
                 //need to get the file extensions for the goddamned splicers
                 List<string> extensions = new List<string>();
 
@@ -486,21 +500,21 @@ namespace SoftwareEng
 
                 //pass all the files names to a backend function call to start adding the files.
                 //fix the function parameters before releasing.
-                bombaDeFotos.addNewPictures(new generic_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1); 
+                bombaDeFotos.addNewPictures(new addNewPictures_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1); 
             }
         }
 
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/6/13
          **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiImportPhotos which recieves the error report from the back end.
         /// </summary>
         /// <param name="error">Error report from the back end addNewPictures function.</param>
-        public void guiImportPhotos_Callback(ErrorReport error)
+        public void guiImportPhotos_Callback(ErrorReport error, int albumUID)
         {
             //deal with it
             if (error.reportID == ErrorReport.FAILURE)
@@ -517,7 +531,11 @@ namespace SoftwareEng
                 }
 
                 progressBar.Visibility = Visibility.Collapsed;
-                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
+                //if we are in the album we are importing photos too then get all the photos and refresh the view
+                if (currentAlbumUID == albumUID)
+                {
+                    bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID); 
+                }
             }
         }
 
