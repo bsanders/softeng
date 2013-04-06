@@ -221,7 +221,7 @@ namespace SoftwareEng
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
 
-                handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameUnique);
+                handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameCharacter);
 
                 //apply error template to the text box.
                 //MessageBox.Show("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -236,8 +236,8 @@ namespace SoftwareEng
          * Created on: 4/3/13
          * Callback for checking uniqueness of a new album name. This will be called after the back end finishes checking if the album
          * name is unique
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/5/13
          */
         public void guiValidateAlbumName_Callback(ErrorReport error)
         {
