@@ -11,6 +11,7 @@
  *                     utility function call and into addNewPicture_backend in PhotoBombBackend.cs
  *                     Editing thumbnail generation utility function to return path to thumbnail.
  *                     Edited addPhotoToDB and getComplexPhotoData to include new thumbnail paths.
+ * 4/6/13 Ryan Causey: Fixed a bug where the thumbnail path for the album was being set to an invalid path.
  **/
 using System;
 using System.Collections.Generic;
@@ -315,7 +316,8 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         // By: Bill Sanders
-        // Edited Last: 4/4/13
+        // Edited Last By: Ryan Causey
+        // Edited Last Date: 4/6/13
         /// <summary>
         /// Sets the thumbnail path for an album.
         /// </summary>
@@ -323,16 +325,17 @@ namespace SoftwareEng
         /// <param name="photoObject">A ComplexPhotoData object which contains the path information</param>
         private void util_setAlbumThumbnail(XElement albumNode, ComplexPhotoData photoObject)
         {
-            string thumbPath;
+            String thumbPath;
             // If the objects look good, set up the (long...) path.
             if ((albumNode != null) && (photoObject != null))
             {
                 thumbPath = System.IO.Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     Settings.OrgName,
+                    Settings.PhotoLibraryName,
                     Settings.PhotoLibraryThumbsDir,
                     Settings.lrgThumbDir,
-                    photoObject.UID.ToString(),
+                    photoObject.UID.ToString() +
                     photoObject.extension
                     );
             }
