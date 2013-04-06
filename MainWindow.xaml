@@ -41,12 +41,12 @@
 
 
         <DataTemplate x:Key="AlbumListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
-            <Grid x:Name="albumItemFrontGrid">
+            <Grid x:Name="albumItemFrontGrid" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}">
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
                 </Grid.Background>
                 <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding medThumbPath}"/>
-                <TextBlock Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,44,0" Background="#FFE4E4E4" Width="Auto"/>
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,44,0" Background="#FFE4E4E4" Width="{Binding Value, ElementName=thumbnailSizeSlider}"/>
             </Grid>
         </DataTemplate>
 
