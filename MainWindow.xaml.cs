@@ -15,11 +15,15 @@
  *                     Implementing switching to the album view on the album view context menu click.
  * 4/5/13 Ryan Causey: Implemented GUI function to provide a means to transition back to the Library View from
  *                     the album view. Also making sure the correct dock buttons are displayed between views.
+ *                     Added temporary messagebox.show()'s for debugging.
+ *                     Fixing the error for the new album name/enter comments GUI element not appearing and
+ *                     dissapearing correctly.
  */ 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,6 +38,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace SoftwareEng
 {
@@ -60,6 +65,8 @@ namespace SoftwareEng
 
         //The regex for validation of album names
         private String albumValidationRegex = @"^[\w\d][\w\d ]{0,31}$"; //must be at least 1 character, max 32 in length
+
+        private int currentAlbumUID = -1;
 
         //--A more stable storage for the ID of the user album instead
         //-- of relying on a form's selected items collection
@@ -97,6 +104,7 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
+                MessageBox.Show("Failed at guiConstructorCallback"); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
@@ -111,6 +119,7 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
+                MessageBox.Show("failed at guiGenericErrorFunction"); //super temporary
                 if (Directory.Exists("photo library_backup"))
                 {
                     Directory.Delete("photo library_backup", true);
@@ -156,6 +165,7 @@ namespace SoftwareEng
             else
             {
                 //show an Error
+                MessageBox.Show("Failed at guiAlbumsRetrieved"); //super temporary
             }
 
         }
@@ -289,7 +299,8 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(dummyCallback));
+                MessageBox.Show("Failed at guiCreateNewAlbum_Callback"); //super temporary
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
 
@@ -328,7 +339,8 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(dummyCallback));
+                MessageBox.Show("Failed at guiDeleteSelectedAlbum_Callback"); //super temporary
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
 
@@ -347,7 +359,8 @@ namespace SoftwareEng
             if (mainWindowAlbumList.SelectedItem != null)
             {
                 //call the backend to get all photos in this album.
-                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
+                currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
+                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), currentAlbumUID);
             }
         }
 
@@ -368,12 +381,14 @@ namespace SoftwareEng
             if (error.reportID == ErrorReport.FAILURE)
             {
                 //show user an error message that retrieving the pictures did not work
+                MessageBox.Show("Failed at guiEnterAlbumView_Callback"); //super temporary
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //show the user a notification that some pictures are not displayed
+                    MessageBox.Show("Warnings at guiEnterAlbumView_Callback"); //super temporary
                 }
                 //swap data templates and change bindings.
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
@@ -385,6 +400,8 @@ namespace SoftwareEng
                 addPhotosDockButton.Visibility = Visibility.Visible;
                 //hide the add new album button on the dock
                 addDockButton.Visibility = Visibility.Collapsed;
+                //temporary fix to prevent an unhandled exception
+                viewMenuItemLibraryButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -407,8 +424,122 @@ namespace SoftwareEng
             addPhotosDockButton.Visibility = Visibility.Collapsed;
             //show the add album dock button
             addDockButton.Visibility = Visibility.Visible;
+            //temporary fix to prevent an unhandled exception
+            viewMenuItemLibraryButton.Visibility = Visibility.Visible;
+
+            currentAlbumUID = -1;
         }
 
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function that shows a file dialogue and then calls the back end to add the selected photographs
+        /// </summary>
+        private void guiImportPhotos()
+        {
+            OpenFileDialog photoDialogue = new OpenFileDialog();
+            //filter the file types available
+            photoDialogue.Filter = "Jpeg images|*.jpg;*.jpeg;*.jpe;*.jfif;";
+            //set the intial directory to the my pictures directory
+            photoDialogue.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            //allow multiple photographs to be selected
+            photoDialogue.Multiselect = true;
+
+            //show the dialogue
+            Nullable<bool> openFilesResult = photoDialogue.ShowDialog();
+
+            //if the user selected files
+            if ((bool)openFilesResult)
+            {
+                //need to get the file extensions for the goddamned splicers
+                List<string> extensions = new List<string>();
+
+                //GODDAMNED SPLICERS!
+                foreach(String s in photoDialogue.FileNames)
+                {
+                    extensions.Add(System.IO.Path.GetExtension(s));
+                }
+
+                //show the progress bar
+                progressBar.Visibility = Visibility.Visible;
+                progressBar.Minimum = 1;
+                progressBar.Maximum = photoDialogue.FileNames.GetLength(0);
+
+                //pass all the files names to a backend function call to start adding the files.
+                //fix the function parameters before releasing.
+                bombaDeFotos.addNewPictures(new generic_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1); 
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Callback for guiImportPhotos which recieves the error report from the back end.
+        /// </summary>
+        /// <param name="error">Error report from the back end addNewPictures function.</param>
+        public void guiImportPhotos_Callback(ErrorReport error)
+        {
+            //deal with it
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                //shit done fucked up
+                MessageBox.Show("Failed at guiImportPhotos_Callback"); //super temporary
+            }
+            else
+            {
+                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    //warn about shit
+                    MessageBox.Show("Warning at guiImportPhotos_Callback"); //super temporary
+                }
+
+                progressBar.Visibility = Visibility.Collapsed;
+                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        public void guiImportPhotosRefreshView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
+        {
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                //show user an error message that retrieving the pictures did not work
+                MessageBox.Show("Failed at guiImportPhotosRefreshView_Callback"); //super temporary
+            }
+            else
+            {
+                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    //show the user a notification that some pictures are not displayed
+                    MessageBox.Show("Warnings at guiImportPhotosRefreshView_Callback"); //super temporary
+                }
+                listOfPhotos = picturesInAlbum;
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        public void guiUpdateProgressBar_Callback(object sender, ProgressChangedEventArgs e)
+        {
+            ++progressBar.Value;
+        }
 
         private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -484,8 +615,15 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         * Created By: Alejandro Sosa
+         * Edited Last By: Ryan Causey
+         * Edited Last Date: 4/5/13
+         */
         private void showAddAlbumBox()
         {
+            ItemAddOrEditDialogBar.Visibility = Visibility.Visible;
+
             NameTextBlock.Visibility = Visibility.Visible;
             nameTextBox.Visibility = Visibility.Visible;
 
@@ -495,8 +633,15 @@ namespace SoftwareEng
             Keyboard.Focus(nameTextBox);
         }
 
+        /*
+         * Created By: Alejandro Sosa
+         * Edited Last By: Ryan Causey
+         * Edited Last Date: 4/5/13
+         */
         private void hideAddAlbumBox()
         {
+            ItemAddOrEditDialogBar.Visibility = Visibility.Collapsed;
+
             NameTextBlock.Visibility= Visibility.Hidden;
             nameTextBox.Visibility = Visibility.Hidden;
 
@@ -843,27 +988,28 @@ namespace SoftwareEng
             guiReturnToLibraryView();
         }
 
-        /********************************************************************
-         * TEST FUNCTION SECTION
-         * Author: Ryan Causey
-         * I am using the following functions to test backend functionality
-         * Destroy these when done testing
-         *******************************************************************/
-        private void testEvent(object sender, RoutedEventArgs e)
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Event handler for the add photos button click.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void addPhotosDockButton_Click(object sender, RoutedEventArgs e)
         {
-            SimpleAlbumData testData = new SimpleAlbumData();
-            testData.albumName = "LOOKITDISNAME";
-            bombaDeFotos.addNewAlbum(new generic_callback(dummyCallback), testData);
-        }
-
-        public void dummyCallback(ErrorReport er)
-        {
+            //call another function
+            guiImportPhotos();
         }
 
         private void PopupMouseClick_Handler(object sender, MouseButtonEventArgs e)
         {
             libraryContextMenu.IsOpen = false;
         }
+
 
         /*******************************************************************
          * End Test Functions
@@ -881,5 +1027,6 @@ namespace SoftwareEng
             invalidInputPopup.IsOpen = true;
 
         }
+
     }
 }

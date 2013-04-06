@@ -60,7 +60,7 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="LibraryListItemFrontTemplate">
+        <DataTemplate x:Key="LibraryListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:SimpleAlbumData}">
             <Grid x:Name="libraryItemBackGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}">
             	<VisualStateManager.CustomVisualStateManager>
             		<ei:ExtendedVisualStateManager/>
@@ -469,7 +469,7 @@
 
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed">
+                    <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="addPhotosDockButton_Click">
 
                         <Image x:Name="addPhotosDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                     </Button>
@@ -495,7 +495,12 @@
                 </DockPanel>
                 
                 
-                <ProgressBar HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden" Background="{DynamicResource PhotoBomberProgressBarBrush}"/>
+                <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden" Background="{DynamicResource PhotoBomberProgressBarBrush}"/>
+                <Popup AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                	<Grid Background="#FFE5E5E5">
+                		<ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200"/>
+                	</Grid>
+                </Popup>
 
 
             </Grid>
@@ -536,7 +541,7 @@
         <Thumb x:Name="bottomRightThumb" Background="#001C2327" Cursor="SizeNWSE" HorizontalAlignment="Right" Width="6" DragDelta="bottomRightThumb_DragDeltaHandler" Height="6" VerticalAlignment="Bottom" Opacity="0"/>
         <Thumb x:Name="topRightThumb" Background="#001C2327" HorizontalAlignment="Right" Width="6" VerticalAlignment="Top" Height="6" Cursor="SizeNESW" DragDelta="topRightThumb_DragDeltaHandler" Opacity="0"/>
         <Thumb x:Name="bottomLeftThumb" Background="#001C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeNESW" DragDelta="bottomLeftThumb_DragDeltaHandler" VerticalAlignment="Bottom" Height="6" Opacity="0"/>
-        <DockPanel x:Name="ItemAddOrEditDialogBar" LastChildFill="False" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,27,0,0">
+        <DockPanel x:Name="ItemAddOrEditDialogBar" LastChildFill="False" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,27,0,0" Visibility="Collapsed">
             <DockPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FF979797" Offset="0.871"/>
@@ -554,12 +559,14 @@
                 <TextBox x:Name="nameTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0"/>
             </StackPanel>
             <StackPanel x:Name="commentBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right">
-                <TextBlock x:Name="commentTextBlock" Text="Choose Comment:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center">
-                	<TextBlock.Foreground>
-                		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
-                	</TextBlock.Foreground>
+
+                <TextBlock x:Name="commentTextBlock" Text="Choose Comment:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="commentTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0"/>
+                <TextBox x:Name="commentTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0" Visibility="Collapsed"/>
+
             </StackPanel>
             <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,0,70,0" DockPanel.Dock="Right" >
                 <Image x:Name="acceptAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/checkbox_16xLG.png"/>

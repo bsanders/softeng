@@ -5,6 +5,12 @@
  * It is a partial class of the main PhotoBomb class.
  * 
  * Make sure you know what you are doing when threading!!!
+ ********************************************************************************
+ * Changelog:
+ * 4/5/13 Ryan Causey: Editing the addPhotosThreadData class to also contain the
+ *                     observable collection needed so the run workercompleted can 
+ *                     generate a ReadOnlyObservableCollection to give to the GUI 
+ *                     callback.
  **/
 using System;
 using System.Collections.Generic;
@@ -12,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace SoftwareEng
 {
@@ -91,13 +98,16 @@ namespace SoftwareEng
 
         //------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/5/13
         //This gets called when addPhotosThread_DoWork() is complete.
         private void addPhotosThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             addPhotosThreadData results = (addPhotosThreadData)e.Result;
 
-            results.guiCallback(results.errorReport);
+            //ReadOnlyObservableCollection<ComplexPhotoData> photosToGui = new ReadOnlyObservableCollection<ComplexPhotoData>(results.photoCollection);
+
+            results.guiCallback(results.errorReport/*, photosToGui*/);
         }
 
         //------------------------------------------
@@ -123,6 +133,7 @@ namespace SoftwareEng
         public List<String> pictureNameInAlbum;
         public threadUpdateDelegate guiUpdateCallback;
         public int updateAmount;//number of photos to process before calling guiUpdate.
+        //public ObservableCollection<ComplexPhotoData> photoCollection;
     }//data class
 
 }//namespace
