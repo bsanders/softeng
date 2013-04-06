@@ -219,7 +219,8 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last: Bill Sanders, 3/29/13
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/5/13
         // This adds a picture to JUST the picture database.
         private ErrorReport util_addPicToPhotoDB(ErrorReport errorReport, ComplexPhotoData newPictureData)
         {
@@ -245,7 +246,10 @@ namespace SoftwareEng
                 new XAttribute("uid", newPictureData.UID),
                 new XAttribute("sha1", ByteArrayToString(newPictureData.hash)),
                 new XAttribute("refCount", newPictureData.refCount),
-                new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.fullPath)
+                new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.fullPath),
+                new XElement("smThumbPath", newPictureData.smThumbPath),
+                new XElement("medThumbPath", newPictureData.medThumbPath),
+                new XElement("lgThumbPath", newPictureData.lgThumbPath)
                 );
 
             //add to the database (in memory, not on disk).
