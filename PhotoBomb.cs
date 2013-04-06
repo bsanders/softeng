@@ -727,6 +727,7 @@ namespace SoftwareEng
             fullThumbPath = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Settings.OrgName,
+                Settings.PhotoLibraryName,
                 Settings.PhotoLibraryThumbsDir,
                 thumbSubDir,
                 filename);
@@ -734,11 +735,18 @@ namespace SoftwareEng
             // Actually processes the image, copying it to the new location, should go in a try/catch for IO
             // One of Build's overloads allows you to use file streams instead of filepaths.
             // If images have to be resized on-the-fly instead of stored, that may work as well.
-            resizeJob.Build(
-                source,
-                fullThumbPath,
-                Imazen.LightResize.JobOptions.CreateParentDirectory
-            );
+            try
+            {
+                resizeJob.Build(
+                    source,
+                    fullThumbPath,
+                    Imazen.LightResize.JobOptions.CreateParentDirectory
+                );
+            }
+            catch (IOException)
+            {
+                return "";
+            }
 
             return fullThumbPath;
         }
