@@ -20,10 +20,10 @@
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
                 </Grid.Background>
-                <TextBlock Text="Name:" Height="28" HorizontalAlignment="Left" Margin="0,46.5,0,0" x:Name="nameLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Text="Label" Height="28" HorizontalAlignment="Left" Margin="44.154,46.5,0,0" x:Name="nameLabelBack" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Text="UID:" Height="28" HorizontalAlignment="Left" Margin="0,80,0,0" x:Name="commentLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Text="Label" Height="28" HorizontalAlignment="Left" Margin="38,80,0,0" x:Name="commentLabel" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="Name:" Height="28" HorizontalAlignment="Left" Margin="0,0,0,0" x:Name="nameLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="{Binding name}" Height="28" HorizontalAlignment="Left" Margin="44.154,0,0,0" x:Name="nameLabelBack" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="Caption:" Height="28" HorizontalAlignment="Left" Margin="0,40,0,0" x:Name="commentLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="{Binding caption}" Height="28" HorizontalAlignment="Left" Margin="38,40,0,0" x:Name="commentLabel" VerticalAlignment="Top" Background="#FFE4E4E4" />
 
                 <!--
                 <TextBlock Text="Date Created:" Height="28" HorizontalAlignment="Left" Margin="0,114,0,0" Name="creationDateTag" VerticalAlignment="Top" />
@@ -142,7 +142,7 @@
                         <Binding Path="thumbnailPath">
                             <Binding.FallbackValue>
                                 <ImageSource>
-                                    ImagesResources2012/missing Image.png
+                                    ImagesResources2012/NewIconClipart-tiny-square.png
                                 </ImageSource>                                
                             </Binding.FallbackValue>
                         </Binding>
