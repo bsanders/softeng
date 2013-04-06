@@ -41,12 +41,22 @@
 
 
         <DataTemplate x:Key="AlbumListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
-            <Grid x:Name="albumItemFrontGrid" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}">
+            <Grid x:Name="albumItemFrontGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" MaxHeight="{Binding Value, ElementName=thumbnailSizeSlider}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="37"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 <Grid.Background>
-                    <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
+                    <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
-                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding medThumbPath}"/>
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,44,0" Background="#FFE4E4E4" Width="{Binding Value, ElementName=thumbnailSizeSlider}"/>
+
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding name}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0">
+                    <TextBlock.Background>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
+                    </TextBlock.Background>
+                </TextBlock>
+                <Image x:Name="image1" Stretch="UniformToFill" Source="{Binding medThumbPath}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
+                </Image>
             </Grid>
         </DataTemplate>
 
@@ -126,7 +136,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                     </TextBlock.Background>
                 </TextBlock>
-                <Image x:Name="image1" Stretch="UniformToFill" Source="ImagesResources2012/missing Image.png" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
+                <Image x:Name="image1" Stretch="UniformToFill" Source="{Binding thumbnailPath}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
                 	<Image.RenderTransform>
                 		<TransformGroup>
                 			<ScaleTransform/>
@@ -236,7 +246,7 @@
                            Storyboard.TargetProperty="Angle" />
                 </Storyboard>
             </DataTemplate.Resources>
-            <Grid x:Name="grid" Margin="-2,0" Width="200" Height="200">
+            <Grid x:Name="grid" Margin="-2,0" Width="{Binding Value, ElementName=thumbnailSizeSlider}" Height="{Binding Value, ElementName=thumbnailSizeSlider}">
                 <Border x:Name="ItemFrontSideContainer" Width="Auto" Margin="0" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <Label x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
                         <ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
