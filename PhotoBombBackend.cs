@@ -17,6 +17,7 @@
  *                     Fixed a bug where backend would not initialize properly on first program start.
  * 4/5/13 Ryan Causey: Updating addNewPicture and addNewPictures functions to work with new GUI.
  *                     Handled an error case where an unhandled exception would be thrown in saveAlbums/PicturesXML
+ * 4/6/13 Ryan Causey: Edited the removePhoto backend function to update the observable collection.
  **/
 using System;
 using System.Collections.Generic;
@@ -931,6 +932,16 @@ namespace SoftwareEng
             // Now delete that node
             errorReport = removePictureElement_backend(null, thisPicture);
 
+            //Now update the collection(linear searches are the best! <_< NO FUTURE!)
+            for (int i = 0; i < _photosCollection.Count; ++i)
+            {
+                if (_photosCollection[i].UID == idInAlbum)
+                {
+                    _photosCollection.RemoveAt(i);
+                    break;
+                }
+            }
+
             return errorReport;
         }
 
@@ -991,7 +1002,8 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 3/28/13
+        //Edited Last: 4/6/13
+        //Edited By: Ryan Causey
         /// <summary>
         /// Removes the specified photo from the PhotoDB as well as the filesystem
         /// </summary>
@@ -1009,6 +1021,11 @@ namespace SoftwareEng
                 File.Delete(pictureElement.Element("filePath").Value);
                 File.Delete(pictureElement.Element("smThumbPath").Value);
                 File.Delete(pictureElement.Element("medThumbPath").Value);
+                //since we are using this large thumbnail in the program as the image for the picture tile
+                //(tested and it is NOT because the album is using the first photo's large thumbnail as its thumb)
+                //this throws a System.IO.IOException because it cannot access the file to delete it as it is in use.
+                //then the function skips over the rest of the delete, which can lead to dangling items in the xml
+                //causing a unhandled exception later on if more deletes are tried.
                 File.Delete(pictureElement.Element("lgThumbPath").Value);
             }
             catch
