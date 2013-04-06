@@ -16,7 +16,7 @@
 
 
         <DataTemplate x:Key="AlbumListItemBackTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
-            <Grid x:Name="albumItemBackGrid">
+            <Grid x:Name="albumItemBackGrid" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}">
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
                 </Grid.Background>
