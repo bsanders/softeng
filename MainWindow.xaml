@@ -426,7 +426,7 @@
 
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed">
+                    <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="addPhotosDockButton_Click">
 
                         <Image x:Name="addPhotosDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                     </Button>
@@ -452,7 +452,7 @@
                 </DockPanel>
                 
                 
-                <ProgressBar HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden" Background="{DynamicResource PhotoBomberProgressBarBrush}"/>
+                <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden" Background="{DynamicResource PhotoBomberProgressBarBrush}"/>
                 <Popup AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 	<Grid Background="#FFE5E5E5">
                 		<ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200"/>

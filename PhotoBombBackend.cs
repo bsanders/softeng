@@ -15,6 +15,7 @@
  *                     take all the existing photos and consolidate them into a single backup album.
  *                     Fixed a bug with rebuildBackend function that caused two recovery albums to appear.
  *                     Fixed a bug where backend would not initialize properly on first program start.
+ * 4/5/13 Ryan Causey: Updating addNewPicture and addNewPictures functions to work with new GUI.
  **/
 using System;
 using System.Collections.Generic;
@@ -739,7 +740,8 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/5/13
         //NOTE: this is an overloaded function call FOR BACKEND USE ONLY.
         //      It does not have a gui callback and instead returns the
         //      Error report directly, for use in the backend.
@@ -827,6 +829,9 @@ namespace SoftwareEng
             //save to disk.
             savePicturesXML_backend(null);
             saveAlbumsXML_backend(null);
+
+            //update the photosCollection
+            _photosCollection.Add(newPicture);
 
             return errorReport;
         }
@@ -1176,8 +1181,9 @@ namespace SoftwareEng
 
         //---------------------------------------------
         //By: Ryan Moe
-        //Edited Last:
-        private void addNewPictures_backend(generic_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/5/13
+        private void addNewPictures_backend(getAllPhotosInAlbum_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addPhotosThread = new BackgroundWorker();
 
@@ -1191,6 +1197,7 @@ namespace SoftwareEng
             data.albumUID = albumUID;
             data.pictureNameInAlbum = pictureNameInAlbum;
             data.updateAmount = updateAmount;
+            data.photoCollection = _photosCollection;
 
             //setup the worker.
             addPhotosThread.WorkerReportsProgress = true;
