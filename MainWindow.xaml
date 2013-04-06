@@ -22,8 +22,14 @@
                 </Grid.Background>
                 <TextBlock Text="Name:" Height="28" HorizontalAlignment="Left" Margin="0,0,0,0" x:Name="nameLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
                 <TextBlock Text="{Binding name}" Height="28" HorizontalAlignment="Left" Margin="44.154,0,0,0" x:Name="nameLabelBack" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Text="Caption:" Height="28" HorizontalAlignment="Left" Margin="0,40,0,0" x:Name="commentLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Text="{Binding caption}" Height="28" HorizontalAlignment="Left" Margin="38,40,0,0" x:Name="commentLabel" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Text="Caption:" Height="28" HorizontalAlignment="Left" Margin="0,30,0,0" x:Name="commentLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
+                <TextBlock Height="28" HorizontalAlignment="Left" Margin="38,30,0,0" x:Name="commentLabel" VerticalAlignment="Top" Background="#FFE4E4E4">
+                    <TextBlock.Text>
+                        <!--fallback here doesn't work probably because default caption string is "" which is still a valid string-->
+                        <Binding FallbackValue="No caption set!" Path="caption">
+                        </Binding>
+                    </TextBlock.Text>
+                </TextBlock>
 
                 <!--
                 <TextBlock Text="Date Created:" Height="28" HorizontalAlignment="Left" Margin="0,114,0,0" Name="creationDateTag" VerticalAlignment="Top" />
@@ -55,7 +61,17 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                     </TextBlock.Background>
                 </TextBlock>
-                <Image x:Name="image1" Stretch="UniformToFill" Source="{Binding lgThumbPath}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
+                <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
+                    <Image.Source>
+                        <Binding Path="lgThumbPath">
+                            <Binding.FallbackValue>
+                                <ImageSource>
+                                    <!-- This image looks much swankier than the missing image png-->
+                                    ImagesResources2012/NewIconClipart-tiny-square.png
+                                </ImageSource>
+                            </Binding.FallbackValue>
+                        </Binding>
+                    </Image.Source>
                 </Image>
             </Grid>
         </DataTemplate>
