@@ -9,6 +9,9 @@
  * Changelog:
  * 4/4/13 Ryan Causey: Edited the getAllPhotosInAlbum_callback delegate to support
  *                     new ReadOnlyObservableCollection required for new GUI.
+ * 4/6/13 Ryan Causey: Adding new delegate for addNewPictures function to allow the user
+ *                     to move around the program while importing photos and not have it crash
+ *                     on import finish.
  **/
 
 using System;
@@ -22,6 +25,19 @@ namespace SoftwareEng
     //use this callback if the only thing going back
     //to the gui is the error object.
     public delegate void generic_callback(ErrorReport error);
+
+    /*
+     * Created By: Ryan Causey
+     * Created Date: 4/6/13
+     * Last Edited By:
+     * Last Edited Date:
+     */
+    /// <summary>
+    /// callback to be use with addNewPictures method
+    /// </summary>
+    /// <param name="error">Error reports from the back end.</param>
+    /// <param name="UIDofAlbum">UID of the album the pictures are being added too.</param>
+    public delegate void addNewPictures_callback(ErrorReport error, int UIDofAlbum);
 
     //callback used with the getAllUserAlbumNames method.
     public delegate void getAllAlbumNames_callback(ErrorReport error, ReadOnlyObservableCollection<SimpleAlbumData> _albums);

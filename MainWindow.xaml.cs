@@ -19,6 +19,11 @@
  *                     Fixing the error for the new album name/enter comments GUI element not appearing and
  *                     dissapearing correctly.
  * 4/6/13 Ryan Causey: Implemented delete photo context menu button and gui functions. Can now delete photos.
+ *                     Implemented an IValueConverter interface to allow us to bind to caches of image files
+ *                     as to not lock the file reference causing issues on delete.
+ *                     Added functionality to disable the addNewPhotos button while an import operation is in progress.
+ *                     User can still browse around and add more albums however.
+ *                     Updated handler for the close window operation to stop any import operations if they are occurring.
  */ 
 using System;
 using System.Collections.Generic;
@@ -67,7 +72,11 @@ namespace SoftwareEng
         //The regex for validation of album names
         private String albumValidationRegex = @"^[\w\d][\w\d ]{0,31}$"; //must be at least 1 character, max 32 in length
 
+        //current album UID, defaults to a invalid value(because we eont be in an album)
         private int currentAlbumUID = -1;
+
+        //keep track of if an import operation is occurring
+        private bool isImporting = false;
 
         //--A more stable storage for the ID of the user album instead
         //-- of relying on a form's selected items collection
@@ -224,7 +233,7 @@ namespace SoftwareEng
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
 
-                handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameCharacter);
+                handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
 
                 //apply error template to the text box.
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -252,7 +261,7 @@ namespace SoftwareEng
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
 
-                handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameUnique);
+                handleNameErrorPopup(true, errorStrings.invalidAlbumNameUnique);
                 //apply error template to the text box
                 //showErrorMessage("This is a temporary error check message box. Failed at guiValidateAlbumName_Callback");//temporary as fuuuu
                 //focus the text box and select all the text
@@ -370,8 +379,8 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/5/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/6/13
          **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiEnterAlbumView. Takes the returned ReadOnlyObservableCollection and binds the listView to it
@@ -399,8 +408,11 @@ namespace SoftwareEng
                 mainWindowAlbumList.ItemsSource = listOfPhotos;
                 //show the return to library view button on the dock
                 libraryDockButton.Visibility = Visibility.Visible;
-                //show the addPhotos dock button
-                addPhotosDockButton.Visibility = Visibility.Visible;
+                //show the addPhotos dock button if we are not running an import operation
+                if (!isImporting)
+                {
+                    addPhotosDockButton.Visibility = Visibility.Visible;
+                }
                 //hide the add new album button on the dock
                 addDockButton.Visibility = Visibility.Collapsed;
                 //temporary fix to prevent an unhandled exception
@@ -468,6 +480,11 @@ namespace SoftwareEng
             //if the user selected files
             if ((bool)openFilesResult)
             {
+                //tell the GUI at large we are importing
+                isImporting = true;
+                //hide the addPhotosDockButton
+                addPhotosDockButton.Visibility = Visibility.Collapsed;
+
                 //need to get the file extensions for the goddamned splicers
                 List<string> extensions = new List<string>();
 
@@ -484,21 +501,21 @@ namespace SoftwareEng
 
                 //pass all the files names to a backend function call to start adding the files.
                 //fix the function parameters before releasing.
-                bombaDeFotos.addNewPictures(new generic_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1); 
+                bombaDeFotos.addNewPictures(new addNewPictures_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1); 
             }
         }
 
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/6/13
          **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiImportPhotos which recieves the error report from the back end.
         /// </summary>
         /// <param name="error">Error report from the back end addNewPictures function.</param>
-        public void guiImportPhotos_Callback(ErrorReport error)
+        public void guiImportPhotos_Callback(ErrorReport error, int albumUID)
         {
             //deal with it
             if (error.reportID == ErrorReport.FAILURE)
@@ -513,9 +530,19 @@ namespace SoftwareEng
                     //warn about shit
                     showErrorMessage("Warning at guiImportPhotos_Callback"); //super temporary
                 }
+                //let the gui know we are done with an import
+                isImporting = false;
 
+                //reset the progress bar.
                 progressBar.Visibility = Visibility.Collapsed;
-                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
+                progressBar.Value = 0;
+                //if we are in the album we are importing photos too then get all the photos and refresh the view
+                if (currentAlbumUID == albumUID)
+                {
+                    //also show the addPhotosButton again
+                    addPhotosDockButton.Visibility = Visibility.Visible;
+                    bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID); 
+                }
             }
         }
 
@@ -611,9 +638,36 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
+        /*
+         * Created By: Alejandro Sosa
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/6/13
+         */
+        /// <summary>
+        /// Event handler for the exit button click event.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
         private void exitDockButton_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            //if we are importing we need to handle stopping the thread.
+            if (isImporting)
+            {
+                ErrorReport error = bombaDeFotos.cancelAddNewPicturesThread();
+                //if the thread failed to be stopped.
+                if (error.reportID == ErrorReport.FAILURE)
+                {
+                    showErrorMessage(error.description);
+                }
+                //else we are all good to close
+                {
+                    Close();
+                }
+            }
+            else
+            {
+                Close(); 
+            }
         }
 
         /**************************************************************************************************************************
@@ -1116,4 +1170,40 @@ namespace SoftwareEng
             guiDeleteSelectedPhoto();
         }
     }
+
+    /*
+     * Created By: Ryan Causey
+     * Created Date: 4/6/13
+     * Last Edited By:
+     * Last Edited Date:
+     */
+    /// <summary>
+    /// Converter to allow data binding to be used in the BitmapImage UriSource attribute with the
+    /// cache option on.
+    /// </summary>
+    public class ImagePathConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            // value contains the full path to the image
+            string path = (string)value;
+
+            // load the image, convert to bitmap, set cache option so it
+            //does not lock out the file, then return the new image.
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(path);
+            image.EndInit();
+
+            return image;
+        }
+
+        //put this here so that if someone tries to convert back we throw an exception as
+        //the operation is not implemented.
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException("The method or operation is not implemented.");
+        }
+    }  
 }

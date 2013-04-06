@@ -22,14 +22,14 @@ namespace SoftwareEng {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class errorStrings {
+    internal class promptStrings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal errorStrings() {
+        internal promptStrings() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace SoftwareEng {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SoftwareEng.errorStrings", typeof(errorStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SoftwareEng.promptStrings", typeof(promptStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,65 +61,29 @@ namespace SoftwareEng {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PhotoBomber failed to create the album..
+        ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string addAlbumFailure {
+        internal static string newAlbumNameLabel {
             get {
-                return ResourceManager.GetString("addAlbumFailure", resourceCulture);
+                return ResourceManager.GetString("newAlbumNameLabel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PhotoBomber failed to add the image..
+        ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string addImageFailure {
+        internal static string newImageCommentLabel {
             get {
-                return ResourceManager.GetString("addImageFailure", resourceCulture);
+                return ResourceManager.GetString("newImageCommentLabel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Album names can only contain letters, numbers and spaces..
+        ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string invalidAlbumNameCharacter {
+        internal static string newImageNameLabel {
             get {
-                return ResourceManager.GetString("invalidAlbumNameCharacter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An album with this name already exists..
-        /// </summary>
-        internal static string invalidAlbumNameUnique {
-            get {
-                return ResourceManager.GetString("invalidAlbumNameUnique", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Image names can only contain letters, numbers and spaces..
-        /// </summary>
-        internal static string invalidImageNameCharacter {
-            get {
-                return ResourceManager.GetString("invalidImageNameCharacter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An image in this album already has this name..
-        /// </summary>
-        internal static string invalidImageNameUnique {
-            get {
-                return ResourceManager.GetString("invalidImageNameUnique", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to stop picture import..
-        /// </summary>
-        internal static string stopImportFailure {
-            get {
-                return ResourceManager.GetString("stopImportFailure", resourceCulture);
+                return ResourceManager.GetString("newImageNameLabel", resourceCulture);
             }
         }
     }

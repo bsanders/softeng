@@ -117,32 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="addAlbumFailure" xml:space="preserve">
-    <value>PhotoBomber failed to create the album.</value>
-    <comment>used when adding an album fails and no more info can be provided or is not advisable.</comment>
+  <data name="newAlbumNameLabel" xml:space="preserve">
+    <value />
   </data>
-  <data name="addImageFailure" xml:space="preserve">
-    <value>PhotoBomber failed to add the image.</value>
-    <comment>used when adding an image fails and no more info can be provided or is not advisable.</comment>
+  <data name="newImageCommentLabel" xml:space="preserve">
+    <value />
   </data>
-  <data name="invalidAlbumNameCharacter" xml:space="preserve">
-    <value>Album names can only contain letters, numbers and spaces.</value>
-    <comment>used when album name has invalid characters</comment>
-  </data>
-  <data name="invalidAlbumNameUnique" xml:space="preserve">
-    <value>An album with this name already exists.</value>
-    <comment>used when album name is not unique</comment>
-  </data>
-  <data name="invalidImageNameCharacter" xml:space="preserve">
-    <value>Image names can only contain letters, numbers and spaces.</value>
-    <comment>used when imagename has invalid characters</comment>
-  </data>
-  <data name="invalidImageNameUnique" xml:space="preserve">
-    <value>An image in this album already has this name.</value>
-    <comment>used when imagename is not unique</comment>
-  </data>
-  <data name="stopImportFailure" xml:space="preserve">
-    <value>Failed to stop picture import.</value>
-    <comment>used when the import pictures thread cannot be cancelled.</comment>
+  <data name="newImageNameLabel" xml:space="preserve">
+    <value />
   </data>
 </root>

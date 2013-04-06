@@ -124,6 +124,11 @@
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="LightResize.cs" />
+    <Compile Include="promptStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>promptStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>
@@ -253,6 +258,10 @@
     <EmbeddedResource Include="errorStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>errorStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="promptStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>promptStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
