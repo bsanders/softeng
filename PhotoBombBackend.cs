@@ -796,28 +796,30 @@ namespace SoftwareEng
                 return errorReport;
             }
 
-            //get a unique ID for this photo and update its 
-            //data object to reflect this new UID.
-            newPicture.UID = util_getNextUID(_picturesDatabase, "picture", "uid", searchStartingPoint);
-            // error checking the call
-            if (!util_checkIDIsValid(newPicture.UID))
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Failed to get a UID for a new picture.";
-                return errorReport;
-            }
-
-            //Change me if you want to start naming the pictures differently in the library.
-            String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
-
-            newPicture.extension = photoExtension;
-
             // Get the refcount (will get zero if the pic is brand new) and increment it.
             newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
             newPicture.refCount++;
+
+
+            newPicture.extension = photoExtension;
+
             // if this is a new picture, we add it to the db
             if (newPicture.refCount == 1)
             {
+                //get a unique ID for this photo and update its 
+                //data object to reflect this new UID.
+                newPicture.UID = util_getNextUID(_picturesDatabase, "picture", "uid", searchStartingPoint);
+                // error checking the call
+                if (!util_checkIDIsValid(newPicture.UID))
+                {
+                    errorReport.reportID = ErrorReport.FAILURE;
+                    errorReport.description = "Failed to get a UID for a new picture.";
+                    return errorReport;
+                }
+
+                //Change me if you want to start naming the pictures differently in the library.
+                String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
+
                 newPicture.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
                 //error checking
                 if (errorReport.reportID == ErrorReport.FAILURE)
@@ -833,9 +835,12 @@ namespace SoftwareEng
             }
             else
             {
+
                 // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
                 XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(newPicture.hash));
                 thisPic.Attribute("refCount").Value = newPicture.refCount.ToString();
+                // fetch the uid and put it in the complex photo data, we'll need it later
+                newPicture.UID = (int)thisPic.Attribute("uid");
             }
 
             //if adding to the picture database failed
