@@ -10,6 +10,7 @@
  * 4/5/13 Ryan Causey: moved generate thumbnail utility calls out of copy photo to library
  *                     utility function call and into addNewPicture_backend in PhotoBombBackend.cs
  *                     Editing thumbnail generation utility function to return path to thumbnail.
+ *                     Edited addPhotoToDB and getComplexPhotoData to include new thumbnail paths.
  **/
 using System;
 using System.Collections.Generic;
@@ -735,7 +736,8 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 4/5/13
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/5/13
         // This function replaces the function util_convertPhotoNodeToComplexPhotoData() below.
         /// <summary>
         /// Combines the data from both databases for a specific photo instance.
@@ -760,6 +762,9 @@ namespace SoftwareEng
                 photoObj.hash = StringToByteArray((string)photoDBNode.Attribute("sha1"));
                 photoObj.refCount = (int)photoDBNode.Attribute("refCount");
                 photoObj.fullPath = photoDBNode.Element("filePath").Value;
+                photoObj.smThumbPath = photoDBNode.Element("smThumbPath").Value;
+                photoObj.medThumbPath = photoDBNode.Element("medThumbPath").Value;
+                photoObj.lgThumbPath = photoDBNode.Element("lgThumbPath").Value;
                 photoObj.extension = (String)photoDBNode.Element("filePath").Attribute("extension");
                 // AlbumDB data
                 photoObj.idInAlbum = (int)albumDBPhotoNode.Attribute("idInAlbum");
