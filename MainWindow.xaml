@@ -45,7 +45,7 @@
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
                 </Grid.Background>
-                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding smThumbPath}"/>
+                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding medThumbPath}"/>
                 <TextBlock Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,44,0" Background="#FFE4E4E4" Width="Auto"/>
             </Grid>
         </DataTemplate>
