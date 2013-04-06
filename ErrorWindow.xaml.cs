@@ -22,7 +22,7 @@ namespace SoftwareEng
         {
             InitializeComponent();
 
-            //errorMessageTextBox.Text = errorMessage;
+            errorMessageTextBox.Text = errorMessage;
         }
 
         private void exitButtonClick(object sender, RoutedEventArgs e)
