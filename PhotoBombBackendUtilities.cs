@@ -1084,6 +1084,7 @@ namespace SoftwareEng
 
             // Specifies a maximum height resolution constraint to scale the image down to
             resizeJob.Height = size;
+            resizeJob.Width = size;
 
             //get the full path
             fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picName);
