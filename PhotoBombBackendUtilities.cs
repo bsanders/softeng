@@ -745,8 +745,8 @@ namespace SoftwareEng
             try
             {
                 // PhotoDB data
-                photoObj.UID = (int)photoDBNode.Attribute("UID");
-                photoObj.hash = StringToByteArray((string)photoDBNode.Attribute("SHA1"));
+                photoObj.UID = (int)photoDBNode.Attribute("uid");
+                photoObj.hash = StringToByteArray((string)photoDBNode.Attribute("sha1"));
                 photoObj.refCount = (int)photoDBNode.Attribute("refCount");
                 photoObj.path = photoDBNode.Element("filePath").Value;
                 photoObj.extension = (String)photoDBNode.Element("filePath").Attribute("extension");
