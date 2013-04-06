@@ -104,7 +104,7 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                MessageBox.Show("Failed at guiConstructorCallback"); //super temporary
+                showErrorMessage("Failed at guiConstructorCallback"); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
@@ -119,7 +119,7 @@ namespace SoftwareEng
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                MessageBox.Show("failed at guiGenericErrorFunction"); //super temporary
+                showErrorMessage("failed at guiGenericErrorFunction"); //super temporary
                 if (Directory.Exists("photo library_backup"))
                 {
                     Directory.Delete("photo library_backup", true);
@@ -165,7 +165,7 @@ namespace SoftwareEng
             else
             {
                 //show an Error
-                MessageBox.Show("Failed at guiAlbumsRetrieved"); //super temporary
+                showErrorMessage("Failed at guiAlbumsRetrieved"); //super temporary
             }
 
         }
@@ -224,7 +224,7 @@ namespace SoftwareEng
                 handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameCharacter);
 
                 //apply error template to the text box.
-                //MessageBox.Show("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
+                //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
                 //focus the text box and select all the text
                 nameTextBox.Focus();
                 nameTextBox.SelectAll();
@@ -251,7 +251,7 @@ namespace SoftwareEng
 
                 handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameUnique);
                 //apply error template to the text box
-                //MessageBox.Show("This is a temporary error check message box. Failed at guiValidateAlbumName_Callback");//temporary as fuuuu
+                //showErrorMessage("This is a temporary error check message box. Failed at guiValidateAlbumName_Callback");//temporary as fuuuu
                 //focus the text box and select all the text
                 nameTextBox.Focus();
                 nameTextBox.SelectAll();
@@ -299,7 +299,7 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
-                MessageBox.Show("Failed at guiCreateNewAlbum_Callback"); //super temporary
+                showErrorMessage("Failed at guiCreateNewAlbum_Callback"); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
@@ -339,7 +339,7 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
-                MessageBox.Show("Failed at guiDeleteSelectedAlbum_Callback"); //super temporary
+                showErrorMessage("Failed at guiDeleteSelectedAlbum_Callback"); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
@@ -381,14 +381,14 @@ namespace SoftwareEng
             if (error.reportID == ErrorReport.FAILURE)
             {
                 //show user an error message that retrieving the pictures did not work
-                MessageBox.Show("Failed at guiEnterAlbumView_Callback"); //super temporary
+                showErrorMessage("Failed at guiEnterAlbumView_Callback"); //super temporary
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //show the user a notification that some pictures are not displayed
-                    MessageBox.Show("Warnings at guiEnterAlbumView_Callback"); //super temporary
+                    showErrorMessage("Warnings at guiEnterAlbumView_Callback"); //super temporary
                 }
                 //swap data templates and change bindings.
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
@@ -491,14 +491,14 @@ namespace SoftwareEng
             if (error.reportID == ErrorReport.FAILURE)
             {
                 //shit done fucked up
-                MessageBox.Show("Failed at guiImportPhotos_Callback"); //super temporary
+                showErrorMessage("Failed at guiImportPhotos_Callback"); //super temporary
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //warn about shit
-                    MessageBox.Show("Warning at guiImportPhotos_Callback"); //super temporary
+                    showErrorMessage("Warning at guiImportPhotos_Callback"); //super temporary
                 }
 
                 progressBar.Visibility = Visibility.Collapsed;
@@ -517,14 +517,14 @@ namespace SoftwareEng
             if (error.reportID == ErrorReport.FAILURE)
             {
                 //show user an error message that retrieving the pictures did not work
-                MessageBox.Show("Failed at guiImportPhotosRefreshView_Callback"); //super temporary
+                showErrorMessage("Failed at guiImportPhotosRefreshView_Callback"); //super temporary
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //show the user a notification that some pictures are not displayed
-                    MessageBox.Show("Warnings at guiImportPhotosRefreshView_Callback"); //super temporary
+                    showErrorMessage("Warnings at guiImportPhotosRefreshView_Callback"); //super temporary
                 }
                 listOfPhotos = picturesInAlbum;
             }
