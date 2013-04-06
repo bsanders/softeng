@@ -24,6 +24,7 @@
  *                     Added functionality to disable the addNewPhotos button while an import operation is in progress.
  *                     User can still browse around and add more albums however.
  *                     Updated handler for the close window operation to stop any import operations if they are occurring.
+ *                     Added gui functionality to cancel the import operation while in progress.
  */ 
 using System;
 using System.Collections.Generic;
@@ -484,6 +485,8 @@ namespace SoftwareEng
                 isImporting = true;
                 //hide the addPhotosDockButton
                 addPhotosDockButton.Visibility = Visibility.Collapsed;
+                //show the cancel import dock button
+                cancelPhotoImportDockButton.Visibility = Visibility.Visible;
 
                 //need to get the file extensions for the goddamned splicers
                 List<string> extensions = new List<string>();
@@ -536,11 +539,19 @@ namespace SoftwareEng
                 //reset the progress bar.
                 progressBar.Visibility = Visibility.Collapsed;
                 progressBar.Value = 0;
+
+                //remove the cancel import button
+                cancelPhotoImportDockButton.Visibility = Visibility.Collapsed;
+                //if we are in an album view
+                if (currentAlbumUID != -1)
+                {
+                    //show the addPhotosButton again
+                    addPhotosDockButton.Visibility = Visibility.Visible;
+                }
+
                 //if we are in the album we are importing photos too then get all the photos and refresh the view
                 if (currentAlbumUID == albumUID)
                 {
-                    //also show the addPhotosButton again
-                    addPhotosDockButton.Visibility = Visibility.Visible;
                     bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID); 
                 }
             }
@@ -591,11 +602,44 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
+        /* Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Callback for guiDeleteSelectedPhoto. Just shows an error message if there is one.
+        /// </summary>
+        /// <param name="error">Error report from the back end.</param>
         public void guiDeleteSelectedPhoto_Callback(ErrorReport error)
         {
             if (error.reportID == ErrorReport.FAILURE)
             {
                 showErrorMessage(error.description);
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function call to cancel the import of pictures.
+        /// </summary>
+        private void guiCancelImport()
+        {
+            ErrorReport error = bombaDeFotos.cancelAddNewPicturesThread();
+
+            //if theres an error, show the error message, otherwise hide the cancel button.
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                showErrorMessage(error.description);
+            }
+            else
+            {
+                cancelPhotoImportDockButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -1168,6 +1212,22 @@ namespace SoftwareEng
         {
             //call guideletephoto function here.
             guiDeleteSelectedPhoto();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for the cancel import photo dock button.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void cancelPhotoImportDockButton_Click(object sender, RoutedEventArgs e)
+        {
+            guiCancelImport();
         }
     }
 
