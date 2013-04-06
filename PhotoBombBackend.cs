@@ -277,7 +277,7 @@ namespace SoftwareEng
                 //rename the file
                 fi.MoveTo(Path.Combine(libraryPath, picNameInLibrary));
 
-                newPicture.path = fi.FullName;
+                newPicture.fullPath = fi.FullName;
 
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
                 newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
@@ -640,7 +640,7 @@ namespace SoftwareEng
                     photo.hash = StringToByteArray((string)picElement.Attribute("sha1"));
                     photo.UID = (int)picElement.Attribute("uid");
                     photo.refCount = (int)picElement.Attribute("refCount");
-                    photo.path = (string)picElement.Element("filePath").Value;
+                    photo.fullPath = (string)picElement.Element("filePath").Value;
                 }
                 catch
                 {
@@ -788,12 +788,17 @@ namespace SoftwareEng
             String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
 
             //Move picture and get a new path for the picture in our storage.
-            newPicture.path = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
+            newPicture.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
             //error checking
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
                 return errorReport;
             }
+
+            //generate the thumbnails and get their path.
+            newPicture.smThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.smThumbSize);
+            newPicture.medThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.medThumbSize);
+            newPicture.lgThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.lrgThumbSize);
 
             newPicture.extension = photoExtension;
 
