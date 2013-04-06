@@ -19,6 +19,8 @@
  *                     Fixing the error for the new album name/enter comments GUI element not appearing and
  *                     dissapearing correctly.
  * 4/6/13 Ryan Causey: Implemented delete photo context menu button and gui functions. Can now delete photos.
+ *                     Implemented an IValueConverter interface to allow us to bind to caches of image files
+ *                     as to not lock the file reference causing issues on delete.
  */ 
 using System;
 using System.Collections.Generic;
@@ -1116,4 +1118,40 @@ namespace SoftwareEng
             guiDeleteSelectedPhoto();
         }
     }
+
+    /*
+     * Created By: Ryan Causey
+     * Created Date: 4/6/13
+     * Last Edited By:
+     * Last Edited Date:
+     */
+    /// <summary>
+    /// Converter to allow data binding to be used in the BitmapImage UriSource attribute with the
+    /// cache option on.
+    /// </summary>
+    public class ImagePathConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            // value contains the full path to the image
+            string path = (string)value;
+
+            // load the image, convert to bitmap, set cache option so it
+            //does not lock out the file, then return the new image.
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(path);
+            image.EndInit();
+
+            return image;
+        }
+
+        //put this here so that if someone tries to convert back we throw an exception as
+        //the operation is not implemented.
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException("The method or operation is not implemented.");
+        }
+    }  
 }
