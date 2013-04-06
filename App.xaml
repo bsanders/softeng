@@ -39,6 +39,8 @@
         <Color x:Key="PhotoBomberLibraryTileColor">#FF1C2327</Color>
 
         <Color x:Key="PhotoBomberAlbumTileColor">#FF404040</Color>
+        <Color x:Key="PhotoBomberErrorBorderColor">Red</Color>
+        <Color x:Key="PhotoBomberErrorBackground">#FFFBC5C5</Color>
 
     </Application.Resources>
 </Application>
