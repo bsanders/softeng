@@ -117,23 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="errorString_" xml:space="preserve">
-    <value />
+  <data name="addAlbumFailure" xml:space="preserve">
+    <value>Photobomber failed to create the album.</value>
+    <comment>used when adding an album fails</comment>
   </data>
-  <data name="errorString_InvalidAlbumNameCharacter" xml:space="preserve">
+  <data name="invalidAlbumNameCharacter" xml:space="preserve">
     <value>Album names can only contain letters, numbers and spaces.</value>
     <comment>used when album name has invalid characters</comment>
   </data>
-  <data name="errorString_InvalidAlbumNameUnique" xml:space="preserve">
-    <value>Album names must be unique.</value>
+  <data name="invalidAlbumNameUnique" xml:space="preserve">
+    <value>An album with this name already exists.</value>
     <comment>used when album name is not unique</comment>
   </data>
-  <data name="errorString_InvalidImageNameCharacter" xml:space="preserve">
+  <data name="invalidImageNameCharacter" xml:space="preserve">
     <value>Image names can only contain letters, numbers and spaces.</value>
     <comment>used when imagename has invalid characters</comment>
   </data>
-  <data name="errorString_InvalidImageNameUnique" xml:space="preserve">
-    <value>Image names must be unique.</value>
+  <data name="invalidImageNameUnique" xml:space="preserve">
+    <value>An image in this album already has this name.</value>
     <comment>used when imagename is not unique</comment>
   </data>
 </root>
