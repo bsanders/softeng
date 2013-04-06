@@ -6,9 +6,11 @@
  * 
  ****************************************************************************************************************
  * Changelog:
- * 3/31/31 Ryan Causey: converted SimpleAlbumData's public datamembers into properties to facilitate databinding
+ * 3/29/13 Bill Sanders: added a fields for hash, caption, ref count
+ * 3/31/13 Ryan Causey: converted SimpleAlbumData's public datamembers into properties to facilitate databinding
  * 4/1/13 Ryan Causey: converting the rest of the data class's public datamember into properties
  *                     Implementing the INotifyPropertyChanged interface for all data classes
+ * 4/5/13 Ryan Causey: Adding small, med, and large thumbnail paths to ComplexPhotoData.
  ***************************************************************************************************************/
 using System;
 using System.Collections.Generic;
@@ -457,9 +459,8 @@ namespace SoftwareEng
     //--------------------------------
     //More complex photo data returned by functions like getPhotoDataByUID().
     //By: Ryan Moe
-    //Edited Last: Bill Sanders, added a fields for hash, caption, ref count
     //Edited Last By: Ryan Causey
-    //Edited Date: 4/1/13
+    //Edited Date: 4/5/13
     public class ComplexPhotoData : INotifyPropertyChanged
     {
         //the name of the picture in the album, displayed by the gui
@@ -467,7 +468,10 @@ namespace SoftwareEng
         private int _UID;
         private int _idInAlbum;
         private byte[] _hash;
-        private String _path;
+        private String _fullPath;
+        private String _smThumbPath;
+        private String _medThumbPath;
+        private String _lgThumbPath;
         private String _extension;
         private String _caption;
         private String _name;
@@ -534,19 +538,70 @@ namespace SoftwareEng
             }
         }
 
-        public String path
+        public String fullPath
         {
             get
             {
-                return _path;
+                return _fullPath;
             }
             set
             {
-                if (value != _path)
+                if (value != _fullPath)
                 {
-                    _path = value;
+                    _fullPath = value;
                     //call on property changed to update the GUI(hopefully)
-                    OnPropertyChanged("path");
+                    OnPropertyChanged("fullPath");
+                }
+            }
+        }
+
+        public String smThumbPath
+        {
+            get
+            {
+                return _smThumbPath;
+            }
+            set
+            {
+                if (value != _smThumbPath)
+                {
+                    _smThumbPath = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("smThumbPath");
+                }
+            }
+        }
+
+        public String medThumbPath
+        {
+            get
+            {
+                return _medThumbPath;
+            }
+            set
+            {
+                if (value != _medThumbPath)
+                {
+                    _medThumbPath = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("medThumbPath");
+                }
+            }
+        }
+
+        public String lgThumbPath
+        {
+            get
+            {
+                return _lgThumbPath;
+            }
+            set
+            {
+                if (value != _lgThumbPath)
+                {
+                    _lgThumbPath = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("lgThumbPath");
                 }
             }
         }
@@ -622,7 +677,7 @@ namespace SoftwareEng
             UID = -1;
             idInAlbum = -1;
             hash = null;
-            path = "";
+            fullPath = "";
             extension = "";
             caption = "";
             name = "";
