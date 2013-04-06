@@ -4,6 +4,12 @@
  * This class is for utility functions for the PhotoBomb backend.
  * By utility I mean for functions that do a single simple task
  * that many other funcitons may want to use.
+ **********************************************************************************
+ * Changelog:
+ * 4/3/13 Bill Sanders: added comments, thumbnail generation
+ * 4/5/13 Ryan Causey: moved generate thumbnail utility calls out of copy photo to library
+ *                     utility function call and into addNewPicture_backend in PhotoBombBackend.cs
+ *                     Editing thumbnail generation utility function to return path to thumbnail.
  **/
 using System;
 using System.Collections.Generic;
@@ -227,7 +233,7 @@ namespace SoftwareEng
             }
 
             //if path is not valid
-            if (!util_checkFilePath(newPictureData.path))
+            if (!util_checkFilePath(newPictureData.fullPath))
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Path is not valid.";
@@ -239,7 +245,7 @@ namespace SoftwareEng
                 new XAttribute("uid", newPictureData.UID),
                 new XAttribute("sha1", ByteArrayToString(newPictureData.hash)),
                 new XAttribute("refCount", newPictureData.refCount),
-                new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.path)
+                new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.fullPath)
                 );
 
             //add to the database (in memory, not on disk).
@@ -749,7 +755,7 @@ namespace SoftwareEng
                 photoObj.UID = (int)photoDBNode.Attribute("uid");
                 photoObj.hash = StringToByteArray((string)photoDBNode.Attribute("sha1"));
                 photoObj.refCount = (int)photoDBNode.Attribute("refCount");
-                photoObj.path = photoDBNode.Element("filePath").Value;
+                photoObj.fullPath = photoDBNode.Element("filePath").Value;
                 photoObj.extension = (String)photoDBNode.Element("filePath").Attribute("extension");
                 // AlbumDB data
                 photoObj.idInAlbum = (int)albumDBPhotoNode.Attribute("idInAlbum");
@@ -852,7 +858,8 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last: Bill Sanders, added comments (4/3/13), thumbnail generation
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/5/13
         // Currently, as a side effect, this function also generates thumbnails.
         /// <summary>
         /// Copies a picture from a source to the library on the filesystem.
@@ -897,9 +904,11 @@ namespace SoftwareEng
             }
 
             // Pre-generate thumbnails...
+            /* moving to addNewPicture_backend in PhotoBombBackend.cs
             util_generateThumbnail(errorReport, newPath, picNameInLibrary, Settings.smThumbSize);
             util_generateThumbnail(errorReport, newPath, picNameInLibrary, Settings.medThumbSize);
             util_generateThumbnail(errorReport, newPath, picNameInLibrary, Settings.lrgThumbSize);
+            */
 
             //new library path
             return newPath;
@@ -1033,7 +1042,8 @@ namespace SoftwareEng
 
         //---------------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 4/3/13
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/5/13
         /// <summary>
         /// Generates a thumbnail for a specified image file and places it in an appropriate sub directory
         /// </summary>
@@ -1042,11 +1052,12 @@ namespace SoftwareEng
         /// <param name="picName"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        private ErrorReport util_generateThumbnail(ErrorReport error, string srcPath, string picName, int size)
+        private String util_generateThumbnail(ErrorReport error, string srcPath, string picName, int size)
         {
             // I haven't thought much about whether or not this is the right place to put this
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
             string thumbSubDir = "";
+            string fullThumbPath = "";
 
             // Which sub directory of thumbs_db to put this in...
             if (size == Settings.smThumbSize)
@@ -1065,20 +1076,19 @@ namespace SoftwareEng
             // Specifies a maximum height resolution constraint to scale the image down to
             resizeJob.Height = size;
 
+            //get the full path
+            fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picName);
+
             // Actually processes the image, copying it to the new location, should go in a try/catch for IO
             // One of Build's overloads allows you to use file streams instead of filepaths.
             // If images have to be resized on-the-fly instead of stored, that may work as well.
             resizeJob.Build(
                 srcPath,
-                System.IO.Path.Combine(
-                    libraryPath,
-                    Settings.PhotoLibraryThumbsDir,
-                    thumbSubDir,
-                    picName),
+                fullThumbPath,
                 Imazen.LightResize.JobOptions.CreateParentDirectory
             );
 
-            return error;
+            return fullThumbPath;
         }
     }//class
 }

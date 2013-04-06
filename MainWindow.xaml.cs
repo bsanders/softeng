@@ -15,7 +15,9 @@
  *                     Implementing switching to the album view on the album view context menu click.
  * 4/5/13 Ryan Causey: Implemented GUI function to provide a means to transition back to the Library View from
  *                     the album view. Also making sure the correct dock buttons are displayed between views.
- *                     Added temporary messagebox.show()'s for debugging
+ *                     Added temporary messagebox.show()'s for debugging.
+ *                     Fixing the error for the new album name/enter comments GUI element not appearing and
+ *                     dissapearing correctly.
  */ 
 using System;
 using System.Collections.Generic;
@@ -218,6 +220,9 @@ namespace SoftwareEng
                 //this storyboard is for the name box
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
+
+                handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameCharacter);
+
                 //apply error template to the text box.
                 //MessageBox.Show("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
                 //focus the text box and select all the text
@@ -231,8 +236,8 @@ namespace SoftwareEng
          * Created on: 4/3/13
          * Callback for checking uniqueness of a new album name. This will be called after the back end finishes checking if the album
          * name is unique
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/5/13
          */
         public void guiValidateAlbumName_Callback(ErrorReport error)
         {
@@ -244,7 +249,7 @@ namespace SoftwareEng
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
 
-                invalidInputPopup.IsOpen = true;
+                handleNameErrorPopup(true, errorStrings.errorString_InvalidAlbumNameUnique);
                 //apply error template to the text box
                 //MessageBox.Show("This is a temporary error check message box. Failed at guiValidateAlbumName_Callback");//temporary as fuuuu
                 //focus the text box and select all the text
@@ -295,7 +300,7 @@ namespace SoftwareEng
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
                 MessageBox.Show("Failed at guiCreateNewAlbum_Callback"); //super temporary
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(dummyCallback));
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
 
@@ -335,7 +340,7 @@ namespace SoftwareEng
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
                 MessageBox.Show("Failed at guiDeleteSelectedAlbum_Callback"); //super temporary
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(dummyCallback));
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
             }
         }
 
@@ -395,6 +400,8 @@ namespace SoftwareEng
                 addPhotosDockButton.Visibility = Visibility.Visible;
                 //hide the add new album button on the dock
                 addDockButton.Visibility = Visibility.Collapsed;
+                //temporary fix to prevent an unhandled exception
+                viewMenuItemLibraryButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -417,6 +424,8 @@ namespace SoftwareEng
             addPhotosDockButton.Visibility = Visibility.Collapsed;
             //show the add album dock button
             addDockButton.Visibility = Visibility.Visible;
+            //temporary fix to prevent an unhandled exception
+            viewMenuItemLibraryButton.Visibility = Visibility.Visible;
 
             currentAlbumUID = -1;
         }
@@ -606,8 +615,15 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         * Created By: Alejandro Sosa
+         * Edited Last By: Ryan Causey
+         * Edited Last Date: 4/5/13
+         */
         private void showAddAlbumBox()
         {
+            ItemAddOrEditDialogBar.Visibility = Visibility.Visible;
+
             NameTextBlock.Visibility = Visibility.Visible;
             nameTextBox.Visibility = Visibility.Visible;
 
@@ -617,8 +633,15 @@ namespace SoftwareEng
             Keyboard.Focus(nameTextBox);
         }
 
+        /*
+         * Created By: Alejandro Sosa
+         * Edited Last By: Ryan Causey
+         * Edited Last Date: 4/5/13
+         */
         private void hideAddAlbumBox()
         {
+            ItemAddOrEditDialogBar.Visibility = Visibility.Collapsed;
+
             NameTextBlock.Visibility= Visibility.Hidden;
             nameTextBox.Visibility = Visibility.Hidden;
 
@@ -634,8 +657,13 @@ namespace SoftwareEng
         private void cancelAddToolbarButton_Click(object sender, RoutedEventArgs e)
         {
             hideAddAlbumBox();
-            //make sure to clear the text box.
+            //make sure to clear the text box and close error popup
             nameTextBox.Clear();
+            invalidInputPopup.IsOpen = false;
+
+            //stop any error animations
+            Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+            nameTextBoxErrorAnimation.Stop();
         }
 
 
@@ -976,31 +1004,29 @@ namespace SoftwareEng
             //call another function
             guiImportPhotos();
         }
-        /********************************************************************
-         * TEST FUNCTION SECTION
-         * Author: Ryan Causey
-         * I am using the following functions to test backend functionality
-         * Destroy these when done testing
-         *******************************************************************/
-        private void testEvent(object sender, RoutedEventArgs e)
-        {
-            SimpleAlbumData testData = new SimpleAlbumData();
-            testData.albumName = "LOOKITDISNAME";
-            bombaDeFotos.addNewAlbum(new generic_callback(dummyCallback), testData);
-        }
-
-        public void dummyCallback(ErrorReport er)
-        {
-        }
 
         private void PopupMouseClick_Handler(object sender, MouseButtonEventArgs e)
         {
             libraryContextMenu.IsOpen = false;
         }
+
+
         /*******************************************************************
          * End Test Functions
          ******************************************************************/
-        
+
+        private void handleNameErrorPopup(bool showIt, string errorMessage)
+        {
+            if (showIt == false)
+            {
+                invalidInputPopup.IsOpen = false;
+                return;
+            }
+
+            errorBalloon.Content = errorMessage;
+            invalidInputPopup.IsOpen = true;
+
+        }
 
     }
 }

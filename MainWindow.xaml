@@ -40,12 +40,12 @@
 
 
 
-        <DataTemplate x:Key="AlbumListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:SimplePhotoData}">
+        <DataTemplate x:Key="AlbumListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
             <Grid x:Name="albumItemFrontGrid">
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
                 </Grid.Background>
-                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill"/>
+                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding path}"/>
                 <TextBlock Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,44,0" Background="#FFE4E4E4" Width="Auto"/>
             </Grid>
         </DataTemplate>
@@ -55,12 +55,12 @@
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
-                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" Source="{Binding}"/>
+                <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" />
                 <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Background="#00E4E4E4" Width="Auto" Content="{Binding albumName}" Foreground="#AAFFFFFF" />
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="LibraryListItemFrontTemplate">
+        <DataTemplate x:Key="LibraryListItemFrontTemplate" DataType="{x:Type SoftwareEngControls:SimpleAlbumData}">
             <Grid x:Name="libraryItemBackGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}">
             	<VisualStateManager.CustomVisualStateManager>
             		<ei:ExtendedVisualStateManager/>
@@ -315,10 +315,10 @@
 
             </Grid>
         	<DataTemplate.Triggers>
-        		<EventTrigger RoutedEvent="Selector.Selected" SourceName="ItemFrontSide">
+        		<EventTrigger RoutedEvent="UIElement.MouseLeftButtonDown" SourceName="ItemFrontSideContainer">
         			<BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
         		</EventTrigger>
-        		<EventTrigger RoutedEvent="Selector.Selected" SourceName="ItemBackSide">
+        		<EventTrigger RoutedEvent="UIElement.MouseLeftButtonDown" SourceName="ItemBackSideContainer">
         			<BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
         		</EventTrigger>
         	</DataTemplate.Triggers>
@@ -401,17 +401,6 @@
 
 
     <Grid>
-    	<VisualStateManager.VisualStateGroups>
-    		<VisualStateGroup x:Name="IncorrectNameGroup">
-    			<VisualState x:Name="IncorrectNameError">
-    				<Storyboard>
-    					<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
-    						<EasingColorKeyFrame KeyTime="0" Value="#FF057CF3"/>
-    					</ColorAnimationUsingKeyFrames>
-    				</Storyboard>
-    			</VisualState>
-    		</VisualStateGroup>
-    	</VisualStateManager.VisualStateGroups>
         <Border x:Name="mainWindowFrame" Padding="6" Background="#001C2327">
             <Grid x:Name="grid">
                 <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" VerticalOffset="-60" HorizontalOffset="-60" PreviewMouseUp="PopupMouseClick_Handler" >
@@ -526,7 +515,11 @@
                 </Button.Background>
                 <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart-tiny-square.png"/>
             </Button>
-            <Label Content="PhotoBomber" Height="27" Foreground="#FFE8E8E8" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center"/>
+            <Label Content="PhotoBomber" Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center">
+            	<Label.Foreground>
+            		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+            	</Label.Foreground>
+            </Label>
 
             <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitDockButton_Click" ToolTip="Exit">
                 <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Close_16xLG.png"/>
@@ -548,7 +541,7 @@
         <Thumb x:Name="bottomRightThumb" Background="#001C2327" Cursor="SizeNWSE" HorizontalAlignment="Right" Width="6" DragDelta="bottomRightThumb_DragDeltaHandler" Height="6" VerticalAlignment="Bottom" Opacity="0"/>
         <Thumb x:Name="topRightThumb" Background="#001C2327" HorizontalAlignment="Right" Width="6" VerticalAlignment="Top" Height="6" Cursor="SizeNESW" DragDelta="topRightThumb_DragDeltaHandler" Opacity="0"/>
         <Thumb x:Name="bottomLeftThumb" Background="#001C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeNESW" DragDelta="bottomLeftThumb_DragDeltaHandler" VerticalAlignment="Bottom" Height="6" Opacity="0"/>
-        <DockPanel x:Name="ItemAddOrEditDialogBar" LastChildFill="False" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,27,0,0">
+        <DockPanel x:Name="ItemAddOrEditDialogBar" LastChildFill="False" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,27,0,0" Visibility="Collapsed">
             <DockPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FF979797" Offset="0.871"/>
@@ -558,12 +551,22 @@
                 </LinearGradientBrush>
             </DockPanel.Background>
             <StackPanel x:Name="nameBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right" ToolTip=" ">
-                <TextBlock x:Name="NameTextBlock" Text="Choose Name:" HorizontalAlignment="Left" Foreground="#FFE8E8E8" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center"/>
+                <TextBlock x:Name="NameTextBlock" Text="Choose Name:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center">
+                	<TextBlock.Foreground>
+                		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                	</TextBlock.Foreground>
+                </TextBlock>
                 <TextBox x:Name="nameTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0"/>
             </StackPanel>
             <StackPanel x:Name="commentBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right">
-                <TextBlock x:Name="commentTextBlock" Text="Choose Comment:" HorizontalAlignment="Left" Foreground="#FFE8E8E8" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center"/>
-                <TextBox x:Name="commentTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0"/>
+
+                <TextBlock x:Name="commentTextBlock" Text="Choose Comment:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <TextBox x:Name="commentTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0" Visibility="Collapsed"/>
+
             </StackPanel>
             <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,0,70,0" DockPanel.Dock="Right" >
                 <Image x:Name="acceptAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/checkbox_16xLG.png"/>
@@ -572,9 +575,16 @@
                 <Image x:Name="cancelAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_Cancel_16xLG.png"/>
             </Button>
         </DockPanel>
-        <Popup x:Name="invalidInputPopup" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="342.496,197.128,354.496,209.128" AllowsTransparency="True" HorizontalAlignment="Center" VerticalAlignment="Center" PlacementTarget="{Binding ElementName=nameTextBox, Mode=OneWay}" Placement="Top" HorizontalOffset="200">
-        	<Grid Background="#FFE5E5E5" HorizontalAlignment="Center" VerticalAlignment="Center">
-        		<ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200" FontWeight="Normal"/>
+        <Popup x:Name="invalidInputPopup" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0" AllowsTransparency="True" PlacementTarget="{Binding ElementName=nameTextBox, Mode=OneWay}" Placement="Top" HorizontalOffset="200">
+        	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        		<ed:Callout x:Name="errorBalloon" AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Errors messages should come from errorStrings.resx" FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200" FontWeight="Normal" Fill="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" Padding="9,0,9,9">
+        			<ed:Callout.Stroke>
+        				<SolidColorBrush Color="{DynamicResource PhotoBomberErrorBorderColor}"/>
+        			</ed:Callout.Stroke>
+        			<ed:Callout.Foreground>
+        				<SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+        			</ed:Callout.Foreground>
+        		</ed:Callout>
         	</Grid>
         </Popup>
     </Grid>
