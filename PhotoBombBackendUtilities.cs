@@ -280,7 +280,7 @@ namespace SoftwareEng
             }
 
             // idInAlbum for a photo is unique to an album in the albums database.
-            newPicture.idInAlbum = util_getNextUID(specificAlbum.Element("albumPhotos"), "picture", 1);
+            newPicture.idInAlbum = util_getNextUID(specificAlbum.Element("albumPhotos"), "picture", "idInAlbum", 1);
             // check to make sure we got a valid number back...
             if (!util_checkIDIsValid(newPicture.idInAlbum))
             {
@@ -578,25 +578,25 @@ namespace SoftwareEng
         /// <summary>
         /// Performs a linear search through the Photo DB for a valid, unused UID for a photo
         /// </summary>
-        /// <param name="potentialUID">The starting point to search from</param>
+        /// <param name="potentialID">The starting point to search from</param>
         /// <returns>A valid UID to use, or -1 if there was a problem</returns>
-        private int util_getNextUID(XElement searchNode, string nodeType, int potentialUID = 1)
+        private int util_getNextUID(XElement searchNode, string nodeType, string attributeName, int potentialID = 1)
         {
-            int newUID;//the UID we will search against and return eventually.
+            int newID;//the UID we will search against and return eventually.
 
             //error checking the starting point.
-            if (util_checkIDIsValid(potentialUID))
+            if (util_checkIDIsValid(potentialID))
             {
-                newUID = potentialUID;
+                newID = potentialID;
             }
             else
             {
-                newUID = 1;//default starting point.
+                newID = 1;//default starting point.
             }
 
             Boolean uidFound = false;
             // fetch from the photo DB by uid until we find one that returns null
-            while (!uidFound && newUID < UID_MAX_SIZE)
+            while (!uidFound && newID < UID_MAX_SIZE)
             {
                 try
                 {
@@ -604,9 +604,9 @@ namespace SoftwareEng
                     //to match our testing uid, then incriment the testing
                     //uid and try again.
                     (from c in searchNode.Elements(nodeType)
-                     where (int)c.Attribute("uid") == newUID
+                     where (int)c.Attribute(attributeName) == newID
                      select c).First();
-                    ++newUID;
+                    ++newID;
                 }
                 //we found a unique one!
                 catch
@@ -616,13 +616,13 @@ namespace SoftwareEng
             }
 
             // if we scanned through all UID's until UID_MAX_SIZE (!!)
-            if (newUID > UID_MAX_SIZE)
+            if (newID > UID_MAX_SIZE)
             {
                 return -1;
             }
             else
             {
-                return newUID;
+                return newID;
             }
         }
 

@@ -198,7 +198,7 @@ namespace SoftwareEng
             backupAlbum.albumName = Settings.PhotoLibraryBackupName;
 
             //get a new uid for the new album.
-            backupAlbum.UID = util_getNextUID(_albumsDatabase, "album", 1);
+            backupAlbum.UID = util_getNextUID(_albumsDatabase, "album", "uid", 1);
 
             //add the album to the memory database.
             util_addAlbumToAlbumDB(errorReport, backupAlbum);
@@ -260,7 +260,7 @@ namespace SoftwareEng
 
                 //get a unique ID for this photo and update its 
                 //data object to reflect this new UID.
-                newPicture.UID = util_getNextUID(_picturesDatabase, "picture", 1);
+                newPicture.UID = util_getNextUID(_picturesDatabase, "picture", "uid", 1);
                 // error checking the call
                 if (!util_checkIDIsValid(newPicture.UID))
                 {
@@ -795,7 +795,7 @@ namespace SoftwareEng
 
             //get a unique ID for this photo and update its 
             //data object to reflect this new UID.
-            newPicture.UID = util_getNextUID(_picturesDatabase, "picture", searchStartingPoint);
+            newPicture.UID = util_getNextUID(_picturesDatabase, "picture", "uid", searchStartingPoint);
             // error checking the call
             if (!util_checkIDIsValid(newPicture.UID))
             {
@@ -1099,7 +1099,7 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             //get a new uid for the new album.
-            albumData.UID = util_getNextUID(_albumsDatabase, "album", 1);
+            albumData.UID = util_getNextUID(_albumsDatabase, "album", "uid", 1);
 
             //add the album to the memory database.
             util_addAlbumToAlbumDB(errorReport, albumData);
