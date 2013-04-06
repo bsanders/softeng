@@ -16,6 +16,7 @@
  *                     Fixed a bug with rebuildBackend function that caused two recovery albums to appear.
  *                     Fixed a bug where backend would not initialize properly on first program start.
  * 4/5/13 Ryan Causey: Updating addNewPicture and addNewPictures functions to work with new GUI.
+ *                     Handled an error case where an unhandled exception would be thrown in saveAlbums/PicturesXML
  **/
 using System;
 using System.Collections.Generic;
@@ -344,8 +345,18 @@ namespace SoftwareEng
                 return;
             }
 
-            _albumsDatabase.Document.Save(albumsDatabasePath);
+            try
+            {
+                _albumsDatabase.Document.Save(albumsDatabasePath);
 
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Library folder not found.";
+                guiCallback(error);
+                return;
+            }
             if (guiCallback != null)
                 guiCallback(error);
         }
@@ -388,8 +399,20 @@ namespace SoftwareEng
                 guiCallback(error);
                 return;
             }
+
+            try
+            {
+                _picturesDatabase.Document.Save(picturesDatabasePath);
+
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Library folder not found.";
+                guiCallback(error);
+                return;
+            } 
             
-            _picturesDatabase.Document.Save(picturesDatabasePath);
             if (guiCallback != null)
                 guiCallback(error);
         }
