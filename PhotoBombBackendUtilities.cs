@@ -6,6 +6,7 @@
  * that many other funcitons may want to use.
  **********************************************************************************
  * Changelog:
+ * 4/1/13 Bill Sanders: removed inline linq, replaced with lookup function; added comments
  * 4/3/13 Bill Sanders: added comments, thumbnail generation
  * 4/5/13 Ryan Causey: moved generate thumbnail utility calls out of copy photo to library
  *                     utility function call and into addNewPicture_backend in PhotoBombBackend.cs
@@ -261,7 +262,8 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last: Bill Sanders (4/1/13, removed inline linq, replaced with lookup function; added comments)
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/6/13
         /// <summary>
         /// Adds a photo to a specific album in the album database 
         /// </summary>
@@ -300,7 +302,7 @@ namespace SoftwareEng
             }
 
             // Note as per requirements, the default photo name is the name of the album, plus its id number
-            string nameInLibrary = specificAlbum.Element("albumName").Value + " " + newPicture.idInAlbum;
+            string nameInLibrary = specificAlbum.Element("albumName").Value + " Image " + newPicture.idInAlbum;
 
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
@@ -1088,7 +1090,7 @@ namespace SoftwareEng
             // Specifies a maximum height resolution constraint to scale the image down to
             resizeJob.Height = size;
             resizeJob.Width = size;
-            //resizeJob.Mode = Imazen.LightResize.FitMode.Crop;
+            resizeJob.Mode = Imazen.LightResize.FitMode.Crop;
 
             //get the full path
             fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picName);
