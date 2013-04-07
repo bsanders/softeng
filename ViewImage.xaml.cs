@@ -8,6 +8,7 @@
  *                     Image now scales to window size.
  *                     Implemented the "next" button functionality on the imageView.
  *                     Implemented the "previous" button functionality on the imageView.
+ *                     Got the sliding animation on the lower dockbar to work.
  */
 using System;
 using System.Collections.Generic;
@@ -438,6 +439,16 @@ namespace SoftwareEng
         private void prevDockButton_Click(object sender, RoutedEventArgs e)
         {
             getPreviousImage();
+        }
+
+        private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            mainWindowDock.Height = Double.NaN;
+        }
+
+        private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            mainWindowDock.Height = 1;
         }
 
         /*

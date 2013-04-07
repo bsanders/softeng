@@ -10,6 +10,36 @@
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
     </Window.Background>
+    <Window.Resources>
+        <Storyboard x:Key="DockAppear">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="mainWindowDock">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="48"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="DockDisappear">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Hidden}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="mainWindowDock">
+                <EasingDoubleKeyFrame KeyTime="0" Value="48"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="dockHitBox">
+            <ResumeStoryboard BeginStoryboardName="DockAppear_BeginStoryboard"/>
+            <BeginStoryboard x:Name="DockAppear_BeginStoryboard" Storyboard="{StaticResource DockAppear}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="mainWindowDock">
+            <ResumeStoryboard BeginStoryboardName="DockDisappear_BeginStoryboard"/>
+            <BeginStoryboard x:Name="DockDisappear_BeginStoryboard" Storyboard="{StaticResource DockDisappear}"/>
+        </EventTrigger>
+    </Window.Triggers>
 
 
     <Grid>
@@ -39,7 +69,7 @@
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
                 -->
-                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="25,0" Stroke="#00000000" VerticalAlignment="Bottom"/>
+                
                 <Viewbox Stretch="Uniform" Margin="0,27,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Viewbox.Resources>
                         <!--Define the converter resource-->
@@ -58,7 +88,8 @@
                         </Image.Source>
                     </Image>
                 </Viewbox>
-                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="25,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="48" Background="{DynamicResource PhotoBomberDockBrush}">
+                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="25,0" Stroke="#00000000" VerticalAlignment="Bottom" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}" MouseEnter="dockHitBox_MouseEnter"/>
+                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="25,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="48" Background="{DynamicResource PhotoBomberDockBrush}" Visibility="Hidden" MouseLeave="mainWindowDock_MouseLeave">
                     <Button x:Name="slideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Play slideshow" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                         <Image x:Name="slideShowDockButtonImage" Source="ImagesResources2012/Actions_5847.png" Width="32" Height="32"/>
                     </Button>
