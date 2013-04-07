@@ -30,6 +30,7 @@
  *                     to the image to convert.
  *                     Changed two having two context menu's, one for library view and one for album view.
  *                     Fixed a bug where the default image was no longer appearing.
+ * 4/7/13 Ryan Causey: Fixed a bug where the error style would not clear after clicking the checkbox worked to add an album/photo.
  */ 
 using System;
 using System.Collections.Generic;
@@ -297,7 +298,7 @@ namespace SoftwareEng
          * Callback for checking uniqueness of a new album name. This will be called after the back end finishes checking if the album
          * name is unique
          * Last Edited By: Ryan Causey
-         * Last Edited Date: 4/5/13
+         * Last Edited Date: 4/7/13
          **************************************************************************************************************************/
         public void guiValidateAlbumName_Callback(ErrorReport error)
         {
@@ -329,12 +330,19 @@ namespace SoftwareEng
                 }
                 hideAddAlbumBox();
                 nameTextBox.Clear();
+                invalidInputPopup.IsOpen = false;
+
+                //stop any error animations
+                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+                nameTextBoxErrorAnimation.Stop();
             }
         }
 
         /**************************************************************************************************************************
          * Author: Bill Sanders, based on code by Ryan Causey
          * Created on: 4/3/13
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
          * Callback for checking uniqueness of a new photo name. This will be called after the back end finishes checking if the photo
          * name is unique
          **************************************************************************************************************************/
@@ -368,6 +376,11 @@ namespace SoftwareEng
                 }
                 hideAddAlbumBox();
                 nameTextBox.Clear();
+                invalidInputPopup.IsOpen = false;
+
+                //stop any error animations
+                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+                nameTextBoxErrorAnimation.Stop();
             }
         }
 
