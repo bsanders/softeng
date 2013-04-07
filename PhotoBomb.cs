@@ -11,6 +11,8 @@
  * 4/1/13 Ryan Causey: converting the rest of the data class's public datamember into properties
  *                     Implementing the INotifyPropertyChanged interface for all data classes
  * 4/5/13 Ryan Causey: Adding small, med, and large thumbnail paths to ComplexPhotoData.
+ * 4/6/13 Ryan Causey: Fixed a bug where we would give the wrong picture UID to the remove picture from album
+ *                     function.
  ***************************************************************************************************************/
 using System;
 using System.Collections.Generic;
@@ -189,16 +191,17 @@ namespace SoftwareEng
 
         //----------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 3/26/13
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/6/13
         /// <summary>
         /// This function removes the specified photo from the specified album.
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="uid">The UID of the photo</param>
+        /// <param name="uid">The idInAlbum of the photo</param>
         /// <param name="albumUID">The UID of the album</param>
-        public void removePictureFromAlbum(generic_callback guiCallback, int uid, int albumUID)
+        public void removePictureFromAlbum(generic_callback guiCallback, int idInAlbum, int albumUID)
         {
-            removePictureFromAlbum_backend(guiCallback, uid, albumUID);
+            removePictureFromAlbum_backend(guiCallback, idInAlbum, albumUID);
         }
 
         //By: Bill Sanders
@@ -722,6 +725,7 @@ namespace SoftwareEng
             // Specifies a maximum height resolution constraint to scale the image down to
             resizeJob.Height = size;
             resizeJob.Width = size;
+            //resizeJob.Mode = Imazen.LightResize.FitMode.Crop;
 
             //get the full path
             fullThumbPath = System.IO.Path.Combine(

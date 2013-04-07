@@ -25,6 +25,7 @@
  *                     User can still browse around and add more albums however.
  *                     Updated handler for the close window operation to stop any import operations if they are occurring.
  *                     Added gui functionality to cancel the import operation while in progress.
+ *                     Fixed the remove picture gui function so we pass the correct UID(idInAlbum) to the backend function.
  */ 
 using System;
 using System.Collections.Generic;
@@ -596,7 +597,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.removePictureFromAlbum(new generic_callback(guiDeleteSelectedPhoto_Callback), ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, currentAlbumUID);
+                bombaDeFotos.removePictureFromAlbum(new generic_callback(guiDeleteSelectedPhoto_Callback), ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, currentAlbumUID);
             }
         }
 

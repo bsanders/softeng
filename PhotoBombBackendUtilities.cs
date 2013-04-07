@@ -206,7 +206,7 @@ namespace SoftwareEng
             {
                 // Search through a specific album for a specific photo by ID
                 // Return an (XElement) picture with the matching uid if it exists
-                // Throws exception if it doesn't find exactly 1 match
+                // Throws exception if it doesn't find exactly 1 match <--- this is not true!!!
                 return (from c in albumNode.Element("albumPhotos").Elements("picture")
                         where (int)c.Attribute("idInAlbum") == idInAlbum
                         select c).SingleOrDefault();
@@ -1088,6 +1088,7 @@ namespace SoftwareEng
             // Specifies a maximum height resolution constraint to scale the image down to
             resizeJob.Height = size;
             resizeJob.Width = size;
+            //resizeJob.Mode = Imazen.LightResize.FitMode.Crop;
 
             //get the full path
             fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picName);
