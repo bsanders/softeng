@@ -6,10 +6,12 @@
  * 4/6/13 Ryan Causey: Trying to get this to databind to the image the user wishes to view.
  * 4/7/13 Ryan Causey: Databinding is working, including fallback values! I am the greatest!
  *                     Image now scales to window size.
+ *                     Implemented the "next" button functionality on the imageView.
  */
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -26,10 +28,13 @@ namespace SoftwareEng
     /// <summary>
     /// Interaction logic for ViewImage.xaml
     /// </summary>
-    public partial class ViewImage : Window
+    public partial class ViewImage : Window, INotifyPropertyChanged
     {
         private ReadOnlyObservableCollection<ComplexPhotoData> _picturesCollection;
         private ComplexPhotoData _currentPicture;
+        //event for changing a property
+        public event PropertyChangedEventHandler PropertyChanged;
+
         //property for data binding
         public ComplexPhotoData currentPicture
         {
@@ -37,13 +42,51 @@ namespace SoftwareEng
             {
                 return _currentPicture;
             }
+            set
+            {
+                if (value != _currentPicture)
+                {
+                    _currentPicture = value;
+                    OnPropertyChanged("currentPicture");
+                }
+            }
         }
 
+        /// <summary>
+        /// Constructor for ViewImage
+        /// </summary>
+        /// <param name="picturesCollectionFromAlbum">The collection of pictures from the album</param>
+        /// <param name="imageUID">the UID of the current picture</param>
         public ViewImage(ReadOnlyObservableCollection<ComplexPhotoData> picturesCollectionFromAlbum, int imageUID)
         {
             _picturesCollection = picturesCollectionFromAlbum;
-            _currentPicture = _picturesCollection.FirstOrDefault(photo => photo.UID == imageUID);
+            currentPicture = _picturesCollection.FirstOrDefault(photo => photo.UID == imageUID);
             InitializeComponent();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Gui function to transition to next image.
+        /// </summary>
+        private void getNextImage()
+        {
+            //get the current index
+            int index = _picturesCollection.IndexOf(currentPicture);
+            //set the current picture to the next one
+            if (!(index < _picturesCollection.Count - 1))
+            {
+                index = 0;
+                currentPicture = _picturesCollection.ElementAt(index);
+            }
+            else
+            {
+                currentPicture = _picturesCollection.ElementAt(++index);
+            }
         }
 
         /**************************************************************************************************************************
@@ -338,11 +381,31 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         */
+        /// <summary>
+        /// On click handler for the next button on the ViewItem dock.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
         private void nextDockButton_Click(object sender, RoutedEventArgs e)
         {
             //need to call the next function here.
+            getNextImage();
         }
 
+        /*
+         * Call this function when any property is set as part of implementing INotifyPropertyChanged
+         * @Param: name is the name of the property, E.G. changing UID would mean name = "UID"
+         */
+        protected void OnPropertyChanged(String name)
+        {
+            PropertyChangedEventHandler changedHandler = PropertyChanged;
 
+            if (changedHandler != null)
+            {
+                changedHandler(this, new PropertyChangedEventArgs(name));
+            }
+        }
     }
 }
