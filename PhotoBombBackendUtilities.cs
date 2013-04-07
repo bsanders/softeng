@@ -976,6 +976,27 @@ namespace SoftwareEng
         }
 
         //--------------------------------------------------------------------------
+        //By: Bill Sanders 4/6/13
+        /// <summary>
+        /// Renames an album
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="albumElem">An XElement representation of the album from the album DB</param>
+        /// <param name="newName">The new name for the album</param>
+        private void util_renameAlbum(ErrorReport error, XElement albumElem, String newName)
+        {
+            try
+            {
+                albumElem.Element("albumName").Value = newName;
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Failed to change the name of an album.";
+            }
+        }
+
+        //--------------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last: Bill Sanders, 3/29/13
         /// <summary>

@@ -362,7 +362,7 @@ namespace SoftwareEng
                 _albumsDatabase.Document.Save(albumsDatabasePath);
 
             }
-            catch (DirectoryNotFoundException e)
+            catch (DirectoryNotFoundException)
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "Library folder not found.";
@@ -417,7 +417,7 @@ namespace SoftwareEng
                 _picturesDatabase.Document.Save(picturesDatabasePath);
 
             }
-            catch (DirectoryNotFoundException e)
+            catch (DirectoryNotFoundException)
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "Library folder not found.";
@@ -1132,7 +1132,47 @@ namespace SoftwareEng
             return errorReport;
         }
         
+        //-------------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: 4/6/13
+        /// <summary>
+        /// Renames the specified album
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The album's UID</param>
+        /// <param name="newName">The new name of the album</param>
+        private void renameAlbum_backend(generic_callback guiCallback, int albumUID, string newName)
+        {
+            ErrorReport errorReport = new ErrorReport();
 
+            // get the album that we are changing.
+            XElement albumElem = util_getAlbum(errorReport, albumUID);
+
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+
+                guiCallback(errorReport);
+                return;
+            }
+
+            // change the album's name.
+            util_renameAlbum(errorReport, albumElem, newName);
+
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            saveAlbumsXML_backend(null);
+
+            // Searches through the albumsCollection and finds the first album with a matching UID
+            var albumToRemove = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
+            // ... and then renames it.
+            albumToRemove.albumName = newName;
+            
+            return;
+        }
 
         //-------------------------------------------------------------
         //By: Ryan Moe

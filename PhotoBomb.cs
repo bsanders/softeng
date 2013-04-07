@@ -216,6 +216,19 @@ namespace SoftwareEng
             removeAlbum_backend(guiCallback, albumUID);
         }
 
+        //By: Bill Sanders
+        //Edited Last: 4/6/13
+        /// <summary>
+        /// This function renames the specified album.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The UID of the album</param>
+        /// <param name="newName">The new name of the album</param>
+        public void renameAlbum(generic_callback guiCallback, int albumUID, string newName)
+        {
+            renameAlbum_backend(guiCallback, albumUID, newName);
+        }
+
         //----------------------------------------------
         //By: Ryan Moe
         //Edited Last:
