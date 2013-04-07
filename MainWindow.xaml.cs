@@ -1468,6 +1468,25 @@ namespace SoftwareEng
         {
             guiViewPicture();
         }
+
+        private void addMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainWindowAlbumList.SelectedItem == null)
+            {
+                //showAddAlbumBox();
+            }
+            else
+            {
+                guiEnterAlbumView();
+                guiImportPhotos();
+            }
+        }
+
+        private void addMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            guiImportPhotos();
+        }
+
         private void renameMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
         {
             showAddAlbumBox();
