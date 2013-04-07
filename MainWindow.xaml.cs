@@ -65,6 +65,7 @@ namespace SoftwareEng
         //DATABINDING SOURCE 
         private ReadOnlyObservableCollection<SimpleAlbumData> _listOfAlbums;
         private ReadOnlyObservableCollection<ComplexPhotoData> _listOfPhotos;
+        private List<ComplexPhotoData> _clipboardOfPhotos;
 
         public ReadOnlyObservableCollection<SimpleAlbumData> listOfAlbums
         {
@@ -409,6 +410,43 @@ namespace SoftwareEng
             }
         }
 
+        private void guiCopyAlbumToClipboard()
+        {
+            //make sure an item is selected
+            if (mainWindowAlbumList.SelectedItem != null)
+            {
+                // Bug if someone tries to copy from an empty library?
+                if (_clipboardOfPhotos.Count == 0)
+                {
+                    //call the backend to get all photos in this album.
+                    currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
+                    bombaDeFotos.sendAllPhotosInAlbumToClipboard(new sendAllPhotosInAlbum_callback(guiCopyAlbumToClipboard_Callback), currentAlbumUID);
+                }
+                else
+                {
+                    // import photos from clipboard list here....?
+                }
+            }
+        }
+
+        private void guiCopyAlbumToClipboard_Callback(ErrorReport error, List<ComplexPhotoData> clipboardPhotos)
+        {
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                //show user an error message that retrieving the pictures did not work
+                showErrorMessage("Failed at guiCopyAlbumToClipboard_Callback"); //super temporary
+            }
+            else
+            {
+                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    //show the user a notification that some pictures are not displayed
+                    showErrorMessage("Warnings at guiCopyAlbumToClipboard_Callback"); //super temporary
+                }
+                //swap data templates and change bindings.
+                _clipboardOfPhotos = clipboardPhotos;
+            }
+        }
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/3/13
@@ -1490,6 +1528,18 @@ namespace SoftwareEng
         private void renameMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
         {
             showAddAlbumBox();
+        }
+
+        private void copyMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainWindowAlbumList.SelectedItem == null)
+            {
+                // you gotta click on something if you want to copy it...
+            }
+            else
+            {
+                guiCopyAlbumToClipboard();
+            }
         }
     }
 

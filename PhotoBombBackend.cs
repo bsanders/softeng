@@ -65,6 +65,7 @@ namespace SoftwareEng
         //observable collection for pictures
         private ObservableCollection<ComplexPhotoData> _photosCollection;
 
+        private List<ComplexPhotoData> _photosClipboard;
 
         //-----------------------------------------------------------------
         //FUNCTIONS--------------------------------------------------------
@@ -100,6 +101,9 @@ namespace SoftwareEng
 
             //the list of photographs to be used to populate the album view
             _photosCollection = new ObservableCollection<ComplexPhotoData>();
+
+            // initialize a list for the clipboard
+            _photosClipboard = new List<ComplexPhotoData>();
 
             guiCallback(errorReport);
         }
@@ -588,6 +592,48 @@ namespace SoftwareEng
         //    guiCallback(error, _albumsToReturn);
         //}
 
+        //-----------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Date: 4/7/13
+        // TODO: threading?
+        /// <summary>
+        /// Copies all of the albums in the specified album to the clipboard.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="AlbumUID">The unique ID of the album to get the photos from</param>
+        private void sendAllPhotosInAlbumToClipboard_backend(sendAllPhotosInAlbum_callback guiCallback, int AlbumUID)
+        {
+            ErrorReport error = new ErrorReport();
+
+            _photosClipboard.Clear();
+            //make sure the album database is valid.
+            if (!util_checkAlbumDatabase(error))
+            {
+                guiCallback(error, null);
+                return;
+            }
+
+            //Try searching for the album with the uid specified.
+            XElement specificAlbum = util_getAlbum(error, AlbumUID);
+
+            foreach (XElement subElement in specificAlbum.Element("albumPhotos").Elements("picture"))
+            {
+                ComplexPhotoData pic = new ComplexPhotoData();
+                try
+                {
+                    //bills new swanky function here
+                    _photosClipboard.Add(util_getComplexPhotoData(error, subElement, AlbumUID));
+                }
+                catch
+                {
+                    error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    error.warnings.Add("PhotoBomb.getAllPhotosInAlbum():A Picture in the album is missing either a name or an id.");
+                }
+            }//foreach
+
+            List<ComplexPhotoData> picturesToGui = new List<ComplexPhotoData>(_photosCollection);
+            guiCallback(error, picturesToGui);
+        }
 
         //-----------------------------------------------------------------
         //By: Ryan Moe
