@@ -445,7 +445,9 @@
     <Grid>
         <Border x:Name="mainWindowFrame" Padding="6" Background="#001C2327">
             <Grid x:Name="grid">
-                <!-- Buttons for the library view are: Add photos (Plus), Rename (Pencil), Delete (X), Copy to (Pushpin), Slideshow (Play), View Contents (eye)   -->
+                
+                <!-- Buttons for the library view are: Add photos (Plus), Rename (Pencil), Delete (X), Copy From Clipboard (Pushpin), Slideshow (Play), View Contents (eye)   -->
+                
                 <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" VerticalOffset="-60" HorizontalOffset="-60" PreviewMouseUp="PopupMouseClick_Handler" >
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#4DFFFFFF" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="False">
                         <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -471,7 +473,9 @@
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
-                <!-- Buttons for the library view are: Add photos (Plus), Rename (Pencil), Delete (X), Copy to (Pushpin), Slideshow (Play), View Contents (eye)   -->
+                
+                <!-- Buttons for the Album view are: Edit Data (Pencil), Delete (X), Copy to Clipboard (Pushpin), View Image (eye)   -->
+                
                 <!--       <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
                         <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
