@@ -315,6 +315,11 @@ namespace SoftwareEng
             }
         }
 
+        private void nextDockButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
     }
 }
