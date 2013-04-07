@@ -16,14 +16,45 @@
 
 
         <DataTemplate x:Key="AlbumListItemBackTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
-            <Grid x:Name="albumItemBackGrid" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}">
+            <Grid x:Name="albumItemBackGrid" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" Height="Auto" Width="Auto">
+            	<Grid.RowDefinitions>
+            		<RowDefinition Height="Auto"/>
+            		<RowDefinition Height="36*"/>
+            	</Grid.RowDefinitions>
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
                 </Grid.Background>
-                <TextBlock Text="Name:" Height="28" HorizontalAlignment="Left" Margin="0,0,0,0" x:Name="nameLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Text="{Binding name}" Height="28" HorizontalAlignment="Left" Margin="44.154,0,0,0" x:Name="nameLabelBack" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Text="Caption:" Height="28" HorizontalAlignment="Left" Margin="0,30,0,0" x:Name="commentLine" VerticalAlignment="Top" Background="#FFE4E4E4" />
-                <TextBlock Height="28" HorizontalAlignment="Left" Margin="38,30,0,0" x:Name="commentLabel" VerticalAlignment="Top" Background="#FFE4E4E4">
+                <TextBlock Text="Name:" Height="Auto" HorizontalAlignment="Left" Margin="3,3,0,0" x:Name="nameLine" VerticalAlignment="Top" >
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </TextBlock.Foreground>
+                    <TextBlock.Background>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
+                    </TextBlock.Background>
+                </TextBlock>
+                <TextBlock Text="{Binding name}" Height="Auto" HorizontalAlignment="Stretch" Margin="44.154,3,3,0" x:Name="nameLabelBack" VerticalAlignment="Top" TextWrapping="Wrap" >
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </TextBlock.Foreground>
+                    <TextBlock.Background>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
+                    </TextBlock.Background>
+                </TextBlock>
+                <TextBlock Text="Caption:" Height="Auto" HorizontalAlignment="Left" Margin="3,0,0,0" x:Name="commentLine" VerticalAlignment="Top" Grid.Row="1" >
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </TextBlock.Foreground>
+                    <TextBlock.Background>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
+                    </TextBlock.Background>
+                </TextBlock>
+                <TextBlock Height="Auto" HorizontalAlignment="Stretch" Margin="51.983,0,0,0" x:Name="commentLabel" VerticalAlignment="Top" Grid.Row="1">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </TextBlock.Foreground>
+                    <TextBlock.Background>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
+                    </TextBlock.Background>
                     <TextBlock.Text>
                         <!--fallback here doesn't work probably because default caption string is "" which is still a valid string-->
                         <Binding FallbackValue="No caption set!" Path="caption">
