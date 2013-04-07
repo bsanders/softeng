@@ -1,5 +1,13 @@
-﻿using System;
+﻿/*********************************************************************************
+ * This is the code behind file for the ViewImage window
+ * 
+ * *******************************************************************************
+ * Changelog:
+ * 4/6/13 Ryan Causey: Trying to get this to databind to the image the user wishes to view.
+ */
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -18,8 +26,13 @@ namespace SoftwareEng
     /// </summary>
     public partial class ViewImage : Window
     {
-        public ViewImage()
+        private ReadOnlyObservableCollection<ComplexPhotoData> picturesCollection;
+        private ComplexPhotoData currentPicture;
+
+        public ViewImage(ReadOnlyObservableCollection<ComplexPhotoData> picturesCollectionFromAlbum, int imageUID)
         {
+            picturesCollection = picturesCollectionFromAlbum;
+            currentPicture = picturesCollection.FirstOrDefault(photo => photo.UID == imageUID);
             InitializeComponent();
         }
 
@@ -317,7 +330,7 @@ namespace SoftwareEng
 
         private void nextDockButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //need to call the next function here.
         }
 
 
