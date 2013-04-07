@@ -255,17 +255,19 @@ namespace SoftwareEng
             addNewAlbum_backend(guiCallback, albumData);
         }
 
-        //----------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //
-        //Adds a single existing picture (it exists in the picture database already) to
-        //an album.
-        //PARAM 4 = data class for you to fill out.
-        //UNTESTED/UNFINISHED.
-        public void addExistingPictureToAlbum(generic_callback guiCallback, int pictureUID, int albumUID, String SimplePhotoData)
+        //-------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last By: 
+        //Edited Last Date: 4/7/13
+        /// <summary>
+        /// Adds a photo that already exists in one album to another album
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="photoObj">A ComplexPhotoData object which contains all the information about a photo</param>
+        /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
+        private void addExistingPhotoToAlbum(generic_callback guiCallback, ComplexPhotoData photoObj, int albumUID)
         {
-            addExistingPictureToAlbum_backend(guiCallback, pictureUID, albumUID, SimplePhotoData);
+            addExistingPhotoToAlbum_backend(guiCallback, photoObj, albumUID);
         }
 
         //---------------------------------------------
