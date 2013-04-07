@@ -190,5 +190,17 @@ namespace SoftwareEng.Properties {
                 this["lrgThumbDir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("140")]
+        public int CaptionMaxLength {
+            get {
+                return ((int)(this["CaptionMaxLength"]));
+            }
+            set {
+                this["CaptionMaxLength"] = value;
+            }
+        }
     }
 }

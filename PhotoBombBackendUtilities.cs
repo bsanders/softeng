@@ -350,6 +350,28 @@ namespace SoftwareEng
         }
 
         //--------------------------------------------------------
+        // By: Bill Sanders
+        // Edited Last Date: 4/7/13
+        /// <summary>
+        /// Sets the caption of a photo in a specific album to the provided string
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="albumPhotoNode">The XElement object of the photo </param>
+        /// <param name="caption">The new caption to set for this image.</param>
+        private void util_setPhotoCaption(ErrorReport error, XElement albumPhotoNode, string caption)
+        {
+            try
+            {
+                albumPhotoNode.Attribute("caption").Value = caption;
+            }
+            catch
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Failed to change the caption of a photo.";
+            }
+        }
+
+        //--------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
         //Check UID's here.
@@ -357,6 +379,18 @@ namespace SoftwareEng
         private Boolean util_checkIDIsValid(int id)
         {
             if (id > 0 && id < UID_MAX_SIZE)
+                return true;
+            return false;
+        }
+
+        //--------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last:
+        //RETURN: true if the caption is valid, false otherwise.
+        private Boolean util_checkCaptionIsValid(string caption)
+        {
+            // other checks go here.
+            if ((caption.Length >= 0) && (caption.Length > Settings.CaptionMaxLength))
                 return true;
             return false;
         }

@@ -1258,6 +1258,52 @@ namespace SoftwareEng
             return;
         }
 
+        //By: Bill Sanders
+        //Edited Last: 4/6/13
+        /// <summary>
+        /// This function sets the specified caption of the specified image in this album.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The UID of the album the photo is in</param>
+        /// <param name="idInAlbum">The id of the photo in this album</param>
+        /// <param name="newCaption">The new name of the photo</param>
+        private void setPhotoCaption_backend(generic_callback guiCallback, int albumUID, int idInAlbum, string newCaption)
+        {
+            ErrorReport errorReport = new ErrorReport();
+
+            // get the photo node that we are working on.
+            XElement photoElem = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            // ensure the caption is valid, before setting it
+            if (!util_checkCaptionIsValid(newCaption))
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            // change the photo's caption.
+            util_setPhotoCaption(errorReport, photoElem, newCaption);
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            saveAlbumsXML_backend(null);
+
+            // Searches through the photosCollection and finds the first photo with a matching id
+            var photoToRecaption = _photosCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
+            // ... and then renames it.
+            photoToRecaption.caption = newCaption;
+
+            return;
+        }
+
 
         //-------------------------------------------------------------
         //By: Ryan Moe
