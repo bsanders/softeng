@@ -28,7 +28,8 @@
  *                     Fixed the remove picture gui function so we pass the correct UID(idInAlbum) to the backend function.
  *                     Fixed an issue in the ImagePathConverter where it would not handle a case where the path was not yet loaded
  *                     to the image to convert.
- *                     Implementing method to view an image in its own window.
+ *                     Changed two having two context menu's, one for library view and one for album view.
+ *                     Fixed a bug where the default image was no longer appearing.
  */ 
 using System;
 using System.Collections.Generic;
@@ -667,6 +668,15 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function that will instantiate a viewImage window and give it the information to display the image.
+        /// </summary>
         private void guiViewPicture()
         {
             ViewImage view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID);
@@ -1324,7 +1334,7 @@ namespace SoftwareEng
                 return image; 
             }
 
-            return null;
+            return DependencyProperty.UnsetValue;
         }
 
         //put this here so that if someone tries to convert back we throw an exception as
