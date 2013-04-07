@@ -67,7 +67,7 @@
                     <Button x:Name="prevDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Previous" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                         <Image x:Name="prevDockButtonImage" Source="ImagesResources2012/Symbols_Prev_32xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Next" Background="{DynamicResource PhotoBomberDockButtonBrush}">
+                    <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Next" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="nextDockButton_Click">
                         <Image x:Name="nextDockButtonImage" Source="ImagesResources2012/Symbols_Next_32xLG.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="spareDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">

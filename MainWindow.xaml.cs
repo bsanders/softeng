@@ -26,6 +26,8 @@
  *                     Updated handler for the close window operation to stop any import operations if they are occurring.
  *                     Added gui functionality to cancel the import operation while in progress.
  *                     Fixed the remove picture gui function so we pass the correct UID(idInAlbum) to the backend function.
+ *                     Fixed an issue in the ImagePathConverter where it would not handle a case where the path was not yet loaded
+ *                     to the image to convert.
  */ 
 using System;
 using System.Collections.Generic;
@@ -1246,18 +1248,24 @@ namespace SoftwareEng
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            // value contains the full path to the image
-            string path = (string)value;
+            //handled the path not being loaded yet.
+            if (value != "")
+            {
+                // value contains the full path to the image
+                string path = (string)value;
 
-            // load the image, convert to bitmap, set cache option so it
-            //does not lock out the file, then return the new image.
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(path);
-            image.EndInit();
+                // load the image, convert to bitmap, set cache option so it
+                //does not lock out the file, then return the new image.
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = new Uri(path);
+                image.EndInit();
 
-            return image;
+                return image; 
+            }
+
+            return null;
         }
 
         //put this here so that if someone tries to convert back we throw an exception as
