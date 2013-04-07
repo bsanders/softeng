@@ -18,6 +18,7 @@
  * 4/5/13 Ryan Causey: Updating addNewPicture and addNewPictures functions to work with new GUI.
  *                     Handled an error case where an unhandled exception would be thrown in saveAlbums/PicturesXML
  * 4/6/13 Ryan Causey: Edited the removePhoto backend function to update the observable collection.
+ *                     Fixed using the wrong UID to find the element in the photos collection.
  **/
 using System;
 using System.Collections.Generic;
@@ -945,7 +946,7 @@ namespace SoftwareEng
 
             //copying bills swanky code
             //get the photo to remove
-            var photoToRemove = _photosCollection.FirstOrDefault(photo => photo.UID == idInAlbum);
+            var photoToRemove = _photosCollection.FirstOrDefault(photo => photo.idInAlbum == idInAlbum);
             //and remove it
             _photosCollection.Remove(photoToRemove);
 
