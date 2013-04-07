@@ -7,6 +7,7 @@
  * 4/7/13 Ryan Causey: Databinding is working, including fallback values! I am the greatest!
  *                     Image now scales to window size.
  *                     Implemented the "next" button functionality on the imageView.
+ *                     Implemented the "previous" button functionality on the imageView.
  */
 using System;
 using System.Collections.Generic;
@@ -71,7 +72,7 @@ namespace SoftwareEng
          * Last Edited Date:
          */
         /// <summary>
-        /// Gui function to transition to next image.
+        /// Function to transition to next image.
         /// </summary>
         private void getNextImage()
         {
@@ -86,6 +87,31 @@ namespace SoftwareEng
             else
             {
                 currentPicture = _picturesCollection.ElementAt(++index);
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Function to transition to previous image.
+        /// </summary>
+        private void getPreviousImage()
+        {
+            //get the current index
+            int index = _picturesCollection.IndexOf(currentPicture);
+            //set the current picture to the next one
+            if (index == 0)
+            {
+                index = _picturesCollection.Count - 1;
+                currentPicture = _picturesCollection.ElementAt(index);
+            }
+            else
+            {
+                currentPicture = _picturesCollection.ElementAt(--index);
             }
         }
 
@@ -382,6 +408,10 @@ namespace SoftwareEng
         }
 
         /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
          */
         /// <summary>
         /// On click handler for the next button on the ViewItem dock.
@@ -392,6 +422,22 @@ namespace SoftwareEng
         {
             //need to call the next function here.
             getNextImage();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// On click handler for the previous button on the ViewItem dock.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void prevDockButton_Click(object sender, RoutedEventArgs e)
+        {
+            getPreviousImage();
         }
 
         /*
