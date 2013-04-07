@@ -464,7 +464,7 @@
                         <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <Image x:Name="slideshowButtonAlbumImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="viewMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button x:Name="viewMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemAlbumButton_Click">
                             <Image x:Name="viewButtonAlbumImage" Source="ImagesResources2012/eye_16xLG.png" Stretch="Fill"/>
                         </Button>
                     </SoftwareEngControls:customRadialPanel>

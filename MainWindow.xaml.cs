@@ -680,7 +680,7 @@ namespace SoftwareEng
         private void guiViewPicture()
         {
             ViewImage view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID);
-            view.ShowDialog();
+            view.Visibility = Visibility.Visible;
         }
 
         /**************************************************************************************************************************
@@ -1300,6 +1300,22 @@ namespace SoftwareEng
         private void albumContextMenuPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             AlbumContextMenu.IsOpen = false;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for the view image button. Call the GUI function to open the image view.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void viewMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            guiViewPicture();
         }
     }
 
