@@ -918,8 +918,6 @@ namespace SoftwareEng
                     {
                         // Get the second element (soon to be first) and set it to be the thumbnail
                         secondPhotoInAlbum = thisAlbum.Descendants("picture").ElementAt(1); // (0-indexed)
-                        // util_convertPhotoNodeToComplexPhotoData() currently expects a node from the picsDB
-                        secondPhotoInAlbum = util_getPhotoDBNode(null, (string)secondPhotoInAlbum.Attribute("sha1"));
                         // Set the thumbnail.
                         util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(errorReport, secondPhotoInAlbum, albumUID));
                     }
