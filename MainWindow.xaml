@@ -128,94 +128,32 @@
                 <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
             </DataTemplate.Resources>
             <Grid x:Name="libraryItemBackGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" MaxHeight="{Binding Value, ElementName=thumbnailSizeSlider}">
-            	<VisualStateManager.CustomVisualStateManager>
-            		<ei:ExtendedVisualStateManager/>
-            	</VisualStateManager.CustomVisualStateManager>
-            	<VisualStateManager.VisualStateGroups>
-            		<VisualStateGroup x:Name="ItemSelectedState">
-            			<VisualStateGroup.Transitions>
-            				<VisualTransition GeneratedDuration="0:0:1" To="VisualState">
-            					<VisualTransition.GeneratedEasingFunction>
-            						<CircleEase EasingMode="EaseIn"/>
-            					</VisualTransition.GeneratedEasingFunction>
-            					<ei:ExtendedVisualStateManager.TransitionEffect>
-            						<ee:RippleTransitionEffect/>
-            					</ei:ExtendedVisualStateManager.TransitionEffect>
-            					<Storyboard>
-            						<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="libraryItemBackGrid">
-            							<EasingColorKeyFrame KeyTime="0:0:0.6" Value="#FF224161"/>
-            						</ColorAnimationUsingKeyFrames>
-            						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="image1">
-            							<EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0.9"/>
-            						</DoubleAnimationUsingKeyFrames>
-            						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="image1">
-            							<EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0.9"/>
-            						</DoubleAnimationUsingKeyFrames>
-            					</Storyboard>
-            				</VisualTransition>
-            				<VisualTransition From="VisualState" GeneratedDuration="0:0:1"/>
-            			</VisualStateGroup.Transitions>
-            			<VisualState x:Name="VisualState">
-            				<Storyboard>
-            					<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="image1">
-            						<EasingDoubleKeyFrame KeyTime="0" Value="0.9"/>
-            					</DoubleAnimationUsingKeyFrames>
-            					<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="image1">
-            						<EasingDoubleKeyFrame KeyTime="0" Value="0.9"/>
-            					</DoubleAnimationUsingKeyFrames>
-            					<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="libraryItemBackGrid" RepeatBehavior="Forever">
-            						<EasingColorKeyFrame KeyTime="0" Value="#FF224161">
-            							<EasingColorKeyFrame.EasingFunction>
-            								<CircleEase EasingMode="EaseIn"/>
-            							</EasingColorKeyFrame.EasingFunction>
-            						</EasingColorKeyFrame>
-            						<EasingColorKeyFrame KeyTime="0:0:0.6" Value="#FF1C2327">
-            							<EasingColorKeyFrame.EasingFunction>
-            								<CircleEase EasingMode="EaseIn"/>
-            							</EasingColorKeyFrame.EasingFunction>
-            						</EasingColorKeyFrame>
-            					</ColorAnimationUsingKeyFrames>
-            				</Storyboard>
-            			</VisualState>
-            		</VisualStateGroup>
-            	</VisualStateManager.VisualStateGroups>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="37"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.Background>
-                    <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
-                </Grid.Background>
+        		<Grid.RowDefinitions>
+        			<RowDefinition Height="37"/>
+        			<RowDefinition Height="Auto"/>
+        		</Grid.RowDefinitions>
+        		<Grid.Background>
+        			<SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
+        		</Grid.Background>
                 
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0">
-                    <TextBlock.Background>
-                        <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
-                    </TextBlock.Background>
-                </TextBlock>
-                <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
-                    <Image.Source>
-                        <!-- THE GODDAMNED SPLICERS HAVE SAVED THE DAY, WE HAVE DEFAULT FALLBACK IMAGES BITCHES-->
-                        <!--use the converter to bind to a cached image and not lock out the one on disk-->
-                        <Binding Path="thumbnailPath" Converter="{StaticResource ImagePathConverter}">
-                            <Binding.FallbackValue>
-                                <ImageSource>
-                                    <!-- This image looks much swankier than the missing image png-->
-                                    ImagesResources2012/NewIconClipart-tiny-square.png
-                                </ImageSource>                                
-                            </Binding.FallbackValue>
-                        </Binding>
-                    </Image.Source>
-                        <Image.RenderTransform>
-                		<TransformGroup>
-                			<ScaleTransform/>
-                			<SkewTransform/>
-                			<RotateTransform/>
-                			<TranslateTransform/>
-                		</TransformGroup>
-                	</Image.RenderTransform>
-                </Image>
+        		<TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0">
+        			<TextBlock.Background>
+        				<SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
+        			</TextBlock.Background>
+        		</TextBlock>
+        		<Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" >
+        			<Image.Source>
+        				<!-- THE GODDAMNED SPLICERS HAVE SAVED THE DAY, WE HAVE DEFAULT FALLBACK IMAGES BITCHES-->
+        				<!--use the converter to bind to a cached image and not lock out the one on disk-->
+        				<Binding Path="thumbnailPath" Converter="{StaticResource ImagePathConverter}">
+        					<Binding.FallbackValue>
+        						<ImageSource><!-- This image looks much swankier than the missing image png-->ImagesResources2012/NewIconClipart-tiny-square.png</ImageSource>                                
+        					</Binding.FallbackValue>
+        				</Binding>
+        			</Image.Source>
+        		</Image>
                 
-            </Grid>
+        	</Grid>
         	<DataTemplate.Triggers>
         		<Trigger Property="ContentControl.Content" Value="{x:Null}"/>
         	</DataTemplate.Triggers>
