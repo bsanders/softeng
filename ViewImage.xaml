@@ -6,18 +6,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="d" 
         Title="ViewImage" Height="319"
-        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" SizeToContent="WidthAndHeight" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True">
+        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True" MinWidth="100" MinHeight="100">
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
     </Window.Background>
-    <Window.Resources>
-        <SoftwareEngControls:ComplexPhotoData x:Key="currentPicture"/>
-    </Window.Resources>
 
 
     <Grid>
         <Border x:Name="ViewImageWindowFrame" Padding="6" Background="#001C2327">
-            <Grid>
+            <Grid x:Name="ViewImageWindowGrid" MinWidth="100" MinHeight="100">
                 <!--
                 <Popup x:Name="imageWindowContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
@@ -43,7 +40,7 @@
                 </Popup>
                 -->
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="25,0" Stroke="#00000000" VerticalAlignment="Bottom"/>
-                <Viewbox x:Name="ImageViewbox" Stretch="None" Margin="0,27,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Viewbox Stretch="None" Margin="0,27,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Viewbox.Resources>
                         <!--Define the converter resource-->
                         <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
@@ -51,7 +48,7 @@
                     <Image RenderTransformOrigin="0.5,0.5">
                         <Image.Source>
                             <!--Use the converter here to make sure that the image doesn't become locked on the filesystem-->
-                            <Binding Source="{StaticResource currentPicture}" Path="fullPath" Converter="{StaticResource ImagePathConverter}">
+                            <Binding Path="fullPath" Converter="{StaticResource ImagePathConverter}">
                                 <Binding.FallbackValue>
                                     <ImageSource>
                                         <!-- This image looks much swankier than the missing image png-->

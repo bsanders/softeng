@@ -28,7 +28,8 @@
  *                     Fixed the remove picture gui function so we pass the correct UID(idInAlbum) to the backend function.
  *                     Fixed an issue in the ImagePathConverter where it would not handle a case where the path was not yet loaded
  *                     to the image to convert.
- *                     Implementing method to view an image in its own window.
+ *                     Changed two having two context menu's, one for library view and one for album view.
+ *                     Fixed a bug where the default image was no longer appearing.
  */ 
 using System;
 using System.Collections.Generic;
@@ -434,6 +435,8 @@ namespace SoftwareEng
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
                 _listOfPhotos = picturesInAlbum;
                 mainWindowAlbumList.ItemsSource = _listOfPhotos;
+                //change the selection mode to Extended
+                mainWindowAlbumList.SelectionMode = SelectionMode.Extended;
                 //show the return to library view button on the dock
                 libraryDockButton.Visibility = Visibility.Visible;
                 //show the addPhotos dock button if we are not running an import operation
@@ -469,6 +472,8 @@ namespace SoftwareEng
             //refresh the view to make sure we update with new album thumbnails
             populateAlbumView(true);
             mainWindowAlbumList.ItemsSource = _listOfAlbums;
+            //change the selection mode to single
+            mainWindowAlbumList.SelectionMode = SelectionMode.Single;
             //collapse the go back button
             libraryDockButton.Visibility = Visibility.Collapsed;
             //collapse the addPhotos button
@@ -708,10 +713,19 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function that will instantiate a viewImage window and give it the information to display the image.
+        /// </summary>
         private void guiViewPicture()
         {
             ViewImage view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID);
-            view.ShowDialog();
+            view.Visibility = Visibility.Visible;
         }
 
         /**************************************************************************************************************************
@@ -1338,6 +1352,22 @@ namespace SoftwareEng
         {
             showAddAlbumBox();
         }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for the view image button. Call the GUI function to open the image view.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void viewMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            guiViewPicture();
+        }
     }
 
     /*
@@ -1371,7 +1401,7 @@ namespace SoftwareEng
                 return image; 
             }
 
-            return null;
+            return DependencyProperty.UnsetValue;
         }
 
         //put this here so that if someone tries to convert back we throw an exception as
