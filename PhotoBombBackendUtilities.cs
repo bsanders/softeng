@@ -1090,7 +1090,7 @@ namespace SoftwareEng
             // Specifies a maximum height resolution constraint to scale the image down to
             resizeJob.Height = size;
             resizeJob.Width = size;
-            //resizeJob.Mode = Imazen.LightResize.FitMode.Crop;
+            resizeJob.Mode = Imazen.LightResize.FitMode.Crop;
 
             //get the full path
             fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picName);
