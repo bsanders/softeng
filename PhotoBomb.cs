@@ -229,6 +229,20 @@ namespace SoftwareEng
             renameAlbum_backend(guiCallback, albumUID, newName);
         }
 
+        //By: Bill Sanders
+        //Edited Last: 4/6/13
+        /// <summary>
+        /// This function renames the specified image in this album.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The UID of the album the photo is in</param>
+        /// <param name="idInAlbum">The id of the photo in this album</param>
+        /// <param name="newName">The new name of the photo</param>
+        public void renamePhoto(generic_callback guiCallback, int albumUID, int idInAlbum, string newName)
+        {
+            renamePhoto_backend(guiCallback, albumUID, idInAlbum, newName);
+        }
+
         //----------------------------------------------
         //By: Ryan Moe
         //Edited Last:
@@ -264,6 +278,18 @@ namespace SoftwareEng
         public void checkIfAlbumNameIsUnique(generic_callback guiCallback, String albumName)
         {
             checkIfAlbumNameIsUnique_backend(guiCallback, albumName);
+        }
+
+        //---------------------------------------------
+        //By: Bill Sanders
+        //Edited Last:
+        //
+        //Checks to see if a photo name is unique.
+        //This will return FAILED in the error report (in the callback) 
+        //if the name is not unique.
+        public void checkIfPhotoNameIsUnique(generic_callback guiCallback, String photoName, int albumUID)
+        {
+            checkIfPhotoNameIsUnique_backend(guiCallback, photoName, albumUID);
         }
 
         //---------------------------------------------

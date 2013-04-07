@@ -94,6 +94,9 @@ namespace SoftwareEng
         //The regex for validation of album names
         private String albumValidationRegex = @"^[\w\d][\w\d ]{0,31}$"; //must be at least 1 character, max 32 in length
 
+        //The regex for validation of photo names
+        private String photoValidationRegex = @"^[\w\d][\w\d ]{0,31}$"; //must be at least 1 character, max 32 in length
+
         //current album UID, defaults to a invalid value(because we eont be in an album)
         private int currentAlbumUID = -1;
 
@@ -233,23 +236,30 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Author: Ryan Causey
          * Created on: 4/3/13
-         * Function for validating that a new album name is valid and unique.
-         * @Params: validationRegex = regex to be used to validate the album name
-         * albumName = the desired album name
-         * Last Edited By:
-         * Last Edited Date:
+         * Function for validating that a new album or photo name is valid and unique.
+         * Last Edited By: Bill Sanders, ditched the parameter.
+         * Last Edited Date: 4/6/13
          **************************************************************************************************************************/
-        private void guiValidateAlbumName(String validationRegex)
+        private void guiValidateName()
         {
-            nameTextBox.Text = nameTextBox.Text.Trim();
-
-            if (validateTheString(validationRegex, nameTextBox.Text))
+            String validationRegex;
+            // check to see if we're validating an album or a photo
+            if (currentAlbumUID == -1)
             {
-                //check to see if the album name is unique in the program
-                bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), nameTextBox.Text);
+                // We're in the library view, naming an album
+                validationRegex = albumValidationRegex;
             }
             else
             {
+                // We're in the album view, naming a photo
+                validationRegex = photoValidationRegex;
+            }
+
+            // Trim the whitespace of this input, SRS Requires no leading/trailing whitespace
+            nameTextBox.Text = nameTextBox.Text.Trim();
+            if (!validateTheString(validationRegex, nameTextBox.Text))
+            {
+                // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
@@ -262,7 +272,22 @@ namespace SoftwareEng
                 //focus the text box and select all the text
                 nameTextBox.Focus();
                 nameTextBox.SelectAll();
+                return;
             }
+
+            // Otherwise the text was good, but still might not be unique.
+            // Let's check Library vs Album check again...
+            if (currentAlbumUID == -1)
+            {
+                //check to see if the album name is unique in the program
+                bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), nameTextBox.Text);
+            }
+            else
+            {
+                // check to see if the photo was unique in this album
+                bombaDeFotos.checkIfPhotoNameIsUnique(new generic_callback(guiValidatePhotoName_Callback), nameTextBox.Text, currentAlbumUID);
+            }
+
         }
 
         /**************************************************************************************************************************
@@ -300,6 +325,45 @@ namespace SoftwareEng
                 else
                 {
                     guiCreateNewAlbum(nameTextBox.Text);
+                }
+                hideAddAlbumBox();
+                nameTextBox.Clear();
+            }
+        }
+
+        /**************************************************************************************************************************
+         * Author: Bill Sanders, based on code by Ryan Causey
+         * Created on: 4/3/13
+         * Callback for checking uniqueness of a new photo name. This will be called after the back end finishes checking if the photo
+         * name is unique
+         **************************************************************************************************************************/
+        public void guiValidatePhotoName_Callback(ErrorReport error)
+        {
+            //if the photo name was not unique
+            if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            {
+                //this is how to call a storyboard defined in resources from the code
+                //this storyboard is for the name box
+                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+                nameTextBoxErrorAnimation.Begin();
+
+                handleNameErrorPopup(true, errorStrings.invalidImageNameUnique);
+                //apply error template to the text box
+                //focus the text box and select all the text
+                nameTextBox.Focus();
+                nameTextBox.SelectAll();
+            }
+            //it was unique, great success!
+            else
+            {
+                if (mainWindowAlbumList.SelectedItem != null)
+                {
+                    guiRenameSelectedPhoto(nameTextBox.Text);
+                }
+                else
+                {
+                    // They got the context menu open on a non-list-item?
+//                    guiCreateNewAlbum(nameTextBox.Text);
                 }
                 hideAddAlbumBox();
                 nameTextBox.Clear();
@@ -665,6 +729,42 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="error">Error report from the back end.</param>
         public void guiRenameSelectedAlbum_Callback(ErrorReport error)
+        {
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                showErrorMessage(error.description);
+            }
+        }
+
+        /**************************************************************************************************************************
+         * Created By: Bill Sanders
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         **************************************************************************************************************************/
+        /// <summary>
+        /// GUI function to rename the selected Photo
+        /// </summary>
+        private void guiRenameSelectedPhoto(string newName)
+        {
+            if (mainWindowAlbumList.SelectedItem != null)
+            {
+                bombaDeFotos.renamePhoto(new generic_callback(guiRenameSelectedPhoto_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, newName);
+            }
+        }
+
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
+        /* Created By: Bill Sanders
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Callback for guiRenameSelectedPhoto. Just shows an error message if there is one.
+        /// </summary>
+        /// <param name="error">Error report from the back end.</param>
+        public void guiRenameSelectedPhoto_Callback(ErrorReport error)
         {
             if (error.reportID == ErrorReport.FAILURE)
             {
@@ -1202,7 +1302,7 @@ namespace SoftwareEng
          **************************************************************************************************************************/
         private void acceptAddToolBarButton_Click(object sender, RoutedEventArgs e)
         {
-            guiValidateAlbumName(albumValidationRegex);
+            guiValidateName();
         }
 
         /**************************************************************************************************************************
@@ -1367,6 +1467,29 @@ namespace SoftwareEng
         private void viewMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
         {
             guiViewPicture();
+        }
+
+        private void addMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainWindowAlbumList.SelectedItem == null)
+            {
+                //showAddAlbumBox();
+            }
+            else
+            {
+                guiEnterAlbumView();
+                guiImportPhotos();
+            }
+        }
+
+        private void addMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            guiImportPhotos();
+        }
+
+        private void renameMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            showAddAlbumBox();
         }
     }
 

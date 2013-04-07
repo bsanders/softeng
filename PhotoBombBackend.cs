@@ -1167,12 +1167,52 @@ namespace SoftwareEng
             saveAlbumsXML_backend(null);
 
             // Searches through the albumsCollection and finds the first album with a matching UID
-            var albumToRemove = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
+            var albumToRename = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
             // ... and then renames it.
-            albumToRemove.albumName = newName;
+            albumToRename.albumName = newName;
             
             return;
         }
+
+        //By: Bill Sanders
+        //Edited Last: 4/6/13
+        /// <summary>
+        /// This function renames the specified image in this album.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The UID of the album the photo is in</param>
+        /// <param name="idInAlbum">The id of the photo in this album</param>
+        /// <param name="newName">The new name of the photo</param>
+        private void renamePhoto_backend(generic_callback guiCallback, int albumUID, int idInAlbum, string newName)
+        {
+            ErrorReport errorReport = new ErrorReport();
+
+            // get the photo node that we are working on.
+            XElement photoElem = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            // change the photo's name.
+            util_renamePhoto(errorReport, photoElem, newName);
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+                return;
+            }
+
+            saveAlbumsXML_backend(null);
+            
+            // Searches through the photosCollection and finds the first photo with a matching id
+            var photoToRename = _photosCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
+            // ... and then renames it.
+            photoToRename.name = newName;
+
+            return;
+        }
+
 
         //-------------------------------------------------------------
         //By: Ryan Moe
@@ -1239,6 +1279,27 @@ namespace SoftwareEng
 
             //get uniqueness
             Boolean nameUnique = util_checkAlbumNameIsUnique(albumName);
+
+            if (!nameUnique)
+            {
+                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.description = "Album name is not unique.";
+                guiCallback(errorReport);
+                return;
+            }
+
+            guiCallback(errorReport);
+        }
+
+        //--------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last:
+        private void checkIfPhotoNameIsUnique_backend(generic_callback guiCallback, String photoName, int albumUID)
+        {
+            ErrorReport errorReport = new ErrorReport();
+
+            //get uniqueness
+            Boolean nameUnique = util_checkPhotoNameIsUniqueToAlbum(photoName, util_getAlbum(errorReport, albumUID));
 
             if (!nameUnique)
             {
