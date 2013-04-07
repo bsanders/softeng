@@ -107,7 +107,7 @@
                     </Button>
                     <StackPanel Name="stackPanel1" Width="107" ToolTip="Seconds between slides">
                         <Label Content="Slideshow Speed" Height="20" Name="slideShowSpeedLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" Foreground="Black" />
-                        <Slider Height="23" Name="slider1" Width="100" />
+                        <Slider Height="23" x:Name="slideshowSpeedSlider" Width="100" TickPlacement="BottomRight" Minimum="1" IsSnapToTickEnabled="True" ValueChanged="slideshowSpeedSlider_ValueChanged" Value="5" />
                     </StackPanel>
                 </DockPanel>
             </Grid>

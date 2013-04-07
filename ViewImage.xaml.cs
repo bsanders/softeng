@@ -13,7 +13,8 @@
  *                     but still puts window into slideshow mode.
  *                     Implemented slide show so that it cycles through pictures at a rate of 5 seconds.
  *                     It is still not hooked up to the slider, however.
- *                     Fixed bug 53 where the slideshow view wouldn't work. 
+ *                     Fixed bug 53 where the slideshow view wouldn't work.
+ *                     Hooked up the slideshow speed slider.
  */
 using System;
 using System.Collections.Generic;
@@ -202,7 +203,7 @@ namespace SoftwareEng
             //show the cancel slideshow button
             this.exitSlideShowDockButton.Visibility = Visibility.Visible;
             this.WindowState = WindowState.Maximized;
-            this.applicationDockBar.Visibility = Visibility.Hidden;
+            this.applicationDockBar.Visibility = Visibility.Collapsed;
             slideShowTimer.Start();
         }
 
@@ -224,6 +225,12 @@ namespace SoftwareEng
             this.WindowState = WindowState.Normal;
             this.applicationDockBar.Visibility = Visibility.Visible;
             slideShowTimer.Stop();
+        }
+
+        private void setSlideShowSpeed()
+        {
+            //get the slider value and set the speed to it
+            slideShowTimer.Interval = new TimeSpan(0, 0, (int)this.slideshowSpeedSlider.Value);
         }
 
 
@@ -548,6 +555,22 @@ namespace SoftwareEng
         private void slideShowTimer_Tick(Object sender, EventArgs e)
         {
             getNextImage();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for when the value of the slideshow speed slider changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void slideshowSpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            setSlideShowSpeed();
         }
 
         /*
