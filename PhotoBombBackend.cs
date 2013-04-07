@@ -593,7 +593,6 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last: Ryan Causey
         //Edited Date: 4/4/13
-        // NOTE: this function is no longer sufficient (SimplePhotoData doesn't have the file path to display thumbnails, for example...)
         private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback, int AlbumUID)
         {
             ErrorReport error = new ErrorReport();
@@ -1245,6 +1244,35 @@ namespace SoftwareEng
 
         }
 
+        //-------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last By: 
+        //Edited Last Date: 4/7/13
+        /// <summary>
+        /// Adds a photo that already exists in one album to another album
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="photoObj">A ComplexPhotoData object which contains all the information about a photo</param>
+        /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
+        private void addExistingPhotoToAlbum_backend(generic_callback guiCallback, ComplexPhotoData photoObj, int albumUID)
+        {
+            ErrorReport errorReport = new ErrorReport();
+            // Get the refcount (will get zero if the pic is brand new) and increment it.
+            photoObj.refCount = util_getPhotoRefCount(ByteArrayToString(photoObj.hash));
+            photoObj.refCount++;
+
+            util_addPicToAlbumDB(errorReport, photoObj, albumUID);
+
+            //if adding to the album database failed
+            if (errorReport.reportID == ErrorReport.FAILURE)
+            {
+                guiCallback(errorReport);
+            }
+
+            //save to disk.
+            savePicturesXML_backend(null);
+            saveAlbumsXML_backend(null);
+        }
 
         //-------------------------------------------------------------
         //By: Ryan Moe
