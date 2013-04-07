@@ -41,7 +41,24 @@
                 -->
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="25,0" Stroke="#00000000" VerticalAlignment="Bottom"/>
                 <Viewbox Stretch="None" Margin="0,27,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image RenderTransformOrigin="0.5,0.5"/>
+                    <Viewbox.Resources>
+                        <!--Define the converter resource-->
+                        <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
+                    </Viewbox.Resources>
+                    <Image RenderTransformOrigin="0.5,0.5">
+                        <Image.Source>
+                            <!--Use the converter here to make sure that the image doesn't become locked on the filesystem-->
+                            <Binding Path="fullPath" Converter="{StaticResource ImagePathConverter}">
+                                <Binding.FallbackValue>
+                                    <ImageSource>
+                                        <!-- This image looks much swankier than the missing image png-->
+                                        <!--But it doesn't tell the user what went wrong-->
+                                        ImagesResources2012/NewIconClipart-tiny-square.png
+                                    </ImageSource>
+                                </Binding.FallbackValue>
+                            </Binding>
+                        </Image.Source>
+                    </Image>
                 </Viewbox>
                 <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="25,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="48" Background="{DynamicResource PhotoBomberDockBrush}">
                     <Button x:Name="slideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Play slideshow" Background="{DynamicResource PhotoBomberDockButtonBrush}">
