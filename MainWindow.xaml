@@ -458,7 +458,7 @@
                         <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemAlbumButton_Click">
                             <Image x:Name="deleteButtonAlbumImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemAlbumButton_Click">
                             <Image x:Name="renameButtonAlbumImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">

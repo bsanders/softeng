@@ -871,6 +871,33 @@ namespace SoftwareEng
         }
 
         //-------------------------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last:
+        /// <summary>
+        /// Check to see if a photo name is unique to an album.
+        /// </summary>
+        /// <param name="photoName">The name to check</param>
+        /// <param name="albumNode">The XElement albumDB node to check in</param>
+        /// <returns>Returns true if the photo name is unique to that album</returns>
+        private Boolean util_checkPhotoNameIsUniqueToAlbum(String photoName, XElement albumNode)
+        {
+            try
+            {
+                //try and find a matching photo name.
+                //throws exception if we find NO matching names.
+                (from c in albumNode.Descendants("picture")
+                 where (String)c.Element("name") == photoName
+                 select c).First();
+            }
+            //we didn't find a matching name, success!
+            catch
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //-------------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last By: Ryan Causey
         //Edited Last Date: 4/5/13
@@ -953,8 +980,8 @@ namespace SoftwareEng
         }
 
         //--------------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last: Bill Sanders 4/1/13 (renamed function, added comments)
+        //By: Bill Sanders
+        //Edited Last:
         /// <summary>
         /// Renames an instance of a photo in an album
         /// </summary>
