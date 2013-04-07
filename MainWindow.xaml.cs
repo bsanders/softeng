@@ -293,7 +293,14 @@ namespace SoftwareEng
             //it was unique, great success!
             else
             {
-                guiCreateNewAlbum(nameTextBox.Text);
+                if (mainWindowAlbumList.SelectedItem != null)
+                {
+                    guiRenameSelectedAlbum(nameTextBox.Text);
+                }
+                else
+                {
+                    guiCreateNewAlbum(nameTextBox.Text);
+                }
                 hideAddAlbumBox();
                 nameTextBox.Clear();
             }
@@ -630,7 +637,41 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
+         * Created By: Bill Sanders
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         **************************************************************************************************************************/
+        /// <summary>
+        /// GUI function to rename the selected Album
+        /// </summary>
+        private void guiRenameSelectedAlbum(String albumName)
+        {
+            if (mainWindowAlbumList.SelectedItem != null)
+            {
+                bombaDeFotos.renameAlbum(new generic_callback(guiRenameSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID, albumName);
+            }
+        }
+
+        /**************************************************************************************************************************
         **************************************************************************************************************************/
+        /* Created By: Bill Sanders
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Callback for guiRenameSelectedAlbum. Just shows an error message if there is one.
+        /// </summary>
+        /// <param name="error">Error report from the back end.</param>
+        public void guiRenameSelectedAlbum_Callback(ErrorReport error)
+        {
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                showErrorMessage(error.description);
+            }
+        }
+
         /* Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By:
@@ -788,8 +829,9 @@ namespace SoftwareEng
          * Last Edited By:
          * Last Edited Date:
          **************************************************************************************************************************/
-        private void addDockButton_Click(object sender, RoutedEventArgs e)
+        private void addAlbumDockButton_Click(object sender, RoutedEventArgs e)
         {
+            mainWindowAlbumList.SelectedItem = null;
             showAddAlbumBox();
         }
 
@@ -1304,6 +1346,11 @@ namespace SoftwareEng
         private void albumContextMenuPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             AlbumContextMenu.IsOpen = false;
+        }
+
+        private void renameMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            showAddAlbumBox();
         }
 
         /*

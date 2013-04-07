@@ -433,7 +433,7 @@
                         <Button x:Name="deleteMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemLibraryButton_Click">
                             <Image x:Name="deleteButtonLibraryImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemLibraryButton_Click">
                             <Image x:Name="renameButtonLibraryImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="slideshowMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -487,7 +487,7 @@
 
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="0,0,25,0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
                 <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="1" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockBrush}">
-                    <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addDockButton_Click" Background="{DynamicResource PhotoBomberDockButtonBrush}">
+                    <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" Background="{DynamicResource PhotoBomberDockButtonBrush}">
 
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                     </Button>
