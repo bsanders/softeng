@@ -11,6 +11,8 @@
  *                     Got the sliding animation on the lower dockbar to work.
  *                     Hooked up slide show button. Currently does not automatically play at any rate
  *                     but still puts window into slideshow mode.
+ *                     Implemented slide show so that it cycles through pictures at a rate of 5 seconds.
+ *                     It is still not hooked up to the slider, however.
  */
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace SoftwareEng
 {
@@ -38,6 +41,8 @@ namespace SoftwareEng
         private ComplexPhotoData _currentPicture;
         //event for changing a property
         public event PropertyChangedEventHandler PropertyChanged;
+        //timer for slideshow
+        DispatcherTimer slideShowTimer = new DispatcherTimer();
 
         //property for data binding
         public ComplexPhotoData currentPicture
@@ -66,6 +71,9 @@ namespace SoftwareEng
             _picturesCollection = picturesCollectionFromAlbum;
             currentPicture = _picturesCollection.FirstOrDefault(photo => photo.UID == imageUID);
             InitializeComponent();
+            //set the timer's default values.
+            slideShowTimer.Interval = new TimeSpan(0, 0, 5);
+            slideShowTimer.Tick += new EventHandler(slideShowTimer_Tick);
         }
 
         /*
@@ -192,11 +200,13 @@ namespace SoftwareEng
             {
                 this.WindowState = WindowState.Normal;
                 this.applicationDockBar.Visibility = Visibility.Visible;
+                slideShowTimer.Stop();
             }
             else
             {
                 this.WindowState = WindowState.Maximized;
                 this.applicationDockBar.Visibility = Visibility.Hidden;
+                slideShowTimer.Start();
             }
         }
 
@@ -490,6 +500,22 @@ namespace SoftwareEng
         private void slideShowDockButton_Click(object sender, RoutedEventArgs e)
         {
             toggleSlideShowState();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Tick handler for the slideShowTimer. Will cycle to next picture on tick.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void slideShowTimer_Tick(Object sender, EventArgs e)
+        {
+            getNextImage();
         }
 
         /*
