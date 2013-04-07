@@ -9,6 +9,8 @@
  *                     Implemented the "next" button functionality on the imageView.
  *                     Implemented the "previous" button functionality on the imageView.
  *                     Got the sliding animation on the lower dockbar to work.
+ *                     Hooked up slide show button. Currently does not automatically play at any rate
+ *                     but still puts window into slideshow mode.
  */
 using System;
 using System.Collections.Generic;
@@ -172,6 +174,29 @@ namespace SoftwareEng
             else
             {
                 this.WindowState = WindowState.Maximized;
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Function to toggle between the slideshow state.
+        /// </summary>
+        private void toggleSlideShowState()
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+                this.applicationDockBar.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+                this.applicationDockBar.Visibility = Visibility.Hidden;
             }
         }
 
@@ -449,6 +474,22 @@ namespace SoftwareEng
         private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
         {
             mainWindowDock.Height = 1;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// On click handler for slide show button.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void slideShowDockButton_Click(object sender, RoutedEventArgs e)
+        {
+            toggleSlideShowState();
         }
 
         /*
