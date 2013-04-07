@@ -44,6 +44,8 @@ namespace SoftwareEng
 
     public delegate void getAllPhotosInAlbum_callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> _pictures);
 
+    public delegate void sendAllPhotosInAlbum_callback(ErrorReport error, List<ComplexPhotoData> _pictures);
+
     public delegate void getPhotoByUID_callback(ErrorReport error, ComplexPhotoData picture);
 
     //put more advanced callbacks here, ex:

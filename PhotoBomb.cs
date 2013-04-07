@@ -159,6 +159,17 @@ namespace SoftwareEng
             getAllPhotosInAlbum_backend(guiCallback, albumUID);
         }
 
+        //----------------------------------------------
+        //By: Bill Sanders
+        /// <summary>
+        /// Sends a copy of all the photos in the specified album to the clipboard
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The unique ID of the album</param>
+        public void sendAllPhotosInAlbumToClipboard(sendAllPhotosInAlbum_callback guiCallback, int albumUID)
+        {
+            sendAllPhotosInAlbumToClipboard_backend(guiCallback, albumUID);
+        }
 
         //---------------------------------------------
         //By: Ryan Moe
