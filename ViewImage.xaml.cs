@@ -13,6 +13,7 @@
  *                     but still puts window into slideshow mode.
  *                     Implemented slide show so that it cycles through pictures at a rate of 5 seconds.
  *                     It is still not hooked up to the slider, however.
+ *                     Fixed bug 53 where the slideshow view wouldn't work. 
  */
 using System;
 using System.Collections.Generic;
@@ -192,22 +193,37 @@ namespace SoftwareEng
          * Last Edited Date:
          */
         /// <summary>
-        /// Function to toggle between the slideshow state.
+        /// Function to enter the slideshow state.
         /// </summary>
-        private void toggleSlideShowState()
+        private void enterSlideShowState()
         {
-            if (this.WindowState == WindowState.Maximized)
-            {
-                this.WindowState = WindowState.Normal;
-                this.applicationDockBar.Visibility = Visibility.Visible;
-                slideShowTimer.Stop();
-            }
-            else
-            {
-                this.WindowState = WindowState.Maximized;
-                this.applicationDockBar.Visibility = Visibility.Hidden;
-                slideShowTimer.Start();
-            }
+            //hide the slideshow button
+            this.slideShowDockButton.Visibility = Visibility.Collapsed;
+            //show the cancel slideshow button
+            this.exitSlideShowDockButton.Visibility = Visibility.Visible;
+            this.WindowState = WindowState.Maximized;
+            this.applicationDockBar.Visibility = Visibility.Hidden;
+            slideShowTimer.Start();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Function to exit the slidwshow state
+        /// </summary>
+        private void exitSlideShowState()
+        {
+            //show the slideshow button
+            this.slideShowDockButton.Visibility = Visibility.Visible;
+            //hide the cancel slideshow button
+            this.exitSlideShowDockButton.Visibility = Visibility.Collapsed;
+            this.WindowState = WindowState.Normal;
+            this.applicationDockBar.Visibility = Visibility.Visible;
+            slideShowTimer.Stop();
         }
 
 
@@ -499,7 +515,23 @@ namespace SoftwareEng
         /// <param name="e">Event args</param>
         private void slideShowDockButton_Click(object sender, RoutedEventArgs e)
         {
-            toggleSlideShowState();
+            enterSlideShowState();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// On click handler for the exit slide show button.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void exitSlideShowDockButton_Click(object sender, RoutedEventArgs e)
+        {
+            exitSlideShowState();
         }
 
         /*
