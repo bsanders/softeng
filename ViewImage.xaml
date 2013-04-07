@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="d" 
         Title="ViewImage" Height="319"
-        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" SizeToContent="WidthAndHeight" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True">
+        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True">
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
     </Window.Background>
