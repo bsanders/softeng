@@ -1,12 +1,12 @@
-﻿<Window 
+﻿<Window x:Name="viewImageWindow" 
         x:Class="SoftwareEng.ViewImage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="d" 
-        Title="ViewImage" Height="319"
-        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True" MinWidth="100" MinHeight="100">
+        Title="ViewImage" Height="{Binding MinHeight, ElementName=ViewImageWindowGrid}"
+        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True" MinWidth="100" MinHeight="100" Width="{Binding MinWidth, ElementName=ViewImageWindowGrid}">
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
     </Window.Background>
@@ -14,7 +14,7 @@
 
     <Grid>
         <Border x:Name="ViewImageWindowFrame" Padding="6" Background="#001C2327">
-            <Grid x:Name="ViewImageWindowGrid" MinWidth="100" MinHeight="100">
+            <Grid x:Name="ViewImageWindowGrid" MinWidth="500" MinHeight="500">
                 <!--
                 <Popup x:Name="imageWindowContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
@@ -40,20 +40,18 @@
                 </Popup>
                 -->
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="25,0" Stroke="#00000000" VerticalAlignment="Bottom"/>
-                <Viewbox Stretch="None" Margin="0,27,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Viewbox Stretch="Uniform" Margin="0,27,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Viewbox.Resources>
                         <!--Define the converter resource-->
                         <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
                     </Viewbox.Resources>
+                    <!--<Image Source="{Binding currentPicture.asdf, Converter={StaticResource ImagePathConverter}, FallbackValue=ImagesResources2012\NewIconClipart-tiny-square.png}" RenderTransformOrigin="0.5,0.5"/>-->
                     <Image RenderTransformOrigin="0.5,0.5">
                         <Image.Source>
-                            <!--Use the converter here to make sure that the image doesn't become locked on the filesystem-->
-                            <Binding Path="fullPath" Converter="{StaticResource ImagePathConverter}">
+                            <Binding ElementName="viewImageWindow" Path="currentPicture.fullPath" Converter="{StaticResource ImagePathConverter}">
                                 <Binding.FallbackValue>
                                     <ImageSource>
-                                        <!-- This image looks much swankier than the missing image png-->
-                                        <!--But it doesn't tell the user what went wrong-->
-                                        ImagesResources2012/NewIconClipart-tiny-square.png
+                                        ImagesResources2012\NewIconClipart.png
                                     </ImageSource>
                                 </Binding.FallbackValue>
                             </Binding>
@@ -87,11 +85,19 @@
         <Thumb x:Name="bottomRightThumb" Background="#001C2327" Cursor="SizeNWSE" HorizontalAlignment="Right" Width="6" DragDelta="bottomRightThumb_DragDeltaHandler" Height="6" VerticalAlignment="Bottom" Opacity="0"/>
         <Thumb x:Name="topRightThumb" Background="#001C2327" HorizontalAlignment="Right" Width="6" VerticalAlignment="Top" Height="6" Cursor="SizeNESW" DragDelta="topRightThumb_DragDeltaHandler" Opacity="0"/>
         <Thumb x:Name="bottomLeftThumb" Background="#001C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeNESW" DragDelta="bottomLeftThumb_DragDeltaHandler" VerticalAlignment="Bottom" Height="6" Opacity="0"/>
-        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" Height="27" Background="{DynamicResource PhotoBomberTitleBarBrush}">
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" Height="27" Background="{DynamicResource PhotoBomberTitleBarBrush}" MouseDown="DockPanel_MouseDown_1">
             <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitButtonClick" ToolTip="Close">
                 <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Close_16xLG.png"/>
             </Button>
-            <Label Content="&lt;Image Name&gt;" Height="27" VerticalAlignment="Top" Padding="5" VerticalContentAlignment="Center" Margin="0" Foreground="#FFE2E2E2" FontWeight="Bold" TextOptions.TextFormattingMode="Display"/>
+            <Label Height="27" VerticalAlignment="Top" Padding="5" VerticalContentAlignment="Center" Margin="0" Foreground="#FFE2E2E2" FontWeight="Bold" TextOptions.TextFormattingMode="Display">
+                <Label.Content>
+                    <Binding ElementName="viewImageWindow" Path="currentPicture.name">
+                        <Binding.FallbackValue>
+                            Failed to get image name!
+                        </Binding.FallbackValue>
+                    </Binding>
+                </Label.Content>
+            </Label>
             <Button x:Name="maximizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="maximizeToolbarButton_Click" ToolTip="Maximize" >
                 <Image x:Name="maximizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/application_16xLG.png"/>
             </Button>
