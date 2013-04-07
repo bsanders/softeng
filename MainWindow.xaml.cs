@@ -28,6 +28,7 @@
  *                     Fixed the remove picture gui function so we pass the correct UID(idInAlbum) to the backend function.
  *                     Fixed an issue in the ImagePathConverter where it would not handle a case where the path was not yet loaded
  *                     to the image to convert.
+ *                     Implementing method to view an image in its own window.
  */ 
 using System;
 using System.Collections.Generic;
@@ -61,8 +62,24 @@ namespace SoftwareEng
         Properties.Settings Settings = Properties.Settings.Default;
 
         //DATABINDING SOURCE 
-        ReadOnlyObservableCollection<SimpleAlbumData> listOfAlbums;
-        ReadOnlyObservableCollection<ComplexPhotoData> listOfPhotos;
+        private ReadOnlyObservableCollection<SimpleAlbumData> _listOfAlbums;
+        private ReadOnlyObservableCollection<ComplexPhotoData> _listOfPhotos;
+
+        public ReadOnlyObservableCollection<SimpleAlbumData> listOfAlbums
+        {
+            get
+            {
+                return _listOfAlbums;
+            }
+        }
+
+        public ReadOnlyObservableCollection<ComplexPhotoData> listOfPhotos
+        {
+            get
+            {
+                return _listOfPhotos;
+            }
+        }
 
         //--didn't know what to call it, so I named it the literal spanish translation
         public SoftwareEng.PhotoBomb bombaDeFotos;
@@ -173,9 +190,9 @@ namespace SoftwareEng
         {
             if (status.reportID == ErrorReport.SUCCESS)
             {
-                listOfAlbums = albumsRetrieved;
+                _listOfAlbums = albumsRetrieved;
 
-                mainWindowAlbumList.ItemsSource = listOfAlbums;
+                mainWindowAlbumList.ItemsSource = _listOfAlbums;
 
             }
             else
@@ -408,8 +425,8 @@ namespace SoftwareEng
                 }
                 //swap data templates and change bindings.
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
-                listOfPhotos = picturesInAlbum;
-                mainWindowAlbumList.ItemsSource = listOfPhotos;
+                _listOfPhotos = picturesInAlbum;
+                mainWindowAlbumList.ItemsSource = _listOfPhotos;
                 //show the return to library view button on the dock
                 libraryDockButton.Visibility = Visibility.Visible;
                 //show the addPhotos dock button if we are not running an import operation
@@ -442,7 +459,7 @@ namespace SoftwareEng
             mainWindowAlbumList.ItemTemplate = this.Resources["LibraryListItemFrontTemplate"] as DataTemplate;
             //refresh the view to make sure we update with new album thumbnails
             populateAlbumView(true);
-            mainWindowAlbumList.ItemsSource = listOfAlbums;
+            mainWindowAlbumList.ItemsSource = _listOfAlbums;
             //collapse the go back button
             libraryDockButton.Visibility = Visibility.Collapsed;
             //collapse the addPhotos button
@@ -580,7 +597,7 @@ namespace SoftwareEng
                     //show the user a notification that some pictures are not displayed
                     showErrorMessage("Warnings at guiImportPhotosRefreshView_Callback"); //super temporary
                 }
-                listOfPhotos = picturesInAlbum;
+                _listOfPhotos = picturesInAlbum;
             }
         }
 
@@ -644,6 +661,12 @@ namespace SoftwareEng
             {
                 cancelPhotoImportDockButton.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void guiViewPicture()
+        {
+            ViewImage view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID);
+            view.ShowDialog();
         }
 
         /**************************************************************************************************************************
