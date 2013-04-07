@@ -831,7 +831,7 @@ namespace SoftwareEng
          **************************************************************************************************************************/
         private void addAlbumDockButton_Click(object sender, RoutedEventArgs e)
         {
-            mainWindowAlbumList.SelectedItems.Clear();
+            mainWindowAlbumList.SelectedItem = null;
             showAddAlbumBox();
         }
 
