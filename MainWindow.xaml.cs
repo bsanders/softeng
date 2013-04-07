@@ -436,12 +436,14 @@ namespace SoftwareEng
                 }
                 //hide the add new album button on the dock
                 addDockButton.Visibility = Visibility.Collapsed;
+                /* Commenting out these as we will swap whole context menu's!
                 //temporary fix to prevent an unhandled exception
                 viewMenuItemLibraryButton.Visibility = Visibility.Collapsed;
                 //hide the delete album button
                 deleteMenuItemLibraryButton.Visibility = Visibility.Collapsed;
                 //show the delete photo button
                 deleteMenuItemPhotoButton.Visibility = Visibility.Visible;
+                 */
             }
         }
 
@@ -466,12 +468,14 @@ namespace SoftwareEng
             addPhotosDockButton.Visibility = Visibility.Collapsed;
             //show the add album dock button
             addDockButton.Visibility = Visibility.Visible;
+            /* Commenting out these as we will swap whole context menu's!
             //temporary fix to prevent an unhandled exception
             viewMenuItemLibraryButton.Visibility = Visibility.Visible;
             //show the delete album button
             deleteMenuItemLibraryButton.Visibility = Visibility.Visible;
             //hide the delete photo button
             deleteMenuItemPhotoButton.Visibility = Visibility.Collapsed;
+             */
 
             currentAlbumUID = -1;
         }
@@ -742,9 +746,25 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
+        /**************************************************************************************************************************
+         * Created By: Alejandro Sosa
+         * Edited Last By: Ryan Causey
+         * Edited Last Date: 4/6/13
+         **************************************************************************************************************************/
         private void mainWindowAlbumList_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            libraryContextMenu.IsOpen = true;
+            //if we aren't in an album
+            if (currentAlbumUID == -1)
+            {
+                //show the context menu for the library
+                libraryContextMenu.IsOpen = true;
+            }
+            //if we are in an album
+            else
+            {
+                //show the context menu for the album.
+                AlbumContextMenu.IsOpen = true;
+            }
         }
 
         /**************************************************************************************************************************
@@ -1231,10 +1251,15 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/6/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/6/13
          **************************************************************************************************************************/
-        private void deleteMenuItemPhotoButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler for the click event on the delete context menu button for the album view.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void deleteMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
         {
             //call guideletephoto function here.
             guiDeleteSelectedPhoto();
@@ -1254,6 +1279,17 @@ namespace SoftwareEng
         private void cancelPhotoImportDockButton_Click(object sender, RoutedEventArgs e)
         {
             guiCancelImport();
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/6/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        private void albumContextMenuPreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            AlbumContextMenu.IsOpen = false;
         }
     }
 

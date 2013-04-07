@@ -495,9 +495,6 @@
                         <Button x:Name="deleteMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemLibraryButton_Click">
                             <Image x:Name="deleteButtonLibraryImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="deleteMenuItemPhotoButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Visibility="Collapsed" Click="deleteMenuItemPhotoButton_Click">
-                            <Image x:Name="deleteButtonPhotoImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
-                        </Button>
                         <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <Image x:Name="renameButtonLibraryImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>
                         </Button>
@@ -511,8 +508,8 @@
                 </Popup>
                 
                 <!-- Buttons for the Album view are: Edit Data (Pencil), Delete (X), Copy to Clipboard (Pushpin), View Image (eye)   -->
-                
-                <!--       <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" LostMouseCapture="mainWindowContextMenu_LostMouseCapture">
+
+                <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" VerticalOffset="-60" HorizontalOffset="-60" PreviewMouseUp="albumContextMenuPreviewMouseUp">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
                         <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
@@ -520,7 +517,7 @@
                         <Button x:Name="copyMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                             <Image x:Name="copyButtonAlbumImage" Source="ImagesResources2012/WorkItem_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemAlbumButton_Click">
                             <Image x:Name="deleteButtonAlbumImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
@@ -530,10 +527,10 @@
                             <Image x:Name="slideshowButtonAlbumImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="viewMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                            <Image x:Name="viewButtonAlbumImage" Source="ImagesResources2012/resource_32xLG.png" Stretch="Fill"/>
+                            <Image x:Name="viewButtonAlbumImage" Source="ImagesResources2012/eye_16xLG.png" Stretch="Fill"/>
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
-                </Popup>   -->
+                </Popup>
 
                 <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" PreviewMouseRightButtonUp="mainWindowAlbumList_MouseRightButtonUp" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" SelectionMode="Extended" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay, NotifyOnSourceUpdated=True}" Margin="0,25,0,0">
                     <ListBox.Background>
