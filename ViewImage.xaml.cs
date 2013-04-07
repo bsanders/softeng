@@ -109,18 +109,18 @@ namespace SoftwareEng
         private void bottomThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from bottom
-            if (this.Height > this.MinHeight)
+            if (this.Height > this.ViewImageWindowGrid.MinHeight)
             {
                 //Handles an error case where trying to drag the window too small with a jerking motion would give
                 //a negative height.
-                if ((this.Height + e.VerticalChange) > this.MinHeight)
+                if ((this.Height + e.VerticalChange) > this.ViewImageWindowGrid.MinHeight)
                 {
                     this.Height += e.VerticalChange;
                 }
             }
             else
             {
-                this.Height = MinHeight + 1;
+                this.Height = this.ViewImageWindowGrid.MinHeight + 1;
             }
 
         }
@@ -136,11 +136,11 @@ namespace SoftwareEng
         {
 
             //resize from top
-            if (this.Height > this.MinHeight)
+            if (this.Height > this.ViewImageWindowGrid.MinHeight)
             {
                 //Handles an error case where trying to drag the window too small with a jerking motion would give
                 //a negative height.
-                if ((this.Height - e.VerticalChange) > this.MinHeight)
+                if ((this.Height - e.VerticalChange) > this.ViewImageWindowGrid.MinHeight)
                 {
                     this.Height -= e.VerticalChange;
                     this.Top += e.VerticalChange;
@@ -215,33 +215,33 @@ namespace SoftwareEng
         private void bottomRightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from bottom
-            if (this.Height > this.MinHeight)
+            if (this.Height > this.ViewImageWindowGrid.MinHeight)
             {
                 //Handles an error case where trying to drag the window too small with a jerking motion would give
                 //a negative height.
-                if ((this.Height + e.VerticalChange) > this.MinHeight)
+                if ((this.Height + e.VerticalChange) > this.ViewImageWindowGrid.MinHeight)
                 {
                     this.Height += e.VerticalChange;
                 }
             }
             else
             {
-                this.Height = MinHeight + 1;
+                this.Height = this.ViewImageWindowGrid.MinHeight + 1;
             }
 
             //resize from right
-            if (this.Width > this.MinWidth)
+            if (this.Width > this.ViewImageWindowGrid.MinWidth)
             {
                 //Handles an error case where trying to drag the window too small with a jerking motion would give
                 //a negative width.
-                if ((this.Width + e.HorizontalChange) > this.MinWidth)
+                if ((this.Width + e.HorizontalChange) > this.ViewImageWindowGrid.MinWidth)
                 {
                     this.Width += e.HorizontalChange;
                 }
             }
             else
             {
-                this.Width = MinWidth + 1;
+                this.Width = this.ViewImageWindowGrid.MinWidth + 1;
             }
         }
 

@@ -428,6 +428,8 @@ namespace SoftwareEng
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
                 _listOfPhotos = picturesInAlbum;
                 mainWindowAlbumList.ItemsSource = _listOfPhotos;
+                //change the selection mode to Extended
+                mainWindowAlbumList.SelectionMode = SelectionMode.Extended;
                 //show the return to library view button on the dock
                 libraryDockButton.Visibility = Visibility.Visible;
                 //show the addPhotos dock button if we are not running an import operation
@@ -463,6 +465,8 @@ namespace SoftwareEng
             //refresh the view to make sure we update with new album thumbnails
             populateAlbumView(true);
             mainWindowAlbumList.ItemsSource = _listOfAlbums;
+            //change the selection mode to single
+            mainWindowAlbumList.SelectionMode = SelectionMode.Single;
             //collapse the go back button
             libraryDockButton.Visibility = Visibility.Collapsed;
             //collapse the addPhotos button

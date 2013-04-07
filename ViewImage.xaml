@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="d" 
         Title="ViewImage" Height="319"
-        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True">
+        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True" MinWidth="100" MinHeight="100">
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
     </Window.Background>
@@ -14,7 +14,7 @@
 
     <Grid>
         <Border x:Name="ViewImageWindowFrame" Padding="6" Background="#001C2327">
-            <Grid>
+            <Grid x:Name="ViewImageWindowGrid" MinWidth="100" MinHeight="100">
                 <!--
                 <Popup x:Name="imageWindowContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
