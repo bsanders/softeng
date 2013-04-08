@@ -21,7 +21,7 @@
             		<RowDefinition Height="Auto"/>
             		<RowDefinition Height="36*"/>
             	</Grid.RowDefinitions>
-                <TextBlock Text="Name:" Height="Auto" HorizontalAlignment="Left" Margin="3,3,0,0" x:Name="nameLine" VerticalAlignment="Top" FontFamily="/PhotoBomber;component/Fonts/#monofur" >
+                <TextBlock Text="Name:" Height="Auto" HorizontalAlignment="Left" Margin="3,3,0,0" x:Name="nameLine" VerticalAlignment="Top" FontFamily="pack://application:,,,/Fonts/#monofur" >
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
