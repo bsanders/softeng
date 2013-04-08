@@ -507,11 +507,19 @@
                 	<ed:Callout.Fill>
                 		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                 	</ed:Callout.Fill>
-                	<Grid Margin="0" Height="90" Width="190">
-                		<TextBlock x:Name="numPicturesImportedMessageBlock_" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Pictures " VerticalAlignment="Top" Margin="91.146,19.69,0,0"/>
-                		<TextBlock x:Name="numPicturesImportedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Margin="0,19.69,0,0"/>
-                		<TextBlock x:Name="numPicturesSkippedMessagetBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Wrong Prompt!" VerticalAlignment="Top" Margin="91.146,52,0,0"/>
-                		<TextBlock x:Name="numPicturesSkippedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Margin="0,52,0,0"/>
+                	<Grid Margin="0">
+                		<Grid.ColumnDefinitions>
+                			<ColumnDefinition Width="7*"/>
+                			<ColumnDefinition Width="26*"/>
+                		</Grid.ColumnDefinitions>
+                		<Grid.RowDefinitions>
+                			<RowDefinition Height="Auto"/>
+                			<RowDefinition/>
+                		</Grid.RowDefinitions>
+                		<TextBlock x:Name="numPicturesImportedMessageBlock_" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Images were associated to this album." VerticalAlignment="Top" Margin="3.906,3,0,0" Width="152.32" Grid.Column="1"/>
+                		<TextBlock x:Name="numPicturesImportedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Margin="3,3,0,0"/>
+                		<TextBlock x:Name="numPicturesSkippedMessagetBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="images were skipped for they are already in this album." VerticalAlignment="Top" Margin="11.906,0,0,-5.83" Grid.Row="1" Grid.Column="1"/>
+                		<TextBlock x:Name="numPicturesSkippedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Margin="0" Grid.Row="1"/>
                 	</Grid>
                 </ed:Callout>
 
