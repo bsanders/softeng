@@ -262,8 +262,7 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/6/13
+        //Edited Last Date: 4/7/13
         /// <summary>
         /// Adds a photo to a specific album in the album database 
         /// </summary>
@@ -647,7 +646,7 @@ namespace SoftwareEng
                      select c).First();
                     ++newID;
                 }
-                //we found a unique one!
+                //we found an unused one!
                 catch
                 {
                     uidFound = true;

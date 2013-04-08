@@ -432,49 +432,82 @@ namespace SoftwareEng
             }
         }
 
-        private void guiCopyAlbumToClipboard()
+        /**************************************************************************************************************************
+         * Author: Bill Sanders
+         * Created on: 4/7/13
+         **************************************************************************************************************************/
+        /// <summary>
+        /// Copies the selected photos to the background clipboard.
+        /// </summary>
+        private void guiCopySelectedPhotosToClipboard()
         {
             //make sure an item is selected
-            if (mainWindowAlbumList.SelectedItem != null)
+            if (mainWindowAlbumList.SelectedItems != null)
             {
-                // Bug if someone tries to copy from an empty library?
-                if (_clipboardOfPhotos.Count == 0)
-                {
-                    //call the backend to get all photos in this album.
-                    currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
-                    bombaDeFotos.sendAllPhotosInAlbumToClipboard(new sendAllPhotosInAlbum_callback(guiCopyAlbumToClipboard_Callback), currentAlbumUID);
-                }
-                else
-                {
-                    // import photos from clipboard list here....?
-                }
+                // if the clipboard is currently empty, we're in copy-mode
+                ComplexPhotoData[] clipArray = new ComplexPhotoData[mainWindowAlbumList.SelectedItems.Count];
+                mainWindowAlbumList.SelectedItems.CopyTo(clipArray, 0);
+                _clipboardOfPhotos = clipArray.ToList();
             }
         }
 
-        /*
-         * Created By: Bill Sanders
-         * Created Date: 4/7/13
+        /**************************************************************************************************************************
+         * Author: Bill Sanders
+         * Created on: 4/7/13
          * Last Edited By: Ryan Causey
          * Last Edited Date: 4/7/13
-         */
-        private void guiCopyAlbumToClipboard_Callback(ErrorReport error, List<ComplexPhotoData> clipboardPhotos)
+         **************************************************************************************************************************/
+        /// <summary>
+        /// Pastes the photos from the background clipboard to the selected album.
+        /// </summary>
+        private void guiPasteClipboardPhotosToAlbum()
         {
-            if (error.reportID == ErrorReport.FAILURE)
+            // First check if the clipboard even has anything...
+            if (_clipboardOfPhotos.Count == 0)
             {
-                //show user an error message that retrieving the pictures did not work
+                // Nope, just ignore the action.
                 showErrorMessage(errorStrings.copyToClipboardFailure);
+                return;
             }
-            else
+
+            // So we have photos, where are we pasting them?
+            // Check if we're in library view or album view
+            int albumUID = currentAlbumUID;
+            if (albumUID == -1)
             {
-                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                // library view
+                if (mainWindowAlbumList.SelectedItem == null)
                 {
-                    //show the user a notification that some pictures are not displayed
                     showErrorMessage(errorStrings.copyToClipboardWarning);
+                    return;
                 }
-                //swap data templates and change bindings.
-                _clipboardOfPhotos = clipboardPhotos;
+
+                albumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
             }
+
+            // Now that we have the album and a given set of pictures
+
+            // Tell the GUI we are importing
+            isImporting = true;
+            //hide the addPhotosDockButton
+            addPhotosDockButton.Visibility = Visibility.Collapsed;
+            //show the cancel import dock button
+            //cancelPhotoImportDockButton.Visibility = Visibility.Visible;
+
+            //pass all the files names to a backend function call to start adding the files.
+            // sneakily reuse the guiImportPhotos_Callback....
+            bombaDeFotos.addExistingPhotosToAlbum(
+                new addNewPictures_callback(guiImportPhotos_Callback),
+                _clipboardOfPhotos,
+                albumUID);
+
+            // repopulate the list of albums, mostly to get the new thumbnail generated, if applicable.
+            populateAlbumView(true);
+            
+            // empty the clipbaord.
+            _clipboardOfPhotos.Clear();
         }
+
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/3/13
@@ -670,7 +703,14 @@ namespace SoftwareEng
 
                 //pass all the files names to a backend function call to start adding the files.
                 //fix the function parameters before releasing.
-                bombaDeFotos.addNewPictures(new addNewPictures_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1); 
+                bombaDeFotos.addNewPictures(
+                    new addNewPictures_callback(guiImportPhotos_Callback),
+                    new List<string>(photoDialogue.FileNames),
+                    extensions,
+                    currentAlbumUID,
+                    null,
+                    new ProgressChangedEventHandler(guiUpdateProgressBar_Callback),
+                    1); 
             }
         }
 
@@ -1571,7 +1611,19 @@ namespace SoftwareEng
             }
             else
             {
-                guiCopyAlbumToClipboard();
+                guiPasteClipboardPhotosToAlbum();
+            }
+        }
+
+        private void copyMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainWindowAlbumList.SelectedItem == null)
+            {
+                // you gotta click on something if you want to copy it...
+            }
+            else
+            {
+                guiCopySelectedPhotosToClipboard();
             }
         }
     }

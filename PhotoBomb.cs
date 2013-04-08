@@ -166,9 +166,9 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="guiCallback"></param>
         /// <param name="albumUID">The unique ID of the album</param>
-        public void sendAllPhotosInAlbumToClipboard(sendAllPhotosInAlbum_callback guiCallback, int albumUID)
+        public void sendSelectedPhotosToClipboard(sendAllPhotosInAlbum_callback guiCallback, int albumUID)
         {
-            sendAllPhotosInAlbumToClipboard_backend(guiCallback, albumUID);
+            sendSelectedPhotosToClipboard_backend(guiCallback, albumUID);
         }
 
         //---------------------------------------------
@@ -289,11 +289,11 @@ namespace SoftwareEng
         /// Adds a photo that already exists in one album to another album
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="photoObj">A ComplexPhotoData object which contains all the information about a photo</param>
+        /// <param name="photoList">A ComplexPhotoData object which contains all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
-        private void addExistingPhotoToAlbum(generic_callback guiCallback, ComplexPhotoData photoObj, int albumUID)
+        public void addExistingPhotosToAlbum(addNewPictures_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
         {
-            addExistingPhotoToAlbum_backend(guiCallback, photoObj, albumUID);
+            addExistingPhotosToAlbum_backend(guiCallback, photoList, albumUID);
         }
 
         //---------------------------------------------
