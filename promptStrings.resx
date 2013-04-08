@@ -125,14 +125,20 @@
     <value>^[\w\d][\w\d ]{0,31}$</value>
     <comment>regular expression for validation of album names</comment>
   </data>
+  <data name="importSkippedMessage" xml:space="preserve">
+    <value>Images were skipped because they are already in this album. </value>
+  </data>
+  <data name="importSuccessMessage" xml:space="preserve">
+    <value>Images added.</value>
+  </data>
   <data name="newAlbumNameLabel" xml:space="preserve">
-    <value />
+    <value>Choose name:</value>
   </data>
   <data name="newImageCommentLabel" xml:space="preserve">
-    <value />
+    <value>Choose caption:</value>
   </data>
   <data name="newImageNameLabel" xml:space="preserve">
-    <value />
+    <value>Choose name:</value>
   </data>
   <data name="photoValidationRegex" xml:space="preserve">
     <value>^[\w\d][\w\d ]{0,31}$</value>
