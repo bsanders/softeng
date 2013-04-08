@@ -250,8 +250,6 @@ namespace SoftwareEng
                 new XAttribute("sha1", ByteArrayToString(newPictureData.hash)),
                 new XAttribute("refCount", newPictureData.refCount),
                 new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.fullPath),
-                new XElement("smThumbPath", newPictureData.smThumbPath),
-                new XElement("medThumbPath", newPictureData.medThumbPath),
                 new XElement("lgThumbPath", newPictureData.lgThumbPath)
                 );
 
@@ -345,6 +343,13 @@ namespace SoftwareEng
             {
                 thumbPath = "";
             }
+
+            thumbPath = util_generateThumbnail(
+                null,
+                photoObject.fullPath,
+                photoObject.UID.ToString() + photoObject.extension,
+                Settings.lrgThumbSize);
+            
             albumNode.Element("thumbnailPath").Value = thumbPath;
         }
 
@@ -800,8 +805,6 @@ namespace SoftwareEng
                 photoObj.hash = StringToByteArray((string)photoDBNode.Attribute("sha1"));
                 photoObj.refCount = (int)photoDBNode.Attribute("refCount");
                 photoObj.fullPath = photoDBNode.Element("filePath").Value;
-                photoObj.smThumbPath = photoDBNode.Element("smThumbPath").Value;
-                photoObj.medThumbPath = photoDBNode.Element("medThumbPath").Value;
                 photoObj.lgThumbPath = photoDBNode.Element("lgThumbPath").Value;
                 photoObj.extension = (String)photoDBNode.Element("filePath").Attribute("extension");
                 // AlbumDB data
@@ -1144,26 +1147,24 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="error"></param>
         /// <param name="srcPath"></param>
-        /// <param name="picName"></param>
+        /// <param name="picFileName"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        private String util_generateThumbnail(ErrorReport error, string srcPath, string picName, int size)
+        private String util_generateThumbnail(ErrorReport error, string srcPath, string picFileName, int size)
         {
+            if ((srcPath == string.Empty) || (picFileName == string.Empty))
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Unable to generate thumbnail, bad path or filename.";
+                return "";
+            }
             // I haven't thought much about whether or not this is the right place to put this
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
             string thumbSubDir = "";
             string fullThumbPath = "";
 
             // Which sub directory of thumbs_db to put this in...
-            if (size == Settings.smThumbSize)
-            {
-                thumbSubDir = Settings.smThumbDir;
-            }
-            else if (size == Settings.medThumbSize)
-            {
-                thumbSubDir = Settings.medThumbDir;
-            }
-            else if (size == Settings.lrgThumbSize)
+            if (size == Settings.lrgThumbSize)
             {
                 thumbSubDir = Settings.lrgThumbDir;
             }
@@ -1174,7 +1175,7 @@ namespace SoftwareEng
             resizeJob.Mode = Imazen.LightResize.FitMode.Crop;
 
             //get the full path
-            fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picName);
+            fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picFileName);
 
             // Actually processes the image, copying it to the new location, should go in a try/catch for IO
             // One of Build's overloads allows you to use file streams instead of filepaths.

@@ -1749,7 +1749,7 @@ namespace SoftwareEng
             //handled the path not being loaded yet.
             if (path != "")
             {
-                if (Directory.Exists(path))
+                if (File.Exists(path))
                 {
                     // load the image, convert to bitmap, set cache option so it
                     //does not lock out the file, then return the new image.

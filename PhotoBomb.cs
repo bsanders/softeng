@@ -540,8 +540,6 @@ namespace SoftwareEng
         private int _idInAlbum;
         private byte[] _hash;
         private String _fullPath;
-        private String _smThumbPath;
-        private String _medThumbPath;
         private String _lgThumbPath;
         private String _extension;
         private String _caption;
@@ -624,48 +622,6 @@ namespace SoftwareEng
                     _fullPath = value;
                     //call on property changed to update the GUI(hopefully)
                     OnPropertyChanged("fullPath");
-                }
-            }
-        }
-
-        public String smThumbPath
-        {
-            get
-            {
-                if (!File.Exists(_smThumbPath))
-                {
-                    _smThumbPath = regenerateThumbnail(fullPath, Path.GetFileName(fullPath), Settings.smThumbSize);
-                }
-                return _smThumbPath;
-            }
-            set
-            {
-                if (value != _smThumbPath)
-                {
-                    _smThumbPath = value;
-                    //call on property changed to update the GUI(hopefully)
-                    OnPropertyChanged("smThumbPath");
-                }
-            }
-        }
-
-        public String medThumbPath
-        {
-            get
-            {
-                if (!File.Exists(_medThumbPath))
-                {
-                    _medThumbPath = regenerateThumbnail(fullPath, Path.GetFileName(fullPath), Settings.medThumbSize);
-                }
-                return _medThumbPath;
-            }
-            set
-            {
-                if (value != _medThumbPath)
-                {
-                    _medThumbPath = value;
-                    //call on property changed to update the GUI(hopefully)
-                    OnPropertyChanged("medThumbPath");
                 }
             }
         }
@@ -776,15 +732,7 @@ namespace SoftwareEng
             string fullThumbPath = "";
 
             // Which sub directory of thumbs_db to put this in...
-            if (size == Settings.smThumbSize)
-            {
-                thumbSubDir = Settings.smThumbDir;
-            }
-            else if (size == Settings.medThumbSize)
-            {
-                thumbSubDir = Settings.medThumbDir;
-            }
-            else if (size == Settings.lrgThumbSize)
+            if (size == Settings.lrgThumbSize)
             {
                 thumbSubDir = Settings.lrgThumbDir;
             }
