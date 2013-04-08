@@ -10,7 +10,7 @@
         mc:Ignorable="d" 
         x:Class="SoftwareEng.MainWindow"
     
-        Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}">
+        Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" PreviewMouseLeftButtonUp="mainWindow_PreviewMouseLeftButtonUp" PreviewMouseRightButtonDown="mainWindow_PreviewMouseRightButtonDown">
     
     <Window.Resources>
 
@@ -67,7 +67,7 @@
             <DataTemplate.Resources>
                 <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
             </DataTemplate.Resources>
-            <Grid x:Name="albumItemFrontGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" MaxHeight="{Binding Value, ElementName=thumbnailSizeSlider}">
+            <Grid x:Name="albumItemFrontGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" MaxHeight="{Binding Value, ElementName=thumbnailSizeSlider}" PreviewMouseRightButtonUp="albumItemFrontGrid_PreviewRightMouseUp">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="37"/>
                     <RowDefinition Height="Auto"/>
@@ -105,7 +105,7 @@
                 <!--Define the converter resource-->
                 <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
             </DataTemplate.Resources>
-            <Grid x:Name="libraryItemBackGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" MaxHeight="{Binding Value, ElementName=thumbnailSizeSlider}">
+            <Grid x:Name="libraryItemBackGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" MaxHeight="{Binding Value, ElementName=thumbnailSizeSlider}" PreviewMouseRightButtonUp="libraryItemBackGrid_PreviewRightMouseUp">
         		<Grid.RowDefinitions>
         			<RowDefinition Height="37"/>
         			<RowDefinition Height="Auto"/>
@@ -236,8 +236,8 @@
                     </Label>
                 </Border>
 
-                <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0">
-                    <Label x:Name="ItemBackSide"  Background="Transparent" MouseRightButtonDown="mainWindowAlbumList_MouseRightButtonUp" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0" PreviewMouseRightButtonUp="ItemBackSideContainer_PreviewRightMouseUp">
+                    <Label x:Name="ItemBackSide"  Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                         <ContentPresenter x:Name="contentPresenterBack" ContentTemplate="{DynamicResource AlbumListItemBackTemplate}" Content="{Binding}"/>
                     </Label>
                 </Border>
@@ -399,7 +399,7 @@
                 
                 <!-- Buttons for the library view are: Add photos (Plus), Rename (Pencil), Delete (X), Copy From Clipboard (Pushpin), Slideshow (Play), View Contents (eye)   -->
                 
-                <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" VerticalOffset="-60" HorizontalOffset="-60" >
+                <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60" >
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#4DFFFFFF" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="False">
                         <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemLibraryButton_Click">
                             <Image x:Name="addButtonLibraryImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
@@ -424,7 +424,7 @@
                 
                 <!-- Buttons for the Album view are: Edit Data (Pencil), Delete (X), Copy to Clipboard (Pushpin), View Image (eye)   -->
 
-                <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" VerticalOffset="-60" HorizontalOffset="-60">
+                <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
                         <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemAlbumButton_Click">
                             <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
@@ -447,7 +447,7 @@
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
 
-                <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" PreviewMouseRightButtonUp="mainWindowAlbumList_MouseRightButtonUp" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay, NotifyOnSourceUpdated=True}" Margin="0,25,0,0">
+                <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay, NotifyOnSourceUpdated=True}" Margin="0,25,0,0">
                     <ListBox.Background>
                         <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
                     </ListBox.Background>

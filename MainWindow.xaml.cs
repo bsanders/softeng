@@ -35,6 +35,8 @@
  *                     Fixed a possible infinite loop.
  *                     Converting all hard coded prompt/error strings to use strings in the error/promptStrings files.
  *                     Fixed a bug where multiple view image windows could be opened.
+ *                     Changed context menu behavior to match srs specification. It now only shows over an album or photo item in the
+ *                     list view. Commented out old handlers that are no longer used.
  */
 using System;
 using System.Collections.Generic;
@@ -1020,10 +1022,12 @@ namespace SoftwareEng
         /**************************************************************************************************************************
         **************************************************************************************************************************/
         /**************************************************************************************************************************
+         * Commenting out because no longer needed.
          * Created By: Alejandro Sosa
          * Edited Last By: Ryan Causey
          * Edited Last Date: 4/6/13
          **************************************************************************************************************************/
+        /*
         private void mainWindowAlbumList_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             //if we aren't in an album
@@ -1039,7 +1043,7 @@ namespace SoftwareEng
                 AlbumContextMenu.IsOpen = true;
             }
         }
-
+        */
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/3/13
@@ -1556,16 +1560,18 @@ namespace SoftwareEng
             guiCancelImport();
         }
 
-        /*
+        /*Commenting out because not longer needed
          * Created By: Ryan Causey
          * Created Date: 4/6/13
          * Last Edited By:
          * Last Edited Date:
          */
+        /*
         private void albumContextMenuPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             AlbumContextMenu.IsOpen = false;
         }
+        */
 
         private void renameMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1634,6 +1640,94 @@ namespace SoftwareEng
                 guiCopySelectedPhotosToClipboard();
             }
         }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// handler for the library view tiles to bring up the context menu only when the right click
+        /// occurs on an album.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void libraryItemBackGrid_PreviewRightMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            libraryContextMenu.IsOpen = true;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler to hide the context menu after a left mouse click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mainWindow_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            libraryContextMenu.IsOpen = false;
+            AlbumContextMenu.IsOpen = false;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler to hide the context menu after a right mouse click not on any item that the
+        /// context menu should open over
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mainWindow_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            libraryContextMenu.IsOpen = false;
+            AlbumContextMenu.IsOpen = false;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for the album view tiles, front face, to show the album context menu only if the right
+        /// click occurs on a photo.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void albumItemFrontGrid_PreviewRightMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            AlbumContextMenu.IsOpen = true;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/7/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for the album view tiles, rear face, to show the album context menu only if the right
+        /// click occurs on a photo.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ItemBackSideContainer_PreviewRightMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            AlbumContextMenu.IsOpen = true;
+        }
+
+        
     }
 
     /*
