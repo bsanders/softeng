@@ -88,7 +88,7 @@ namespace SoftwareEng {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Images added..
+        ///   Looks up a localized string similar to Images added to this album..
         /// </summary>
         internal static string importSuccessMessage {
             get {

@@ -129,7 +129,7 @@
     <value>Images were skipped because they are already in this album. </value>
   </data>
   <data name="importSuccessMessage" xml:space="preserve">
-    <value>Images added.</value>
+    <value>Images added to this album.</value>
   </data>
   <data name="newAlbumNameLabel" xml:space="preserve">
     <value>Choose name:</value>
