@@ -40,6 +40,7 @@
  * 4/8/13 Ryan Causey: Adding comment box functionality to the GUI.
  *                     Fixed a bug with the viewImage function that would lead to an unhandled exception.
  *                     Changed the returnToLibraryView function to close any open viewImage windows.
+ *                     Fixed a bug where the application would close the main window but not end the process.
  */
 using System;
 using System.Collections.Generic;
@@ -1069,7 +1070,7 @@ namespace SoftwareEng
         /*
          * Created By: Alejandro Sosa
          * Last Edited By: Ryan Causey
-         * Last Edited Date: 4/7/13
+         * Last Edited Date: 4/8/13
          */
         /// <summary>
         /// Event handler for the exit button click event.
@@ -1089,12 +1090,18 @@ namespace SoftwareEng
                 }
                 //else we are all good to close
                 {
-                    Close();
+                    this.Close();
+                    //add this line to make sure the app properly closes now that we've screwed with the
+                    //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
+                    App.Current.Shutdown();
                 }
             }
             else
             {
-                Close();
+                this.Close();
+                //add this line to make sure the app properly closes now that we've screwed with the
+                //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
+                App.Current.Shutdown();
             }
         }
 
