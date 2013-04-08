@@ -429,11 +429,11 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
-         * Author: Ryan Causey
+         * Author: Bill Sanders
          * Created on: 4/7/13
          **************************************************************************************************************************/
         /// <summary>
-        /// 
+        /// Copies the selected photos to the background clipboard.
         /// </summary>
         private void guiCopySelectedPhotosToClipboard()
         {
@@ -454,7 +454,7 @@ namespace SoftwareEng
          * Last Edited Date: 4/7/13
          **************************************************************************************************************************/
         /// <summary>
-        /// 
+        /// Pastes the photos from the background clipboard to the selected album.
         /// </summary>
         private void guiPasteClipboardPhotosToAlbum()
         {
@@ -497,8 +497,10 @@ namespace SoftwareEng
                 _clipboardOfPhotos,
                 albumUID);
 
+            // repopulate the list of albums, mostly to get the new thumbnail generated, if applicable.
             populateAlbumView(true);
             
+            // empty the clipbaord.
             _clipboardOfPhotos.Clear();
         }
 
