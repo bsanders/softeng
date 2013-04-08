@@ -429,7 +429,7 @@
                         <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemAlbumButton_Click">
                             <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="copyMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button x:Name="copyMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="copyMenuItemAlbumButton_Click">
                             <Image x:Name="copyButtonAlbumImage" Source="ImagesResources2012/WorkItem_16xLG.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemAlbumButton_Click">
