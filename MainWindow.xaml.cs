@@ -491,12 +491,14 @@ namespace SoftwareEng
             //cancelPhotoImportDockButton.Visibility = Visibility.Visible;
 
             //pass all the files names to a backend function call to start adding the files.
-            //fix the function parameters before releasing.
-            /*bombaDeFotos.addExistingPhotosToAlbum(
+            // sneakily reuse the guiImportPhotos_Callback....
+            bombaDeFotos.addExistingPhotosToAlbum(
                 new addNewPictures_callback(guiImportPhotos_Callback),
                 _clipboardOfPhotos,
-                currentAlbumUID);
-            */
+                albumUID);
+
+            populateAlbumView(true);
+            
             _clipboardOfPhotos.Clear();
         }
 
@@ -1592,7 +1594,14 @@ namespace SoftwareEng
 
         private void copyMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (mainWindowAlbumList.SelectedItem == null)
+            {
+                // you gotta click on something if you want to copy it...
+            }
+            else
+            {
+                guiPasteClipboardPhotosToAlbum();
+            }
         }
 
         private void copyMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)

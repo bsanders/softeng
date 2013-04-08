@@ -892,7 +892,6 @@ namespace SoftwareEng
             }
             else
             {
-
                 // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
                 XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(newPicture.hash));
                 thisPic.Attribute("refCount").Value = newPicture.refCount.ToString();
@@ -1346,7 +1345,7 @@ namespace SoftwareEng
         /// <param name="guiCallback"></param>
         /// <param name="photoObj">A List of ComplexPhotoData objects which contain all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
-        private void addExistingPhotosToAlbum_backend(generic_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
+        private void addExistingPhotosToAlbum_backend(addNewPictures_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1356,6 +1355,10 @@ namespace SoftwareEng
                 photoObj.refCount = util_getPhotoRefCount(ByteArrayToString(photoObj.hash));
                 photoObj.refCount++;
 
+                // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
+                XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(photoObj.hash));
+                thisPic.Attribute("refCount").Value = photoObj.refCount.ToString();
+
                 // Currently spec says not to carry captions forawrd when copying photos
                 photoObj.caption = "";
 
@@ -1364,19 +1367,19 @@ namespace SoftwareEng
                 //if adding to the album database failed
                 if (errorReport.reportID == ErrorReport.FAILURE)
                 {
-                    guiCallback(errorReport);
+                    guiCallback(errorReport, albumUID);
                     //save to disk.
                     savePicturesXML_backend(null);
                     saveAlbumsXML_backend(null);
+                    break;
                 }
-                break;
             }
 
             //save to disk.
             savePicturesXML_backend(null);
             saveAlbumsXML_backend(null);
 
-            guiCallback(errorReport);
+            guiCallback(errorReport, albumUID);
             // You're on your own to update the GUI with the new pictures!
         }
 

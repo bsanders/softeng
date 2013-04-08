@@ -646,7 +646,7 @@ namespace SoftwareEng
                      select c).First();
                     ++newID;
                 }
-                //we found a unique one!
+                //we found an unused one!
                 catch
                 {
                     uidFound = true;

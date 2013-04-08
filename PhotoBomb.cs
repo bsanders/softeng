@@ -291,7 +291,7 @@ namespace SoftwareEng
         /// <param name="guiCallback"></param>
         /// <param name="photoList">A ComplexPhotoData object which contains all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
-        public void addExistingPhotosToAlbum(generic_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
+        public void addExistingPhotosToAlbum(addNewPictures_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
         {
             addExistingPhotosToAlbum_backend(guiCallback, photoList, albumUID);
         }
