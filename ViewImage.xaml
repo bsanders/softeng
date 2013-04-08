@@ -78,7 +78,7 @@
                     <!--<Image Source="{Binding currentPicture.asdf, Converter={StaticResource ImagePathConverter}, FallbackValue=ImagesResources2012\NewIconClipart-tiny-square.png}" RenderTransformOrigin="0.5,0.5"/>-->
                     <Image RenderTransformOrigin="0.5,0.5">
                         <Image.Source>
-                            <Binding ElementName="viewImageWindow" Path="currentPicture.fullPath" Converter="{StaticResource ImagePathConverter}" Mode="OneTime">
+                            <Binding ElementName="viewImageWindow" Path="currentPicture.fullPath" Converter="{StaticResource ImagePathConverter}">
                                 <Binding.FallbackValue>
                                     <ImageSource>
                                         ImagesResources2012\NewIconClipart.png
