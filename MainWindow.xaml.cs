@@ -39,6 +39,7 @@
  *                     list view. Commented out old handlers that are no longer used.
  * 4/8/13 Ryan Causey: Adding comment box functionality to the GUI.
  *                     Fixed a bug with the viewImage function that would lead to an unhandled exception.
+ *                     Changed the returnToLibraryView function to close any open viewImage windows.
  */
 using System;
 using System.Collections.Generic;
@@ -676,8 +677,8 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/8/13
          **************************************************************************************************************************/
         /// <summary>
         /// GUI function to transition back to the library view by changing the data template and item source.
@@ -704,6 +705,12 @@ namespace SoftwareEng
             //hide the delete photo button
             deleteMenuItemPhotoButton.Visibility = Visibility.Collapsed;
              */
+
+            //close any open viewImage windows
+            if (view != null)
+            {
+                view.Close();
+            }
 
             currentAlbumUID = -1;
         }
