@@ -195,16 +195,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <BlendEmbeddedFont Include="Fonts\monof55.ttf">
-      <IsSystemFont>True</IsSystemFont>
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Fonts\monof56.ttf">
-      <IsSystemFont>True</IsSystemFont>
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-    </BlendEmbeddedFont>
+    <Resource Include="Fonts\monof55.ttf" />
+    <Resource Include="Fonts\monof56.ttf" />
     <Resource Include="ImagesResources2012\Actions_5847.png" />
     <Resource Include="ImagesResources2012\action_add_16xLG.png" />
     <Resource Include="ImagesResources2012\action_Cancel_16xLG.png" />
