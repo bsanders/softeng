@@ -413,7 +413,7 @@
                         <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemLibraryButton_Click">
                             <Image x:Name="renameButtonLibraryImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="slideshowMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button x:Name="slideshowMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="slideshowMenuItemLibraryButton_Click">
                             <Image x:Name="slideshowButtonLibraryImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="viewMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemLibraryButton_Click">
@@ -438,7 +438,7 @@
                         <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemAlbumButton_Click">
                             <Image x:Name="renameButtonAlbumImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                        <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="slideshowMenuItemAlbumButton_Click">
                             <Image x:Name="slideshowButtonAlbumImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="viewMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemAlbumButton_Click">

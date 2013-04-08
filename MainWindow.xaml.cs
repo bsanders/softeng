@@ -71,7 +71,7 @@ namespace SoftwareEng
         Properties.Settings Settings = Properties.Settings.Default;
 
         //the view image window
-        ViewImage view;
+        ViewImage view = new ViewImage();
 
         //DATABINDING SOURCE 
         private ReadOnlyObservableCollection<SimpleAlbumData> _listOfAlbums;
@@ -974,20 +974,45 @@ namespace SoftwareEng
         /*
          * Created By: Ryan Causey
          * Created Date: 4/6/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Bill Sanders
+         * Last Edited Date: 4/7/13
          */
         /// <summary>
         /// GUI function that will instantiate a viewImage window and give it the information to display the image.
         /// </summary>
-        private void guiViewPicture()
+        /// <param name="slideShowStart">True if you want to skip viewing the photo and go directly into a slideshow, defaults to false</param>
+        private void guiViewPicture(Boolean slideShowStart = false)
         {
             //close the previous view
             if (view != null)
             {
                 view.Close();
             }
-            view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID);
+
+            // determine if we're in the library view...
+            if (currentAlbumUID == -1)
+            {
+                ErrorReport errorReport = new ErrorReport();
+
+                // transition to the album the user selected for a slideshow
+                bombaDeFotos.getAllPhotosInAlbum(
+                    new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback),
+                    ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
+                
+                // if there are pictures in the album
+                if (_listOfPhotos.Count > 0)
+                {
+                    // start the slideshow at picture[0]
+                    view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, slideShowStart);
+                }
+            }
+            // ... or the album view
+            else
+            {
+                view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, slideShowStart);
+            }
+
+            // finally, show the form.
             view.Show();
         }
 

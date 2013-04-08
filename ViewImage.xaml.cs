@@ -63,12 +63,34 @@ namespace SoftwareEng
             }
         }
 
+        // A default constructor, just used to instantiate the object.  DON'T ACTUALLY USE THIS
+        public ViewImage()
+        {
+            // noop
+        }
+
+        ///// <summary>
+        ///// Constructor for ViewImage
+        ///// </summary>
+        ///// <param name="picturesCollectionFromAlbum">The collection of pictures from the album</param>
+        ///// <param name="imageUID">the UID of the current picture</param>
+        //public ViewImage(ReadOnlyObservableCollection<ComplexPhotoData> picturesCollectionFromAlbum, int imageUID)
+        //{
+        //    _picturesCollection = picturesCollectionFromAlbum;
+        //    currentPicture = _picturesCollection.FirstOrDefault(photo => photo.UID == imageUID);
+        //    InitializeComponent();
+        //    //set the timer's default values.
+        //    slideShowTimer.Interval = new TimeSpan(0, 0, 5);
+        //    slideShowTimer.Tick += new EventHandler(slideShowTimer_Tick);
+        //}
+
         /// <summary>
         /// Constructor for ViewImage
         /// </summary>
         /// <param name="picturesCollectionFromAlbum">The collection of pictures from the album</param>
         /// <param name="imageUID">the UID of the current picture</param>
-        public ViewImage(ReadOnlyObservableCollection<ComplexPhotoData> picturesCollectionFromAlbum, int imageUID)
+        /// <param name="slideShowStart">True if you want to skip viewing the photo and go directly into a slideshow, defaults to false</param>
+        public ViewImage(ReadOnlyObservableCollection<ComplexPhotoData> picturesCollectionFromAlbum, int imageUID, Boolean slideShowStart = false)
         {
             _picturesCollection = picturesCollectionFromAlbum;
             currentPicture = _picturesCollection.FirstOrDefault(photo => photo.UID == imageUID);
@@ -76,6 +98,11 @@ namespace SoftwareEng
             //set the timer's default values.
             slideShowTimer.Interval = new TimeSpan(0, 0, 5);
             slideShowTimer.Tick += new EventHandler(slideShowTimer_Tick);
+
+            if (slideShowStart)
+            {
+                enterSlideShowState();
+            }
         }
 
         /*
