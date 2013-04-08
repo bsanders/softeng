@@ -30,8 +30,12 @@
  *                     to the image to convert.
  *                     Changed two having two context menu's, one for library view and one for album view.
  *                     Fixed a bug where the default image was no longer appearing.
+ *        Bill Sanders: ditched the parameter on guiValidateName
  * 4/7/13 Ryan Causey: Fixed a bug where the error style would not clear after clicking the checkbox worked to add an album/photo.
- */ 
+ *                     Fixed a possible infinite loop.
+ *                     Converting all hard coded prompt/error strings to use strings in the error/promptStrings files.
+ *                     Fixed a bug where multiple view image windows could be opened.
+ */
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -62,6 +66,9 @@ namespace SoftwareEng
     {
         // A handy shortcut to the settings class...
         Properties.Settings Settings = Properties.Settings.Default;
+
+        //the view image window
+        ViewImage view;
 
         //DATABINDING SOURCE 
         private ReadOnlyObservableCollection<SimpleAlbumData> _listOfAlbums;
@@ -94,10 +101,10 @@ namespace SoftwareEng
         private const int addAlbumID = 0;
 
         //The regex for validation of album names
-        private String albumValidationRegex = @"^[\w\d][\w\d ]{0,31}$"; //must be at least 1 character, max 32 in length
+        private String albumValidationRegex = @promptStrings.albumValidationRegex; //must be at least 1 character, max 32 in length
 
         //The regex for validation of photo names
-        private String photoValidationRegex = @"^[\w\d][\w\d ]{0,31}$"; //must be at least 1 character, max 32 in length
+        private String photoValidationRegex = @promptStrings.photoValidationRegex; //must be at least 1 character, max 32 in length
 
         //current album UID, defaults to a invalid value(because we eont be in an album)
         private int currentAlbumUID = -1;
@@ -142,26 +149,23 @@ namespace SoftwareEng
             if (status.reportID != ErrorReport.SUCCESS)
             {
                 //showErrorMessage("Failed at guiConstructorCallback"); //super temporary
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
+        * Edited Last By: Ryan Causey
+        * Edited Last Date: 4/7/13
         * parameters: an object of ErrorReport which will be used to check if backend was successful
         * return type: void
-        * purpose: says generic error, but is used for blowing up the backend and restarting 
+        * purpose: used for blowing up the backend and restarting 
         *********************************************************************************************/
-        private void guiGenericErrorFunction(ErrorReport status)
+        private void rebuildBackend_Callback(ErrorReport status)
         {
             if (status.reportID != ErrorReport.SUCCESS)
             {
-                showErrorMessage("failed at guiGenericErrorFunction"); //super temporary
-                if (Directory.Exists("photo library_backup"))
-                {
-                    Directory.Delete("photo library_backup", true);
-                    bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
-                }
+                showErrorMessage(errorStrings.rebuildBackendFailure); //super temporary
             }
         }
 
@@ -182,11 +186,13 @@ namespace SoftwareEng
             }
 
 
-            
+
         }
 
         /*********************************************************************************************
         * Author: Alejandro Sosa
+        * Edited Last By: Ryan Causey
+        * Edited Last Date: 4/7/13
         * parameters: an object of ErrorReport which will be used to check if backend was successful,
         *   and a list <type is SimpleAlbumData> containing data to identify all albums requested
         * return type: void
@@ -194,17 +200,20 @@ namespace SoftwareEng
         *********************************************************************************************/
         public void guiAlbumsRetrieved(ErrorReport status, ReadOnlyObservableCollection<SimpleAlbumData> albumsRetrieved)
         {
-            if (status.reportID == ErrorReport.SUCCESS)
+            if (status.reportID == ErrorReport.FAILURE)
             {
-                _listOfAlbums = albumsRetrieved;
-
-                mainWindowAlbumList.ItemsSource = _listOfAlbums;
-
+                //show an Error
+                showErrorMessage(errorStrings.retrieveAlbumsFailure);
             }
             else
             {
-                //show an Error
-                showErrorMessage("Failed at guiAlbumsRetrieved"); //super temporary
+                if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                {
+                    showErrorMessage(errorStrings.retrieveAlbumsWarning);
+                }
+                _listOfAlbums = albumsRetrieved;
+
+                mainWindowAlbumList.ItemsSource = _listOfAlbums;
             }
 
         }
@@ -239,8 +248,8 @@ namespace SoftwareEng
          * Author: Ryan Causey
          * Created on: 4/3/13
          * Function for validating that a new album or photo name is valid and unique.
-         * Last Edited By: Bill Sanders, ditched the parameter.
-         * Last Edited Date: 4/6/13
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
          **************************************************************************************************************************/
         private void guiValidateName()
         {
@@ -267,7 +276,7 @@ namespace SoftwareEng
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
 
-                handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
+                handleNameErrorPopup(true, errorStrings.invalidNameCharacter);
 
                 //apply error template to the text box.
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -372,7 +381,7 @@ namespace SoftwareEng
                 else
                 {
                     // They got the context menu open on a non-list-item?
-//                    guiCreateNewAlbum(nameTextBox.Text);
+                    //                    guiCreateNewAlbum(nameTextBox.Text);
                 }
                 hideAddAlbumBox();
                 nameTextBox.Clear();
@@ -404,8 +413,8 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Author: Ryan Causey
          * Created on: 4/3/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
          **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiCreateNewAlbum. If there is an error something really bad happened.
@@ -418,48 +427,87 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
-                showErrorMessage("Failed at guiCreateNewAlbum_Callback"); //super temporary
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
+                showErrorMessage(errorStrings.addAlbumFailure); //super temporary
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
-        private void guiCopyAlbumToClipboard()
+        /**************************************************************************************************************************
+         * Author: Bill Sanders
+         * Created on: 4/7/13
+         **************************************************************************************************************************/
+        /// <summary>
+        /// Copies the selected photos to the background clipboard.
+        /// </summary>
+        private void guiCopySelectedPhotosToClipboard()
         {
             //make sure an item is selected
-            if (mainWindowAlbumList.SelectedItem != null)
+            if (mainWindowAlbumList.SelectedItems != null)
             {
-                // Bug if someone tries to copy from an empty library?
-                if (_clipboardOfPhotos.Count == 0)
-                {
-                    //call the backend to get all photos in this album.
-                    currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
-                    bombaDeFotos.sendAllPhotosInAlbumToClipboard(new sendAllPhotosInAlbum_callback(guiCopyAlbumToClipboard_Callback), currentAlbumUID);
-                }
-                else
-                {
-                    // import photos from clipboard list here....?
-                }
+                // if the clipboard is currently empty, we're in copy-mode
+                ComplexPhotoData[] clipArray = new ComplexPhotoData[mainWindowAlbumList.SelectedItems.Count];
+                mainWindowAlbumList.SelectedItems.CopyTo(clipArray, 0);
+                _clipboardOfPhotos = clipArray.ToList();
             }
         }
 
-        private void guiCopyAlbumToClipboard_Callback(ErrorReport error, List<ComplexPhotoData> clipboardPhotos)
+        /**************************************************************************************************************************
+         * Author: Bill Sanders
+         * Created on: 4/7/13
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
+         **************************************************************************************************************************/
+        /// <summary>
+        /// Pastes the photos from the background clipboard to the selected album.
+        /// </summary>
+        private void guiPasteClipboardPhotosToAlbum()
         {
-            if (error.reportID == ErrorReport.FAILURE)
+            // First check if the clipboard even has anything...
+            if (_clipboardOfPhotos.Count == 0)
             {
-                //show user an error message that retrieving the pictures did not work
-                showErrorMessage("Failed at guiCopyAlbumToClipboard_Callback"); //super temporary
+                // Nope, just ignore the action.
+                showErrorMessage(errorStrings.copyToClipboardFailure);
+                return;
             }
-            else
+
+            // So we have photos, where are we pasting them?
+            // Check if we're in library view or album view
+            int albumUID = currentAlbumUID;
+            if (albumUID == -1)
             {
-                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                // library view
+                if (mainWindowAlbumList.SelectedItem == null)
                 {
-                    //show the user a notification that some pictures are not displayed
-                    showErrorMessage("Warnings at guiCopyAlbumToClipboard_Callback"); //super temporary
+                    showErrorMessage(errorStrings.copyToClipboardWarning);
+                    return;
                 }
-                //swap data templates and change bindings.
-                _clipboardOfPhotos = clipboardPhotos;
+
+                albumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
             }
+
+            // Now that we have the album and a given set of pictures
+
+            // Tell the GUI we are importing
+            isImporting = true;
+            //hide the addPhotosDockButton
+            addPhotosDockButton.Visibility = Visibility.Collapsed;
+            //show the cancel import dock button
+            //cancelPhotoImportDockButton.Visibility = Visibility.Visible;
+
+            //pass all the files names to a backend function call to start adding the files.
+            // sneakily reuse the guiImportPhotos_Callback....
+            bombaDeFotos.addExistingPhotosToAlbum(
+                new addNewPictures_callback(guiImportPhotos_Callback),
+                _clipboardOfPhotos,
+                albumUID);
+
+            // repopulate the list of albums, mostly to get the new thumbnail generated, if applicable.
+            populateAlbumView(true);
+
+            // empty the clipbaord.
+            _clipboardOfPhotos.Clear();
         }
+
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/3/13
@@ -474,15 +522,15 @@ namespace SoftwareEng
             //make sure an item is selected
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.removeAlbum(new generic_callback(guiDeleteSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID); 
+                bombaDeFotos.removeAlbum(new generic_callback(guiDeleteSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
             }
         }
 
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created On: 4/3/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
          **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiDeleteSelectedAlbum. If there is an error something really bad happened.
@@ -495,8 +543,8 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
-                showErrorMessage("Failed at guiDeleteSelectedAlbum_Callback"); //super temporary
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(guiGenericErrorFunction));
+                showErrorMessage(errorStrings.deleteAlbumFailure); //super temporary
+                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
@@ -524,7 +572,7 @@ namespace SoftwareEng
          * Created By: Ryan Causey
          * Created On: 4/5/13
          * Last Edited By: Ryan Causey
-         * Last Edited Date: 4/6/13
+         * Last Edited Date: 4/7/13
          **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiEnterAlbumView. Takes the returned ReadOnlyObservableCollection and binds the listView to it
@@ -537,14 +585,14 @@ namespace SoftwareEng
             if (error.reportID == ErrorReport.FAILURE)
             {
                 //show user an error message that retrieving the pictures did not work
-                showErrorMessage("Failed at guiEnterAlbumView_Callback"); //super temporary
+                showErrorMessage(errorStrings.getPhotosFailure);
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //show the user a notification that some pictures are not displayed
-                    showErrorMessage("Warnings at guiEnterAlbumView_Callback"); //super temporary
+                    showErrorMessage(errorStrings.getPhotosWarning);
                 }
                 //swap data templates and change bindings.
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
@@ -610,8 +658,8 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
          **************************************************************************************************************************/
         /// <summary>
         /// GUI function that shows a file dialogue and then calls the back end to add the selected photographs
@@ -620,7 +668,7 @@ namespace SoftwareEng
         {
             OpenFileDialog photoDialogue = new OpenFileDialog();
             //filter the file types available
-            photoDialogue.Filter = "Jpeg images|*.jpg;*.jpeg;*.jpe;*.jfif;";
+            photoDialogue.Filter = promptStrings.addFileDialogueFilter;
             //set the intial directory to the my pictures directory
             photoDialogue.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             //allow multiple photographs to be selected
@@ -643,7 +691,7 @@ namespace SoftwareEng
                 List<string> extensions = new List<string>();
 
                 //GODDAMNED SPLICERS!
-                foreach(String s in photoDialogue.FileNames)
+                foreach (String s in photoDialogue.FileNames)
                 {
                     extensions.Add(System.IO.Path.GetExtension(s));
                 }
@@ -655,7 +703,14 @@ namespace SoftwareEng
 
                 //pass all the files names to a backend function call to start adding the files.
                 //fix the function parameters before releasing.
-                bombaDeFotos.addNewPictures(new addNewPictures_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1); 
+                bombaDeFotos.addNewPictures(
+                    new addNewPictures_callback(guiImportPhotos_Callback),
+                    new List<string>(photoDialogue.FileNames),
+                    extensions,
+                    currentAlbumUID,
+                    null,
+                    new ProgressChangedEventHandler(guiUpdateProgressBar_Callback),
+                    1);
             }
         }
 
@@ -663,7 +718,7 @@ namespace SoftwareEng
          * Created By: Ryan Causey
          * Created Date: 4/5/13
          * Last Edited By: Ryan Causey
-         * Last Edited Date: 4/6/13
+         * Last Edited Date: 4/7/13
          **************************************************************************************************************************/
         /// <summary>
         /// Callback for guiImportPhotos which recieves the error report from the back end.
@@ -674,15 +729,15 @@ namespace SoftwareEng
             //deal with it
             if (error.reportID == ErrorReport.FAILURE)
             {
-                //shit done fucked up
-                showErrorMessage("Failed at guiImportPhotos_Callback"); //super temporary
+                //shut down all garbage compactors on the detention level
+                showErrorMessage(errorStrings.addImageFailure);
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
-                    //warn about shit
-                    showErrorMessage("Warning at guiImportPhotos_Callback"); //super temporary
+                    //set phasers to stun
+                    showErrorMessage(errorStrings.addImageWarning);
                 }
                 //let the gui know we are done with an import
                 isImporting = false;
@@ -703,7 +758,7 @@ namespace SoftwareEng
                 //if we are in the album we are importing photos too then get all the photos and refresh the view
                 if (currentAlbumUID == albumUID)
                 {
-                    bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID); 
+                    bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
                 }
             }
         }
@@ -711,22 +766,22 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Created By: Ryan Causey
          * Created Date: 4/5/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
          **************************************************************************************************************************/
         public void guiImportPhotosRefreshView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
         {
             if (error.reportID == ErrorReport.FAILURE)
             {
                 //show user an error message that retrieving the pictures did not work
-                showErrorMessage("Failed at guiImportPhotosRefreshView_Callback"); //super temporary
+                showErrorMessage(errorStrings.getPhotosFailure);
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //show the user a notification that some pictures are not displayed
-                    showErrorMessage("Warnings at guiImportPhotosRefreshView_Callback"); //super temporary
+                    showErrorMessage(errorStrings.getPhotosWarning);
                 }
                 _listOfPhotos = picturesInAlbum;
             }
@@ -772,8 +827,8 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         /* Created By: Bill Sanders
          * Created Date: 4/6/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
          */
         /// <summary>
         /// Callback for guiRenameSelectedAlbum. Just shows an error message if there is one.
@@ -783,7 +838,7 @@ namespace SoftwareEng
         {
             if (error.reportID == ErrorReport.FAILURE)
             {
-                showErrorMessage(error.description);
+                showErrorMessage(errorStrings.renameAlbumFailure);
             }
         }
 
@@ -808,8 +863,8 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         /* Created By: Bill Sanders
          * Created Date: 4/6/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
          */
         /// <summary>
         /// Callback for guiRenameSelectedPhoto. Just shows an error message if there is one.
@@ -819,7 +874,7 @@ namespace SoftwareEng
         {
             if (error.reportID == ErrorReport.FAILURE)
             {
-                showErrorMessage(error.description);
+                showErrorMessage(errorStrings.renamePhotoFailure);
             }
         }
 
@@ -836,15 +891,15 @@ namespace SoftwareEng
         {
             if (error.reportID == ErrorReport.FAILURE)
             {
-                showErrorMessage(error.description);
+                showErrorMessage(errorStrings.deletePhotoFailure);
             }
         }
 
         /*
          * Created By: Ryan Causey
          * Created Date: 4/6/13
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
          */
         /// <summary>
         /// GUI function call to cancel the import of pictures.
@@ -856,7 +911,7 @@ namespace SoftwareEng
             //if theres an error, show the error message, otherwise hide the cancel button.
             if (error.reportID == ErrorReport.FAILURE)
             {
-                showErrorMessage(error.description);
+                showErrorMessage(errorStrings.stopImportFailure);
             }
             else
             {
@@ -875,8 +930,13 @@ namespace SoftwareEng
         /// </summary>
         private void guiViewPicture()
         {
-            ViewImage view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID);
-            view.Visibility = Visibility.Visible;
+            //close the previous view
+            if (view != null)
+            {
+                view.Close();
+            }
+            view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID);
+            view.Show();
         }
 
         /**************************************************************************************************************************
@@ -921,7 +981,7 @@ namespace SoftwareEng
         /*
          * Created By: Alejandro Sosa
          * Last Edited By: Ryan Causey
-         * Last Edited Date: 4/6/13
+         * Last Edited Date: 4/7/13
          */
         /// <summary>
         /// Event handler for the exit button click event.
@@ -937,7 +997,7 @@ namespace SoftwareEng
                 //if the thread failed to be stopped.
                 if (error.reportID == ErrorReport.FAILURE)
                 {
-                    showErrorMessage(error.description);
+                    showErrorMessage(errorStrings.stopImportFailure);
                 }
                 //else we are all good to close
                 {
@@ -946,7 +1006,7 @@ namespace SoftwareEng
             }
             else
             {
-                Close(); 
+                Close();
             }
         }
 
@@ -1018,7 +1078,7 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         private void toggleWindowState()
         {
-            if(this.WindowState == WindowState.Maximized)
+            if (this.WindowState == WindowState.Maximized)
             {
                 this.WindowState = WindowState.Normal;
             }
@@ -1055,7 +1115,7 @@ namespace SoftwareEng
         {
             ItemAddOrEditDialogBar.Visibility = Visibility.Collapsed;
 
-            NameTextBlock.Visibility= Visibility.Hidden;
+            NameTextBlock.Visibility = Visibility.Hidden;
             nameTextBox.Visibility = Visibility.Hidden;
 
             acceptAddToolbarButton.Visibility = Visibility.Hidden;
@@ -1151,7 +1211,7 @@ namespace SoftwareEng
         private void rightThumb_DragDeltaHandler(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             //resize from right
-            if (this.Width > this.MinWidth )
+            if (this.Width > this.MinWidth)
             {
                 //Handles an error case where trying to drag the window too small with a jerking motion would give
                 //a negative width.
@@ -1333,7 +1393,7 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            if(this.WindowState == WindowState.Minimized)
+            if (this.WindowState == WindowState.Minimized)
             {
                 this.WindowState = WindowState.Normal;
             }
@@ -1551,7 +1611,19 @@ namespace SoftwareEng
             }
             else
             {
-                guiCopyAlbumToClipboard();
+                guiPasteClipboardPhotosToAlbum();
+            }
+        }
+
+        private void copyMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainWindowAlbumList.SelectedItem == null)
+            {
+                // you gotta click on something if you want to copy it...
+            }
+            else
+            {
+                guiCopySelectedPhotosToClipboard();
             }
         }
     }
@@ -1559,8 +1631,8 @@ namespace SoftwareEng
     /*
      * Created By: Ryan Causey
      * Created Date: 4/6/13
-     * Last Edited By:
-     * Last Edited Date:
+     * Last Edited By: Ryan Causey
+     * Last Edited Date: 4/7/13
      */
     /// <summary>
     /// Converter to allow data binding to be used in the BitmapImage UriSource attribute with the
@@ -1571,7 +1643,7 @@ namespace SoftwareEng
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             //handled the path not being loaded yet.
-            if (value != "")
+            if ((String)value != "")
             {
                 // value contains the full path to the image
                 string path = (string)value;
@@ -1584,7 +1656,7 @@ namespace SoftwareEng
                 image.UriSource = new Uri(path);
                 image.EndInit();
 
-                return image; 
+                return image;
             }
 
             return DependencyProperty.UnsetValue;
@@ -1596,5 +1668,5 @@ namespace SoftwareEng
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
-    }  
+    }
 }

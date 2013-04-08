@@ -138,7 +138,7 @@ namespace SoftwareEng
                     return;
                 }
                 recover = false;
-            }            
+            }
 
             //make the new database xml files
             XDocument initDB = new XDocument();
@@ -184,7 +184,7 @@ namespace SoftwareEng
             //build the backup album and add all the photos to that album if we can
             if (recover)
             {
-                addPhotoBackup(errorReport, buildBackupAlbum(errorReport)); 
+                addPhotoBackup(errorReport, buildBackupAlbum(errorReport));
             }
 
             guiCallback(errorReport);
@@ -324,8 +324,8 @@ namespace SoftwareEng
 
                 //save to disk.
                 savePicturesXML_backend(null);
-                saveAlbumsXML_backend(null); 
-               
+                saveAlbumsXML_backend(null);
+
                 //when we have the photos collection implemented need to update it here and
                 //if necessary blow it out up above.
             }
@@ -427,8 +427,8 @@ namespace SoftwareEng
                 error.description = "Library folder not found.";
                 guiCallback(error);
                 return;
-            } 
-            
+            }
+
             if (guiCallback != null)
                 guiCallback(error);
         }
@@ -456,7 +456,7 @@ namespace SoftwareEng
                 guiCallback(error, null);
                 return;
             }
-            
+
             // An object to enumerate over the album XML nodes
             IEnumerable<XElement> _albumSearchIE;
             try
@@ -476,7 +476,7 @@ namespace SoftwareEng
                 SimpleAlbumData userAlbum = new SimpleAlbumData();
 
                 userAlbum.UID = (int)thisAlbum.Attribute("uid");
-                
+
                 userAlbum.thumbnailPath = thisAlbum.Element("thumbnailPath").Value;
 
                 try
@@ -527,7 +527,7 @@ namespace SoftwareEng
 
         //    //the list of all albums to return to the gui.
         //    List<SimpleAlbumData> _albumsToReturn = new List<SimpleAlbumData>();
-            
+
         //    //get all the albums AND their children.
         //    List<XElement> _albumSearch;
         //    try
@@ -601,7 +601,7 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="guiCallback"></param>
         /// <param name="AlbumUID">The unique ID of the album to get the photos from</param>
-        private void sendAllPhotosInAlbumToClipboard_backend(sendAllPhotosInAlbum_callback guiCallback, int AlbumUID)
+        private void sendSelectedPhotosToClipboard_backend(sendAllPhotosInAlbum_callback guiCallback, int AlbumUID)
         {
             ErrorReport error = new ErrorReport();
 
@@ -714,7 +714,7 @@ namespace SoftwareEng
             if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
                 ComplexPhotoData photo = new ComplexPhotoData();
-                
+
                 try
                 {
                     photo.hash = StringToByteArray((string)picElement.Attribute("sha1"));
@@ -836,9 +836,9 @@ namespace SoftwareEng
         /// <param name="searchStartingPoint">Where to start looking for a new UID; defaults to 1</param>
         /// <returns></returns>
         private ErrorReport addNewPicture_backend(ErrorReport errorReport,
-            String photoUserPath, 
-            String photoExtension, 
-            int albumUID, 
+            String photoUserPath,
+            String photoExtension,
+            int albumUID,
             int searchStartingPoint = 1)
         {
             ComplexPhotoData newPicture = new ComplexPhotoData();
@@ -892,7 +892,6 @@ namespace SoftwareEng
             }
             else
             {
-
                 // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
                 XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(newPicture.hash));
                 thisPic.Attribute("refCount").Value = newPicture.refCount.ToString();
@@ -1033,7 +1032,7 @@ namespace SoftwareEng
 
             // From the photo database, get the number of references remaining to this photo.
             int refCount = (int)picFromPicsDB.Attribute("refCount");
-            
+
             // Delete this instance of the photo from the in-memory xml database
             try
             {
@@ -1153,7 +1152,7 @@ namespace SoftwareEng
             // now sync to the disk
             saveAlbumsXML_backend(null);
             savePicturesXML_backend(null);
-            
+
             // Searches through the albumsCollection and finds the first album with a matching UID
             var albumToRemove = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
             // ... and then deletes it.
@@ -1176,7 +1175,7 @@ namespace SoftwareEng
 
             return errorReport;
         }
-        
+
         //-------------------------------------------------------------------
         //By: Bill Sanders
         //Edited Last: 4/6/13
@@ -1215,7 +1214,7 @@ namespace SoftwareEng
             var albumToRename = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
             // ... and then renames it.
             albumToRename.albumName = newName;
-            
+
             return;
         }
 
@@ -1249,7 +1248,7 @@ namespace SoftwareEng
             }
 
             saveAlbumsXML_backend(null);
-            
+
             // Searches through the photosCollection and finds the first photo with a matching id
             var photoToRename = _photosCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
             // ... and then renames it.
@@ -1341,54 +1340,48 @@ namespace SoftwareEng
         //Edited Last By: 
         //Edited Last Date: 4/7/13
         /// <summary>
-        /// Adds a photo that already exists in one album to another album
+        /// Adds a set of photos that already exist in one album to another album
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="photoObj">A ComplexPhotoData object which contains all the information about a photo</param>
+        /// <param name="photoObj">A List of ComplexPhotoData objects which contain all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
-        private void addExistingPhotoToAlbum_backend(generic_callback guiCallback, ComplexPhotoData photoObj, int albumUID)
+        private void addExistingPhotosToAlbum_backend(addNewPictures_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
-            // Get the refcount (will get zero if the pic is brand new) and increment it.
-            photoObj.refCount = util_getPhotoRefCount(ByteArrayToString(photoObj.hash));
-            photoObj.refCount++;
 
-            util_addPicToAlbumDB(errorReport, photoObj, albumUID);
-
-            //if adding to the album database failed
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            foreach (ComplexPhotoData photoObj in photoList)
             {
-                guiCallback(errorReport);
+                // Get the refcount (will get zero if the pic is brand new) and increment it.
+                photoObj.refCount = util_getPhotoRefCount(ByteArrayToString(photoObj.hash));
+                photoObj.refCount++;
+
+                // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
+                XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(photoObj.hash));
+                thisPic.Attribute("refCount").Value = photoObj.refCount.ToString();
+
+                // Currently spec says not to carry captions forawrd when copying photos
+                photoObj.caption = "";
+
+                util_addPicToAlbumDB(errorReport, photoObj, albumUID);
+
+                //if adding to the album database failed
+                if (errorReport.reportID == ErrorReport.FAILURE)
+                {
+                    guiCallback(errorReport, albumUID);
+                    //save to disk.
+                    savePicturesXML_backend(null);
+                    saveAlbumsXML_backend(null);
+                    break;
+                }
             }
 
             //save to disk.
             savePicturesXML_backend(null);
             saveAlbumsXML_backend(null);
+
+            guiCallback(errorReport, albumUID);
+            // You're on your own to update the GUI with the new pictures!
         }
-
-        //-------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //UNTESTED/UNFINISHED
-        private void addExistingPictureToAlbum_backend(generic_callback guiCallback, int pictureUID, int albumUID, String SimplePhotoData)
-        {
-            ErrorReport errorReport = new ErrorReport();
-            XElement picture = util_getPhotoDBNode(errorReport, pictureUID);
-            if (errorReport.reportID == ErrorReport.FAILURE)
-            {
-                guiCallback(errorReport);
-                return;
-            }
-
-            util_addPicToAlbumDB(errorReport, null, albumUID);
-            if (errorReport.reportID == ErrorReport.FAILURE)
-            {
-                guiCallback(errorReport);
-                return;
-            }
-
-            guiCallback(errorReport);
-        }//method
 
         //--------------------------------------------------------------
         //By: Ryan Moe

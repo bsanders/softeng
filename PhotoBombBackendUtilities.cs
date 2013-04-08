@@ -77,7 +77,7 @@ namespace SoftwareEng
             }
         }//method
 
-        
+
         //----------------------------------------------------------
         //By: Ryan Moe
         //Edited Last: Bill Sanders, 3/29/13
@@ -177,11 +177,11 @@ namespace SoftwareEng
                 // OR returns null if 0 are found
                 // OR throws an exception if more than 1 are found
                 photoInstance = (from picDB in _picturesDatabase.Elements("picture")
-                                      join picAlbDB in _albumsDatabase.Descendants("picture")
-                                      on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
-                                      where (string)picDB.Attribute("sha1") == hash
-                                           && (int)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
-                                      select picAlbDB).SingleOrDefault();
+                                 join picAlbDB in _albumsDatabase.Descendants("picture")
+                                 on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
+                                 where (string)picDB.Attribute("sha1") == hash
+                                      && (int)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
+                                 select picAlbDB).SingleOrDefault();
             }
             catch // We only get here if the database is already messed up (two of the same photo in an album)
             {
@@ -262,8 +262,7 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         //By: Ryan Moe
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/6/13
+        //Edited Last Date: 4/7/13
         /// <summary>
         /// Adds a photo to a specific album in the album database 
         /// </summary>
@@ -437,7 +436,7 @@ namespace SoftwareEng
             // start by assuming the photo does not exist in this album
             //Boolean photoExistsInAlbum = false;
             XElement photo = util_getAlbumDBPhotoNode(albumID, hash);
-            
+
             // If the photo lookup returns null, the photo is not in this album, so the photo woudl be unique to this album
             if (photo == null)
             {
@@ -647,7 +646,7 @@ namespace SoftwareEng
                      select c).First();
                     ++newID;
                 }
-                //we found a unique one!
+                //we found an unused one!
                 catch
                 {
                     uidFound = true;
@@ -854,7 +853,7 @@ namespace SoftwareEng
         //
         //    return photoObj;
         //}
-        
+
         // Bill: (4/5/13) Function is unused, commenting out for now
         //----------------------------------------------------------------------
         //By: Ryan Moe

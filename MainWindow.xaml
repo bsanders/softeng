@@ -504,23 +504,23 @@
                 	</Grid>
                 </Popup>
                 <ed:Callout AnchorPoint="-0.07,1.63" CalloutStyle="RoundedRectangle" FontSize="14.667" Stroke="Black" Margin="43,197,441.992,97.256" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                	<ed:Callout.Fill>
-                		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
-                	</ed:Callout.Fill>
-                	<Grid Margin="0">
-                		<Grid.ColumnDefinitions>
-                			<ColumnDefinition Width="7*"/>
-                			<ColumnDefinition Width="26*"/>
-                		</Grid.ColumnDefinitions>
-                		<Grid.RowDefinitions>
-                			<RowDefinition Height="Auto"/>
-                			<RowDefinition/>
-                		</Grid.RowDefinitions>
-                		<TextBlock x:Name="numPicturesImportedMessageBlock_" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Images were associated to this album." VerticalAlignment="Top" Margin="3.906,3,0,0" Width="152.32" Grid.Column="1"/>
-                		<TextBlock x:Name="numPicturesImportedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Margin="3,3,0,0"/>
-                		<TextBlock x:Name="numPicturesSkippedMessagetBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="images were skipped for they are already in this album." VerticalAlignment="Top" Margin="11.906,0,0,-5.83" Grid.Row="1" Grid.Column="1"/>
-                		<TextBlock x:Name="numPicturesSkippedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Margin="0" Grid.Row="1"/>
-                	</Grid>
+                    <ed:Callout.Fill>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </ed:Callout.Fill>
+                    <Grid Margin="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="26*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="numPicturesImportedMessageBlock_" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Images were associated to this album." VerticalAlignment="Top" Margin="3.906,3,0,0" Width="152.32" Grid.Column="1"/>
+                        <TextBlock x:Name="numPicturesImportedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Margin="3,3,0,0"/>
+                        <TextBlock x:Name="numPicturesSkippedMessagetBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="images were skipped for they are already in this album." VerticalAlignment="Top" Margin="11.906,0,0,-5.83" Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock x:Name="numPicturesSkippedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Margin="0" Grid.Row="1"/>
+                    </Grid>
                 </ed:Callout>
 
 

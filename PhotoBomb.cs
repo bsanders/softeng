@@ -43,7 +43,7 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last: 
-        public PhotoBomb(){}
+        public PhotoBomb() { }
 
         //----------------------------------------------
         //By: Ryan Moe
@@ -166,9 +166,9 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="guiCallback"></param>
         /// <param name="albumUID">The unique ID of the album</param>
-        public void sendAllPhotosInAlbumToClipboard(sendAllPhotosInAlbum_callback guiCallback, int albumUID)
+        public void sendSelectedPhotosToClipboard(sendAllPhotosInAlbum_callback guiCallback, int albumUID)
         {
-            sendAllPhotosInAlbumToClipboard_backend(guiCallback, albumUID);
+            sendSelectedPhotosToClipboard_backend(guiCallback, albumUID);
         }
 
         //---------------------------------------------
@@ -268,7 +268,7 @@ namespace SoftwareEng
         {
             setPhotoCaption_backend(guiCallback, albumUID, idInAlbum, newName);
         }
-        
+
         //----------------------------------------------
         //By: Ryan Moe
         //Edited Last:
@@ -289,11 +289,11 @@ namespace SoftwareEng
         /// Adds a photo that already exists in one album to another album
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="photoObj">A ComplexPhotoData object which contains all the information about a photo</param>
+        /// <param name="photoList">A ComplexPhotoData object which contains all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
-        private void addExistingPhotoToAlbum(generic_callback guiCallback, ComplexPhotoData photoObj, int albumUID)
+        public void addExistingPhotosToAlbum(addNewPictures_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
         {
-            addExistingPhotoToAlbum_backend(guiCallback, photoObj, albumUID);
+            addExistingPhotosToAlbum_backend(guiCallback, photoList, albumUID);
         }
 
         //---------------------------------------------
@@ -447,7 +447,7 @@ namespace SoftwareEng
         /*
          * Call this function when any property is set as part of implementing INotifyPropertyChanged
          * @Param: name is the name of the property, E.G. changing UID would mean name = "UID"
-         */ 
+         */
         protected void OnPropertyChanged(String name)
         {
             PropertyChangedEventHandler changedHandler = PropertyChanged;
@@ -535,7 +535,7 @@ namespace SoftwareEng
     public class ComplexPhotoData : INotifyPropertyChanged
     {
         //the name of the picture in the album, displayed by the gui
-        
+
         private int _UID;
         private int _idInAlbum;
         private byte[] _hash;
