@@ -446,13 +446,17 @@ namespace SoftwareEng
                 _clipboardOfPhotos = clipArray.ToList();
             }
         }
-        private void guiPasteClipboardPhotosToAlbum()
-        /*
-         * Created By: Bill Sanders
-         * Created Date: 4/7/13
+
+        /**************************************************************************************************************************
+         * Author: Bill Sanders
+         * Created on: 4/7/13
          * Last Edited By: Ryan Causey
          * Last Edited Date: 4/7/13
-         */
+         **************************************************************************************************************************/
+        /// <summary>
+        /// 
+        /// </summary>
+        private void guiPasteClipboardPhotosToAlbum()
         {
             // First check if the clipboard even has anything...
             if (_clipboardOfPhotos.Count == 0)
@@ -488,11 +492,11 @@ namespace SoftwareEng
 
             //pass all the files names to a backend function call to start adding the files.
             //fix the function parameters before releasing.
-            bombaDeFotos.addExistingPhotosToAlbum(
+            /*bombaDeFotos.addExistingPhotosToAlbum(
                 new addNewPictures_callback(guiImportPhotos_Callback),
                 _clipboardOfPhotos,
                 currentAlbumUID);
-
+            */
             _clipboardOfPhotos.Clear();
         }
 
