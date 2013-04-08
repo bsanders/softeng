@@ -480,7 +480,8 @@ namespace SoftwareEng
                 // Get the thumbnail path...
                 userAlbum.thumbnailPath = thisAlbum.Element("thumbnailPath").Value;
                 // check to see if the file still exists, it may also be empty string, which is ok?
-                if (!File.Exists(userAlbum.thumbnailPath))
+
+                if ((userAlbum.thumbnailPath != string.Empty) && (!File.Exists(userAlbum.thumbnailPath)))
                 {
                     // check to see if this is going to be the first photo in an otherwise empty library...
                     XElement firstPhoto = (from c in thisAlbum.Descendants("picture") select c).FirstOrDefault();

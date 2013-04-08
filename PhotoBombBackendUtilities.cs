@@ -324,6 +324,7 @@ namespace SoftwareEng
         /// <param name="photoObject">A ComplexPhotoData object which contains the path information</param>
         private void util_setAlbumThumbnail(XElement albumNode, ComplexPhotoData photoObject)
         {
+            ErrorReport errorReport = new ErrorReport();
             String thumbPath;
             // If the objects look good, set up the (long...) path.
             if ((albumNode != null) && (photoObject != null))
@@ -337,6 +338,12 @@ namespace SoftwareEng
                     photoObject.UID.ToString() +
                     photoObject.extension
                     );
+
+                thumbPath = util_generateThumbnail(
+                    errorReport,
+                    photoObject.fullPath,
+                    photoObject.UID.ToString() + photoObject.extension,
+                    Settings.lrgThumbSize);
             }
             // If either of these objects is null, just invalidate the path
             else
@@ -344,12 +351,6 @@ namespace SoftwareEng
                 thumbPath = "";
             }
 
-            thumbPath = util_generateThumbnail(
-                null,
-                photoObject.fullPath,
-                photoObject.UID.ToString() + photoObject.extension,
-                Settings.lrgThumbSize);
-            
             albumNode.Element("thumbnailPath").Value = thumbPath;
         }
 
