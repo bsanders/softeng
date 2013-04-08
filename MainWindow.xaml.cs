@@ -73,7 +73,7 @@ namespace SoftwareEng
         //DATABINDING SOURCE 
         private ReadOnlyObservableCollection<SimpleAlbumData> _listOfAlbums;
         private ReadOnlyObservableCollection<ComplexPhotoData> _listOfPhotos;
-        private List<ComplexPhotoData> _clipboardOfPhotos;
+        private List<ComplexPhotoData> _clipboardOfPhotos = new List<ComplexPhotoData>();
 
         public ReadOnlyObservableCollection<SimpleAlbumData> listOfAlbums
         {
@@ -473,7 +473,7 @@ namespace SoftwareEng
             if (_clipboardOfPhotos.Count == 0)
             {
                 // Nope, just ignore the action.
-                showErrorMessage(errorStrings.copyToClipboardFailure);
+                showErrorMessage(errorStrings.failedToPasteImages);
                 return;
             }
 
