@@ -61,6 +61,24 @@ namespace SoftwareEng {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jpeg images|*.jpg;*.jpeg;*.jpe;*.jfif;.
+        /// </summary>
+        internal static string addFileDialogueFilter {
+            get {
+                return ResourceManager.GetString("addFileDialogueFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^[\w\d][\w\d ]{0,31}$.
+        /// </summary>
+        internal static string albumValidationRegex {
+            get {
+                return ResourceManager.GetString("albumValidationRegex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string newAlbumNameLabel {
@@ -84,6 +102,15 @@ namespace SoftwareEng {
         internal static string newImageNameLabel {
             get {
                 return ResourceManager.GetString("newImageNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ^[\w\d][\w\d ]{0,31}$.
+        /// </summary>
+        internal static string photoValidationRegex {
+            get {
+                return ResourceManager.GetString("photoValidationRegex", resourceCulture);
             }
         }
     }
