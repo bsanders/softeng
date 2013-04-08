@@ -254,6 +254,21 @@ namespace SoftwareEng
             renamePhoto_backend(guiCallback, albumUID, idInAlbum, newName);
         }
 
+
+        //By: Bill Sanders
+        //Edited Last: 4/6/13
+        /// <summary>
+        /// This function sets the specified caption on the specified photo in an album.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID">The UID of the album the photo is in</param>
+        /// <param name="idInAlbum">The id of the photo in this album</param>
+        /// <param name="newName">The new name of the photo</param>
+        public void setPhotoCaption(generic_callback guiCallback, int albumUID, int idInAlbum, string newName)
+        {
+            setPhotoCaption_backend(guiCallback, albumUID, idInAlbum, newName);
+        }
+        
         //----------------------------------------------
         //By: Ryan Moe
         //Edited Last:

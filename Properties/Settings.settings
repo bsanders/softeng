@@ -44,5 +44,8 @@
     <Setting Name="lrgThumbDir" Type="System.String" Scope="User">
       <Value Profile="(Default)">lrg</Value>
     </Setting>
+    <Setting Name="CaptionMaxLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">140</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
