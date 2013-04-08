@@ -343,6 +343,13 @@ namespace SoftwareEng
             {
                 thumbPath = "";
             }
+
+            thumbPath = util_generateThumbnail(
+                null,
+                photoObject.fullPath,
+                photoObject.UID.ToString() + photoObject.extension,
+                Settings.lrgThumbSize);
+            
             albumNode.Element("thumbnailPath").Value = thumbPath;
         }
 
@@ -1168,7 +1175,7 @@ namespace SoftwareEng
             resizeJob.Mode = Imazen.LightResize.FitMode.Crop;
 
             //get the full path
-            fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picName);
+            fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picFileName);
 
             // Actually processes the image, copying it to the new location, should go in a try/catch for IO
             // One of Build's overloads allows you to use file streams instead of filepaths.
