@@ -126,4 +126,10 @@
   <data name="newImageNameLabel" xml:space="preserve">
     <value />
   </data>
+  <data name="String1" xml:space="preserve">
+    <value> Images were associated to this album.</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value>images were skipped for they are already in this album.</value>
+  </data>
 </root>

@@ -79,6 +79,15 @@ namespace SoftwareEng {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PhotoBomber failed to import the Image(s)..
+        /// </summary>
+        internal static string importImagesFailed {
+            get {
+                return ResourceManager.GetString("importImagesFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Album names can only contain letters, numbers and spaces..
         /// </summary>
         internal static string invalidAlbumNameCharacter {

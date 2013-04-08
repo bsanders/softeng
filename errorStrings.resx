@@ -125,6 +125,10 @@
     <value>PhotoBomber failed to add the image.</value>
     <comment>used when adding an image fails and no more info can be provided or is not advisable.</comment>
   </data>
+  <data name="importImagesFailed" xml:space="preserve">
+    <value>PhotoBomber failed to import the Image(s).</value>
+    <comment>used when the import of images failed.</comment>
+  </data>
   <data name="invalidAlbumNameCharacter" xml:space="preserve">
     <value>Album names can only contain letters, numbers and spaces.</value>
     <comment>used when album name has invalid characters</comment>

@@ -503,6 +503,12 @@
                 		<ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200"/>
                 	</Grid>
                 </Popup>
+                <ed:Callout AnchorPoint="-0.07,1.63" CalloutStyle="RoundedRectangle" FontSize="14.667" Stroke="Black" Margin="572,202,-87.008,92.256">
+                	<ed:Callout.Fill>
+                		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                	</ed:Callout.Fill>
+                	<Grid Height="100" Width="190"/>
+                </ed:Callout>
 
 
             </Grid>
