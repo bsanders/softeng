@@ -88,20 +88,20 @@ namespace SoftwareEng {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to images were skipped for they are already in this album..
+        /// </summary>
+        internal static string picturesImportedMessage {
+            get {
+                return ResourceManager.GetString("picturesImportedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Images were associated to this album..
         /// </summary>
         internal static string String1 {
             get {
                 return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to images were skipped for they are already in this album..
-        /// </summary>
-        internal static string picturesImportedMessage {
-            get {
-                return ResourceManager.GetString("String2", resourceCulture);
             }
         }
     }
