@@ -1650,21 +1650,23 @@ namespace SoftwareEng
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            // value contains the full path to the image
+            String path = (String)value;
             //handled the path not being loaded yet.
-            if ((String)value != "")
+            if (path != "")
             {
-                // value contains the full path to the image
-                string path = (string)value;
+                if (Directory.Exists(path))
+                {
+                    // load the image, convert to bitmap, set cache option so it
+                    //does not lock out the file, then return the new image.
+                    BitmapImage image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.UriSource = new Uri(path);
+                    image.EndInit();
 
-                // load the image, convert to bitmap, set cache option so it
-                //does not lock out the file, then return the new image.
-                BitmapImage image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.UriSource = new Uri(path);
-                image.EndInit();
-
-                return image;
+                    return image;
+                }
             }
 
             return DependencyProperty.UnsetValue;
