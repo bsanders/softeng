@@ -34,6 +34,7 @@
  * 4/7/13 Ryan Causey: Fixed a bug where the error style would not clear after clicking the checkbox worked to add an album/photo.
  *                     Fixed a possible infinite loop.
  *                     Converting all hard coded prompt/error strings to use strings in the error/promptStrings files.
+ *                     Fixed a bug where multiple view image windows could be opened.
  */
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,9 @@ namespace SoftwareEng
     {
         // A handy shortcut to the settings class...
         Properties.Settings Settings = Properties.Settings.Default;
+
+        //the view image window
+        ViewImage view;
 
         //DATABINDING SOURCE 
         private ReadOnlyObservableCollection<SimpleAlbumData> _listOfAlbums;
@@ -886,8 +890,13 @@ namespace SoftwareEng
         /// </summary>
         private void guiViewPicture()
         {
-            ViewImage view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID);
-            view.Visibility = Visibility.Visible;
+            //close the previous view
+            if (view != null)
+            {
+                view.Close();
+            }
+            view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID);
+            view.Show();
         }
 
         /**************************************************************************************************************************
