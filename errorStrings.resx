@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,16 +118,40 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="addAlbumFailure" xml:space="preserve">
-    <value>PhotoBomber failed to create the album.</value>
+    <value>PhotoBomber failed to create the album, will now try to recover the library.</value>
     <comment>used when adding an album fails and no more info can be provided or is not advisable.</comment>
   </data>
   <data name="addImageFailure" xml:space="preserve">
-    <value>PhotoBomber failed to add the image.</value>
+    <value>PhotoBomber failed to add the image(s).</value>
     <comment>used when adding an image fails and no more info can be provided or is not advisable.</comment>
   </data>
-  <data name="importImagesFailed" xml:space="preserve">
-    <value>PhotoBomber failed to import the Image(s).</value>
-    <comment>used when the import of images failed.</comment>
+  <data name="addImageWarning" xml:space="preserve">
+    <value>Warning! Unable to add all images.</value>
+    <comment>used when addNewPictures returns a warning status</comment>
+  </data>
+  <data name="copyToClipboardFailure" xml:space="preserve">
+    <value>Failed to copy items to clipboard.</value>
+    <comment>used when sendAllPhotosInAlbumToClipboard function returns a error status</comment>
+  </data>
+  <data name="copyToClipboardWarning" xml:space="preserve">
+    <value>Warning! Some items could not be copied to clipboard.</value>
+    <comment>used when sendAllPhotosInAlbumToClipboard function returns a warning status</comment>
+  </data>
+  <data name="deleteAlbumFailure" xml:space="preserve">
+    <value>Failed to delete album, will now try to recover the library.</value>
+    <comment>used when removeAlbum function returns a failure staus</comment>
+  </data>
+  <data name="deletePhotoFailure" xml:space="preserve">
+    <value>Failed to delete the photo.</value>
+    <comment>used when removePictureFromAlbum returns a failure status</comment>
+  </data>
+  <data name="getPhotosFailure" xml:space="preserve">
+    <value>Failed to retrieve pictures in the album.</value>
+    <comment>used when getAllPhotosInAlbum returns a failure status</comment>
+  </data>
+  <data name="getPhotosWarning" xml:space="preserve">
+    <value>Warning! Some pictures could not be retrieved.</value>
+    <comment>used when getAllPhotosInAlbum returns a warning status</comment>
   </data>
   <data name="invalidAlbumNameCharacter" xml:space="preserve">
     <value>Album names can only contain letters, numbers and spaces.</value>
@@ -145,8 +169,32 @@
     <value>An image in this album already has this name.</value>
     <comment>used when imagename is not unique</comment>
   </data>
+  <data name="invalidNameCharacter" xml:space="preserve">
+    <value>Names can only contain letters, numbers, spaces, and must have at least one letter or number.</value>
+    <comment>used when guiValidateNames function does not validate.</comment>
+  </data>
+  <data name="rebuildBackendFailure" xml:space="preserve">
+    <value>Failed to rebuild and/or recover the database. We're sorry :'(</value>
+    <comment>used when the rebuildBackend function returns an error status.</comment>
+  </data>
+  <data name="renameAlbumFailure" xml:space="preserve">
+    <value>Failed to rename the album.</value>
+    <comment>used when renameAlbum returns a failure status</comment>
+  </data>
+  <data name="renamePhotoFailure" xml:space="preserve">
+    <value>Failed to rename the picture.</value>
+    <comment>used when renamePhoto returns a failure status</comment>
+  </data>
+  <data name="retrieveAlbumsFailure" xml:space="preserve">
+    <value>Failed to retrieve any albums.</value>
+    <comment>used when getAllAlbums function returns an error status.</comment>
+  </data>
+  <data name="retrieveAlbumsWarning" xml:space="preserve">
+    <value>Warning! Some albums could not be retrieved.</value>
+    <comment>used when getAll Albums function returns a warning status.</comment>
+  </data>
   <data name="stopImportFailure" xml:space="preserve">
-    <value>Failed to stop picture import.</value>
+    <value>Failed to stop picture import. Just let it try to finish to ensure the library doesn't become corrupted!</value>
     <comment>used when the import pictures thread cannot be cancelled.</comment>
   </data>
 </root>

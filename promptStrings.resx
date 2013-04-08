@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="addFileDialogueFilter" xml:space="preserve">
+    <value>Jpeg images|*.jpg;*.jpeg;*.jpe;*.jfif;</value>
+    <comment>filter expression for the file browser dialogue</comment>
+  </data>
+  <data name="albumValidationRegex" xml:space="preserve">
+    <value>^[\w\d][\w\d ]{0,31}$</value>
+    <comment>regular expression for validation of album names</comment>
+  </data>
   <data name="newAlbumNameLabel" xml:space="preserve">
     <value />
   </data>
@@ -126,10 +134,8 @@
   <data name="newImageNameLabel" xml:space="preserve">
     <value />
   </data>
-  <data name="picturesImportedMessage" xml:space="preserve">
-    <value>images were skipped for they are already in this album.</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value> Images were associated to this album.</value>
+  <data name="photoValidationRegex" xml:space="preserve">
+    <value>^[\w\d][\w\d ]{0,31}$</value>
+    <comment>regular expression for validation of photo names</comment>
   </data>
 </root>

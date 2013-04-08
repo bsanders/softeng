@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoftwareEng {
+namespace SoftwareEng
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,86 +23,115 @@ namespace SoftwareEng {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class promptStrings {
-        
+    internal class promptStrings
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal promptStrings() {
+        internal promptStrings()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        internal static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SoftwareEng.promptStrings", typeof(promptStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Jpeg images|*.jpg;*.jpeg;*.jpe;*.jfif;.
+        /// </summary>
+        internal static string addFileDialogueFilter
+        {
+            get
+            {
+                return ResourceManager.GetString("addFileDialogueFilter", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ^[\w\d][\w\d ]{0,31}$.
+        /// </summary>
+        internal static string albumValidationRegex
+        {
+            get
+            {
+                return ResourceManager.GetString("albumValidationRegex", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string newAlbumNameLabel {
-            get {
+        internal static string newAlbumNameLabel
+        {
+            get
+            {
                 return ResourceManager.GetString("newAlbumNameLabel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string newImageCommentLabel {
-            get {
+        internal static string newImageCommentLabel
+        {
+            get
+            {
                 return ResourceManager.GetString("newImageCommentLabel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string newImageNameLabel {
-            get {
+        internal static string newImageNameLabel
+        {
+            get
+            {
                 return ResourceManager.GetString("newImageNameLabel", resourceCulture);
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to images were skipped for they are already in this album..
+        ///   Looks up a localized string similar to ^[\w\d][\w\d ]{0,31}$.
         /// </summary>
-        internal static string picturesImportedMessage {
-            get {
-                return ResourceManager.GetString("picturesImportedMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  Images were associated to this album..
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
+        internal static string photoValidationRegex
+        {
+            get
+            {
+                return ResourceManager.GetString("photoValidationRegex", resourceCulture);
             }
         }
     }
