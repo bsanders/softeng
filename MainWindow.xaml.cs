@@ -38,6 +38,7 @@
  *                     Changed context menu behavior to match srs specification. It now only shows over an album or photo item in the
  *                     list view. Commented out old handlers that are no longer used.
  * 4/8/13 Ryan Causey: Adding comment box functionality to the GUI.
+ *                     Fixed a bug with the viewImage function that would lead to an unhandled exception.
  */
 using System;
 using System.Collections.Generic;
@@ -974,8 +975,8 @@ namespace SoftwareEng
         /*
          * Created By: Ryan Causey
          * Created Date: 4/6/13
-         * Last Edited By: Bill Sanders
-         * Last Edited Date: 4/7/13
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/8/13
          */
         /// <summary>
         /// GUI function that will instantiate a viewImage window and give it the information to display the image.
@@ -995,9 +996,12 @@ namespace SoftwareEng
                 ErrorReport errorReport = new ErrorReport();
 
                 // transition to the album the user selected for a slideshow
-                bombaDeFotos.getAllPhotosInAlbum(
-                    new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback),
-                    ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
+                guiEnterAlbumView();
+
+                //commented out the below in favor of the above call as it fixes a bug where we weren't updating the currentAlbumUID value correctly.
+                //bombaDeFotos.getAllPhotosInAlbum(
+                //    new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback),
+                //    ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
                 
                 // if there are pictures in the album
                 if (_listOfPhotos.Count > 0)
@@ -1812,6 +1816,40 @@ namespace SoftwareEng
         private void ItemBackSideContainer_PreviewRightMouseUp(object sender, MouseButtonEventArgs e)
         {
             AlbumContextMenu.IsOpen = true;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for the slideshow context menu item on the album view context menu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void slideshowMenuItemAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            //call with true to directly begin slideshow.
+            guiViewPicture(true);
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for the slideshow context menu item on the library view context menu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void slideshowMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            //call with true to directly begin slideshow.
+            guiViewPicture(true);
         }
 
         
