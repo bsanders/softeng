@@ -886,8 +886,6 @@ namespace SoftwareEng
                 util_addPicToPhotoDB(errorReport, newPicture);
                 //Move picture and get a new path for the picture in our storage.
                 //generate the thumbnails and get their path.
-                newPicture.smThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.smThumbSize);
-                newPicture.medThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.medThumbSize);
                 newPicture.lgThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.lrgThumbSize);
             }
             else
@@ -1081,8 +1079,6 @@ namespace SoftwareEng
             try
             {
                 File.Delete(pictureElement.Element("filePath").Value);
-                File.Delete(pictureElement.Element("smThumbPath").Value);
-                File.Delete(pictureElement.Element("medThumbPath").Value);
                 //since we are using this large thumbnail in the program as the image for the picture tile
                 //(tested and it is NOT because the album is using the first photo's large thumbnail as its thumb)
                 //this throws a System.IO.IOException because it cannot access the file to delete it as it is in use.
