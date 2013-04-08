@@ -122,7 +122,7 @@
     <comment>used when adding an album fails and no more info can be provided or is not advisable.</comment>
   </data>
   <data name="addImageFailure" xml:space="preserve">
-    <value>PhotoBomber failed to add the image(s).</value>
+    <value>PhotoBomber failed to import the Image(s).</value>
     <comment>used when adding an image fails and no more info can be provided or is not advisable.</comment>
   </data>
   <data name="addImageWarning" xml:space="preserve">
@@ -144,6 +144,9 @@
   <data name="deletePhotoFailure" xml:space="preserve">
     <value>Failed to delete the photo.</value>
     <comment>used when removePictureFromAlbum returns a failure status</comment>
+  </data>
+  <data name="failedToPasteImages" xml:space="preserve">
+    <value>PhotoBomber failed to import the Image(s).</value>
   </data>
   <data name="getPhotosFailure" xml:space="preserve">
     <value>Failed to retrieve pictures in the album.</value>
