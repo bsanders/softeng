@@ -503,11 +503,16 @@
                 		<ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200"/>
                 	</Grid>
                 </Popup>
-                <ed:Callout AnchorPoint="-0.07,1.63" CalloutStyle="RoundedRectangle" FontSize="14.667" Stroke="Black" Margin="572,202,-87.008,92.256">
+                <ed:Callout AnchorPoint="-0.07,1.63" CalloutStyle="RoundedRectangle" FontSize="14.667" Stroke="Black" Margin="43,197,441.992,97.256" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                 	<ed:Callout.Fill>
                 		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                 	</ed:Callout.Fill>
-                	<Grid Height="100" Width="190"/>
+                	<Grid Margin="0" Height="90" Width="190">
+                		<TextBlock x:Name="numPicturesImportedMessageBlock_" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Pictures " VerticalAlignment="Top" Margin="91.146,19.69,0,0"/>
+                		<TextBlock x:Name="numPicturesImportedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Margin="0,19.69,0,0"/>
+                		<TextBlock x:Name="numPicturesSkippedMessagetBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Wrong Prompt!" VerticalAlignment="Top" Margin="91.146,52,0,0"/>
+                		<TextBlock x:Name="numPicturesSkippedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Margin="0,52,0,0"/>
+                	</Grid>
                 </ed:Callout>
 
 
