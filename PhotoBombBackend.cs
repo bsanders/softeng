@@ -140,23 +140,6 @@ namespace SoftwareEng
                 recover = false;
             }
 
-            //make the new database xml files
-            XDocument initDB = new XDocument();
-            XElement root = new XElement(Settings.XMLRootElement);
-            initDB.Add(root);
-            try
-            {
-                initDB.Save(albumsDatabasePath);
-                initDB.Save(picturesDatabasePath);
-            }
-            catch
-            {
-                errorReport.reportID = ErrorReport.FAILURE;
-                errorReport.description = "Unable to create the new database files.";
-                guiCallback(errorReport);
-                return;
-            }
-
             createDefaultXML(errorReport);
 
             // Check the XML creation for bugs
