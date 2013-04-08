@@ -37,6 +37,7 @@
  *                     Fixed a bug where multiple view image windows could be opened.
  *                     Changed context menu behavior to match srs specification. It now only shows over an album or photo item in the
  *                     list view. Commented out old handlers that are no longer used.
+ * 4/8/13 Ryan Causey: Adding comment box functionality to the GUI.
  */
 using System;
 using System.Collections.Generic;
@@ -1102,7 +1103,7 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Created By: Alejandro Sosa
          * Edited Last By: Ryan Causey
-         * Edited Last Date: 4/5/13
+         * Edited Last Date: 4/7/13
          **************************************************************************************************************************/
         private void showAddAlbumBox()
         {
@@ -1114,23 +1115,32 @@ namespace SoftwareEng
             acceptAddToolbarButton.Visibility = Visibility.Visible;
             cancelAddToolbarButton.Visibility = Visibility.Visible;
 
+            if (currentAlbumUID != -1)
+            {
+                commentTextBlock.Visibility = Visibility.Visible;
+                commentTextBox.Visibility = Visibility.Visible;
+            }
+
             Keyboard.Focus(nameTextBox);
         }
 
         /**************************************************************************************************************************
          * Created By: Alejandro Sosa
          * Edited Last By: Ryan Causey
-         * Edited Last Date: 4/5/13
+         * Edited Last Date: 4/7/13
          **************************************************************************************************************************/
         private void hideAddAlbumBox()
         {
             ItemAddOrEditDialogBar.Visibility = Visibility.Collapsed;
 
-            NameTextBlock.Visibility = Visibility.Hidden;
-            nameTextBox.Visibility = Visibility.Hidden;
+            NameTextBlock.Visibility = Visibility.Collapsed;
+            nameTextBox.Visibility = Visibility.Collapsed;
 
-            acceptAddToolbarButton.Visibility = Visibility.Hidden;
-            cancelAddToolbarButton.Visibility = Visibility.Hidden;
+            acceptAddToolbarButton.Visibility = Visibility.Collapsed;
+            cancelAddToolbarButton.Visibility = Visibility.Collapsed;
+
+            commentTextBlock.Visibility = Visibility.Collapsed;
+            commentTextBox.Visibility = Visibility.Collapsed;
         }
 
         /**************************************************************************************************************************
