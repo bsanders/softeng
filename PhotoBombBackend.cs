@@ -1303,7 +1303,7 @@ namespace SoftwareEng
 
             // Searches through the photosCollection and finds the first photo with a matching id
             var photoToRecaption = _photosCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
-            // ... and then renames it.
+            // ... and then changes its caption.
             photoToRecaption.caption = newCaption;
 
             return;

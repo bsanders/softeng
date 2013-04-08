@@ -586,7 +586,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="commentTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0" Visibility="Collapsed"/>
+                <TextBox x:Name="commentTextBox" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="5" MaxLength="140" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a comment for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed" TextWrapping="Wrap"/>
 
             </StackPanel>
             <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,0,70,0" DockPanel.Dock="Right" >
@@ -607,6 +607,18 @@
         			</ed:Callout.Foreground>
         		</ed:Callout>
         	</Grid>
+        </Popup>
+        <Popup x:Name="invalidCommentPopup" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0" PlacementTarget="{Binding ElementName=commentTextBox, Mode=OneWay}" Placement="Top" HorizontalOffset="200" AllowsTransparency="True" VerticalOffset="10">
+            <Grid MinWidth="210" Height="120">
+                <ed:Callout x:Name="commentErrorBalloon" AnchorPoint="0.017,1.375" Content="Errors messages should come from errorStrings.resx" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200" FontWeight="Normal" Fill="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" Padding="3,0,3,3" FontSize="14" Margin="1,2,1,37">
+                    <ed:Callout.Stroke>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberErrorBorderColor}"/>
+                    </ed:Callout.Stroke>
+                    <ed:Callout.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+                    </ed:Callout.Foreground>
+                </ed:Callout>
+            </Grid>
         </Popup>
     </Grid>
 </Window>

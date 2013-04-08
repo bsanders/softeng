@@ -79,6 +79,15 @@ namespace SoftwareEng {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ^[\w\d][\w\d ]{0,139}$.
+        /// </summary>
+        internal static string captionValidationRegex {
+            get {
+                return ResourceManager.GetString("captionValidationRegex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Images were skipped because they are already in this album. .
         /// </summary>
         internal static string importSkippedMessage {

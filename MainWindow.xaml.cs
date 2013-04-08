@@ -109,6 +109,9 @@ namespace SoftwareEng
         //The regex for validation of photo names
         private String photoValidationRegex = @promptStrings.photoValidationRegex; //must be at least 1 character, max 32 in length
 
+        //The regex for validation of captions
+        private String captionValidationRegex = @promptStrings.captionValidationRegex;
+
         //current album UID, defaults to a invalid value(because we eont be in an album)
         private int currentAlbumUID = -1;
 
@@ -384,22 +387,12 @@ namespace SoftwareEng
             //it was unique, great success!
             else
             {
-                if (mainWindowAlbumList.SelectedItem != null)
-                {
-                    guiRenameSelectedPhoto(nameTextBox.Text);
-                }
-                else
-                {
-                    // They got the context menu open on a non-list-item?
-                    //                    guiCreateNewAlbum(nameTextBox.Text);
-                }
+                guiRenameSelectedPhoto(nameTextBox.Text);
                 hideAddAlbumBox();
+                Storyboard textBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+                textBoxErrorAnimation.Stop();
+                handleNameErrorPopup(false, "");
                 nameTextBox.Clear();
-                invalidInputPopup.IsOpen = false;
-
-                //stop any error animations
-                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
-                nameTextBoxErrorAnimation.Stop();
             }
         }
 
@@ -439,6 +432,55 @@ namespace SoftwareEng
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
                 showErrorMessage(errorStrings.addAlbumFailure); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
+            }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function to validate the caption content and add it if it is valid.
+        /// </summary>
+        private void guiValidateCaptionContent()
+        {
+            //trim the input of leading and trailing whitespace
+            commentTextBox.Text = commentTextBox.Text.Trim();
+            //if the text box is empty, ignore it.
+            if (!(commentTextBox.Text == ""))
+            {
+                //if it is not a valid string
+                if (!validateTheString(captionValidationRegex, commentTextBox.Text))
+                {
+                    Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                    commentTextBoxAnimation.Begin();
+
+                    handleCommentErrorPopup(true, errorStrings.invalidComment);
+                    commentTextBox.Focus();
+                    commentTextBox.SelectAll();
+                }
+                else
+                {
+                    guiChangePhotoCaption(commentTextBox.Text);
+                } 
+            }
+        }
+
+        private void guiChangePhotoCaption(String caption)
+        {
+            if(mainWindowAlbumList.SelectedItem != null)
+            {
+                bombaDeFotos.setPhotoCaption(new generic_callback(guiChangePhotoCaption_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
+            }
+        }
+
+        public void guiChangePhotoCaption_Callback(ErrorReport error)
+        {
+            if (error.reportID == ErrorReport.FAILURE)
+            {
+                showErrorMessage(errorStrings.changeCommentFailure);
             }
         }
 
@@ -1517,15 +1559,25 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         private void handleNameErrorPopup(bool showIt, string errorMessage)
         {
-            if (showIt == false)
-            {
-                invalidInputPopup.IsOpen = false;
-                return;
-            }
-
             errorBalloon.Content = errorMessage;
-            invalidInputPopup.IsOpen = true;
+            invalidInputPopup.IsOpen = showIt;
+        }
 
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handle the showing or hiding of the error message popup for the comment box.
+        /// </summary>
+        /// <param name="show">Boolean saying whether to open or close the popup. True = open, False = close</param>
+        /// <param name="errorMessage">The error string to display in the error popup.</param>
+        private void handleCommentErrorPopup(bool show, String errorMessage)
+        {
+            invalidCommentPopup.IsOpen = show;
+            commentErrorBalloon.Content = errorMessage;
         }
 
         /**************************************************************************************************************************

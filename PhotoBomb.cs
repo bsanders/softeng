@@ -263,10 +263,10 @@ namespace SoftwareEng
         /// <param name="guiCallback"></param>
         /// <param name="albumUID">The UID of the album the photo is in</param>
         /// <param name="idInAlbum">The id of the photo in this album</param>
-        /// <param name="newName">The new name of the photo</param>
-        public void setPhotoCaption(generic_callback guiCallback, int albumUID, int idInAlbum, string newName)
+        /// <param name="newName">The caption to be added to the photo</param>
+        public void setPhotoCaption(generic_callback guiCallback, int albumUID, int idInAlbum, string newCaption)
         {
-            setPhotoCaption_backend(guiCallback, albumUID, idInAlbum, newName);
+            setPhotoCaption_backend(guiCallback, albumUID, idInAlbum, newCaption);
         }
 
         //----------------------------------------------

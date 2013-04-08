@@ -129,6 +129,9 @@
     <value>Warning! Unable to add all images.</value>
     <comment>used when addNewPictures returns a warning status</comment>
   </data>
+  <data name="changeCommentFailure" xml:space="preserve">
+    <value>Failed to change caption on picture.</value>
+  </data>
   <data name="copyToClipboardFailure" xml:space="preserve">
     <value>Failed to copy items to clipboard.</value>
     <comment>used when sendAllPhotosInAlbumToClipboard function returns a error status</comment>
@@ -163,6 +166,10 @@
   <data name="invalidAlbumNameUnique" xml:space="preserve">
     <value>An album with this name already exists.</value>
     <comment>used when album name is not unique</comment>
+  </data>
+  <data name="invalidComment" xml:space="preserve">
+    <value>Comments can only contain letters, numbers, spaces, and must have at least one letter or number.</value>
+    <comment>used when the comment does not validate.</comment>
   </data>
   <data name="invalidImageNameCharacter" xml:space="preserve">
     <value>Image names can only contain letters, numbers and spaces.</value>

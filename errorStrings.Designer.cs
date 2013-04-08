@@ -88,6 +88,15 @@ namespace SoftwareEng {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to change caption on picture..
+        /// </summary>
+        internal static string changeCommentFailure {
+            get {
+                return ResourceManager.GetString("changeCommentFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to copy items to clipboard..
         /// </summary>
         internal static string copyToClipboardFailure {
@@ -165,6 +174,15 @@ namespace SoftwareEng {
         internal static string invalidAlbumNameUnique {
             get {
                 return ResourceManager.GetString("invalidAlbumNameUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comments can only contain letters, numbers, spaces, and must have at least one letter or number..
+        /// </summary>
+        internal static string invalidComment {
+            get {
+                return ResourceManager.GetString("invalidComment", resourceCulture);
             }
         }
         
