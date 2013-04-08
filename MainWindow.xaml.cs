@@ -276,7 +276,14 @@ namespace SoftwareEng
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
 
-                handleNameErrorPopup(true, errorStrings.invalidNameCharacter);
+                if (currentAlbumUID == -1)
+                {
+                    handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
+                }
+                else
+                {
+                    handleNameErrorPopup(true, errorStrings.invalidImageNameCharacter);
+                }
 
                 //apply error template to the text box.
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -1486,6 +1493,7 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
+        /* commenting out as we do not need this -Ryan Causey
         private void PopupMouseClick_Handler(object sender, MouseButtonEventArgs e)
         {
             libraryContextMenu.IsOpen = false;
