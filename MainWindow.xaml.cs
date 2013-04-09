@@ -1038,11 +1038,6 @@ namespace SoftwareEng
 
                 // transition to the album the user selected for a slideshow
                 guiEnterAlbumView();
-
-                //commented out the below in favor of the above call as it fixes a bug where we weren't updating the currentAlbumUID value correctly.
-                //bombaDeFotos.getAllPhotosInAlbum(
-                //    new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback),
-                //    ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
                 
                 // if there are pictures in the album
                 if (_listOfPhotos.Count > 0)
@@ -1050,15 +1045,24 @@ namespace SoftwareEng
                     // start the slideshow at picture[0]
                     view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, slideShowStart);
                 }
+                else
+                {
+                    // If the album is empty, transition back to the library.
+                    guiReturnToLibraryView();
+                }
             }
             // ... or the album view
             else
             {
+                // start the slideshow at the selected photo.
                 view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, slideShowStart);
             }
 
-            // finally, show the form.
-            view.Show();
+            // finally, show the form, if there's anything to show.
+            if (_listOfPhotos.Count > 0)
+            {
+                view.Show();
+            }
         }
 
         /**************************************************************************************************************************
