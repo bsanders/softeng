@@ -126,7 +126,7 @@
     <comment>regular expression for validation of album names</comment>
   </data>
   <data name="captionValidationRegex" xml:space="preserve">
-    <value>^[\w\d][\w\d ]{0,139}$</value>
+    <value>^[\w\d ]{0,140}$</value>
     <comment>regular expression for validation of captions</comment>
   </data>
   <data name="importSkippedMessage" xml:space="preserve">

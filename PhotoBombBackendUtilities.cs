@@ -13,6 +13,9 @@
  *                     Editing thumbnail generation utility function to return path to thumbnail.
  *                     Edited addPhotoToDB and getComplexPhotoData to include new thumbnail paths.
  * 4/6/13 Ryan Causey: Fixed a bug where the thumbnail path for the album was being set to an invalid path.
+ * 4/8/13 Ryan Causey: Fixed a bug in the check caption is valid utility.
+ *                     Fixed a bug in the change caption utility where we were trying to access caption as
+ *                     an attribute instead of an element.
  **/
 using System;
 using System.Collections.Generic;
@@ -356,7 +359,8 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         // By: Bill Sanders
-        // Edited Last Date: 4/7/13
+        // Edited Last By: Ryan Causey
+        // Edited Last Date: 4/8/13
         /// <summary>
         /// Sets the caption of a photo in a specific album to the provided string
         /// </summary>
@@ -367,7 +371,7 @@ namespace SoftwareEng
         {
             try
             {
-                albumPhotoNode.Attribute("caption").Value = caption;
+                albumPhotoNode.Element("caption").Value = caption;
             }
             catch
             {
@@ -390,12 +394,13 @@ namespace SoftwareEng
 
         //--------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last:
+        //Edited Last By: Ryan Causey
+        //Edited Last Date: 4/8/13
         //RETURN: true if the caption is valid, false otherwise.
         private Boolean util_checkCaptionIsValid(string caption)
         {
             // other checks go here.
-            if ((caption.Length >= 0) && (caption.Length > Settings.CaptionMaxLength))
+            if ((caption.Length >= 0) && (caption.Length < Settings.CaptionMaxLength))
                 return true;
             return false;
         }

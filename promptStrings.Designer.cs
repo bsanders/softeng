@@ -79,7 +79,7 @@ namespace SoftwareEng {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ^[\w\d][\w\d ]{0,139}$.
+        ///   Looks up a localized string similar to ^[\w\d ]{0,140}$.
         /// </summary>
         internal static string captionValidationRegex {
             get {
