@@ -70,13 +70,22 @@ namespace SoftwareEng
                     }
 
                     //use backend function to add a single photo.
-                    addNewPicture_backend(data.errorReport,
-                        data.photoUserPath.ElementAt(i),
-                        data.photoExtension.ElementAt(i),
-                        data.albumUID,
-                    //    pictureName,
-                        (initialSearchingLocation + i)
-                        );
+                    try
+                    {
+                        addNewPicture_backend(data.errorReport,
+                                        data.photoUserPath.ElementAt(i),
+                                        data.photoExtension.ElementAt(i),
+                                        data.albumUID,
+                            //    pictureName,
+                                        (initialSearchingLocation + i)
+                                        );
+                    }
+                    catch (Exception)
+                    {
+                        data.errorReport.reportID = ErrorReport.FAILURE;
+                        data.errorReport.description = errorStrings.addImageFailure;
+                        break;
+                    }
 
                     //report progress maybe.
                     ++picsAddedSinceReport;
