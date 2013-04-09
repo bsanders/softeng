@@ -556,7 +556,7 @@
                         <GradientStop Color="#00000000" Offset="1" />
                     </RadialGradientBrush>
                 </Button.Background>
-                <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/defaultImage.png"/>
+                <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart-tiny-square.png"/>
             </Button>
             <Label Content="PhotoBomber" Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center">
             	<Label.Foreground>

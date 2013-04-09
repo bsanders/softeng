@@ -81,7 +81,7 @@
                             <Binding ElementName="viewImageWindow" Path="currentPicture.fullPath" Converter="{StaticResource ImagePathConverter}">
                                 <Binding.FallbackValue>
                                     <ImageSource>
-                                        ImagesResources2012\NewIconClipart.png
+                                        ImagesResources2012/defaultImage.png
                                     </ImageSource>
                                 </Binding.FallbackValue>
                             </Binding>
