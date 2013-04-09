@@ -751,23 +751,28 @@ namespace SoftwareEng
                 thumbSubDir,
                 filename);
 
-            // Actually processes the image, copying it to the new location, should go in a try/catch for IO
-            // One of Build's overloads allows you to use file streams instead of filepaths.
-            // If images have to be resized on-the-fly instead of stored, that may work as well.
-            try
+            if (File.Exists(source))
             {
-                resizeJob.Build(
-                    source,
-                    fullThumbPath,
-                    Imazen.LightResize.JobOptions.CreateParentDirectory
-                );
-            }
-            catch (IOException)
-            {
-                return "";
+                // Actually processes the image, copying it to the new location, should go in a try/catch for IO
+                // One of Build's overloads allows you to use file streams instead of filepaths.
+                // If images have to be resized on-the-fly instead of stored, that may work as well.
+                try
+                {
+                    resizeJob.Build(
+                        source,
+                        fullThumbPath,
+                        Imazen.LightResize.JobOptions.CreateParentDirectory
+                    );
+                }
+                catch (IOException)
+                {
+                    return "";
+                }
+
+                return fullThumbPath;
             }
 
-            return fullThumbPath;
+            return "";
         }
 
         /*

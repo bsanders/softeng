@@ -16,6 +16,7 @@
  * 4/8/13 Ryan Causey: Fixed a bug in the check caption is valid utility.
  *                     Fixed a bug in the change caption utility where we were trying to access caption as
  *                     an attribute instead of an element.
+ *                     Fixed a bug in thumbnail generation utility.
  **/
 using System;
 using System.Collections.Generic;
@@ -1147,7 +1148,7 @@ namespace SoftwareEng
         //---------------------------------------------------------------------------
         //By: Bill Sanders
         //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/5/13
+        //Edited Last Date: 4/8/13
         /// <summary>
         /// Generates a thumbnail for a specified image file and places it in an appropriate sub directory
         /// </summary>
@@ -1158,11 +1159,11 @@ namespace SoftwareEng
         /// <returns></returns>
         private String util_generateThumbnail(ErrorReport error, string srcPath, string picFileName, int size)
         {
-            if ((srcPath == string.Empty) || (picFileName == string.Empty))
+            if ((srcPath == string.Empty) || (picFileName == string.Empty) || !File.Exists(srcPath))
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "Unable to generate thumbnail, bad path or filename.";
-                return "";
+                return ""; 
             }
             // I haven't thought much about whether or not this is the right place to put this
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
