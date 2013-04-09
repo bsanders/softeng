@@ -36,7 +36,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock Height="Auto" HorizontalAlignment="Stretch" Margin="51.983,0,0,0" x:Name="commentLabel" VerticalAlignment="Top" Grid.Row="1" FontFamily="/PhotoBomber;component/Fonts/#monofur">
+                <TextBlock Height="Auto" HorizontalAlignment="Stretch" Margin="3,15,0,0" x:Name="commentLabel" VerticalAlignment="Top" Grid.Row="1" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
