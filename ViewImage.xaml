@@ -75,7 +75,7 @@
                         <!--Define the converter resource-->
                         <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
                     </Viewbox.Resources>
-                    <!--<Image Source="{Binding currentPicture.asdf, Converter={StaticResource ImagePathConverter}, FallbackValue=ImagesResources2012\NewIconClipart-tiny-square.png}" RenderTransformOrigin="0.5,0.5"/>-->
+                    <!--<Image Source="{Binding currentPicture.asdf, Converter={StaticResource ImagePathConverter}, FallbackValue=ImagesResources2012\defaultImage.png}" RenderTransformOrigin="0.5,0.5"/>-->
                     <Image RenderTransformOrigin="0.5,0.5">
                         <Image.Source>
                             <Binding ElementName="viewImageWindow" Path="currentPicture.fullPath" Converter="{StaticResource ImagePathConverter}">

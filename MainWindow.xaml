@@ -81,7 +81,7 @@
                                 <ImageSource>
                                     <!-- This image looks much swankier than the missing image png-->
                                     <!--But it doesn't tell the user what went wrong-->
-                                    ImagesResources2012/NewIconClipart-tiny-square.png
+                                    ImagesResources2012/defaultImage.png
                                 </ImageSource>
                             </Binding.FallbackValue>
                         </Binding>
@@ -121,7 +121,7 @@
         				<!--use the converter to bind to a cached image and not lock out the one on disk-->
         				<Binding Path="thumbnailPath" Converter="{StaticResource ImagePathConverter}">
         					<Binding.FallbackValue>
-        						<ImageSource><!-- This image looks much swankier than the missing image png-->ImagesResources2012/NewIconClipart-tiny-square.png</ImageSource>                                
+        						<ImageSource><!-- This image looks much swankier than the missing image png-->ImagesResources2012/defaultImage.png</ImageSource>                                
         					</Binding.FallbackValue>
         				</Binding>
         			</Image.Source>
@@ -556,7 +556,7 @@
                         <GradientStop Color="#00000000" Offset="1" />
                     </RadialGradientBrush>
                 </Button.Background>
-                <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart-tiny-square.png"/>
+                <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/defaultImage.png"/>
             </Button>
             <Label Content="PhotoBomber" Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center">
             	<Label.Foreground>
