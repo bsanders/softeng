@@ -237,11 +237,22 @@ namespace SoftwareEng
                 return errorReport;
             }
 
+            // This method of moving the folder to a new path and copying it back into the library works too
+            // I'm not yet able to tell which is faster --BS
+            // If you use this method, be sure to uncomment out the directory.delete function at the end of the foreach
+            //String tmpDir = Path.Combine(libraryPath, "..", "backup");
+            //Directory.Move(libraryPath, tmpDir);
+            //Directory.CreateDirectory(libraryPath);
             //set up a directory info object from the path
-            DirectoryInfo libraryDir = new DirectoryInfo(libraryPath);
+            //FileInfo[] files = new DirectoryInfo(tmpDir).GetFiles();
+
+            IEnumerable<FileInfo> libraryDir = new DirectoryInfo(libraryPath).EnumerateFiles();
+            IEnumerable<FileInfo> sortedFiles = libraryDir.OrderBy(
+                fi => int.Parse(Path.GetFileNameWithoutExtension(fi.Name))
+                );
 
             //set up an array of files
-            foreach (FileInfo fi in libraryDir.GetFiles())
+            foreach (FileInfo fi in sortedFiles)    
             {
                 ComplexPhotoData newPicture = new ComplexPhotoData();
 
@@ -313,6 +324,8 @@ namespace SoftwareEng
                 //when we have the photos collection implemented need to update it here and
                 //if necessary blow it out up above.
             }
+
+//            Directory.Delete(tmpDir, true);
 
             return errorReport;
         }
