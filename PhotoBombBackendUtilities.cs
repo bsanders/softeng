@@ -882,6 +882,16 @@ namespace SoftwareEng
                 // AlbumDB data
                 photoObj.idInAlbum = (int)albumDBPhotoNode.Attribute("idInAlbum");
                 photoObj.name = albumDBPhotoNode.Element("name").Value;
+                if (photoObj.name == string.Empty)
+                {
+                    string defaultPhotoName = albumDBPhotoNode.Parent.Parent.Element("albumName").Value
+                        + " "
+                        + Settings.DefaultImageName
+                        + " "
+                        + photoObj.idInAlbum;
+                    photoObj.name = defaultPhotoName;
+                    albumDBPhotoNode.Element("name").Value = defaultPhotoName;
+                }
                 photoObj.caption = albumDBPhotoNode.Element("caption").Value;
             }
             catch
