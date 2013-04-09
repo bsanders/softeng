@@ -828,13 +828,34 @@ namespace SoftwareEng
             {
                 //shut down all garbage compactors on the detention level
                 showErrorMessage(errorStrings.addImageFailure);
+                //let the gui know we are done with an import
+                isImporting = false;
+
+                //reset the progress bar.
+                progressBar.Visibility = Visibility.Collapsed;
+                progressBar.Value = 0;
+
+                //remove the cancel import button
+                cancelPhotoImportDockButton.Visibility = Visibility.Collapsed;
+                //if we are in an album view
+                if (currentAlbumUID != -1)
+                {
+                    //show the addPhotosButton again
+                    addPhotosDockButton.Visibility = Visibility.Visible;
+                }
+
+                //if we are in the album we are importing photos too then get all the photos and refresh the view
+                if (currentAlbumUID == albumUID)
+                {
+                    bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
+                }
             }
             else
             {
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //set phasers to stun
-                    showErrorMessage(errorStrings.addImageWarning);
+                    //showErrorMessage(errorStrings.addImageWarning);
                 }
                 //let the gui know we are done with an import
                 isImporting = false;

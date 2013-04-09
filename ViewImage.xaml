@@ -93,16 +93,16 @@
                     <Button x:Name="slideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Play slideshow" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="slideShowDockButton_Click">
                         <Image x:Name="slideShowDockButtonImage" Source="ImagesResources2012/Actions_5847.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="exitSlideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="End slideshow" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="exitSlideShowDockButton_Click" IsTabStop="False">
+                    <Button x:Name="exitSlideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="End slideshow" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="exitSlideShowDockButton_Click">
                         <Image x:Name="exitSlideShowDockButtonImage" Source="ImagesResources2012\Symbols_Critical_32xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="prevDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Previous" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="prevDockButton_Click" IsTabStop="False">
+                    <Button x:Name="prevDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Previous" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="prevDockButton_Click">
                         <Image x:Name="prevDockButtonImage" Source="ImagesResources2012/Symbols_Prev_32xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Next" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="nextDockButton_Click" IsTabStop="False">
+                    <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Next" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="nextDockButton_Click">
                         <Image x:Name="nextDockButtonImage" Source="ImagesResources2012/Symbols_Next_32xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="spareDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}" IsTabStop="False">
+                    <Button x:Name="spareDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                         <Image x:Name="spareDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Button>
                     <StackPanel Name="stackPanel1" Width="107" ToolTip="Seconds between slides">
@@ -120,7 +120,7 @@
         <Thumb x:Name="topRightThumb" Background="#001C2327" HorizontalAlignment="Right" Width="6" VerticalAlignment="Top" Height="6" Cursor="SizeNESW" DragDelta="topRightThumb_DragDeltaHandler" Opacity="0"/>
         <Thumb x:Name="bottomLeftThumb" Background="#001C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeNESW" DragDelta="bottomLeftThumb_DragDeltaHandler" VerticalAlignment="Bottom" Height="6" Opacity="0"/>
         <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" Height="27" Background="{DynamicResource PhotoBomberTitleBarBrush}" MouseDown="DockPanel_MouseDown_1">
-            <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitButtonClick" ToolTip="Close" IsTabStop="False">
+            <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitButtonClick" ToolTip="Close" IsTabStop="False" Focusable="False">
                 <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Close_16xLG.png"/>
             </Button>
             <Label Height="27" VerticalAlignment="Top" Padding="5" VerticalContentAlignment="Center" Margin="0" Foreground="#FFE2E2E2" FontWeight="Bold" TextOptions.TextFormattingMode="Display">
@@ -132,10 +132,10 @@
                     </Binding>
                 </Label.Content>
             </Label>
-            <Button x:Name="maximizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="maximizeToolbarButton_Click" ToolTip="Maximize" IsTabStop="False">
+            <Button x:Name="maximizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="maximizeToolbarButton_Click" ToolTip="Maximize" IsTabStop="False" Focusable="False">
                 <Image x:Name="maximizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/application_16xLG.png"/>
             </Button>
-            <Button x:Name="minimizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="minimizeButton_Click" ToolTip="Minimize" IsTabStop="False">
+            <Button x:Name="minimizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="minimizeButton_Click" ToolTip="Minimize" IsTabStop="False" Focusable="False">
                 <Image x:Name="minimizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Symbols_Blocked_16xLG.png"/>
             </Button>
         </DockPanel>
