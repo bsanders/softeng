@@ -497,20 +497,24 @@ namespace SoftwareEng
                 // Check to see if the file specified by thumbnailPath does NOT exist
                 if ((userAlbum.thumbnailPath != string.Empty) && (!File.Exists(userAlbum.thumbnailPath)))
                 {
-                    // If that's the case, get the first photo in the album...
-                    XElement firstPhoto = (from c in thisAlbum.Descendants("picture") select c).FirstOrDefault();
+                    // if the thumbnail doesn't exist... does the image itself?
+                    XElement thumbnailPhoto = util_getAlbumDBPhotoNode(userAlbum.UID, userAlbum.thumbAlbumID);
+                    ComplexPhotoData photoObj = util_getComplexPhotoData(error, thumbnailPhoto, userAlbum.UID);
 
-                    //if we cannot repel failure of that magnitude
-                    if (!File.Exists(firstPhoto.Element("filePath").Value))
+                    if (!File.Exists(photoObj.fullPath))
                     {
-                        //shut down all garbage crushers on the detention level
-
-                        //and continue
-                        continue;
+                        // if the image does not exist, remove all references of it from the whole DB
+                        util_purgePhotoFromDB(error, ByteArrayToString(photoObj.hash));
                     }
 
-                    // ... and set it to be the thumbnail (generating it, if necessary)
-                    util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(error, firstPhoto, userAlbum.UID));
+                    // get the first photo in the album and set it as the thumbnail
+                    XElement firstPhoto = (from c in thisAlbum.Descendants("picture") select c).FirstOrDefault();
+
+                    if (firstPhoto != null)
+                    {
+                        // ... and set it to be the thumbnail (generating it, if necessary)
+                        util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(error, firstPhoto, userAlbum.UID));
+                    }
                 }
 
                 try
@@ -926,9 +930,26 @@ namespace SoftwareEng
             {
                 // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
                 XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(newPicture.hash));
+
+                // Assign this new refcount
                 thisPic.Attribute("refCount").Value = newPicture.refCount.ToString();
-                // fetch the uid and put it in the complex photo data, we'll need it later
+
+                // fetch the uid and put it in the complex photo data, we'll need it later too
                 newPicture.UID = (int)thisPic.Attribute("uid");
+
+                // make sure the photo still exists on the filesystem
+                if (!File.Exists(thisPic.Element("filePath").Value))
+                {
+                    // good thing we checked!  Copy it to the filesystem again.
+                    newPicture.fullPath = util_copyPhotoToLibrary(
+                        errorReport,
+                        thisPic.Element("filePath").Value,
+                        newPicture.UID.ToString() + photoExtension);
+                }
+                else
+                {
+                    newPicture.fullPath = thisPic.Element("filePath").Value;
+                }
             }
 
             //if adding to the picture database failed
@@ -937,6 +958,7 @@ namespace SoftwareEng
                 return errorReport;
             }
 
+            // Now add it to the albums database
             util_addPicToAlbumDB(errorReport, newPicture, albumUID);
 
             //if adding to the album database failed
@@ -1042,12 +1064,12 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last: 3/28/13
+        //Edited Last: 4/8/13
         /// <summary>
-        /// Removes the specified photo from the specified album
+        /// Removes the photo instance from the album, deleting it if it no longer appears in any album.
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="pictureElement"></param>
+        /// <param name="pictureElement">An XElement objeect representing a picture in the AlbumDB</param>
         /// <returns></returns>
         private ErrorReport removePictureElement_backend(generic_callback guiCallback, XElement pictureElement)
         {
@@ -1103,7 +1125,7 @@ namespace SoftwareEng
         /// Removes the specified photo from the PhotoDB as well as the filesystem
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="pictureElement"></param>
+        /// <param name="pictureElement">An XElement object referencing a photo from the PhotoDB</param>
         /// <returns></returns>
         private ErrorReport removePictureFromPicsDB_backend(generic_callback guiCallback, XElement pictureElement)
         {
