@@ -490,6 +490,15 @@ namespace SoftwareEng
                     // If that's the case, get the first photo in the album...
                     XElement firstPhoto = (from c in thisAlbum.Descendants("picture") select c).FirstOrDefault();
 
+                    //if we cannot repel failure of that magnitude
+                    if (!File.Exists(firstPhoto.Element("filePath").Value))
+                    {
+                        //shut down all garbage crushers on the detention level
+
+                        //and continue
+                        continue;
+                    }
+
                     // ... and set it to be the thumbnail (generating it, if necessary)
                     util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(error, firstPhoto, userAlbum.UID));
                 }
