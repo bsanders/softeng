@@ -240,6 +240,7 @@ namespace SoftwareEng
             // This method of moving the folder to a new path and copying it back into the library works too
             // I'm not yet able to tell which is faster --BS
             // If you use this method, be sure to uncomment out the directory.delete function at the end of the foreach
+            // Note also that DirectoryInfo.*() does not guarantee any order to the files
             //String tmpDir = Path.Combine(libraryPath, "..", "backup");
             //Directory.Move(libraryPath, tmpDir);
             //Directory.CreateDirectory(libraryPath);
@@ -247,6 +248,9 @@ namespace SoftwareEng
             //FileInfo[] files = new DirectoryInfo(tmpDir).GetFiles();
 
             IEnumerable<FileInfo> libraryDir = new DirectoryInfo(libraryPath).EnumerateFiles();
+            // The files in libraryDir will not be sorted...
+            
+            //so we'll sort them here by removing the extension and then sorting them numerically
             IEnumerable<FileInfo> sortedFiles = libraryDir.OrderBy(
                 fi => int.Parse(Path.GetFileNameWithoutExtension(fi.Name))
                 );
@@ -476,13 +480,17 @@ namespace SoftwareEng
 
                 // Get the thumbnail path...
                 userAlbum.thumbnailPath = thisAlbum.Element("thumbnailPath").Value;
-                // check to see if the file still exists, it may also be empty string, which is ok?
+                // An album may legally have an empty thumbnail path (if for example it is empty)...
 
+                // Here we're going to check if we need to regenerate the album thumbnail
+                // First check to make sure the album's thumbnail is NOT set to empty string (an empty album) AND
+                // Check to see if the file specified by thumbnailPath does NOT exist
                 if ((userAlbum.thumbnailPath != string.Empty) && (!File.Exists(userAlbum.thumbnailPath)))
                 {
-                    // check to see if this is going to be the first photo in an otherwise empty library...
+                    // If that's the case, get the first photo in the album...
                     XElement firstPhoto = (from c in thisAlbum.Descendants("picture") select c).FirstOrDefault();
 
+                    // ... and set it to be the thumbnail (generating it, if necessary)
                     util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(error, firstPhoto, userAlbum.UID));
                 }
 
