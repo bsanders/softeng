@@ -10,7 +10,7 @@
         mc:Ignorable="d" 
         x:Class="SoftwareEng.MainWindow"
     
-        Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" PreviewMouseLeftButtonUp="mainWindow_PreviewMouseLeftButtonUp" PreviewMouseRightButtonDown="mainWindow_PreviewMouseRightButtonDown">
+        Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" PreviewMouseLeftButtonUp="mainWindow_PreviewMouseLeftButtonUp" PreviewMouseRightButtonDown="mainWindow_PreviewMouseRightButtonDown" Closing="mainWindow_Closing">
     
     <Window.Resources>
 

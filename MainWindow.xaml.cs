@@ -1116,30 +1116,7 @@ namespace SoftwareEng
         /// <param name="e">Event args</param>
         private void exitDockButton_Click(object sender, RoutedEventArgs e)
         {
-            //if we are importing we need to handle stopping the thread.
-            if (isImporting)
-            {
-                ErrorReport error = bombaDeFotos.cancelAddNewPicturesThread();
-                //if the thread failed to be stopped.
-                if (error.reportID == ErrorReport.FAILURE)
-                {
-                    showErrorMessage(errorStrings.stopImportFailure);
-                }
-                //else we are all good to close
-                {
-                    this.Close();
-                    //add this line to make sure the app properly closes now that we've screwed with the
-                    //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
-                    App.Current.Shutdown();
-                }
-            }
-            else
-            {
-                this.Close();
-                //add this line to make sure the app properly closes now that we've screwed with the
-                //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
-                App.Current.Shutdown();
-            }
+            this.Close();
         }
 
         /**************************************************************************************************************************
@@ -1964,6 +1941,43 @@ namespace SoftwareEng
         {
             AlbumContextMenu.IsOpen = false;
             libraryContextMenu.IsOpen = false;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Intercept any closing event and gracefully shut down the program.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            //if we are importing we need to handle stopping the thread.
+            if (isImporting)
+            {
+                ErrorReport error = bombaDeFotos.cancelAddNewPicturesThread();
+                //if the thread failed to be stopped.
+                if (error.reportID == ErrorReport.FAILURE)
+                {
+                    showErrorMessage(errorStrings.stopImportFailure);
+                }
+                //else we are all good to close
+                {
+                    //add this line to make sure the app properly closes now that we've screwed with the
+                    //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
+                    App.Current.Shutdown();
+                }
+            }
+            else
+            {
+                //add this line to make sure the app properly closes now that we've screwed with the
+                //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
+                App.Current.Shutdown();
+            }
         }
 
         
