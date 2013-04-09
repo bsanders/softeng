@@ -356,6 +356,7 @@ namespace SoftwareEng
             }
 
             albumNode.Element("thumbnailPath").Value = thumbPath;
+            albumNode.Element("thumbnailPath").Attribute("thumbAlbumID").Value = photoObject.idInAlbum.ToString();
         }
 
         //--------------------------------------------------------
@@ -776,7 +777,7 @@ namespace SoftwareEng
             //construct the object we will be adding to the database.
             XElement newAlbum = new XElement("album",
                                             new XAttribute("uid", albumData.UID),
-                                            new XElement("thumbnailPath", albumData.thumbnailPath),
+                                            new XElement("thumbnailPath", new XAttribute("thumbAlbumID", albumData.thumbAlbumID), albumData.thumbnailPath),
                                             new XElement("albumName", albumData.albumName),
                                             new XElement("albumPhotos"));
 
@@ -986,13 +987,6 @@ namespace SoftwareEng
                 errorReport.description = "Unable to make a copy of the photo in the library.";
                 return "";
             }
-
-            // Pre-generate thumbnails...
-            /* moving to addNewPicture_backend in PhotoBombBackend.cs
-            util_generateThumbnail(errorReport, newPath, picNameInLibrary, Settings.smThumbSize);
-            util_generateThumbnail(errorReport, newPath, picNameInLibrary, Settings.medThumbSize);
-            util_generateThumbnail(errorReport, newPath, picNameInLibrary, Settings.lrgThumbSize);
-            */
 
             //new library path
             return newPath;

@@ -381,6 +381,7 @@ namespace SoftwareEng
         private String _albumName;
         private int _UID;
         private string _thumbnailPath;
+        private int _thumbAlbumID;
         //add more information here if needed...
         //event for changing a property
         public event PropertyChangedEventHandler PropertyChanged;
@@ -436,12 +437,30 @@ namespace SoftwareEng
             }
         }
 
+        public int thumbAlbumID
+        {
+            set
+            {
+                if (value != _thumbAlbumID)
+                {
+                    _thumbAlbumID = value;
+                    //call on property changed to update the GUI(hopefully)
+                    OnPropertyChanged("thumbAlbumID");
+                }
+            }
+            get
+            {
+                return _thumbAlbumID;
+            }
+        }
+
         //initialize vars.
         public SimpleAlbumData()
         {
             _albumName = "";
             _UID = -1;//indicates UID not set.
             _thumbnailPath = "";
+            _thumbAlbumID = -1;
         }
 
         /*

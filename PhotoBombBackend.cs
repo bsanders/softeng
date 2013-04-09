@@ -482,6 +482,16 @@ namespace SoftwareEng
                 userAlbum.thumbnailPath = thisAlbum.Element("thumbnailPath").Value;
                 // An album may legally have an empty thumbnail path (if for example it is empty)...
 
+                // Get the idInAlbum of the thumbnail
+                try
+                {
+                    userAlbum.thumbAlbumID = Convert.ToInt32(thisAlbum.Element("thumbnailPath").Attribute("thumbAlbumID").Value);
+                }
+                catch
+                {
+                    userAlbum.thumbAlbumID = -1;
+                }
+
                 // Here we're going to check if we need to regenerate the album thumbnail
                 // First check to make sure the album's thumbnail is NOT set to empty string (an empty album) AND
                 // Check to see if the file specified by thumbnailPath does NOT exist
@@ -974,6 +984,7 @@ namespace SoftwareEng
                 if (thisAlbum.Descendants("picture").Count() == 1)
                 {
                     thisAlbum.Element("thumbnailPath").Value = "";
+                    thisAlbum.Element("thumbnailPath").Attribute("thumbAlbumID").Value = "-1";
                 }
                 else
                 {
