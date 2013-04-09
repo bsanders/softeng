@@ -7,7 +7,7 @@
             <ImageBrush ImageSource="ImagesResources2012/NewIconClipart.png" Stretch="Uniform"/>
         </Grid.Background>
         <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" Height="27" Background="{DynamicResource PhotoBomberTitleBarBrush}">
-            <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitButtonClick">
+            <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitButtonClick" IsTabStop="False">
                 <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Close_16xLG.png"/>
             </Button>
             <Label Content="About" Height="27" VerticalAlignment="Top" Padding="5" VerticalContentAlignment="Center" Margin="0" Foreground="#FFE2E2E2" FontWeight="Bold" TextOptions.TextFormattingMode="Display"/>
