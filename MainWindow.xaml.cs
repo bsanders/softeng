@@ -80,6 +80,9 @@ namespace SoftwareEng
         //the view image window
         ViewImage view = new ViewImage();
 
+        //the about window
+        aboutWindow photoBomberAboutWindow;
+
         //DATABINDING SOURCE 
         private ReadOnlyObservableCollection<SimpleAlbumData> _listOfAlbums;
         private ReadOnlyObservableCollection<ComplexPhotoData> _listOfPhotos;
@@ -1512,9 +1515,15 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         private void aboutButtonPressed_eventHandler(object sender, RoutedEventArgs e)
         {
-            aboutWindow someWindow = new aboutWindow();
+            //if this window is already open, close it.
+            if (photoBomberAboutWindow != null)
+            {
+                photoBomberAboutWindow.Close();
+            }
 
-            someWindow.ShowDialog();
+            photoBomberAboutWindow = new aboutWindow();
+
+            photoBomberAboutWindow.Show();
         }
 
         /**************************************************************************************************************************

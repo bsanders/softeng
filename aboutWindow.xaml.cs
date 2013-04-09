@@ -1,4 +1,10 @@
-﻿using System;
+﻿/********************************************************************************
+ * About window for PhotoBomber program.
+ * ******************************************************************************
+ * Changelog:
+ * 4/8/13 Ryan Causey: Added window deactivated event handler
+ *******************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,6 +65,22 @@ namespace SoftwareEng
             {
                 this.WindowState = WindowState.Maximized;
             }
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By: 
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for about window lost focus.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PhotoBomberAboutWindow_Deactivated(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
