@@ -723,6 +723,70 @@ namespace SoftwareEng
             error.description = "great success!";
         }
 
+        //-------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: Bill Sanders 4/8/13
+        /// <summary>
+        /// Removes all instances of the picture from the DB files
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="hash">The hash of the file to remove</param>
+        private void util_purgePhotoFromDB(ErrorReport error, string hash)
+        {
+            // First get all of the intsances of it from the AlbumDB
+            IEnumerable<XElement> albumDBPhotos = util_getAlbumDBPhotoNodes(error, hash);
+            // Note, foreaching over an IEnumerable is sometimes broken, so .ToList()
+            foreach (XElement photoNode in albumDBPhotos.ToList())
+            {
+                // And remove them!
+                photoNode.Remove();
+            }
+
+            // Now get the reference to it in the Photos DB
+            XElement photoElem = util_getPhotoDBNode(error, hash);
+            // And git rid of it and remove it from the backend.
+            removePictureFromPicsDB_backend(null, photoElem);
+
+            return;
+        }
+
+        //-------------------------------------------------------
+        //By: Bill Sanders
+        //Edited Last: Bill Sanders 4/8/13
+        /// <summary>
+        /// Return all of the pictures in the AlbumsDB that match the provided hash
+        /// </summary>
+        /// <param name="error"></param>
+        /// <param name="hash">The hash to search for</param>
+        private IEnumerable<XElement> util_getAlbumDBPhotoNodes(ErrorReport error, string hash)
+        {
+            // Don't bother with an empty hash...
+            // in the future I guess this could return every picture instance in the DB?
+            if (hash == string.Empty)
+            {
+                error.reportID = ErrorReport.FAILURE;
+                error.description = "Invalid sha1";
+                return null;
+            }
+
+            // The return var
+            IEnumerable<XElement> allAlbumDBPhotos = new List<XElement>();
+
+            // Descendants() lets us search for the element ignoring tag nesting
+            try
+            {
+                allAlbumDBPhotos = (from c in _albumsDatabase.Descendants("picture")
+                                    where (string)c.Attribute("sha1") == hash
+                                    select c);
+            }
+            catch
+            {
+                // how do we get here?
+                throw new NotImplementedException();
+            }
+            return allAlbumDBPhotos;
+        }
+
         // Commenting this out, its functionality has been merged with util_getNextUID()
         // to replicate: util_getNextUID(_albumsDatabase, "album", 1)
         //------------------------------------------------------
