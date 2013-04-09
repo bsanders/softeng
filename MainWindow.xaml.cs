@@ -855,7 +855,7 @@ namespace SoftwareEng
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //set phasers to stun
-                    showErrorMessage(errorStrings.addImageWarning);
+                    //showErrorMessage(errorStrings.addImageWarning);
                 }
                 //let the gui know we are done with an import
                 isImporting = false;
