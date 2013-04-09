@@ -1996,7 +1996,12 @@ namespace SoftwareEng
                     showErrorMessage(errorStrings.stopImportFailure);
                 }
                 //else we are all good to close
+                else
                 {
+                    // Make sure the backend saves cleanly
+                    bombaDeFotos.saveAlbumsXML(null);
+                    bombaDeFotos.savePicturesXML(null);
+
                     //add this line to make sure the app properly closes now that we've screwed with the
                     //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
                     App.Current.Shutdown();
@@ -2004,6 +2009,10 @@ namespace SoftwareEng
             }
             else
             {
+                // Make sure the backend saves cleanly
+                bombaDeFotos.saveAlbumsXML(null);
+                bombaDeFotos.savePicturesXML(null);
+
                 //add this line to make sure the app properly closes now that we've screwed with the
                 //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
                 App.Current.Shutdown();
