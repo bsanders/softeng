@@ -19,6 +19,7 @@
  *                     Handled an error case where an unhandled exception would be thrown in saveAlbums/PicturesXML
  * 4/6/13 Ryan Causey: Edited the removePhoto backend function to update the observable collection.
  *                     Fixed using the wrong UID to find the element in the photos collection.
+ * 4/8/13 Ryan Causey: Removed a call to the validate caption utility function.
  **/
 using System;
 using System.Collections.Generic;
@@ -1268,11 +1269,13 @@ namespace SoftwareEng
             }
 
             // ensure the caption is valid, before setting it
+            /* commenting this out as we validate the caption with a regex in the front end
             if (!util_checkCaptionIsValid(newCaption))
             {
                 guiCallback(errorReport);
                 return;
             }
+             */
 
             // change the photo's caption.
             util_setPhotoCaption(errorReport, photoElem, newCaption);
