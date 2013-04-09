@@ -15,7 +15,7 @@
       <Value Profile="(Default)">photo library</Value>
     </Setting>
     <Setting Name="PhotoLibraryBackupName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Recovery Album</Value>
+      <Value Profile="(Default)">Backup Recover Album</Value>
     </Setting>
     <Setting Name="PhotoLibraryThumbsDir" Type="System.String" Scope="User">
       <Value Profile="(Default)">thumbs_db</Value>
