@@ -41,6 +41,10 @@
  *                     Fixed a bug with the viewImage function that would lead to an unhandled exception.
  *                     Changed the returnToLibraryView function to close any open viewImage windows.
  *                     Fixed a bug where the application would close the main window but not end the process.
+ *                     Implemented changing of image captions. Behavior is as follows: If both the photo's name field is
+ *                     empty, it only changes the photo's caption field. If the photo's name field is not empty, it will validate
+ *                     the photo name and then validate the caption.
+ *                     Changed the regex for caption validation to allow blank captions, in order to allow captions to be removed.
  */
 using System;
 using System.Collections.Generic;
@@ -256,28 +260,15 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Author: Ryan Causey
          * Created on: 4/3/13
-         * Function for validating that a new album or photo name is valid and unique.
+         * Function for validating that a new album name is valid and unique.
          * Last Edited By: Ryan Causey
-         * Last Edited Date: 4/7/13
+         * Last Edited Date: 4/8/13
          **************************************************************************************************************************/
-        private void guiValidateName()
+        private void guiValidateAlbumName()
         {
-            String validationRegex;
-            // check to see if we're validating an album or a photo
-            if (currentAlbumUID == -1)
-            {
-                // We're in the library view, naming an album
-                validationRegex = albumValidationRegex;
-            }
-            else
-            {
-                // We're in the album view, naming a photo
-                validationRegex = photoValidationRegex;
-            }
-
             // Trim the whitespace of this input, SRS Requires no leading/trailing whitespace
             nameTextBox.Text = nameTextBox.Text.Trim();
-            if (!validateTheString(validationRegex, nameTextBox.Text))
+            if (!validateTheString(promptStrings.albumValidationRegex, nameTextBox.Text))
             {
                 // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
@@ -285,16 +276,7 @@ namespace SoftwareEng
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Begin();
 
-                if (currentAlbumUID == -1)
-                {
-                    handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
-                }
-                else
-                {
-                    handleNameErrorPopup(true, errorStrings.invalidImageNameCharacter);
-                }
-
-                //apply error template to the text box.
+                handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
                 //focus the text box and select all the text
                 nameTextBox.Focus();
@@ -304,17 +286,8 @@ namespace SoftwareEng
 
             // Otherwise the text was good, but still might not be unique.
             // Let's check Library vs Album check again...
-            if (currentAlbumUID == -1)
-            {
-                //check to see if the album name is unique in the program
-                bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), nameTextBox.Text);
-            }
-            else
-            {
-                // check to see if the photo was unique in this album
-                bombaDeFotos.checkIfPhotoNameIsUnique(new generic_callback(guiValidatePhotoName_Callback), nameTextBox.Text, currentAlbumUID);
-            }
-
+            //check to see if the album name is unique in the program
+            bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), nameTextBox.Text);
         }
 
         /**************************************************************************************************************************
@@ -363,11 +336,44 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         * Created by: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Function to validate the photo name entered. Also calls 
+        /// </summary>
+        private void guiValidatePhotoName()
+        {
+            // Trim the whitespace of this input, SRS Requires no leading/trailing whitespace
+            photoNameTextBox.Text = photoNameTextBox.Text.Trim();
+            if (!validateTheString(promptStrings.albumValidationRegex, photoNameTextBox.Text))
+            {
+                // If the text doesn't validate, display an error...
+                //this is how to call a storyboard defined in resources from the code
+                //this storyboard is for the name box
+                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
+                nameTextBoxErrorAnimation.Begin();
+
+                handlePhotoNameErrorPopup(true, errorStrings.invalidImageNameCharacter);
+                //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
+                //focus the text box and select all the text
+                photoNameTextBox.Focus();
+                photoNameTextBox.SelectAll();
+                return;
+            }
+            // Otherwise the text was good, but still might not be unique.
+            //check to see if the photo name is unique in the program
+            bombaDeFotos.checkIfPhotoNameIsUnique(new generic_callback(guiValidatePhotoName_Callback), photoNameTextBox.Text, currentAlbumUID);
+        }
+
         /**************************************************************************************************************************
          * Author: Bill Sanders, based on code by Ryan Causey
          * Created on: 4/3/13
          * Last Edited By: Ryan Causey
-         * Last Edited Date: 4/7/13
+         * Last Edited Date: 4/8/13
          * Callback for checking uniqueness of a new photo name. This will be called after the back end finishes checking if the photo
          * name is unique
          **************************************************************************************************************************/
@@ -378,24 +384,23 @@ namespace SoftwareEng
             {
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
-                nameTextBoxErrorAnimation.Begin();
+                Storyboard photoNameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
+                photoNameTextBoxErrorAnimation.Begin();
 
-                handleNameErrorPopup(true, errorStrings.invalidImageNameUnique);
+                handlePhotoNameErrorPopup(true, errorStrings.invalidImageNameUnique);
                 //apply error template to the text box
                 //focus the text box and select all the text
-                nameTextBox.Focus();
-                nameTextBox.SelectAll();
+                photoNameTextBox.Focus();
+                photoNameTextBox.SelectAll();
             }
             //it was unique, great success!
             else
             {
-                guiRenameSelectedPhoto(nameTextBox.Text);
-                hideAddAlbumBox();
-                Storyboard textBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
-                textBoxErrorAnimation.Stop();
-                handleNameErrorPopup(false, "");
-                nameTextBox.Clear();
+                Storyboard photoNameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
+                photoNameTextBoxErrorAnimation.Stop();
+                handlePhotoNameErrorPopup(false, "");
+                //now need to validate the caption with the photo, if there is one.
+                guiValidateCaptionContent();
             }
         }
 
@@ -446,31 +451,49 @@ namespace SoftwareEng
          */
         /// <summary>
         /// GUI function to validate the caption content and add it if it is valid.
+        /// If we have gotten this far we have already validated the photo name.
         /// </summary>
         private void guiValidateCaptionContent()
         {
             //trim the input of leading and trailing whitespace
             commentTextBox.Text = commentTextBox.Text.Trim();
-            //if the text box is empty, ignore it.
-            if (!(commentTextBox.Text == ""))
+            //if it is not a valid string
+            if (!validateTheString(captionValidationRegex, commentTextBox.Text))
             {
-                //if it is not a valid string
-                if (!validateTheString(captionValidationRegex, commentTextBox.Text))
-                {
-                    Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
-                    commentTextBoxAnimation.Begin();
+                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                commentTextBoxAnimation.Begin();
 
-                    handleCommentErrorPopup(true, errorStrings.invalidComment);
-                    commentTextBox.Focus();
-                    commentTextBox.SelectAll();
-                }
-                else
+                handleCommentErrorPopup(true, errorStrings.invalidComment);
+                commentTextBox.Focus();
+                commentTextBox.SelectAll();
+            }
+            else
+            {
+                guiChangePhotoCaption(commentTextBox.Text);
+                if (photoNameTextBox.Text != "")
                 {
-                    guiChangePhotoCaption(commentTextBox.Text);
-                } 
+                    guiRenameSelectedPhoto(photoNameTextBox.Text); 
+                }
+                //clean up the comment box error dialogues and also clear the text boxes
+                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                commentTextBoxAnimation.Stop();
+                handleCommentErrorPopup(false, "");
+                commentTextBox.Clear();
+                photoNameTextBox.Clear();
+                hideAddAlbumBox();
             }
         }
 
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Gui function to change a photo's caption
+        /// </summary>
+        /// <param name="caption">The new caption value</param>
         private void guiChangePhotoCaption(String caption)
         {
             if(mainWindowAlbumList.SelectedItem != null)
@@ -479,6 +502,16 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Callback for guiChangePhotoCaption. Simply displays an error if there was one.
+        /// </summary>
+        /// <param name="error"></param>
         public void guiChangePhotoCaption_Callback(ErrorReport error)
         {
             if (error.reportID == ErrorReport.FAILURE)
@@ -1188,31 +1221,36 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Created By: Alejandro Sosa
          * Edited Last By: Ryan Causey
-         * Edited Last Date: 4/7/13
+         * Edited Last Date: 4/8/13
          **************************************************************************************************************************/
         private void showAddAlbumBox()
         {
             ItemAddOrEditDialogBar.Visibility = Visibility.Visible;
-
-            NameTextBlock.Visibility = Visibility.Visible;
-            nameTextBox.Visibility = Visibility.Visible;
 
             acceptAddToolbarButton.Visibility = Visibility.Visible;
             cancelAddToolbarButton.Visibility = Visibility.Visible;
 
             if (currentAlbumUID != -1)
             {
+                photoNameTextBox.Visibility = Visibility.Visible;
+                photoNameTextBlock.Visibility = Visibility.Visible;
                 commentTextBlock.Visibility = Visibility.Visible;
                 commentTextBox.Visibility = Visibility.Visible;
+                commentTextBox.Text = ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).caption;
+                Keyboard.Focus(commentTextBox);
             }
-
-            Keyboard.Focus(nameTextBox);
+            else
+            {
+                NameTextBlock.Visibility = Visibility.Visible;
+                nameTextBox.Visibility = Visibility.Visible;
+                Keyboard.Focus(nameTextBox);
+            }
         }
 
         /**************************************************************************************************************************
          * Created By: Alejandro Sosa
          * Edited Last By: Ryan Causey
-         * Edited Last Date: 4/7/13
+         * Edited Last Date: 4/8/13
          **************************************************************************************************************************/
         private void hideAddAlbumBox()
         {
@@ -1226,6 +1264,9 @@ namespace SoftwareEng
 
             commentTextBlock.Visibility = Visibility.Collapsed;
             commentTextBox.Visibility = Visibility.Collapsed;
+
+            photoNameTextBox.Visibility = Visibility.Collapsed;
+            photoNameTextBlock.Visibility = Visibility.Collapsed;
         }
 
         /**************************************************************************************************************************
@@ -1512,14 +1553,34 @@ namespace SoftwareEng
         /**************************************************************************************************************************
          * Created by: Ryan Causey
          * Created on: 4/3/13
-         * Event handler for when the user clicks the checkbox for creating a new album with the name
+         * Event handler for when the user clicks the checkbox for album names, photo names, and captions
          * they specified in the text box.
-         * Last Edited By:
-         * Last Edited Date:
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/8/13
          **************************************************************************************************************************/
         private void acceptAddToolBarButton_Click(object sender, RoutedEventArgs e)
         {
-            guiValidateName();
+            //if we aren't in the library view
+            if (currentAlbumUID != -1)
+            {
+                //if the photo name text box is empty, but the caption text box is not
+                if (photoNameTextBox.Text == "")
+                {
+                    //only try to validate and add the photo caption
+                    guiValidateCaptionContent();
+                }
+                //else the photo name is not blank
+                else
+                {
+                    //so validate the photo name, which will also call caption validation if needed
+                    guiValidatePhotoName();
+                }
+            }
+            //else we are in the library view so validate the album name.
+            else
+            {
+                guiValidateAlbumName();
+            }
         }
 
         /**************************************************************************************************************************
@@ -1604,6 +1665,23 @@ namespace SoftwareEng
         {
             errorBalloon.Content = errorMessage;
             invalidInputPopup.IsOpen = showIt;
+        }
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handle the showing or hiding of the error message popup for the photo name box.
+        /// </summary>
+        /// <param name="show">Boolean saying whether to open or close the popup. True = open, False = close</param>
+        /// <param name="errorMessage">The error string to display in the error popup.</param>
+        private void handlePhotoNameErrorPopup(bool show, String errorMessage)
+        {
+            photoErrorBalloon.Content = errorMessage;
+            invalidPhotoNamePopup.IsOpen = show;
         }
 
         /*
