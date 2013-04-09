@@ -1944,6 +1944,24 @@ namespace SoftwareEng
             guiViewPicture(true);
         }
 
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Handler for the selectionChanged event to ensure the context menu closes when selection is changed by a means
+        /// other than the mouse.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mainWindowAlbumList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AlbumContextMenu.IsOpen = false;
+            libraryContextMenu.IsOpen = false;
+        }
+
         
     }
 
