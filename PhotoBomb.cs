@@ -48,38 +48,46 @@ namespace SoftwareEng
 
         //By: Ryan Moe
         //Edited Last: 
-        public PhotoBomb() { }
 
-        //----------------------------------------------
-        //By: Ryan Moe
-        //Edited Last: 
-        //
-        //initialize the backend object AND load the databases.
-        //DOES NOT re-initialize the databases if there is a problem.
-        //PARAM 1 = the callback for the results of loading the databses.
-        //PARAM 2 = the path to the album database (xml).
-        //PARAM 3 = path to the pictures database.
-        //PARAM 4 = the path to the folder where all the pictures
-        //          tracked by this program are stored.
-        //ERROR CONDITIONS
-        //Fails if one of the database xml files is not found or if 
-        //the library folder does not exist.
+        /// <summary>
+        /// By: Ryan Moe
+        /// Edited Last: 4/19/13 Julian Nguyen
+        /// </summary>
+        public PhotoBomb() { /* Do Nothing */ }
+
+
+        /// <summary>
+        /// By: Ryan Moe
+        /// Edited Last: 4/19/13 Julian Nguyen
+        /// 
+        /// ERROR CONDITIONS
+        /// Fails if one of the database xml files is not found or if 
+        /// the library folder does not exist.
+        /// 
+        /// </summary>
+        /// <param name="guiCallback">the callback for the results of loading the databses.</param>
+        /// <param name="albumDatabasePathIn">the path to the album database (xml).</param>
+        /// <param name="pictureDatabasePathIn">path to the pictures database.</param>
+        /// <param name="libraryPath">the path to the folder where all the pictures tracked by this program are stored.</param>
         public void init(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPath)
         {
             init_backend(guiCallback, albumDatabasePathIn, pictureDatabasePathIn, libraryPath);
         }
 
-        //----------------------------------------------
-        //By: Ryan Moe
-        //Edited Last: 
-        //
-        //CAREFULL!!!  This will blow out the databases and make a new library folder.
-        //Before making the new library folder, if an old folder was found, that old folder
-        //will be renamed to libraryName_backup.
-        //ERROR CONDITIONS
-        //This returns an error if it fails to create one of the database files or
-        //the folder.  If libraryName_backup exists it also returns an error.
 
+        /// <summary>
+        /// By: Ryan Moe
+        /// Edited Last: 4/19/13 Julian Nguyen
+        /// 
+        /// CAREFULL!!!  This will blow out the databases and make a new library folder.
+        /// Before making the new library folder, if an old folder was found, that old folder
+        /// will be renamed to libraryName_backup.
+        /// 
+        /// ERROR CONDITIONS
+        /// This returns an error if it fails to create one of the database files or
+        /// the folder.  If libraryName_backup exists it also returns an error.
+        /// </summary>
+        /// <param name="guiCallback"></param>
         public void rebuildBackendOnFilesystem(generic_callback guiCallback)
         {
             rebuildBackendOnFilesystem_backend(guiCallback);
@@ -176,12 +184,18 @@ namespace SoftwareEng
             sendSelectedPhotosToClipboard_backend(guiCallback, albumUID);
         }
 
-        //---------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //
-        //This method will return a complex photo data object
-        //filled out with the data of one photo referenced by the uid param.
+
+        /// <summary>
+        /// By: Ryan Moe
+        /// Edited Last: 4/19/13 Julian Nguyen
+        /// 
+        /// This method will return a complex photo data object
+        /// filled out with the data of one photo referenced by the uid param.
+        /// 
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="photoUID">The Photo's UID</param>
+        /// <param name="albumUID">The Album's UID</param>
         public void getPhoto(getPhotoByUID_callback guiCallback, int photoUID, int albumUID)
         {
             getPhoto_backend(guiCallback, photoUID, albumUID);
@@ -206,9 +220,9 @@ namespace SoftwareEng
         //}
 
         //----------------------------------------------
-        //By: Bill Sanders
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/6/13
+        /// By: Bill Sanders
+        /// Edited Last By: Ryan Causey
+        /// Edited Last Date: 4/6/13
         /// <summary>
         /// This function removes the specified photo from the specified album.
         /// </summary>
@@ -331,55 +345,66 @@ namespace SoftwareEng
         //
         //Change the name of a photo (its name in a single album) in the
         //database and save the change to disk.
+
+        /// <summary>
+        /// By Ryan Moe
+        /// Edited Last: 4/19/13 Julian Nguyen
+        /// 
+        /// 
+        /// Change the name of a photo (its name in a single album) in the
+        /// database and save the change to disk.
+        /// 
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID"></param>
+        /// <param name="photoUID"></param>
+        /// <param name="newName"></param>
         public void changePhotoNameByUID(generic_callback guiCallback, int albumUID, int photoUID, String newName)
         {
             changePhotoNameByUID_backend(guiCallback, albumUID, photoUID, newName);
         }
 
-        //------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //
-        //THIS IS THREADED, call this instead of multiple calls to addnewPicture to prevent gui lockup.
-        //Adds multiple new photos to the databases and moves a copy of the picture to the library.
-        //Also writes all these changes to the disk.
-        //PARAM 2 = List of photo paths on the disk.
-        //PARAM 3 = List of photo extensions (ex: ".jpg").
-        //PARAM 4 = the SINGLE uid of the album to add ALL photos to.
-        //PARAM 5 = the list of names for the photos in the album.
-        //          NOTE: you can pass in NULL for the list for all default names,
-        //                or you can have "" for a single element for a single default name.
-        //PARAM 6 = a callback for the thread to send progress updates to.
-        //PARAM 7 = the number of pictures to add BEFORE sending a progress update.
-        public void addNewPictures(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+
+        /// <summary>
+        /// By: Ryan Moe
+        /// Edited Last: 4/19/13 Julian Nguyen
+        /// 
+        /// THIS IS THREADED, call this instead of multiple calls to addnewPicture to prevent gui lockup.
+        /// Adds multiple new photos to the databases and moves a copy of the picture to the library.
+        /// Also writes all these changes to the disk.
+        /// 
+        /// </summary>
+        /// <param name="guiCallback">Null</param>
+        /// <param name="photoUserPath">List of photo paths on the disk.</param>
+        /// <param name="photoExtension"> List of photo extensions (ex: ".jpg").</param>
+        /// <param name="albumUID">the SINGLE uid of the album to add ALL photos to.</param>
+        /// <param name="pictureNameInAlbum">the list of names for the photos in the album.
+        //                                   NOTE: you can pass in NULL for the list for all default names,
+        //                                   or you can have "" for a single element for a single default name.</param>
+        /// <param name="updateCallback">a callback for the thread to send progress updates to</param>
+        /// <param name="updateAmount">the number of pictures to add BEFORE sending a progress update</param>
+        
+        public void addNewPictures(addNewPictures_callback guiCallback, List<String> photoUserPath, 
+            List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, 
+            ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addNewPictures_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum, updateCallback, updateAmount);
         }
 
-        //--------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //
-        //This will cancel the thread from addNewPictures() if it exists.
-        //Returns the error report directly.
+
+        /// <summary>
+        /// By Ryan Moe
+        /// Edited Last: 4/19/13 Julian Nguyen
+        /// 
+        /// This will cancel the thread from addNewPictures() if it exists
+        /// </summary>
+        /// <returns> The error report directly. </returns>
+        
         public ErrorReport cancelAddNewPicturesThread()
         {
             return cancelAddNewPicturesThread_backend();
         }
-    }//class
 
-
-    //-------------------------------------------------
-    //DATA CLASSES-------------------------------------
-    //-------------------------------------------------
-
-
-
-
-
-        
-
-
-
+    }// End of PhotoBomb class 
 
 }//namespace
