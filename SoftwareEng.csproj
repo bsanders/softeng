@@ -114,6 +114,7 @@
     <Compile Include="aboutWindow.xaml.cs">
       <DependentUpon>aboutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ComplexPhotoData.cs" />
     <Compile Include="customRadialPanel.cs" />
     <Compile Include="errorStrings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -130,6 +131,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>promptStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="SimpleAlbumData.cs" />
+    <Compile Include="SimplePhotoData.cs" />
     <Compile Include="SingleInstance.cs" />
     <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>

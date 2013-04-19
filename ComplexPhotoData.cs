@@ -7,11 +7,21 @@ using System.ComponentModel;
 using System.IO;
 
 //--------------------------------
-//More complex photo data returned by functions like getPhotoDataByUID().
-//By: Ryan Moe
+//
+//
 //Edited Last By: Ryan Causey
 //Edited Date: 4/5/13
 
+
+/*
+ * More complex photo data returned by functions like getPhotoDataByUID().
+ * 
+ * Changelog:
+ * m/dd/yy Class by Ryan Moe 
+ * 4/5/13  Edited Last By: Ryan Causey
+ * 4/19/13 Julian Nguyen: Removed from Photobomb.cs and added to this file. 
+ *                        The public scope modifier was added to class.
+ */
 
 namespace SoftwareEng
 {
