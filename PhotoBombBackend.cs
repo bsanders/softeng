@@ -20,6 +20,7 @@
  * 4/6/13 Ryan Causey: Edited the removePhoto backend function to update the observable collection.
  *                     Fixed using the wrong UID to find the element in the photos collection.
  * 4/8/13 Ryan Causey: Removed a call to the validate caption utility function.
+ * 4/19/13 Julian Nguyen: Added ErrorReport.ReportTypes to replace the old CONSTANTS for ReportID.
  **/
 using System;
 using System.Collections.Generic;
@@ -133,7 +134,7 @@ namespace SoftwareEng
                 }
                 catch
                 {
-                    errorReport.reportID = ErrorReport.FAILURE;
+                    errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                     errorReport.description = "Unable to create the new library folder.";
                     guiCallback(errorReport);
                     return;
@@ -144,7 +145,7 @@ namespace SoftwareEng
             createDefaultXML(errorReport);
 
             // Check the XML creation for bugs
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -155,7 +156,7 @@ namespace SoftwareEng
             util_openAlbumsXML(errorReport);
             util_openPicturesXML(errorReport);
 
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -204,7 +205,7 @@ namespace SoftwareEng
             util_addAlbumToAlbumDB(errorReport, backupAlbum);
 
             //if adding to the album database failed
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 return -1;
             }
@@ -232,7 +233,7 @@ namespace SoftwareEng
         {
             if (albumUID == -1)
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Failed to create recovery album";
                 return errorReport;
             }
@@ -264,7 +265,7 @@ namespace SoftwareEng
                 newPicture.hash = util_getHashOfFile(fi.FullName);
                 if (!util_checkPhotoIsUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
                 {
-                    errorReport.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    errorReport.reportID = ErrorReport.ReportTypes.SUCCESS_WITH_WARNINGS;
                     errorReport.description = "Picture is not unique.";
                     errorReport.warnings.Add("Picture is not unique: " + fi.FullName);
                     return errorReport;
@@ -279,7 +280,7 @@ namespace SoftwareEng
                 // error checking the call
                 if (!util_checkIDIsValid(newPicture.UID))
                 {
-                    errorReport.reportID = ErrorReport.FAILURE;
+                    errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                     errorReport.description = "Failed to get a UID for a new picture.";
                     return errorReport;
                 }
@@ -308,7 +309,7 @@ namespace SoftwareEng
                 }
 
                 //if adding to the picture database failed
-                if (errorReport.reportID == ErrorReport.FAILURE)
+                if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
                 {
                     return errorReport;
                 }
@@ -316,7 +317,7 @@ namespace SoftwareEng
                 util_addPicToAlbumDB(errorReport, newPicture, albumUID);
 
                 //if adding to the album database failed
-                if (errorReport.reportID == ErrorReport.FAILURE)
+                if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
                 {
                     return errorReport;
                 }
@@ -369,7 +370,7 @@ namespace SoftwareEng
             }
             catch (DirectoryNotFoundException)
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Library folder not found.";
                 guiCallback(error);
                 return;
@@ -424,7 +425,7 @@ namespace SoftwareEng
             }
             catch (DirectoryNotFoundException)
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Library folder not found.";
                 guiCallback(error);
                 return;
@@ -452,7 +453,7 @@ namespace SoftwareEng
             // Ensure the database is valid before proceeding
             if (!util_checkAlbumDatabase(error))
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "The album database was determined to be not valid.";
                 guiCallback(error, null);
                 return;
@@ -467,7 +468,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "PhotoBomb.getAllAlbumsByID_backend():Failed at finding albums in the database.";
                 guiCallback(error, null);
                 return;
@@ -526,7 +527,7 @@ namespace SoftwareEng
                 {
                     // This is ugly.  If we're upgrading to .net 4.5 anyway we can replace all error code with a tracking class:
                     // http://msdn.microsoft.com/en-us/library/system.runtime.compilerservices.callermembernameattribute.aspx
-                    error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    error.reportID = ErrorReport.ReportTypes.SUCCESS_WITH_WARNINGS;
                     StringBuilder sb = new StringBuilder();
                     sb.AppendFormat("{0}.{1} : {2}",
                         this.GetType().Name,
@@ -664,7 +665,7 @@ namespace SoftwareEng
                 }
                 catch
                 {
-                    error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    error.reportID = ErrorReport.ReportTypes.SUCCESS_WITH_WARNINGS;
                     error.warnings.Add("PhotoBomb.getAllPhotosInAlbum():A Picture in the album is missing either a name or an id.");
                 }
             }//foreach
@@ -723,7 +724,7 @@ namespace SoftwareEng
                 }
                 catch
                 {
-                    error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                    error.reportID = ErrorReport.ReportTypes.SUCCESS_WITH_WARNINGS;
                     error.warnings.Add("PhotoBomb.getAllPhotosInAlbum():A Picture in the album is missing either a name or an id.");
                 }
             }//foreach
@@ -749,7 +750,7 @@ namespace SoftwareEng
             XElement picElement = util_getPhotoDBNode(error, (string)albumPicElement.Attribute("sha1").Value);
 
             //if the picture finding function reported success.
-            if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            if (error.reportID == ErrorReport.ReportTypes.SUCCESS || error.reportID == ErrorReport.ReportTypes.SUCCESS_WITH_WARNINGS)
             {
                 ComplexPhotoData photo = new ComplexPhotoData();
 
@@ -762,7 +763,7 @@ namespace SoftwareEng
                 }
                 catch
                 {
-                    error.reportID = ErrorReport.FAILURE;
+                    error.reportID = ErrorReport.ReportTypes.FAILURE;
                     error.description = "PhotoBomb.getPictureByUID():Photo info could not be loaded.";
                     guiCallback(error, null);
                     return;
@@ -885,7 +886,7 @@ namespace SoftwareEng
             newPicture.hash = util_getHashOfFile(photoUserPath);
             if (!util_checkPhotoIsUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
             {
-                errorReport.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
+                errorReport.reportID = ErrorReport.ReportTypes.SUCCESS_WITH_WARNINGS;
                 errorReport.description = "Picture is not unique.";
                 errorReport.warnings.Add("Picture is not unique: " + photoUserPath);
                 return errorReport;
@@ -907,7 +908,7 @@ namespace SoftwareEng
                 // error checking the call
                 if (!util_checkIDIsValid(newPicture.UID))
                 {
-                    errorReport.reportID = ErrorReport.FAILURE;
+                    errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                     errorReport.description = "Failed to get a UID for a new picture.";
                     return errorReport;
                 }
@@ -917,7 +918,7 @@ namespace SoftwareEng
 
                 newPicture.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
                 //error checking
-                if (errorReport.reportID == ErrorReport.FAILURE)
+                if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
                 {
                     return errorReport;
                 }
@@ -953,7 +954,7 @@ namespace SoftwareEng
             }
 
             //if adding to the picture database failed
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 return errorReport;
             }
@@ -962,7 +963,7 @@ namespace SoftwareEng
             util_addPicToAlbumDB(errorReport, newPicture, albumUID);
 
             //if adding to the album database failed
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 return errorReport;
             }
@@ -1026,7 +1027,7 @@ namespace SoftwareEng
                             ex is ArgumentOutOfRangeException)
                         {
                             // Don't stop removing this photo though...
-                            errorReport.reportID = ErrorReport.FAILURE;
+                            errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                             errorReport.warnings.Add("Failed to get second photo in the album, though count() returned >1.");
                         }
                         else
@@ -1080,7 +1081,7 @@ namespace SoftwareEng
             // added error handling code, but how is this call even happening on a photo that doesn't exist..?
             // a db integrity issue?
 
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 return errorReport;
             }
@@ -1111,7 +1112,7 @@ namespace SoftwareEng
             }
             catch // the photo mysteriously disappeared (from the xml!) before removing it..?
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Failed to remove the photo instance from the xml database";
             }
             return errorReport;
@@ -1146,7 +1147,7 @@ namespace SoftwareEng
             catch
             {
                 // the path was probably wrong...
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Failed to delete the photo file or a thumbnail from the filesystem";
                 return errorReport;
             }
@@ -1161,7 +1162,7 @@ namespace SoftwareEng
             }
             catch // the photo mysteriously disappeared (from the xml!) before removing it..?
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Failed to remove the photo instance from the xml database";
                 return errorReport;
             }
@@ -1184,7 +1185,7 @@ namespace SoftwareEng
             //error prone code here if there is no album with that UID. An unhandled exception was raised here during testing. -Ryan Causey
             XElement specificAlbum = util_getAlbum(errorReport, albumUID);
 
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 return errorReport;
             }
@@ -1245,7 +1246,7 @@ namespace SoftwareEng
             // get the album that we are changing.
             XElement albumElem = util_getAlbum(errorReport, albumUID);
 
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
 
                 guiCallback(errorReport);
@@ -1255,7 +1256,7 @@ namespace SoftwareEng
             // change the album's name.
             util_renameAlbum(errorReport, albumElem, newName);
 
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -1286,7 +1287,7 @@ namespace SoftwareEng
 
             // get the photo node that we are working on.
             XElement photoElem = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -1294,7 +1295,7 @@ namespace SoftwareEng
 
             // change the photo's name.
             util_renamePhoto(errorReport, photoElem, newName);
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -1325,7 +1326,7 @@ namespace SoftwareEng
 
             // get the photo node that we are working on.
             XElement photoElem = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -1342,7 +1343,7 @@ namespace SoftwareEng
 
             // change the photo's caption.
             util_setPhotoCaption(errorReport, photoElem, newCaption);
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -1374,7 +1375,7 @@ namespace SoftwareEng
             util_addAlbumToAlbumDB(errorReport, albumData);
 
             //if adding to the album database failed
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -1420,7 +1421,7 @@ namespace SoftwareEng
                 util_addPicToAlbumDB(errorReport, photoObj, albumUID);
 
                 //if adding to the album database failed
-                if (errorReport.reportID == ErrorReport.FAILURE)
+                if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
                 {
                     guiCallback(errorReport, albumUID);
                     //save to disk.
@@ -1450,7 +1451,7 @@ namespace SoftwareEng
 
             if (!nameUnique)
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Album name is not unique.";
                 guiCallback(errorReport);
                 return;
@@ -1471,7 +1472,7 @@ namespace SoftwareEng
 
             if (!nameUnique)
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Album name is not unique.";
                 guiCallback(errorReport);
                 return;
@@ -1490,7 +1491,7 @@ namespace SoftwareEng
             //get the album that has the name of the photo we are changing.
             XElement album = util_getAlbum(errorReport, albumUID);
 
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -1499,7 +1500,7 @@ namespace SoftwareEng
             //Get the photo from the album.
             XElement photoElem = util_getAlbumDBPhotoNode(errorReport, album, idInAlbum);
 
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -1508,7 +1509,7 @@ namespace SoftwareEng
             //change the photo's name.
             util_renamePhoto(errorReport, photoElem, newName);
 
-            if (errorReport.reportID == ErrorReport.FAILURE)
+            if (errorReport.reportID == ErrorReport.ReportTypes.FAILURE)
             {
                 guiCallback(errorReport);
                 return;
@@ -1558,7 +1559,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = errorStrings.stopImportFailure;
             }
             return error;

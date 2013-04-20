@@ -11,6 +11,8 @@
  *                     observable collection needed so the run workercompleted can 
  *                     generate a ReadOnlyObservableCollection to give to the GUI 
  *                     callback.
+ *                     
+ * 4/19/13 Julian Nguyen: Added ErrorReport.ReportTypes to replace the old CONSTANTS for ReportID.
  **/
 using System;
 using System.Collections.Generic;
@@ -51,7 +53,7 @@ namespace SoftwareEng
             for (int i = 0; i < data.photoUserPath.Count; ++i)
             {
                 //if we didn't get a cancel command...
-                if (data.errorReport.reportID != ErrorReport.FAILURE && !worker.CancellationPending)
+                if (data.errorReport.reportID != ErrorReport.ReportTypes.FAILURE && !worker.CancellationPending)
                 {
                     // Is all this unnecessary?  Leaving it here in case someday we want to prompt the user
                     // to provide a default image name for a set of importing photos, I guess?
@@ -82,7 +84,7 @@ namespace SoftwareEng
                     }
                     catch (Exception)
                     {
-                        data.errorReport.reportID = ErrorReport.FAILURE;
+                        data.errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                         data.errorReport.description = errorStrings.addImageFailure;
                         break;
                     }

@@ -17,6 +17,7 @@
  *                     Fixed a bug in the change caption utility where we were trying to access caption as
  *                     an attribute instead of an element.
  *                     Fixed a bug in thumbnail generation utility.
+ * 4/19/13 Julian Nguyen: Added ErrorReport.ReportTypes to replace the old CONSTANTS for ReportID.
  **/
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace SoftwareEng
                     if (ex is InvalidOperationException ||
                         ex is ArgumentNullException)
                     {
-                        error.reportID = ErrorReport.FAILURE;
+                        error.reportID = ErrorReport.ReportTypes.FAILURE;
                         error.description = "Found more than one picture with that hash!";
                         return null;
                     }
@@ -109,7 +110,7 @@ namespace SoftwareEng
                 //failed to find the picture
                 catch
                 {
-                    error.reportID = ErrorReport.FAILURE;
+                    error.reportID = ErrorReport.ReportTypes.FAILURE;
                     error.description = "Failed to find the picture specified.";
                     return null;
                 }
@@ -218,7 +219,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Failed to find a single picture by UID.";
                 return null;
             }
@@ -235,7 +236,7 @@ namespace SoftwareEng
             //if picture extension is not valid
             if (!util_checkPhotoExtension(newPictureData.extension))
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Extension is not valid.";
                 return errorReport;
             }
@@ -243,7 +244,7 @@ namespace SoftwareEng
             //if path is not valid
             if (!util_checkFilePath(newPictureData.fullPath))
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Path is not valid.";
                 return errorReport;
             }
@@ -278,7 +279,7 @@ namespace SoftwareEng
             // If the lookup returns null, the album doesn't exist, or there's more than one album with that UID (db error)
             if (specificAlbum == null)
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Found more than one album with that UID or none at all.";
                 return;
             }
@@ -288,7 +289,7 @@ namespace SoftwareEng
             // check to make sure we got a valid number back...
             if (!util_checkIDIsValid(newPicture.idInAlbum))
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Photo id for album is not valid.";
                 return;
             }
@@ -377,7 +378,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Failed to change the caption of a photo.";
             }
         }
@@ -691,7 +692,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + albumsDatabasePath;
                 return;
             }
@@ -714,7 +715,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "PhotoBomb.openPicturesXML():failed to load the pictures xml file: " + picturesDatabasePath;
                 return;
             }
@@ -764,7 +765,7 @@ namespace SoftwareEng
             // in the future I guess this could return every picture instance in the DB?
             if (hash == string.Empty)
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Invalid sha1";
                 return null;
             }
@@ -896,7 +897,7 @@ namespace SoftwareEng
             }
             catch
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Error converting XElement to data object.";
                 return null;
             }
@@ -1033,7 +1034,7 @@ namespace SoftwareEng
             //if the picture does NOT exist.
             if (!File.Exists(srcPicFullFilepath))
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Can't find the new picture to import to the library.";
                 return "";
             }
@@ -1041,7 +1042,7 @@ namespace SoftwareEng
             //check if the library is ok.
             if (!util_checkLibraryDirectory())
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Something is wrong with the photo library.";
                 return "";
             }
@@ -1057,7 +1058,7 @@ namespace SoftwareEng
             }
             catch
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Unable to make a copy of the photo in the library.";
                 return "";
             }
@@ -1085,7 +1086,7 @@ namespace SoftwareEng
             //anything else we need to check?
             if (!Directory.Exists(libraryPath))
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Library folder not found.";
             }
         }
@@ -1108,7 +1109,7 @@ namespace SoftwareEng
             catch
             {
                 // this probably means they passed in a XElem from the pictures library...?
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Failed to change the name of a photo.";
             }
         }
@@ -1129,7 +1130,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Failed to change the name of an album.";
             }
         }
@@ -1155,7 +1156,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Failed to find a single album by UID.";
                 return null;
             }
@@ -1169,7 +1170,7 @@ namespace SoftwareEng
         {
             if (_albumsDatabase == null)
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
                 return false;
             }
@@ -1186,7 +1187,7 @@ namespace SoftwareEng
         {
             if (_picturesDatabase == null)
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
                 return false;
             }
@@ -1208,7 +1209,7 @@ namespace SoftwareEng
             }
             catch
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportID = ErrorReport.ReportTypes.FAILURE;
                 errorReport.description = "Unable to create the new database files.";
             }
         }
@@ -1229,7 +1230,7 @@ namespace SoftwareEng
         {
             if ((srcPath == string.Empty) || (picFileName == string.Empty) || !File.Exists(srcPath))
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportID = ErrorReport.ReportTypes.FAILURE;
                 error.description = "Unable to generate thumbnail, bad path or filename.";
                 return ""; 
             }
