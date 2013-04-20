@@ -9,7 +9,8 @@
  * 
  * 
  * Change Log:
- * 4/19/13 Julian Nguyen: Added ErrorReport.ReportTypes to replace the old CONSTANTS for ReportID.
+ * 4/19/13 Julian Nguyen: Added ErrorReport.ReportTypes to replace the old CONSTANTS for ReportID.\
+ *                        Added setter and getter and made the class fields private.
  * 
  **/
 
