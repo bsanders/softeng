@@ -423,22 +423,22 @@
                 
                 <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60" >
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#4DFFFFFF" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="False">
-                        <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemLibraryButton_Click">
+                        <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemLibraryButton_Click" ToolTip="Add Photos">
                             <Image x:Name="addButtonLibraryImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="copyMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="copyMenuItemLibraryButton_Click">
+                        <Button x:Name="copyMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="copyMenuItemLibraryButton_Click" ToolTip="Paste Photos">
                             <Image x:Name="copyButtonLibraryImage" Source="ImagesResources2012/WorkItem_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="deleteMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemLibraryButton_Click">
+                        <Button x:Name="deleteMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemLibraryButton_Click" ToolTip="Delete Album">
                             <Image x:Name="deleteButtonLibraryImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemLibraryButton_Click">
+                        <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemLibraryButton_Click" ToolTip="Rename Album">
                             <Image x:Name="renameButtonLibraryImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="slideshowMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="slideshowMenuItemLibraryButton_Click">
+                        <Button x:Name="slideshowMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="slideshowMenuItemLibraryButton_Click" ToolTip="Start Slideshow">
                             <Image x:Name="slideshowButtonLibraryImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="viewMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemLibraryButton_Click">
+                        <Button x:Name="viewMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemLibraryButton_Click" ToolTip="View Album">
                             <Image x:Name="viewButtonLibraryImage" Source="ImagesResources2012/eye_16xLG.png" Stretch="Fill"/>
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
@@ -448,22 +448,22 @@
 
                 <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
-                        <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemAlbumButton_Click">
+                        <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemAlbumButton_Click" ToolTip="Add Photos">
                             <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="copyMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="copyMenuItemAlbumButton_Click">
+                        <Button x:Name="copyMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="copyMenuItemAlbumButton_Click" ToolTip="Copy Photos">
                             <Image x:Name="copyButtonAlbumImage" Source="ImagesResources2012/WorkItem_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemAlbumButton_Click">
+                        <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemAlbumButton_Click" ToolTip="Delete Photo">
                             <Image x:Name="deleteButtonAlbumImage" Source="ImagesResources2012/action_Cancel_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemAlbumButton_Click">
+                        <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemAlbumButton_Click" ToolTip="Annotate Photo">
                             <Image x:Name="renameButtonAlbumImage" Source="ImagesResources2012/pencil_005_16xLG.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="slideshowMenuItemAlbumButton_Click">
+                        <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="slideshowMenuItemAlbumButton_Click" ToolTip="Start Slideshow">
                             <Image x:Name="slideshowButtonAlbumImage" Source="ImagesResources2012/Actions_5847.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="viewMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemAlbumButton_Click">
+                        <Button x:Name="viewMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemAlbumButton_Click" ToolTip="View Photo">
                             <Image x:Name="viewButtonAlbumImage" Source="ImagesResources2012/eye_16xLG.png" Stretch="Fill"/>
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
@@ -486,19 +486,19 @@
 
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="0,0,25,0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
                 <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="1" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockBrush}">
-                    <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" Background="{DynamicResource PhotoBomberDockButtonBrush}">
+                    <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" Background="{DynamicResource PhotoBomberDockButtonBrush}" ToolTip="Create An Album">
 
-                        <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
+                        <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32" ToolTip="Add New Album"/>
                     </Button>
-                    <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="addPhotosDockButton_Click">
+                    <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="addPhotosDockButton_Click" ToolTip="Add Photos">
 
                         <Image x:Name="addPhotosDockButtonImage" Source="ImagesResources2012/action_add_16xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="libraryDockButton_Click">
+                    <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="libraryDockButton_Click" ToolTip="Go To My Albums">
 
                         <Image x:Name="libraryDockButtonImage" Source="ImagesResources2012/Arrow_UndoRevertRestore_16xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="cancelPhotoImportDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="cancelPhotoImportDockButton_Click">
+                    <Button x:Name="cancelPhotoImportDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="cancelPhotoImportDockButton_Click" ToolTip="Cancel Import">
                         <Image x:Name="cancelPhotoImportDockButtonImage" Source="ImagesResources2012/Symbols_Critical_32xLG.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed">
@@ -511,7 +511,7 @@
                         <Image x:Name="spareDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Button>
  
-                    <StackPanel x:Name="ThumbnailControlStackPanel" Width="107" ToolTip="Controls the thumbnail size ">
+                    <StackPanel x:Name="ThumbnailControlStackPanel" Width="107" ToolTip="Adjust Thumbnail Size">
                         <Label Content="Thumbnail Size" Height="20" x:Name="thumbnailSizeLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" FontWeight="Normal" />
                         <Slider Height="23" x:Name="thumbnailSizeSlider" Width="100" SmallChange="1" Maximum="250" Minimum="120" LargeChange="97" Value="120" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="True"/>
                     </StackPanel>
@@ -621,10 +621,10 @@
                 <TextBox x:Name="commentTextBox" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="5" MaxLength="140" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a comment for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed" TextWrapping="Wrap"/>
 
             </StackPanel>
-            <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,0,70,0" DockPanel.Dock="Right" >
+            <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,0,70,0" DockPanel.Dock="Right" ToolTip="Accept" >
                 <Image x:Name="acceptAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/checkbox_16xLG.png"/>
             </Button>
-            <Button x:Name="cancelAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="cancelAddToolbarButton_Click" IsCancel="True" Margin="70,0,0,0" >
+            <Button x:Name="cancelAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="cancelAddToolbarButton_Click" IsCancel="True" Margin="70,0,0,0" ToolTip="Cancel" >
                 <Image x:Name="cancelAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_Cancel_16xLG.png"/>
             </Button>
         </DockPanel>
