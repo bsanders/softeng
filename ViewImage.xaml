@@ -102,8 +102,7 @@
                     <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Next Image" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="nextDockButton_Click">
                         <Image x:Name="nextDockButtonImage" Source="ImagesResources2012/Symbols_Next_32xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="spareDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
-                        <Image x:Name="spareDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Button x:Name="emptyDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                     </Button>
                     <StackPanel Name="stackPanel1" Width="107" ToolTip="Slideshow Speed">
                         <Label Content="Slideshow Speed" Height="20" Name="slideShowSpeedLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" Foreground="Black" />

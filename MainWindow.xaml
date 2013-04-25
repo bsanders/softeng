@@ -501,14 +501,8 @@
                     <Button x:Name="cancelPhotoImportDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="cancelPhotoImportDockButton_Click" ToolTip="Cancel Import">
                         <Image x:Name="cancelPhotoImportDockButtonImage" Source="ImagesResources2012/Symbols_Critical_32xLG.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="clipBoardDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed">
-                        <Image x:Name="clipboardDockButtonImage" Source="ImagesResources2012/WorkItem_32xLG.png" Stretch="None" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="32" Height="32"/>
-                    </Button>
-                    <Button x:Name="aboutDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" Click="exitDockButton_Click" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
-                        <Image x:Name="aboutDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/Actions_5847.png" Opacity="0.8"/>
-                    </Button>
-                    <Button x:Name="spareDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Collapsed" Background="{DynamicResource PhotoBomberDockButtonBrush}">
-                        <Image x:Name="spareDockButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <!-- This button is only used to preserve spacing between the buttons -->
+                    <Button x:Name="blankDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                     </Button>
  
                     <StackPanel x:Name="ThumbnailControlStackPanel" Width="107" ToolTip="Adjust Thumbnail Size">
