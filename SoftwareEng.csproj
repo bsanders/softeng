@@ -125,6 +125,10 @@
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="LightResize.cs" />
+    <Compile Include="PB_Database.cs" />
+    <Compile Include="PB_DatabaseXML.cs" />
+    <Compile Include="PB_Database_FileIO.cs" />
+    <Compile Include="PB_ImageXmlHandler.cs" />
     <Compile Include="ProgramStarter.cs" />
     <Compile Include="promptStrings.Designer.cs">
       <AutoGen>True</AutoGen>
