@@ -2205,15 +2205,17 @@ namespace SoftwareEng
 
         protected override void OnMouseEnter(MouseEventArgs e)
         {
-            EventTimer.Interval = 1.0;
-            EventTimer.Start();
+            //EventTimer.Interval = 1.0;
+            //EventTimer.Start();
+            RaisePhotoBomberTileTriggerEvent();
+
             
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
         {
-            EventTimer.Interval = mouseLeaveTimer;
-            EventTimer.Start();
+            //EventTimer.Interval = mouseLeaveTimer;
+            //EventTimer.Start();
             
         }
 
