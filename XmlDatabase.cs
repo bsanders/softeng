@@ -97,8 +97,6 @@ namespace SoftwareEng
             return false;
         }
 
-
-
         public bool addImageToLib(String fileHash, String extension, String filePath, String lgThumbPath)
         {
             int refCount = 0;

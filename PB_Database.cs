@@ -39,8 +39,7 @@ namespace SoftwareEng
         /// </summary>
         private static readonly String _pathToLRGThumbs_db = _pathToThumbs_db + "lrg\\";
 
-        private AlbumXmlHandler _AlbumXml;
-        private ImageXmlHandler _ImageXml;
+        
 
         private PB_Database_FileIO fileIO;
 
