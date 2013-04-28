@@ -95,5 +95,5 @@ namespace SoftwareEng
             _lgThumbPath = imageData.LgThumbPath;
         }
 
-    } // End of PB_ImageDate.
+    } // End of ImageXmlData.
 }

@@ -114,6 +114,7 @@
     <Compile Include="aboutWindow.xaml.cs">
       <DependentUpon>aboutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AlbumImageXmlData.cs" />
     <Compile Include="ComplexPhotoData.cs" />
     <Compile Include="customRadialPanel.cs" />
     <Compile Include="errorStrings.Designer.cs">
@@ -125,10 +126,14 @@
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="LightResize.cs" />
+    <Compile Include="AlbumXmlHandler.cs" />
     <Compile Include="PB_Database.cs" />
-    <Compile Include="PB_DatabaseXML.cs" />
+    <Compile Include="PhotoBomb_Controller.cs" />
+    <Compile Include="XmlDatabase.cs" />
     <Compile Include="PB_Database_FileIO.cs" />
-    <Compile Include="PB_ImageXmlHandler.cs" />
+    <Compile Include="ImageXmlData.cs" />
+    <Compile Include="AlbumXmlData.cs" />
+    <Compile Include="ImageXmlHandler.cs" />
     <Compile Include="ProgramStarter.cs" />
     <Compile Include="promptStrings.Designer.cs">
       <AutoGen>True</AutoGen>

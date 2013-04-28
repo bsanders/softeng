@@ -21,9 +21,8 @@ namespace SoftwareEng
     /// 
     /// 
     /// </summary>
-    class PB_ImageXmlHandler
+    class ImageXmlHandler
     {
-
         /// <summary>
         /// By: Julian Nguyen (4/25/13)
         /// Last Changed by: Julian Nguyen (4/25/13)
@@ -49,10 +48,8 @@ namespace SoftwareEng
             }
         } // End of ImageNode. 
 
-        /// <summary>
-        /// When a new iamge is added it will be given this number had its start refCount. 
-        /// </summary>
-        private readonly static int _refCount_start = 1;
+
+
         /// <summary>
         /// This is a map of fileHash to ImageNode. 
         /// </summary>
@@ -66,7 +63,7 @@ namespace SoftwareEng
         /// 
         /// </summary>
         /// <param name="imageXML"></param>
-        PB_ImageXmlHandler(XDocument imageXML)
+        public ImageXmlHandler(XDocument imageXML)
         {
             _fileHashToImage = xDocumentToDictionary(imageXML);
         }
@@ -83,24 +80,17 @@ namespace SoftwareEng
         /// <param name="filePath"></param>
         /// <param name="lgThumbPath"></param>
         /// <returns>The refcount for the image.</returns>
-        public int addImage(String fileHash, String extension, String filePath, String lgThumbPath)
+        public bool addImage(String fileHash, int refCount, String extension, String filePath, String lgThumbPath)
         {
             ImageNode node = null;
-            bool isGood = _fileHashToImage.TryGetValue(fileHash, out node);
+            if(_fileHashToImage.TryGetValue(fileHash, out node))
+                return false;
 
-            if (isGood)
-            {
-                // Test if the image was in the map.
-                return ++node._refCount;
-            }
-            else
-            {
-                // The image was not in the set, so add it. 
-                node = new ImageNode(fileHash, _refCount_start, extension, fileHash, lgThumbPath);
-                _fileHashToImage.Add(fileHash, node);
+            // The image was not in the set, so add it. 
+            node = new ImageNode(fileHash, refCount, extension, fileHash, lgThumbPath);
+            _fileHashToImage.Add(fileHash, node);
 
-                return _refCount_start;
-            }
+            return true;
         }
 
         /// <summary>
@@ -115,22 +105,17 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="fileHash"></param>
         /// <returns></returns>
-        public int removeImage(String fileHash)
+        public bool removeImage(String fileHash, out ImageXmlData imageData)
         {
+            imageData = null;
             ImageNode node = null;
-            bool isGood = _fileHashToImage.TryGetValue(fileHash, out node);
+            if (!_fileHashToImage.TryGetValue(fileHash, out node))
+                return false;
 
-            if (!isGood)
-                return -1; //The fileHash was not in the map, so return error.
-
-            if (node._refCount == _refCount_start)
-            {
-                // Test if the refCount is back at the start, if so then remove it. 
-                _fileHashToImage.Remove(fileHash);
-                return 0;
-            }
-            // Decrement the refcount then return it. 
-            return --node._refCount;
+            imageData = imageNodeToImageXmlData(node);
+            _fileHashToImage.Remove(fileHash);
+            
+            return true;
         }
 
 
@@ -143,14 +128,14 @@ namespace SoftwareEng
         /// <param name="fileHash"></param>
         /// <param name="imageData"></param>
         /// <returns></returns>
-        public bool getImage(String fileHash, out PB_ImageData imageData)
+        public bool getImage(String fileHash, out ImageXmlData imageData)
         {
             ImageNode node = null;
             bool isGood = _fileHashToImage.TryGetValue(fileHash, out node);
 
             if (isGood)
             {
-                imageData = imageNodeToImageData(node);
+                imageData = imageNodeToImageXmlData(node);
                 return true;
             }
             else
@@ -168,13 +153,34 @@ namespace SoftwareEng
         /// 
         /// </summary>
         /// <param name="list"></param>
-        public void getImages(out List<PB_ImageData> list)
+        public void getImages(out List<ImageXmlData> list)
         {
-            list = new List<PB_ImageData>();
+            list = new List<ImageXmlData>();
             foreach (KeyValuePair<String, ImageNode> pair in _fileHashToImage)
             {
-                list.Add(imageNodeToImageData(pair.Value));
+                list.Add(imageNodeToImageXmlData(pair.Value));
             }
+        }
+
+        public bool getImageRefCount(String fileHash, out int refCount)
+        {
+            refCount = -1;
+            ImageNode node = null;
+            if (!_fileHashToImage.TryGetValue(fileHash, out node))
+                return false;
+
+            refCount = node._refCount;
+            return true;
+        }
+
+        public bool setImageRefCount(String fileHash, int refCount)
+        {
+            ImageNode node = null;
+            if (!_fileHashToImage.TryGetValue(fileHash, out node))
+                return false;
+
+            node._refCount = refCount;
+            return true;
         }
 
 
@@ -187,9 +193,9 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        private PB_ImageData imageNodeToImageData(ImageNode node)
+        private ImageXmlData imageNodeToImageXmlData(ImageNode node)
         {
-            return new PB_ImageData(node._fileHash, node._refCount, node._extension, node._filePath, node._lgThumbPath);
+            return new ImageXmlData(node._fileHash, node._refCount, node._extension, node._filePath, node._lgThumbPath);
         }
 
 
@@ -202,9 +208,10 @@ namespace SoftwareEng
         /// 
         /// </summary>
         /// <returns>A new XDocument of this ADT.</returns>
-        public XDocument toXDocument()
+        public bool toXDocument(out XDocument xDoc)
         {
-            return null;
+            xDoc = null;
+            return false;
         }
 
         /// <summary>
@@ -222,5 +229,5 @@ namespace SoftwareEng
         }
 
 
-    } // End of PB_ImageXmlHandler.
+    } // End of ImageXmlHandler.
 }
