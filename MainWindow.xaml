@@ -14,6 +14,12 @@
     
     <Window.Resources>
 
+        <DataTemplate x:Key="test">
+            <StackPanel>
+                <TextBlock Text="Ascending"></TextBlock>
+                <CheckBox IsChecked="True"></CheckBox>
+            </StackPanel>
+        </DataTemplate>
 
         <DataTemplate x:Key="AlbumListItemBackTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
             <Grid x:Name="albumItemBackGrid" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" Height="Auto" Width="Auto">
@@ -21,7 +27,7 @@
             		<RowDefinition Height="Auto"/>
             		<RowDefinition Height="36*"/>
             	</Grid.RowDefinitions>
-                <TextBlock Text="Name:" Height="Auto" HorizontalAlignment="Left" Margin="3,3,0,0" x:Name="nameLine" VerticalAlignment="Top" FontFamily="pack://application:,,,/Fonts/#monofur" >
+                <TextBlock Text="Name:" Height="Auto" HorizontalAlignment="Left" Margin="3,3,0,0" x:Name="nameLine" VerticalAlignment="Top" FontFamily="/PhotoBomber;component/Fonts/#monofur" > <!--="pack://application:,,,/Fonts/#monofur" -->
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
@@ -231,15 +237,13 @@
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
                 <Border x:Name="ItemFrontSideContainer" Width="Auto" Margin="0" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <Label x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
-                        <ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
-                    </Label>
+                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch"><ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/></SoftwareEngControls:customLabel>
                 </Border>
 
                 <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0" PreviewMouseRightButtonUp="ItemBackSideContainer_PreviewRightMouseUp">
-                    <Label x:Name="ItemBackSide"  Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <SoftwareEngControls:customLabel x:Name="ItemBackSide"  Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                         <ContentPresenter x:Name="contentPresenterBack" ContentTemplate="{DynamicResource AlbumListItemBackTemplate}" Content="{Binding}"/>
-                    </Label>
+                    </SoftwareEngControls:customLabel>
                 </Border>
 
                 <Viewport3D Grid.Column="0" x:Name="object3D" Visibility="Hidden">
@@ -308,10 +312,10 @@
 
             </Grid>
         	<DataTemplate.Triggers>
-        		<EventTrigger RoutedEvent="Control.MouseDoubleClick" SourceName="ItemFrontSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.PhotoBomberTileEvent" SourceName="ItemFrontSide">
         			<BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
         		</EventTrigger>
-        		<EventTrigger RoutedEvent="Control.MouseDoubleClick" SourceName="ItemBackSide">
+        		<EventTrigger RoutedEvent="SoftwareEngControls:customLabel.PhotoBomberTileEvent" SourceName="ItemBackSide">
         			<BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
         		</EventTrigger>
         	</DataTemplate.Triggers>
@@ -504,7 +508,10 @@
                     <!-- This button is only used to preserve spacing between the buttons -->
                     <Button x:Name="blankDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                     </Button>
- 
+                    <Button x:Name="sortingDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" ToolTip="Sort Images" Click="sortingDockButton_Click">
+                        <Image x:Name="sortingDockButtonImage" Source="ImagesResources2012/Symbols_Critical_32xLG.png" Width="32" Height="32"/>
+                    </Button>
+
                     <StackPanel x:Name="ThumbnailControlStackPanel" Width="107" ToolTip="Adjust Thumbnail Size">
                         <Label Content="Thumbnail Size" Height="20" x:Name="thumbnailSizeLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" FontWeight="Normal" />
                         <Slider Height="23" x:Name="thumbnailSizeSlider" Width="100" SmallChange="1" Maximum="250" Minimum="120" LargeChange="97" Value="120" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="True"/>
@@ -661,5 +668,21 @@
                 </ed:Callout>
             </Grid>
         </Popup>
+        
+        <Popup x:Name="imageSortingMenuPopup" PlacementTarget="{Binding ElementName=sortingDockButton, Mode=OneWay}" StaysOpen="False" Placement="Top">
+            <Menu x:Name="imageSortingMenu" IsMainMenu="False">
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+                <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalAlignment="Right"  HorizontalContentAlignment="Right" Width="86"/>
+                <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click"/>
+                <MenuItem x:Name="extensionMenuItem" Header="Extension"/>
+            </Menu>
+        </Popup>
+        
+
+        
     </Grid>
 </Window>

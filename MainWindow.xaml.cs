@@ -66,6 +66,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using System.Timers;
 
 namespace SoftwareEng
 {
@@ -132,6 +133,9 @@ namespace SoftwareEng
         //-- of relying on a form's selected items collection
         //private int albumChosenbyUser;
 
+        //temp variable to test out collection views
+        private CollectionView ImageListCollectionView;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -151,6 +155,8 @@ namespace SoftwareEng
             hideAddAlbumBox();
 
             populateAlbumView(true);
+
+            
         }
 
 
@@ -691,6 +697,8 @@ namespace SoftwareEng
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
                 _listOfPhotos = picturesInAlbum;
                 mainWindowAlbumList.ItemsSource = _listOfPhotos;
+
+                ImageListCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(_listOfPhotos);
                 //change the selection mode to Extended
                 mainWindowAlbumList.SelectionMode = SelectionMode.Extended;
                 //show the return to library view button on the dock
@@ -2023,7 +2031,85 @@ namespace SoftwareEng
             }
         }
 
-        
+        //orderSelector{ 0=(name, extension) 1=(extension, name) }
+        //ascendingTrue{ 0=(descending) 1=(ascending) }
+        private void SortImageList(int orderSelector, int ascendingTrue)
+        {
+            if (ImageListCollectionView.SortDescriptions == null)
+            {
+                return;
+            }
+            ImageListCollectionView.SortDescriptions.Clear();
+
+
+            //shifting by 3 means x8
+            orderSelector += (ascendingTrue << 3);
+
+            switch (orderSelector)
+            {
+                case 1:
+                    //descending extension
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
+                    break;
+
+                case 8:
+                    //ascending name
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
+                    break;
+
+                case 9:
+                    //ascending extension
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
+                    break;
+
+                default:
+                    //descending name
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
+                    break;
+            }
+        }
+
+        private void sortingDockButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (imageSortingMenuPopup.IsOpen == false)
+            {
+                imageSortingMenuPopup.IsOpen = true;
+            }
+            else
+            {
+                imageSortingMenuPopup.IsOpen = false;
+            }
+        }
+
+        private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (ascendingMenuItem.IsChecked == true)
+            {
+                SortImageList(1, 1);
+            }
+            else
+            {
+                SortImageList(1, 0);
+            }
+        }
+
+        private void nameMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (ascendingMenuItem.IsChecked == true)
+            {
+                SortImageList(0, 1);
+            }
+            else
+            {
+                SortImageList(0, 0);
+            }
+        }
+
+
     }
 
     /*
@@ -2069,4 +2155,73 @@ namespace SoftwareEng
             throw new NotImplementedException("The method or operation is not implemented.");
         }
     }
+
+
+
+
+
+
+    public class customLabel : Label
+    {
+        private Timer EventTimer;
+        const double mouseEnterTimer= 1000.0;
+        const double mouseLeaveTimer = 3000.0;
+
+        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
+
+        
+        public customLabel(): base()
+        {
+            EventTimer = new Timer();
+
+            EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
+
+            
+        }
+        
+
+        void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            EventTimer.Stop();
+            RaisePhotoBomberTileTriggerEvent();
+            this.Visibility = Visibility.Hidden;
+        }
+
+
+        public event RoutedEventHandler OnPhotoBomberTileEvent
+        {
+            add { AddHandler(PhotoBomberTileTriggerEvent, value); }
+            remove { RemoveHandler(PhotoBomberTileTriggerEvent, value); }
+        }
+
+
+        void RaisePhotoBomberTileTriggerEvent()
+        {
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.PhotoBomberTileTriggerEvent);
+            RaiseEvent(newEventArgs);
+        }
+
+
+
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            EventTimer.Interval = 1.0;
+            EventTimer.Start();
+            
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            EventTimer.Interval = mouseLeaveTimer;
+            EventTimer.Start();
+            
+        }
+
+    }
+
 }
+
+
+
+
+
