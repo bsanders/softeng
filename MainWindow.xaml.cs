@@ -655,6 +655,8 @@ namespace SoftwareEng
             {
                 //call the backend to get all photos in this album.
                 currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
+                // Set the app's titlebar to display the app name and the album name
+                this.appTitleBarLabel.Content = "PhotoBomber - " + ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).albumName;
                 bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), currentAlbumUID);
             }
         }
@@ -725,6 +727,8 @@ namespace SoftwareEng
             mainWindowAlbumList.ItemTemplate = this.Resources["LibraryListItemFrontTemplate"] as DataTemplate;
             //refresh the view to make sure we update with new album thumbnails
             populateAlbumView(true);
+            // Set the titlebar back to the default: Appname and "my photo library!"
+            this.appTitleBarLabel.Content = Settings.AppTitleBarText;
             mainWindowAlbumList.ItemsSource = _listOfAlbums;
             //change the selection mode to single
             mainWindowAlbumList.SelectionMode = SelectionMode.Single;

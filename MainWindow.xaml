@@ -552,7 +552,8 @@
                 </Button.Background>
                 <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart-tiny-square.png"/>
             </Button>
-            <Label Content="PhotoBomber" Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center">
+            <!-- Not sure how to set the content of this label dynamically from settings file -->
+            <Label x:Name="appTitleBarLabel" Content="PhotoBomber - My Photo Library!" Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center">
             	<Label.Foreground>
             		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
             	</Label.Foreground>

@@ -202,5 +202,17 @@ namespace SoftwareEng.Properties {
                 this["CaptionMaxLength"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PhotoBomber - My Photo Library!")]
+        public string AppTitleBarText {
+            get {
+                return ((string)(this["AppTitleBarText"]));
+            }
+            set {
+                this["AppTitleBarText"] = value;
+            }
+        }
     }
 }
