@@ -66,6 +66,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using System.Timers;
 
 namespace SoftwareEng
 {
@@ -132,6 +133,9 @@ namespace SoftwareEng
         //-- of relying on a form's selected items collection
         //private int albumChosenbyUser;
 
+        //temp variable to test out collection views
+        private CollectionView ImageListCollectionView;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -151,6 +155,8 @@ namespace SoftwareEng
             hideAddAlbumBox();
 
             populateAlbumView(true);
+
+            ImageListCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(_listOfPhotos);
         }
 
 
@@ -2019,7 +2025,51 @@ namespace SoftwareEng
             }
         }
 
-        
+        //orderSelector{ 0=(name, extension) 1=(extension, name) }
+        //ascendingTrue{ 0=(ascending) 1=(descending) }
+        private void SortImageList(int orderSelector, int ascendingTrue)
+        {
+            ImageListCollectionView.SortDescriptions.Clear();
+
+            orderSelector += (ascendingTrue *8);
+
+            switch (orderSelector)
+            {
+                case 1:
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
+                    break;
+
+                case 8:
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
+                    break;
+
+                case 9:
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
+                    break;
+
+                default:
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
+                    break;
+            }
+        }
+
+        private void sortingDockButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (imageSortingMenu.IsOpen == false)
+            {
+                imageSortingMenu.IsOpen = true;
+            }
+            else
+            {
+                imageSortingMenu.IsOpen = false;
+            }
+        }
+
+
     }
 
     /*
@@ -2065,4 +2115,73 @@ namespace SoftwareEng
             throw new NotImplementedException("The method or operation is not implemented.");
         }
     }
+
+
+
+
+
+
+    public class customLabel : Label
+    {
+        private Timer EventTimer;
+        const double mouseEnterTimer= 1000.0;
+        const double mouseLeaveTimer = 3000.0;
+
+        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
+
+        
+        public customLabel(): base()
+        {
+            EventTimer = new Timer();
+
+            EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
+
+            
+        }
+        
+
+        void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            EventTimer.Stop();
+            RaisePhotoBomberTileTriggerEvent();
+            this.Visibility = Visibility.Hidden;
+        }
+
+
+        public event RoutedEventHandler OnPhotoBomberTileEvent
+        {
+            add { AddHandler(PhotoBomberTileTriggerEvent, value); }
+            remove { RemoveHandler(PhotoBomberTileTriggerEvent, value); }
+        }
+
+
+        void RaisePhotoBomberTileTriggerEvent()
+        {
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.PhotoBomberTileTriggerEvent);
+            RaiseEvent(newEventArgs);
+        }
+
+
+
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            EventTimer.Interval = 1.0;
+            EventTimer.Start();
+            
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            EventTimer.Interval = mouseLeaveTimer;
+            EventTimer.Start();
+            
+        }
+
+    }
+
 }
+
+
+
+
+
