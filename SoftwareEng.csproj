@@ -262,8 +262,6 @@
     <Resource Include="ImagesResources2012\defaultImage.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ImagesResources2012\filedownload.png" />
-    <Resource Include="ImagesResources2012\Files_7954.png" />
     <Resource Include="ImagesResources2012\FileUpload_6026.png" />
     <Resource Include="ImagesResources2012\FileUpload_6026_inverse.png" />
     <Resource Include="ImagesResources2012\GeneratePageResource_1052.png" />
@@ -273,6 +271,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ImagesResources2012\asset_media-element-control_on_24X24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\Paste-inverted.png" />
+    <Resource Include="ImagesResources2012\Paste.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
