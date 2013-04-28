@@ -303,13 +303,19 @@ namespace SoftwareEng
             }
 
             // Note as per requirements, the default photo name is the name of the album, plus its id number
-            string nameInLibrary = specificAlbum.Element("albumName").Value + " Image " + newPicture.idInAlbum;
+            string nameInAlbum = specificAlbum.Element("albumName").Value + " Image " + newPicture.idInAlbum;
+            while (!util_checkPhotoNameIsUniqueToAlbum(nameInAlbum, specificAlbum))
+            {
+                newPicture.idInAlbum = util_getNextUID(specificAlbum.Element("albumPhotos"), "picture", "idInAlbum", newPicture.idInAlbum + 1);
+                nameInAlbum = specificAlbum.Element("albumName").Value + " Image " + newPicture.idInAlbum;
+            }
+
 
             //construct the object we will be adding to the album.
             XElement newPhotoElem = new XElement("picture",
                                             new XAttribute("idInAlbum", newPicture.idInAlbum),
                                             new XAttribute("sha1", ByteArrayToString(newPicture.hash)),
-                                            new XElement("name", nameInLibrary),
+                                            new XElement("name", nameInAlbum),
                                             new XElement("caption", newPicture.caption));
 
             // Now add it to the albums database in memory
