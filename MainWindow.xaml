@@ -668,11 +668,16 @@
             </Grid>
         </Popup>
         
-        <Popup x:Name="imageSortingMenu" PlacementTarget="{Binding ElementName=sortingDockButton, Mode=OneWay}" StaysOpen="False" Placement="Top">
-            <Menu IsMainMenu="False">
-                <MenuItem Header="Ascending" IsCheckable="True" IsChecked="True"/>
-                <MenuItem Header="Name"/>
-                <MenuItem Header="Extension"/>
+        <Popup x:Name="imageSortingMenuPopup" PlacementTarget="{Binding ElementName=sortingDockButton, Mode=OneWay}" StaysOpen="False" Placement="Top">
+            <Menu x:Name="imageSortingMenu" IsMainMenu="False">
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+                <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalAlignment="Right"  HorizontalContentAlignment="Right" Width="86"/>
+                <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click"/>
+                <MenuItem x:Name="extensionMenuItem" Header="Extension"/>
             </Menu>
         </Popup>
         

@@ -156,7 +156,7 @@ namespace SoftwareEng
 
             populateAlbumView(true);
 
-            ImageListCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(_listOfPhotos);
+            
         }
 
 
@@ -695,6 +695,8 @@ namespace SoftwareEng
                 mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
                 _listOfPhotos = picturesInAlbum;
                 mainWindowAlbumList.ItemsSource = _listOfPhotos;
+
+                ImageListCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(_listOfPhotos);
                 //change the selection mode to Extended
                 mainWindowAlbumList.SelectionMode = SelectionMode.Extended;
                 //show the return to library view button on the dock
@@ -2026,46 +2028,80 @@ namespace SoftwareEng
         }
 
         //orderSelector{ 0=(name, extension) 1=(extension, name) }
-        //ascendingTrue{ 0=(ascending) 1=(descending) }
+        //ascendingTrue{ 0=(descending) 1=(ascending) }
         private void SortImageList(int orderSelector, int ascendingTrue)
         {
+            if (ImageListCollectionView.SortDescriptions == null)
+            {
+                return;
+            }
             ImageListCollectionView.SortDescriptions.Clear();
 
-            orderSelector += (ascendingTrue *8);
+
+            //shifting by 3 means x8
+            orderSelector += (ascendingTrue << 3);
 
             switch (orderSelector)
             {
                 case 1:
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
+                    //descending extension
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
                     break;
 
                 case 8:
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
+                    //ascending name
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
                     break;
 
                 case 9:
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
+                    //ascending extension
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
                     break;
 
                 default:
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
+                    //descending name
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
                     break;
             }
         }
 
         private void sortingDockButton_Click(object sender, RoutedEventArgs e)
         {
-            if (imageSortingMenu.IsOpen == false)
+            if (imageSortingMenuPopup.IsOpen == false)
             {
-                imageSortingMenu.IsOpen = true;
+                imageSortingMenuPopup.IsOpen = true;
             }
             else
             {
-                imageSortingMenu.IsOpen = false;
+                imageSortingMenuPopup.IsOpen = false;
+            }
+        }
+
+        private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (ascendingMenuItem.IsChecked == true)
+            {
+                SortImageList(1, 1);
+            }
+            else
+            {
+                SortImageList(1, 0);
+            }
+        }
+
+        private void nameMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (ascendingMenuItem.IsChecked == true)
+            {
+                SortImageList(0, 1);
+            }
+            else
+            {
+                SortImageList(0, 0);
             }
         }
 
