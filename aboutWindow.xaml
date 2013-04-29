@@ -4,7 +4,7 @@
         Title="aboutWindow" Height="320" Width="320" AllowsTransparency="True" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontSize="14" Background="#FF4D596C" WindowStartupLocation="CenterOwner" MouseDown="DockPanel_MouseDown" Deactivated="PhotoBomberAboutWindow_Deactivated" Closing="closingWindow">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="ImagesResources2012/NewIconClipart.png" Stretch="Uniform"/>
+            <ImageBrush ImageSource="ImagesResources2012/logoTall.png" Stretch="Uniform"/>
         </Grid.Background>
         <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" Height="27" Background="{DynamicResource PhotoBomberTitleBarBrush}">
             <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitButtonClick" IsTabStop="False" ToolTip="Close">
