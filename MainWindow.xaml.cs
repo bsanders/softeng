@@ -721,6 +721,9 @@ namespace SoftwareEng
                 //show the delete photo button
                 deleteMenuItemPhotoButton.Visibility = Visibility.Visible;
                  */
+
+
+                imageSortingButtonPlaceholder.Visibility = Visibility.Visible;
             }
         }
 
@@ -757,6 +760,9 @@ namespace SoftwareEng
             //hide the delete photo button
             deleteMenuItemPhotoButton.Visibility = Visibility.Collapsed;
              */
+            //hise the sorting button
+            imageSortingButtonPlaceholder.Visibility = Visibility.Collapsed;
+
 
             //close any open viewImage windows
             if (view != null)
@@ -1562,6 +1568,19 @@ namespace SoftwareEng
             photoBomberAboutWindow.Show();
         }
 
+        private void aboutMenuItemPressed_eventHandler(object sender, RoutedEventArgs e)
+        {
+            //if this window is already open, close it.
+            if (photoBomberAboutWindow != null)
+            {
+                photoBomberAboutWindow.Close();
+            }
+
+            photoBomberAboutWindow = new aboutWindow();
+
+            photoBomberAboutWindow.Show();
+        }
+
         /**************************************************************************************************************************
         **************************************************************************************************************************/
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
@@ -2034,6 +2053,12 @@ namespace SoftwareEng
             }
         }
 
+        private void commonSortMenu_EventHandler(bool ascendingTrue )
+        {
+            ;
+        }
+
+
         //orderSelector{ 0=(name, extension) 1=(extension, name) }
         //ascendingTrue{ 0=(descending) 1=(ascending) }
         private void SortImageList(int orderSelector, int ascendingTrue)
@@ -2076,16 +2101,16 @@ namespace SoftwareEng
             }
         }
 
-        private void sortingDockButton_Click(object sender, RoutedEventArgs e)
+        private void sortingDockMenu_Click(object sender, RoutedEventArgs e)
         {
-            if (imageSortingMenuPopup.IsOpen == false)
-            {
-                imageSortingMenuPopup.IsOpen = true;
-            }
-            else
-            {
-                imageSortingMenuPopup.IsOpen = false;
-            }
+            //if (imageSortingMenuPopup.IsOpen == false)
+            //{
+            //    imageSortingMenuPopup.IsOpen = true;
+            //}
+            //else
+            //{
+            //    imageSortingMenuPopup.IsOpen = false;
+            //}
         }
 
         private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2157,69 +2182,6 @@ namespace SoftwareEng
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
-    }
-
-
-
-
-
-
-    public class customLabel : Label
-    {
-        private Timer EventTimer;
-        const double mouseEnterTimer= 1000.0;
-        const double mouseLeaveTimer = 3000.0;
-
-        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
-
-        
-        public customLabel(): base()
-        {
-            EventTimer = new Timer();
-
-            EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
-
-            
-        }
-        
-
-        void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            EventTimer.Stop();
-            RaisePhotoBomberTileTriggerEvent();
-            this.Visibility = Visibility.Hidden;
-        }
-
-
-        public event RoutedEventHandler OnPhotoBomberTileEvent
-        {
-            add { AddHandler(PhotoBomberTileTriggerEvent, value); }
-            remove { RemoveHandler(PhotoBomberTileTriggerEvent, value); }
-        }
-
-
-        void RaisePhotoBomberTileTriggerEvent()
-        {
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.PhotoBomberTileTriggerEvent);
-            RaiseEvent(newEventArgs);
-        }
-
-
-
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            EventTimer.Interval = 1.0;
-            EventTimer.Start();
-            
-        }
-
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            EventTimer.Interval = mouseLeaveTimer;
-            EventTimer.Start();
-            
-        }
-
     }
 
 }
