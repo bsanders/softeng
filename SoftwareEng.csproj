@@ -197,11 +197,6 @@
   <ItemGroup>
     <Resource Include="Fonts\monof55.ttf" />
     <Resource Include="Fonts\monof56.ttf" />
-    <Resource Include="ImagesResources2012\Actions_5847.png" />
-    <Resource Include="ImagesResources2012\action_add_16xLG.png" />
-    <Resource Include="ImagesResources2012\action_Cancel_16xLG.png" />
-    <Resource Include="ImagesResources2012\application_16xLG.png" />
-    <Resource Include="ImagesResources2012\Arrow_UndoRevertRestore_16xLG.png" />
     <Resource Include="ImagesResources2012\Camera_16xLG.png" />
     <Resource Include="ImagesResources2012\checkbox_16xLG.png" />
     <Resource Include="ImagesResources2012\Close_16xLG.png" />
@@ -273,11 +268,22 @@
     <Resource Include="ImagesResources2012\asset_media-element-control_on_24X24.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ImagesResources2012\Paste-inverted.png" />
     <Resource Include="ImagesResources2012\Paste.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ImagesResources2012\Grayscale-convert.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\action_add.png" />
+    <Resource Include="ImagesResources2012\action_cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\action_paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\action_go_back.png" />
+    <Resource Include="ImagesResources2012\action_maximize.png" />
+    <Resource Include="ImagesResources2012\action_play_pause.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
