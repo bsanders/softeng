@@ -357,13 +357,11 @@ namespace SoftwareEng
             try
             {
                 _albumsDatabase.Document.Save(albumsDatabasePath);
-
             }
             catch (DirectoryNotFoundException)
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "Library folder not found.";
-                return error;
             }
             return error;
         }
