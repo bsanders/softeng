@@ -24,9 +24,13 @@ namespace SoftwareEng
     /// </summary>
     public partial class aboutWindow : Window
     {
+        private bool windowOpen;
+
+
         public aboutWindow()
         {
             InitializeComponent();
+            windowOpen = true;
         }
 
         /**************************************************************************************************************************
@@ -80,7 +84,17 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void PhotoBomberAboutWindow_Deactivated(object sender, EventArgs e)
         {
+
             this.Close();
         }
+
+        private void closingWindow(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (windowOpen == false)
+            {
+                e.Cancel=true;
+            }
+        }
+
     }
 }

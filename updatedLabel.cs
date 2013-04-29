@@ -28,24 +28,9 @@ namespace SoftwareEng
         
         public customLabel(): base()
         {
-            //isFrontFace = false;
-
-            //if (isFront == true)
-            //{
-            //    mouseEventTimer = 1000.0;
-            //}
-            //else
-            //{
-            //    mouseEventTimer = 3000.0;
-            //}
-
             EventTimer = new Timer();
 
             EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
-
-            //EventTimer.SynchronizingObject = this as ISynchronizeInvoke;
-
-            
         }
 
         public bool isFront
@@ -64,12 +49,6 @@ namespace SoftwareEng
         {
             EventTimer.Stop();
             this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null); 
-
-            //RaisePhotoBomberTileTriggerEvent();
-            //this.Visibility = Visibility.Hidden;
-            //ErrorWindow debugWindow = new ErrorWindow("Timer Elapsed");
-
-            //debugWindow.Show();
         }
 
 
@@ -99,9 +78,6 @@ namespace SoftwareEng
             {
                 EventTimer.Stop();
             }
-            //RaisePhotoBomberTileTriggerEvent();
-
-            
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
@@ -115,9 +91,6 @@ namespace SoftwareEng
             {
                 EventTimer.Stop();
             }
-            //EventTimer.Interval = mouseEventTimer;
-            //EventTimer.Start();
-            
         }
     }
 }

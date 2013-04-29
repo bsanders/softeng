@@ -11,7 +11,7 @@
         x:Class="SoftwareEng.MainWindow"
     
         Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" PreviewMouseLeftButtonUp="mainWindow_PreviewMouseLeftButtonUp" PreviewMouseRightButtonDown="mainWindow_PreviewMouseRightButtonDown" Closing="mainWindow_Closing">
-    
+
     <Window.Resources>
 
         <DataTemplate x:Key="test">
@@ -23,10 +23,10 @@
 
         <DataTemplate x:Key="AlbumListItemBackTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
             <Grid x:Name="albumItemBackGrid" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" Height="Auto" Width="Auto">
-            	<Grid.RowDefinitions>
-            		<RowDefinition Height="Auto"/>
-            		<RowDefinition Height="36*"/>
-            	</Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="36*"/>
+                </Grid.RowDefinitions>
                 <TextBlock Text="Name:" Height="Auto" HorizontalAlignment="Left" Margin="3,3,0,0" x:Name="nameLine" VerticalAlignment="Top" FontFamily="/PhotoBomber;component/Fonts/#monofur" > <!--="pack://application:,,,/Fonts/#monofur" -->
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
@@ -112,89 +112,91 @@
                 <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
             </DataTemplate.Resources>
             <Grid x:Name="libraryItemBackGrid" Margin="-2,0" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" MaxHeight="{Binding Value, ElementName=thumbnailSizeSlider}" PreviewMouseRightButtonUp="libraryItemBackGrid_PreviewRightMouseUp">
-        		<Grid.RowDefinitions>
-        			<RowDefinition Height="37"/>
-        			<RowDefinition Height="Auto"/>
-        		</Grid.RowDefinitions>
-        		<Grid.Background>
-        			<SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
-        		</Grid.Background>
-                
-        		<TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="37"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.Background>
+                    <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
+                </Grid.Background>
+
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0"/>
                 <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" >
-        			<Image.Source>
-        				<!-- THE GODDAMNED SPLICERS HAVE SAVED THE DAY, WE HAVE DEFAULT FALLBACK IMAGES BITCHES-->
-        				<!--use the converter to bind to a cached image and not lock out the one on disk-->
-        				<Binding Path="thumbnailPath" Converter="{StaticResource ImagePathConverter}">
-        					<Binding.FallbackValue>
-        						<ImageSource><!-- This image looks much swankier than the missing image png-->ImagesResources2012/defaultImage.png</ImageSource>                                
-        					</Binding.FallbackValue>
-        				</Binding>
-        			</Image.Source>
-        		</Image>
-                
-        	</Grid>
-        	<DataTemplate.Triggers>
-        		<Trigger Property="ContentControl.Content" Value="{x:Null}"/>
-        	</DataTemplate.Triggers>
+                    <Image.Source>
+                        <!-- THE GODDAMNED SPLICERS HAVE SAVED THE DAY, WE HAVE DEFAULT FALLBACK IMAGES BITCHES-->
+                        <!--use the converter to bind to a cached image and not lock out the one on disk-->
+                        <Binding Path="thumbnailPath" Converter="{StaticResource ImagePathConverter}">
+                            <Binding.FallbackValue>
+                                <ImageSource>
+                                    <!-- This image looks much swankier than the missing image png--> ImagesResources2012/defaultImage.png
+                                </ImageSource>
+                            </Binding.FallbackValue>
+                        </Binding>
+                    </Image.Source>
+                </Image>
+
+            </Grid>
+            <DataTemplate.Triggers>
+                <Trigger Property="ContentControl.Content" Value="{x:Null}"/>
+            </DataTemplate.Triggers>
         </DataTemplate>
 
 
 
         <DataTemplate x:Key="ListItemTemplate">
             <DataTemplate.Resources>
-                    <Storyboard x:Key="flipToBackAnimation">
-                        <!-- Make the Viewport3D visible only for the duration of the rotation. -->
-                        <ObjectAnimationUsingKeyFrames
+                <Storyboard x:Key="flipToBackAnimation">
+                    <!-- Make the Viewport3D visible only for the duration of the rotation. -->
+                    <ObjectAnimationUsingKeyFrames
                                            Storyboard.TargetName="object3D"
                                            Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
-                            <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
-                        </ObjectAnimationUsingKeyFrames>
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
 
-                        <!-- Make the background element visible. (It won't actually appear until it is faded in right at the end of the animation.) -->
-                        <ObjectAnimationUsingKeyFrames
+                    <!-- Make the background element visible. (It won't actually appear until it is faded in right at the end of the animation.) -->
+                    <ObjectAnimationUsingKeyFrames
                                            Storyboard.TargetName="ItemBackSideContainer"
                                            Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
-                        </ObjectAnimationUsingKeyFrames>
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
+                    </ObjectAnimationUsingKeyFrames>
 
 
-                        <!-- Hide the foreground element. It will already be invisible by this time
+                    <!-- Hide the foreground element. It will already be invisible by this time
                                          because we fade it out right at the start of the animation. However, until
                                          we set its Visibility to Hidden, it will still be visible to the mouse... -->
-                        <ObjectAnimationUsingKeyFrames
+                    <ObjectAnimationUsingKeyFrames
                                            Storyboard.TargetName="ItemFrontSideContainer"
                                            Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
-                        </ObjectAnimationUsingKeyFrames>
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
 
 
-                        <!-- Fade the front wrapper out. The Viewport3D is behind us, so it'll fade into
+                    <!-- Fade the front wrapper out. The Viewport3D is behind us, so it'll fade into
                                          view at this point. The reason for fading is to avoid a visible step as we
                                          switch from the real UI to the copy projected onto the 3D model. -->
-                        <DoubleAnimation To="0" Duration="0:0:0.05"
+                    <DoubleAnimation To="0" Duration="0:0:0.05"
                                            Storyboard.TargetName="ItemFrontSideContainer"
                                            Storyboard.TargetProperty="Opacity" />
 
-                        <!-- Fade the back wrapper in. Once the spin completes, we fade the real back UI
+                    <!-- Fade the back wrapper in. Once the spin completes, we fade the real back UI
                                          in over the Viewport3D - using a fade to avoid a sudden jolt between the
                                          slightly fuzzy 3D look and the real UI. -->
-                        <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05" To="1"
+                    <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05" To="1"
                                            Storyboard.TargetName="ItemBackSideContainer"
                                            Storyboard.TargetProperty="Opacity" />
 
-                        <!-- 3D animation. Move the camera out slightly as we spin, so the model fits entirely
+                    <!-- 3D animation. Move the camera out slightly as we spin, so the model fits entirely
                                         within the field of view. Rotate the model 180 degrees. -->
-                        <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
+                    <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
                                            BeginTime="0:0:0.05" Duration="0:0:0.5" AutoReverse="True" DecelerationRatio="0.3"
                                            Storyboard.TargetName="camera"
                                            Storyboard.TargetProperty="(ProjectionCamera.Position)" />
-                        <DoubleAnimation From="0" To="180" AccelerationRatio="0.3" DecelerationRatio="0.3"
+                    <DoubleAnimation From="0" To="180" AccelerationRatio="0.3" DecelerationRatio="0.3"
                                            BeginTime="0:0:0.05" Duration="0:0:1"
                                            Storyboard.TargetName="rotate"
                                            Storyboard.TargetProperty="Angle" />
-                    </Storyboard>
+                </Storyboard>
 
                 <Storyboard x:Key="flipToFrontAnimation">
                     <ObjectAnimationUsingKeyFrames
@@ -237,7 +239,8 @@
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
                 <Border x:Name="ItemFrontSideContainer" Width="Auto" Margin="0" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" isFront="True"><ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
+                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" isFront="True">
+                        <ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
                     </SoftwareEngControls:customLabel>
                 </Border>
 
@@ -252,114 +255,114 @@
                         <PerspectiveCamera x:Name="camera" Position="0,0,0.5" LookDirection="0,0,-1" FieldOfView="90" />
                     </Viewport3D.Camera>
 
-                	<ModelVisual3D>
-                		<ModelVisual3D.Content>
-                			<Model3DGroup>
-                				<DirectionalLight Color="#444" Direction="0,0,-1" />
-                				<AmbientLight Color="#BBB" />
-                			</Model3DGroup>
-                		</ModelVisual3D.Content>
-                	</ModelVisual3D>
+                    <ModelVisual3D>
+                        <ModelVisual3D.Content>
+                            <Model3DGroup>
+                                <DirectionalLight Color="#444" Direction="0,0,-1" />
+                                <AmbientLight Color="#BBB" />
+                            </Model3DGroup>
+                        </ModelVisual3D.Content>
+                    </ModelVisual3D>
 
-                	<ModelVisual3D>
-                		<ModelVisual3D.Content>
-                			<GeometryModel3D>
-                				<!-- Simple flat, square surface -->
-                				<GeometryModel3D.Geometry>
-                					<MeshGeometry3D TriangleIndices="0,1,2 2,3,0"
+                    <ModelVisual3D>
+                        <ModelVisual3D.Content>
+                            <GeometryModel3D>
+                                <!-- Simple flat, square surface -->
+                                <GeometryModel3D.Geometry>
+                                    <MeshGeometry3D TriangleIndices="0,1,2 2,3,0"
                 						TextureCoordinates="0,1 1,1 1,0 0,0"
                 						Positions="-0.5,-0.5,0 0.5,-0.5,0 0.5,0.5,0 -0.5,0.5,0" />
-                				</GeometryModel3D.Geometry>
+                                </GeometryModel3D.Geometry>
 
 
-                				<!-- Front of shape shows the content of 'frontHost' -->
-                				<GeometryModel3D.Material>
-                					<DiffuseMaterial>
-                						<DiffuseMaterial.Brush>
-                							<VisualBrush Visual="{Binding ElementName=ItemFrontSide}" />
-                						</DiffuseMaterial.Brush>
-                					</DiffuseMaterial>
-                				</GeometryModel3D.Material>
+                                <!-- Front of shape shows the content of 'frontHost' -->
+                                <GeometryModel3D.Material>
+                                    <DiffuseMaterial>
+                                        <DiffuseMaterial.Brush>
+                                            <VisualBrush Visual="{Binding ElementName=ItemFrontSide}" />
+                                        </DiffuseMaterial.Brush>
+                                    </DiffuseMaterial>
+                                </GeometryModel3D.Material>
 
 
-                				<!-- Back of shape shows the content of 'backHost' -->
-                				<GeometryModel3D.BackMaterial>
-                					<DiffuseMaterial>
-                						<DiffuseMaterial.Brush>
-                							<VisualBrush Visual="{Binding ElementName=ItemBackSide}">
-                								<VisualBrush.RelativeTransform>
-                									<!-- By default, this would come out backwards because we're on the
+                                <!-- Back of shape shows the content of 'backHost' -->
+                                <GeometryModel3D.BackMaterial>
+                                    <DiffuseMaterial>
+                                        <DiffuseMaterial.Brush>
+                                            <VisualBrush Visual="{Binding ElementName=ItemBackSide}">
+                                                <VisualBrush.RelativeTransform>
+                                                    <!-- By default, this would come out backwards because we're on the
                                                             back on the shape. Flip it to make it right. -->
-                									<ScaleTransform ScaleX="-1" CenterX="0.5" />
-                								</VisualBrush.RelativeTransform>
-                							</VisualBrush>
-                						</DiffuseMaterial.Brush>
-                					</DiffuseMaterial>
-                				</GeometryModel3D.BackMaterial>
+                                                    <ScaleTransform ScaleX="-1" CenterX="0.5" />
+                                                </VisualBrush.RelativeTransform>
+                                            </VisualBrush>
+                                        </DiffuseMaterial.Brush>
+                                    </DiffuseMaterial>
+                                </GeometryModel3D.BackMaterial>
 
-                				<!-- Rotation transform used for transition. -->
-                				<GeometryModel3D.Transform>
-                					<RotateTransform3D>
-                						<RotateTransform3D.Rotation>
-                							<AxisAngleRotation3D x:Name="rotate" Axis="0,3,0" Angle="0" />
-                						</RotateTransform3D.Rotation>
-                					</RotateTransform3D>
-                				</GeometryModel3D.Transform>
-                			</GeometryModel3D>
-                		</ModelVisual3D.Content>
-                	</ModelVisual3D>
+                                <!-- Rotation transform used for transition. -->
+                                <GeometryModel3D.Transform>
+                                    <RotateTransform3D>
+                                        <RotateTransform3D.Rotation>
+                                            <AxisAngleRotation3D x:Name="rotate" Axis="0,3,0" Angle="0" />
+                                        </RotateTransform3D.Rotation>
+                                    </RotateTransform3D>
+                                </GeometryModel3D.Transform>
+                            </GeometryModel3D>
+                        </ModelVisual3D.Content>
+                    </ModelVisual3D>
 
                 </Viewport3D>
 
             </Grid>
-        	<DataTemplate.Triggers>
+            <DataTemplate.Triggers>
                 <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.PhotoBomberTileEvent" SourceName="ItemFrontSide">
-        			<BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
-        		</EventTrigger>
-        		<EventTrigger RoutedEvent="SoftwareEngControls:customLabel.PhotoBomberTileEvent" SourceName="ItemBackSide">
-        			<BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
-        		</EventTrigger>
-        	</DataTemplate.Triggers>
+                    <BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.PhotoBomberTileEvent" SourceName="ItemBackSide">
+                    <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
+                </EventTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
         <Storyboard x:Key="DockAppear">
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
-        		<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-        	</ObjectAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="mainWindowDock">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="48"/>
-        	</DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="mainWindowDock">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="48"/>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="DockDisappear">
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Hidden}"/>
-        	</ObjectAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="mainWindowDock">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="48"/>
-        		<SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
-        	</DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Hidden}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="mainWindowDock">
+                <EasingDoubleKeyFrame KeyTime="0" Value="48"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="InvalidNameFlash">
-        	<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
-        		<EasingColorKeyFrame KeyTime="0" Value="{StaticResource PhotoBomberErrorBorderColor}"/>
-        	</ColorAnimationUsingKeyFrames>
-        	<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
-        		<EasingColorKeyFrame KeyTime="0" Value="Red"/>
-        	</ColorAnimationUsingKeyFrames>
-        	<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
-        		<EasingColorKeyFrame KeyTime="0" Value="Red"/>
-        	</ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
+                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PhotoBomberErrorBorderColor}"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
+                <EasingColorKeyFrame KeyTime="0" Value="Red"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
+                <EasingColorKeyFrame KeyTime="0" Value="Red"/>
+            </ColorAnimationUsingKeyFrames>
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="nameTextBox">
-        		<EasingColorKeyFrame KeyTime="0" Value="White"/>
-        		<EasingColorKeyFrame KeyTime="0:0:1" Value="{StaticResource PhotoBomberErrorBackground}">
-        			<EasingColorKeyFrame.EasingFunction>
-        				<ElasticEase EasingMode="EaseOut" Springiness="1" Oscillations="5"/>
-        			</EasingColorKeyFrame.EasingFunction>
-        		</EasingColorKeyFrame>
-        	</ColorAnimationUsingKeyFrames>
+                <EasingColorKeyFrame KeyTime="0" Value="White"/>
+                <EasingColorKeyFrame KeyTime="0:0:1" Value="{StaticResource PhotoBomberErrorBackground}">
+                    <EasingColorKeyFrame.EasingFunction>
+                        <ElasticEase EasingMode="EaseOut" Springiness="1" Oscillations="5"/>
+                    </EasingColorKeyFrame.EasingFunction>
+                </EasingColorKeyFrame>
+            </ColorAnimationUsingKeyFrames>
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderThickness)" Storyboard.TargetName="nameTextBox">
-        		<EasingThicknessKeyFrame KeyTime="0" Value="3,2"/>
-        	</ThicknessAnimationUsingKeyFrames>
+                <EasingThicknessKeyFrame KeyTime="0" Value="3,2"/>
+            </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="InvalidPhotoNameFlash">
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="photoNameTextBox">
@@ -384,48 +387,48 @@
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="InvalidCommentFlash" x:Name="commentTextBoxErrorAnimation">
-        	<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="commentTextBox">
-        		<EasingColorKeyFrame KeyTime="0" Value="{StaticResource PhotoBomberErrorBorderColor}"/>
-        	</ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="commentTextBox">
+                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PhotoBomberErrorBorderColor}"/>
+            </ColorAnimationUsingKeyFrames>
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="commentTextBox">
-        		<EasingColorKeyFrame KeyTime="0" Value="Red"/>
-        	</ColorAnimationUsingKeyFrames>
+                <EasingColorKeyFrame KeyTime="0" Value="Red"/>
+            </ColorAnimationUsingKeyFrames>
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="commentTextBox">
-        		<EasingColorKeyFrame KeyTime="0" Value="Red"/>
-        	</ColorAnimationUsingKeyFrames>
+                <EasingColorKeyFrame KeyTime="0" Value="Red"/>
+            </ColorAnimationUsingKeyFrames>
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="commentTextBox">
-        		<EasingColorKeyFrame KeyTime="0" Value="White"/>
-        		<EasingColorKeyFrame KeyTime="0:0:1" Value="{StaticResource PhotoBomberErrorBackground}">
-        			<EasingColorKeyFrame.EasingFunction>
-        				<ElasticEase EasingMode="EaseOut" Springiness="1" Oscillations="5"/>
-        			</EasingColorKeyFrame.EasingFunction>
-        		</EasingColorKeyFrame>
-        	</ColorAnimationUsingKeyFrames>
+                <EasingColorKeyFrame KeyTime="0" Value="White"/>
+                <EasingColorKeyFrame KeyTime="0:0:1" Value="{StaticResource PhotoBomberErrorBackground}">
+                    <EasingColorKeyFrame.EasingFunction>
+                        <ElasticEase EasingMode="EaseOut" Springiness="1" Oscillations="5"/>
+                    </EasingColorKeyFrame.EasingFunction>
+                </EasingColorKeyFrame>
+            </ColorAnimationUsingKeyFrames>
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderThickness)" Storyboard.TargetName="commentTextBox">
-        		<EasingThicknessKeyFrame KeyTime="0" Value="3,2"/>
-        	</ThicknessAnimationUsingKeyFrames>
+                <EasingThicknessKeyFrame KeyTime="0" Value="3,2"/>
+            </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
 
 
     </Window.Resources>
-	<Window.Triggers>
-		<EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="dockHitBox">
-			<ResumeStoryboard BeginStoryboardName="DockAppear_BeginStoryboard"/>
-			<BeginStoryboard x:Name="DockAppear_BeginStoryboard" Storyboard="{StaticResource DockAppear}"/>
-		</EventTrigger>
-		<EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="mainWindowDock">
-			<ResumeStoryboard BeginStoryboardName="DockDisappear_BeginStoryboard"/>
-			<BeginStoryboard x:Name="DockDisappear_BeginStoryboard" Storyboard="{StaticResource DockDisappear}"/>
-		</EventTrigger>
-	</Window.Triggers>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="dockHitBox">
+            <ResumeStoryboard BeginStoryboardName="DockAppear_BeginStoryboard"/>
+            <BeginStoryboard x:Name="DockAppear_BeginStoryboard" Storyboard="{StaticResource DockAppear}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="mainWindowDock">
+            <ResumeStoryboard BeginStoryboardName="DockDisappear_BeginStoryboard"/>
+            <BeginStoryboard x:Name="DockDisappear_BeginStoryboard" Storyboard="{StaticResource DockDisappear}"/>
+        </EventTrigger>
+    </Window.Triggers>
 
 
     <Grid>
         <Border x:Name="mainWindowFrame" Padding="6" Background="#001C2327">
             <Grid x:Name="grid">
-                
+
                 <!-- Buttons for the library view are: Add photos (Plus), Rename (Pencil), Delete (X), Copy From Clipboard (Pushpin), Slideshow (Play), View Contents (eye)   -->
-                
+
                 <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60" >
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#55FFFFFF" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="True">
                         <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemLibraryButton_Click" ToolTip="Add Photos">
@@ -448,7 +451,7 @@
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
-                
+
                 <!-- Buttons for the Album view are: Edit Data (Pencil), Delete (X), Copy to Clipboard (Pushpin), View Image (eye)   -->
 
                 <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60">
@@ -484,7 +487,7 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
-                
+
                 <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" Margin="0,25,0,0"/>
 
 
@@ -492,40 +495,43 @@
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="0,0,25,0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
                 <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="1" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockBrush}">
                     <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" Background="{DynamicResource PhotoBomberDockButtonBrush}" ToolTip="Create An Album">
-
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="addPhotosDockButton_Click" ToolTip="Add Photos">
-
                         <Image x:Name="addPhotosDockButtonImage" Source="ImagesResources2012/action_add.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="libraryDockButton_Click" ToolTip="Go To My Albums">
-
                         <Image x:Name="libraryDockButtonImage" Source="ImagesResources2012/action_go_back.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="cancelPhotoImportDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="cancelPhotoImportDockButton_Click" ToolTip="Cancel Import">
                         <Image x:Name="cancelPhotoImportDockButtonImage" Source="ImagesResources2012/Symbols_Critical_32xLG.png" Width="32" Height="32"/>
                     </Button>
+                    <Menu x:Name="imageSortingButtonPlaceholder" IsMainMenu="True" Background="{DynamicResource PhotoBomberDockButtonBrush}" Width="48" Height="48" Visibility="Collapsed">
+                        <MenuItem x:Name="imageSortingMenu" Click="sortingDockMenu_Click" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" ToolTip="CLICK ME TO SORT!!!">
+                            <MenuItem.Header>
+                                <Image x:Name="cancelPhotoImportDockMenuImage" Source="ImagesResources2012/Symbols_Critical_32xLG.png"/>
+                            </MenuItem.Header>
+                            <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalAlignment="Right"  HorizontalContentAlignment="Right"/>
+                            <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click" IsCheckable="True"/>
+                            <MenuItem x:Name="extensionMenuItem" Header="Extension" IsCheckable="True"/>
+                        </MenuItem>
+                    </Menu>
                     <!-- This button is only used to preserve spacing between the buttons -->
                     <Button x:Name="blankDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                     </Button>
-                    <Button x:Name="sortingDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" ToolTip="Sort Images" Click="sortingDockButton_Click">
-                        <Image x:Name="sortingDockButtonImage" Source="ImagesResources2012/Symbols_Critical_32xLG.png" Width="32" Height="32"/>
-                    </Button>
-
                     <StackPanel x:Name="ThumbnailControlStackPanel" Width="107" ToolTip="Adjust Thumbnail Size">
                         <Label Content="Thumbnail Size" Height="20" x:Name="thumbnailSizeLabel" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Bottom" Padding="5,0" FontWeight="Normal" />
                         <Slider Height="23" x:Name="thumbnailSizeSlider" Width="100" SmallChange="1" Maximum="250" Minimum="120" LargeChange="97" Value="120" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="True"/>
                     </StackPanel>
 
                 </DockPanel>
-                
-                
+
+
                 <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden" Background="{DynamicResource PhotoBomberProgressBarBrush}"/>
                 <Popup AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                	<Grid Background="#FFE5E5E5">
-                		<ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200"/>
-                	</Grid>
+                    <Grid Background="#FFE5E5E5">
+                        <ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200"/>
+                    </Grid>
                 </Popup>
                 <ed:Callout AnchorPoint="-0.07,1.63" CalloutStyle="RoundedRectangle" FontSize="14.667" Stroke="Black" Margin="43,197,441.992,97.256" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Visibility="Hidden">
                     <ed:Callout.Fill>
@@ -551,6 +557,24 @@
             </Grid>
         </Border>
         <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Background="{DynamicResource PhotoBomberTitleBarBrush}">
+            
+            
+            <Menu x:Name="PhotoBomberMenuButtonPlaceholder" IsMainMenu="True" Background="{DynamicResource PhotoBomberDockButtonBrush}" IsTabStop="False" Focusable="False" Width="30" Height="25">
+                <MenuItem x:Name="PhotoBomberMenu" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" ToolTip="MAIN MENU!!!">
+                    <MenuItem.Header>
+                        <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart-tiny-square.png"/>
+                    </MenuItem.Header>
+                    <MenuItem.Background>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#AAFFFFFF" Offset="1" />
+                            <GradientStop Color="#00000000" Offset="1" />
+                        </RadialGradientBrush>
+                    </MenuItem.Background>
+                    <MenuItem Header="ABOUT PHOTOBOMBER!!" Click="aboutMenuItemPressed_eventHandler"/>
+                </MenuItem>
+            </Menu>
+
+            <!--
             <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="6,6,0,0" Click="aboutButtonPressed_eventHandler" ToolTip="About PhotoBomber" IsTabStop="False" Focusable="False">
                 <Button.Background>
                     <RadialGradientBrush>
@@ -560,11 +584,13 @@
                 </Button.Background>
                 <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/NewIconClipart-tiny-square.png"/>
             </Button>
+            -->
+            
             <!-- Not sure how to set the content of this label dynamically from settings file -->
             <Label x:Name="appTitleBarLabel" Content="PhotoBomber - My Photo Library!" Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center">
-            	<Label.Foreground>
-            		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
-            	</Label.Foreground>
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                </Label.Foreground>
             </Label>
 
             <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitDockButton_Click" ToolTip="Exit" IsTabStop="False" Focusable="False">
@@ -598,13 +624,13 @@
             </DockPanel.Background>
             <StackPanel x:Name="nameBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right" ToolTip=" ">
                 <TextBlock x:Name="NameTextBlock" Text="Choose Name:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
-                	<TextBlock.Foreground>
-                		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
-                	</TextBlock.Foreground>
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </TextBlock.Foreground>
                 </TextBlock>
                 <TextBox x:Name="nameTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0" Visibility="Collapsed"/>
             </StackPanel>
-            
+
             <StackPanel x:Name="photoNameBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right" ToolTip=" ">
                 <TextBlock x:Name="photoNameTextBlock" Text="Choose Name:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
                     <TextBlock.Foreground>
@@ -613,7 +639,7 @@
                 </TextBlock>
                 <TextBox x:Name="photoNameTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed"/>
             </StackPanel>
-            
+
             <StackPanel x:Name="commentBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right">
 
                 <TextBlock x:Name="commentTextBlock" Text="Choose Comment:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
@@ -632,16 +658,16 @@
             </Button>
         </DockPanel>
         <Popup x:Name="invalidInputPopup" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0" PlacementTarget="{Binding ElementName=nameTextBox, Mode=OneWay}" Placement="Top" HorizontalOffset="200" AllowsTransparency="True" VerticalOffset="10">
-        	<Grid MinWidth="210" Height="120">
-        		<ed:Callout x:Name="errorBalloon" AnchorPoint="0.017,1.375" Content="Errors messages should come from errorStrings.resx" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200" FontWeight="Normal" Fill="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" Padding="3,0,3,3" FontSize="14" Margin="1,2,1,37">
-        			<ed:Callout.Stroke>
-        				<SolidColorBrush Color="{DynamicResource PhotoBomberErrorBorderColor}"/>
-        			</ed:Callout.Stroke>
-        			<ed:Callout.Foreground>
-        				<SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
-        			</ed:Callout.Foreground>
-        		</ed:Callout>
-        	</Grid>
+            <Grid MinWidth="210" Height="120">
+                <ed:Callout x:Name="errorBalloon" AnchorPoint="0.017,1.375" Content="Errors messages should come from errorStrings.resx" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200" FontWeight="Normal" Fill="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" Padding="3,0,3,3" FontSize="14" Margin="1,2,1,37">
+                    <ed:Callout.Stroke>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberErrorBorderColor}"/>
+                    </ed:Callout.Stroke>
+                    <ed:Callout.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+                    </ed:Callout.Foreground>
+                </ed:Callout>
+            </Grid>
         </Popup>
 
         <Popup x:Name="invalidPhotoNamePopup" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="0" PlacementTarget="{Binding ElementName=photoNameTextBox, Mode=OneWay}" Placement="Top" HorizontalOffset="200" AllowsTransparency="True" VerticalOffset="10">
@@ -669,21 +695,23 @@
                 </ed:Callout>
             </Grid>
         </Popup>
-        
-        <Popup x:Name="imageSortingMenuPopup" PlacementTarget="{Binding ElementName=sortingDockButton, Mode=OneWay}" StaysOpen="False" Placement="Top">
-            <Menu x:Name="imageSortingMenu" IsMainMenu="False">
-                <Menu.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel IsItemsHost="True"/>
-                    </ItemsPanelTemplate>
-                </Menu.ItemsPanel>
-                <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalAlignment="Right"  HorizontalContentAlignment="Right" Width="86"/>
-                <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click"/>
-                <MenuItem x:Name="extensionMenuItem" Header="Extension"/>
-            </Menu>
-        </Popup>
-        
 
+        <!--
         
+                    <Button x:Name="sortingDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="0" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" ToolTip="Sort Images" Click="sortingDockButton_Click">
+                        <Image x:Name="sortingDockButtonImage" Source="ImagesResources2012/Symbols_Critical_32xLG.png" Width="32" Height="32"/>
+                    </Button>
+        
+        
+        
+                        <Menu.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel IsItemsHost="True"/>
+            </ItemsPanelTemplate>
+            </Menu.ItemsPanel> 
+            -->
+
     </Grid>
 </Window>
+
+    
