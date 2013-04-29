@@ -45,6 +45,9 @@
  *                     empty, it only changes the photo's caption field. If the photo's name field is not empty, it will validate
  *                     the photo name and then validate the caption.
  *                     Changed the regex for caption validation to allow blank captions, in order to allow captions to be removed.
+ * 4/28/13 Julian Nguyen:
+ * rename PhotoBomb -> PhotoBomb_Controller.
+ * 
  */
 using System;
 using System.Collections.Generic;
@@ -106,7 +109,7 @@ namespace SoftwareEng
         }
 
         //--didn't know what to call it, so I named it the literal spanish translation
-        public SoftwareEng.PhotoBomb bombaDeFotos;
+        public SoftwareEng.PhotoBomb_Controller bombaDeFotos;
 
         //--stores the albumImageList index of the default image for albums
         private const short defaultAlbumImageListIndex = 0;
@@ -146,7 +149,7 @@ namespace SoftwareEng
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Settings.OrgName);
 
-            bombaDeFotos = new PhotoBomb();
+            bombaDeFotos = new PhotoBomb_Controller();
             bombaDeFotos.init(guiConstructorCallback,
                 System.IO.Path.Combine(basePath, Settings.AlbumXMLFile),
                 System.IO.Path.Combine(basePath, Settings.PhotoXMLFile),
@@ -507,7 +510,7 @@ namespace SoftwareEng
         {
             if(mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.setPhotoCaption(new generic_callback(guiChangePhotoCaption_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
+                bombaDeFotos.setImageCaption(new generic_callback(guiChangePhotoCaption_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
             }
         }
 
