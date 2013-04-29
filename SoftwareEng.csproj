@@ -131,6 +131,7 @@
       <DependentUpon>promptStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="SingleInstance.cs" />
+    <Compile Include="updatedLabel.cs" />
     <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>

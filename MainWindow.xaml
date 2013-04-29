@@ -237,7 +237,8 @@
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
                 <Border x:Name="ItemFrontSideContainer" Width="Auto" Margin="0" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch"><ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/></SoftwareEngControls:customLabel>
+                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" isFront="True"><ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
+                    </SoftwareEngControls:customLabel>
                 </Border>
 
                 <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0" PreviewMouseRightButtonUp="ItemBackSideContainer_PreviewRightMouseUp">

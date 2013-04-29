@@ -2158,68 +2158,73 @@ namespace SoftwareEng
 
 
 
+    //public class customLabel1 : Label
+    //{
+    //    private Timer EventTimer;
+    //    const double mouseEnterTimer= 1000.0;
+    //    const double mouseLeaveTimer = 3000.0;
 
-
-
-    public class customLabel : Label
-    {
-        private Timer EventTimer;
-        const double mouseEnterTimer= 1000.0;
-        const double mouseLeaveTimer = 3000.0;
-
-        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
+    //    public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel1));
 
         
-        public customLabel(): base()
-        {
-            EventTimer = new Timer();
+    //    public customLabel1(): base()
+    //    {
+    //        EventTimer = new Timer();
 
-            EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
+    //        EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
+
+    //        EventTimer.SynchronizingObject = this as ISynchronizeInvoke;
 
             
-        }
+    //    }
         
 
-        void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            EventTimer.Stop();
-            RaisePhotoBomberTileTriggerEvent();
-            this.Visibility = Visibility.Hidden;
-        }
+    //    void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
+    //    {
+            
+    //        EventTimer.Stop();
+    //        //RaisePhotoBomberTileTriggerEvent();
+    //        //this.Visibility = Visibility.Hidden;
+    //        //ErrorWindow debugWindow = new ErrorWindow("Timer Elapsed");
+
+    //        //debugWindow.Show();
+    //    }
 
 
-        public event RoutedEventHandler OnPhotoBomberTileEvent
-        {
-            add { AddHandler(PhotoBomberTileTriggerEvent, value); }
-            remove { RemoveHandler(PhotoBomberTileTriggerEvent, value); }
-        }
+    //    public event RoutedEventHandler OnPhotoBomberTileEvent
+    //    {
+    //        add { AddHandler(PhotoBomberTileTriggerEvent, value); }
+    //        remove { RemoveHandler(PhotoBomberTileTriggerEvent, value); }
+    //    }
 
 
-        void RaisePhotoBomberTileTriggerEvent()
-        {
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.PhotoBomberTileTriggerEvent);
-            RaiseEvent(newEventArgs);
-        }
+    //    void RaisePhotoBomberTileTriggerEvent()
+    //    {
+    //        RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel1.PhotoBomberTileTriggerEvent);
+    //        RaiseEvent(newEventArgs);
+    //    }
 
 
 
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            //EventTimer.Interval = 1.0;
-            //EventTimer.Start();
-            RaisePhotoBomberTileTriggerEvent();
+    //    protected override void OnMouseEnter(MouseEventArgs e)
+    //    {
+    //        EventTimer.Interval = 1.0;
+    //        EventTimer.Start();
+    //        //RaisePhotoBomberTileTriggerEvent();
 
             
-        }
+    //    }
 
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            //EventTimer.Interval = mouseLeaveTimer;
-            //EventTimer.Start();
+    //    protected override void OnMouseLeave(MouseEventArgs e)
+    //    {
+    //        EventTimer.Interval = mouseLeaveTimer;
+    //        EventTimer.Start();
             
-        }
+    //    }
 
-    }
+    //}
+
+
 
 }
 
