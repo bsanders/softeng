@@ -19,7 +19,7 @@
  * class ComplexPhotoData was moved to ComplexPhotoData.cs
  * class SimplePhotoData was removed. 
  * Julian Nguyen(2/30/13)
- * Some the error Report was not being set in some of hte functions. 
+ * Some the error Reports were not being set in some of the functions. (null exception) 
  * 
  * 
  ***************************************************************************************************************/
