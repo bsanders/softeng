@@ -2195,6 +2195,75 @@ namespace SoftwareEng
         }
 
 
+        private void clearThemecheckboxes()
+        {
+            bureauBlackThemeMenuItem.IsChecked=false;
+            bureauBlueThemeMenuItem.IsChecked = false;
+            expressionDarkThemeMenuItem.IsChecked = false;
+            expressionLightThemeMenuItem.IsChecked = false;
+            shinyBlueThemeMenuItem.IsChecked = false;
+            shinyRedThemeMenuItem.IsChecked = false;
+            whistlerBlueThemeMenuItem.IsChecked = false;
+        }
+
+
+
+        private void bureauBlackThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                bureauBlackThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/BureauBlack.xaml", UriKind.Relative)); 
+        }
+
+        private void bureauBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                bureauBlueThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/BureauBlue.xaml", UriKind.Relative));             
+        }
+
+        private void expressionDarkThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                expressionDarkThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/ExpressionDark.xaml", UriKind.Relative));             
+        }
+
+        private void expressionLightThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                expressionLightThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/ExpressionLight.xaml", UriKind.Relative));             
+        }
+
+        private void shinyBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                shinyBlueThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/ShinyRed.xaml", UriKind.Relative)); 
+        }
+
+        private void shinyRedThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                shinyRedThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/ShinyBlue.xaml", UriKind.Relative));     
+        }
+
+        private void whistlerBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                whistlerBlueThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/WhistlerBlued.xaml", UriKind.Relative)); 
+        }
+
     }
 
     /*
