@@ -46,11 +46,11 @@ namespace SoftwareEng
         /// <param name="imageData"></param>
         public ImageXmlDataReadOnly(ImageXmlData imageData)
         {
-            imageData._hashValue = _hashValue;
-            imageData._filePath = _filePath;
-            imageData._lgThumbPath = _lgThumbPath;
-            imageData._extension = _extension;
-            imageData.addedDate = _addedDate;
+            _hashValue = imageData._hashValue; 
+            _filePath = imageData._filePath; 
+            _lgThumbPath = imageData._lgThumbPath;
+            _extension = imageData._extension; 
+            _addedDate = imageData.addedDate;
         }
 
 
@@ -112,9 +112,9 @@ namespace SoftwareEng
         /// <param name="albumData"></param>
         public AlbumXmlDataReadOnly(AlbumXmlData albumData)
         {
-            albumData._albumUID = _albumUID;
-            albumData._albumName = _albumName;
-            albumData._thumbHashValue = _thumbHashValue;
+            _albumUID = albumData._albumUID;
+            _albumName = albumData._albumName;
+            _thumbHashValue = albumData._thumbHashValue;
 
             _images = new List<AlbumImageXmlDataReadOnly>();
             foreach (AlbumImageXmlData imageData in albumData._images)
@@ -172,9 +172,9 @@ namespace SoftwareEng
         /// <param name="albumImageData"></param>
         public AlbumImageXmlDataReadOnly(AlbumImageXmlData albumImageData)
         {
-            albumImageData._imageHashValue = _imageHashValue;
-            albumImageData._imageName = _imageName;
-            albumImageData._imageCaption = ImageCaption;
+            _imageHashValue = albumImageData._imageHashValue;
+            _imageName = albumImageData._imageName;
+            _imageCaption = albumImageData._imageCaption;
         }
 
         // Getters.
