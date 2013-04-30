@@ -2213,7 +2213,7 @@ namespace SoftwareEng
                 clearThemecheckboxes();
                 bureauBlackThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/BureauBlack.xaml", UriKind.Relative)); 
+                ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative)); 
         }
 
         private void bureauBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2221,7 +2221,7 @@ namespace SoftwareEng
                 clearThemecheckboxes();
                 bureauBlueThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/BureauBlue.xaml", UriKind.Relative));             
+                ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlue.xaml", UriKind.Relative));             
         }
 
         private void expressionDarkThemeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2229,7 +2229,7 @@ namespace SoftwareEng
                 clearThemecheckboxes();
                 expressionDarkThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/ExpressionDark.xaml", UriKind.Relative));             
+                ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionDark.xaml", UriKind.Relative));             
         }
 
         private void expressionLightThemeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2237,7 +2237,7 @@ namespace SoftwareEng
                 clearThemecheckboxes();
                 expressionLightThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/ExpressionLight.xaml", UriKind.Relative));             
+                ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionLight.xaml", UriKind.Relative));             
         }
 
         private void shinyBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2245,7 +2245,7 @@ namespace SoftwareEng
                 clearThemecheckboxes();
                 shinyBlueThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/ShinyRed.xaml", UriKind.Relative)); 
+                ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative)); 
         }
 
         private void shinyRedThemeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2253,7 +2253,7 @@ namespace SoftwareEng
                 clearThemecheckboxes();
                 shinyRedThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/ShinyBlue.xaml", UriKind.Relative));     
+                ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyBlue.xaml", UriKind.Relative));     
         }
 
         private void whistlerBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2261,7 +2261,7 @@ namespace SoftwareEng
                 clearThemecheckboxes();
                 whistlerBlueThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/ThemeSelector;component/Themes/WhistlerBlued.xaml", UriKind.Relative)); 
+                ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlued.xaml", UriKind.Relative)); 
         }
 
     }

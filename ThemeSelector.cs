@@ -65,9 +65,10 @@ namespace SoftwareEng
                     {
                         themeDictionary.Source = dictionaryUri;
                     }
-                    catch (FileNotFoundException)
+                    catch (FileNotFoundException e)
                     {
-                        ErrorWindow debugWindow = new ErrorWindow("debugging error: Selected Theme Xaml not found");
+
+                        ErrorWindow debugWindow = new ErrorWindow("debugging error: Selected Theme Xaml not found \n \n"+e.FusionLog);
 
                         debugWindow.ShowDialog();
                     }

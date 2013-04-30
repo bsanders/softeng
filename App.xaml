@@ -6,6 +6,7 @@
              >
     
     <Application.Resources>
+
         <RadialGradientBrush x:Key="PhotoBomberDockButtonBrush">
             <GradientStop Color="#BD767676" Offset="0.698" />
             <GradientStop Color="#00C4C4C4" Offset="1" />
