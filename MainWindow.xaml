@@ -430,7 +430,7 @@
                 <!-- Buttons for the library view are: Add photos (Plus), Rename (Pencil), Delete (X), Copy From Clipboard (Pushpin), Slideshow (Play), View Contents (eye)   -->
 
                 <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60" >
-                    <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#55FFFFFF" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="True">
+                    <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#99DDDDDD" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="True">
                         <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemLibraryButton_Click" ToolTip="Add Photos">
                             <Image x:Name="addButtonLibraryImage" Source="ImagesResources2012/action_add.png" Stretch="Fill"/>
                         </Button>
@@ -456,7 +456,7 @@
                 <!-- Buttons for the Album view are: Edit Data (Pencil), Delete (X), Copy to Clipboard (Pushpin), View Image (eye)   -->
 
                 <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60">
-                    <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#55FFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="True">
+                    <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#99DDDDDD" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="True">
                         <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemAlbumButton_Click" ToolTip="Add Photos">
                             <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add.png" Stretch="Fill"/>
                         </Button>

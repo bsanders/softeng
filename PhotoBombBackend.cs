@@ -20,6 +20,9 @@
  * 4/6/13 Ryan Causey: Edited the removePhoto backend function to update the observable collection.
  *                     Fixed using the wrong UID to find the element in the photos collection.
  * 4/8/13 Ryan Causey: Removed a call to the validate caption utility function.
+ * Julian Nguyen (4/28/13)
+ * Change a lot the fun(). A lot of the fun() with _backend was change to public. 
+ * 
  **/
 using System;
 using System.Collections.Generic;
@@ -39,6 +42,8 @@ namespace SoftwareEng
     //it is the private part of the PhotoBomb class.
     public partial class PhotoBomb
     {
+        // A handy shortcut to the settings class...
+        Properties.Settings Settings = Properties.Settings.Default;
 
         //xml parsing utils.
         //private XmlParser xmlParser;
@@ -72,10 +77,16 @@ namespace SoftwareEng
         //FUNCTIONS--------------------------------------------------------
         //-----------------------------------------------------------------
 
-        //By: Ryan Moe
-        //Edited Last: 3/31/13
-        //Edited By: Ryan Causey
-        private void init_backend(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPathIn)
+        /// By: Ryan Moe
+        /// Edited: Julian Nguyen(4/28/13)
+        /// <summary>
+        /// This will setup the data base. Files and all. 
+        /// 
+        /// </summary>
+        /// <param name="albumDatabasePathIn"></param>
+        /// <param name="pictureDatabasePathIn"></param>
+        /// <param name="libraryPathIn"></param>
+        public ErrorReport init_backend(string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPathIn)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -106,19 +117,17 @@ namespace SoftwareEng
             // initialize a list for the clipboard
             _photosClipboard = new List<ComplexPhotoData>();
 
-            guiCallback(errorReport);
+            return errorReport;
         }
 
-        //-----------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/4/13
+        /// By: Ryan Moe
+        /// Edited: Julian Nguyen(4/28/13)
         /// <summary>
         /// This function blows out the existing database(normally due to it being corrupted)
         /// and creates a new one, consolidating all the photos into a Recovery Album.
         /// </summary>
-        /// <param name="guiCallback">GUI supplied callback</param>
-        private void rebuildBackendOnFilesystem_backend(generic_callback guiCallback)
+        /// <returns>The error report of this action.</returns>
+        public ErrorReport rebuildBackendOnFilesystem_backend()
         {
             ErrorReport errorReport = new ErrorReport();
             bool recover = true;
@@ -135,8 +144,7 @@ namespace SoftwareEng
                 {
                     errorReport.reportID = ErrorReport.FAILURE;
                     errorReport.description = "Unable to create the new library folder.";
-                    guiCallback(errorReport);
-                    return;
+                    return errorReport;
                 }
                 recover = false;
             }
@@ -146,8 +154,7 @@ namespace SoftwareEng
             // Check the XML creation for bugs
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
             //Load the new databases into memory.
@@ -157,21 +164,19 @@ namespace SoftwareEng
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
             // Not needed, createDefaultXML() saves these.
-            //saveAlbumsXML_backend(null);
-            //savePicturesXML_backend(null);
+            //saveAlbumsXML_backend();
+            //saveImagesXML_backend();
 
             //build the backup album and add all the photos to that album if we can
             if (recover)
             {
                 addPhotoBackup(errorReport, buildBackupAlbum(errorReport));
             }
-
-            guiCallback(errorReport);
+            return errorReport;
         }
 
         /*
@@ -210,7 +215,7 @@ namespace SoftwareEng
             }
 
             //save to disk.
-            saveAlbumsXML_backend(null);
+            saveAlbumsXML_backend();
 
             return backupAlbum.UID;
         }
@@ -322,99 +327,59 @@ namespace SoftwareEng
                 }
 
                 //save to disk.
-                savePicturesXML_backend(null);
-                saveAlbumsXML_backend(null);
+                saveImagesXML_backend();
+                saveAlbumsXML_backend();
 
                 //when we have the photos collection implemented need to update it here and
                 //if necessary blow it out up above.
             }
-
-//            Directory.Delete(tmpDir, true);
-
+            
+            //Directory.Delete(tmpDir, true);
             return errorReport;
         }
 
-        //BS: Commenting this function out: its never used 03/23/13
-        //-----------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //private void reopenAlbumsXML_backend(generic_callback guiCallback)
-        //{
-        //    //use this to inform the calling gui of how things went.
-        //    ErrorReport error = new ErrorReport();
-
-        //    util_openAlbumsXML(error);
-
-        //    guiCallback(error);
-        //}
-
-        //-----------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        private void saveAlbumsXML_backend(generic_callback guiCallback)
+        /// By Ryan Moe
+        /// Edited: Julian Nguyen(4/28/13)
+        /// <summary>
+        /// This will save the album XML to file.
+        /// </summary>
+        /// <returns>The error report for this action.</returns>
+        public ErrorReport saveAlbumsXML_backend()
         {
             ErrorReport error = new ErrorReport();
 
             //make sure the album database is valid.
             if (!util_checkAlbumDatabase(error))
             {
-                guiCallback(error);
-                return;
+                return error;
             }
 
             try
             {
                 _albumsDatabase.Document.Save(albumsDatabasePath);
-
             }
             catch (DirectoryNotFoundException)
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "Library folder not found.";
-                guiCallback(error);
-                return;
             }
-            if (guiCallback != null)
-                guiCallback(error);
+            return error;
         }
 
-        //BS: Commenting this function out: its never used 03/23/13
-        //-----------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //private void reopenPicturesXML_backend(generic_callback guiCallback)
-        //{
-        //    //use this to inform the calling gui of how things went.
-        //    ErrorReport error = new ErrorReport();
-
-        //    try
-        //    {
-        //        _picturesDatabase = XDocument.Load(picturesDatabasePath);
-        //    }
-        //    catch
-        //    {
-        //        error.reportID = ErrorReport.FAILURE;
-        //        error.description = "PhotoBomb.openPicturesXML():failed to load the albums xml file: " + picturesDatabasePath;
-        //        guiCallback(error);
-        //        return;
-        //    }
-
-        //    //The loading of the xml was nominal, report back to the gui callback.
-        //    guiCallback(error);
-        //}
-
-        //-----------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        private void savePicturesXML_backend(generic_callback guiCallback)
+        /// By Ryan Moe
+        /// Edited: Julian Nguyen(4/28/13)
+        /// <summary>
+        /// This will save the XML to File. 
+        /// </summary>
+        /// <returns>The error report of this action.</returns>
+        public ErrorReport saveImagesXML_backend()
         {
             ErrorReport error = new ErrorReport();
 
             //if the database is NOT valid.
             if (!util_checkPhotoDBIntegrity(error))
             {
-                guiCallback(error);
-                return;
+                return error;
             }
 
             try
@@ -426,36 +391,34 @@ namespace SoftwareEng
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "Library folder not found.";
-                guiCallback(error);
-                return;
+                return error;
             }
-
-            if (guiCallback != null)
-                guiCallback(error);
+            return error;
         }
 
-        //-----------------------------------------------------------------
-        // By: Bill Sanders, based on Ryan Moe's earlier function
-        // last edited: 4/6/13
-        // Last Edited By: Ryan Causey
+
+        /// By: Bill Sanders, based on Ryan Moe's earlier function.
+        /// Edited: Julian Nguyen(4/28/13
         /// <summary>
         /// Retrieves a list of all albums in the albums.xml file, sent back via the callback.
         /// </summary>
-        /// <param name="guiCallback">The callback to send the data back to the GUI</param>
-        private void getAllAlbums_backend(getAllAlbumNames_callback guiCallback)
+        /// <param name="readOnlyAlbumList">A passback list of SimpleAlbumData.</param>
+        /// <returns>The error report of this action.</returns>
+        public ErrorReport getAllAlbums_backend(out ReadOnlyObservableCollection<SimpleAlbumData> readOnlyAlbumList)
         {
             ErrorReport error = new ErrorReport();
 
             //clear the collection as we are refreshing it
             _albumsCollection.Clear();
+            //Null for safely.
+            readOnlyAlbumList = null;
 
             // Ensure the database is valid before proceeding
             if (!util_checkAlbumDatabase(error))
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "The album database was determined to be not valid.";
-                guiCallback(error, null);
-                return;
+                return error;
             }
 
             // An object to enumerate over the album XML nodes
@@ -469,8 +432,7 @@ namespace SoftwareEng
             {
                 error.reportID = ErrorReport.FAILURE;
                 error.description = "PhotoBomb.getAllAlbumsByID_backend():Failed at finding albums in the database.";
-                guiCallback(error, null);
-                return;
+                return error;
             }
             foreach (XElement thisAlbum in _albumSearchIE)
             {
@@ -539,116 +501,30 @@ namespace SoftwareEng
 
                 _albumsCollection.Add(userAlbum);
             }
-            ReadOnlyObservableCollection<SimpleAlbumData> readOnlyAlbumList = new ReadOnlyObservableCollection<SimpleAlbumData>(_albumsCollection);
-            guiCallback(error, readOnlyAlbumList);
+            readOnlyAlbumList = new ReadOnlyObservableCollection<SimpleAlbumData>(_albumsCollection);
+            return error;
         }
 
-        // 3/24/2013, BS: Commenting this function out,
-        // having replaced it with the one above: getAllAlbums_backend()
-        //By: Ryan Moe
-        //Edited Last:
-        //NOTE: This function is up for replacement by new logic that uses
-        //the select/from/where style of code.
-        //This is not in the style of code this file wants.
-        //private void getAllUserAlbumNames_backend(getAllUserAlbumNames_callback guiCallback)
-        //{
-        //    ErrorReport error = new ErrorReport();
 
-        //    //if the database is NOT valid.
-        //    if (!util_checkAlbumDatabase(error))
-        //    {
-        //        error.reportID = ErrorReport.FAILURE;
-        //        error.description = "The album database was determined to be not valid.";
-        //        guiCallback(error, null);
-        //        return;
-        //    }
-
-        //    //the list of all albums to return to the gui.
-        //    List<SimpleAlbumData> _albumsToReturn = new List<SimpleAlbumData>();
-
-        //    //get all the albums AND their children.
-        //    List<XElement> _albumSearch;
-        //    try
-        //    {
-        //        _albumSearch = xmlParser.searchForElements(_albumsDatabase.Element(Properties.Settings.Default.XMLRootElement), "album");
-        //    }
-        //    catch
-        //    {
-        //        error.reportID = ErrorReport.FAILURE;//maybe every error should be SHIT_JUST_GOT_REAL?  Decisions, decisions...
-        //        error.description = "PhotoBomb.getAllUserAlbumNames():Failed at finding albums in the database.";
-        //        guiCallback(error, null);
-        //        return;
-        //    }
-        //    //go through each album and get data from its children to add to the list.
-        //    foreach (XElement thisAlbum in _albumSearch)
-        //    {
-        //        //this custom data class gets sent back to the gui.
-        //        SimpleAlbumData userAlbum = new SimpleAlbumData();
-
-        //        List<XElement> _nameSearch;
-        //        try
-        //        {
-        //            //get the name(s) of this album.
-        //            _nameSearch = xmlParser.searchForElements(thisAlbum, "albumName");
-        //        }
-        //        catch
-        //        {
-        //            error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-        //            error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error finding the name of an album.");
-        //            continue;
-        //        }
-        //        //make sure we have at least one name for the album.
-        //        if (_nameSearch.Count == 1)
-        //        {
-        //            //get the value of the album name and add to list.
-        //            try
-        //            {
-        //                userAlbum.albumName = _nameSearch.ElementAt(0).Value;
-        //                userAlbum.UID = (int)thisAlbum.Attribute("uid");
-        //            }
-        //            catch
-        //            {
-        //                error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-        //                error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Had an error trying to get either the name or uid value from an album.");
-        //                continue;
-        //            }
-        //            _albumsToReturn.Add(userAlbum);
-        //        }
-        //        else if (_nameSearch.Count > 1)
-        //        {
-        //            error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-        //            error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with more than one name.");
-        //        }
-        //        else if (_nameSearch.Count == 0)
-        //        {
-        //            error.reportID = ErrorReport.SUCCESS_WITH_WARNINGS;
-        //            error.warnings.Add("PhotoBomb.getAllUserAlbumNames():Found an album with no name.");
-        //        }
-
-        //    }//foreach
-
-        //    guiCallback(error, _albumsToReturn);
-        //}
-
-        //-----------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Date: 4/7/13
-        // TODO: threading?
+        /// By: Bill Sanders
+        /// Edited Date: Julian Nguyen(4/28/13)
+        /// TODO: threading?
         /// <summary>
-        /// Copies all of the albums in the specified album to the clipboard.
+        /// Copies all of the albums in the specified album to the clipboard. 
         /// </summary>
-        /// <param name="guiCallback"></param>
         /// <param name="AlbumUID">The unique ID of the album to get the photos from</param>
-        private void sendSelectedPhotosToClipboard_backend(sendAllPhotosInAlbum_callback guiCallback, int AlbumUID)
+        /// <param name="imagesToGUI">The pass back of the list of iamges.</param>
+        /// <returns>The error report of this action.</returns>
+        public ErrorReport sendSelectedPhotosToClipboard_backend(int AlbumUID, out List<ComplexPhotoData> imagesToGUI)
         {
             ErrorReport error = new ErrorReport();
+            imagesToGUI = null;
 
             _photosClipboard.Clear();
             //make sure the album database is valid.
             if (!util_checkAlbumDatabase(error))
             {
-                guiCallback(error, null);
-                return;
+                return error;
             }
 
             //Try searching for the album with the uid specified.
@@ -669,15 +545,19 @@ namespace SoftwareEng
                 }
             }//foreach
 
-            List<ComplexPhotoData> picturesToGui = new List<ComplexPhotoData>(_photosCollection);
-            guiCallback(error, picturesToGui);
+            imagesToGUI = new List<ComplexPhotoData>(_photosCollection);
+            return error;
         }
 
-        //-----------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last: Ryan Causey
-        //Edited Date: 4/4/13
-        private void getAllPhotosInAlbum_backend(getAllPhotosInAlbum_callback guiCallback, int AlbumUID)
+        /// By: Ryan Moe
+        /// Edited: Julian Nguyen(4/28/13)
+        /// <summary>
+        /// This will get all the Images in an album.  
+        /// </summary>
+        /// <param name="AlbumUID">The id of the album to look up.</param>
+        /// <param name="imagesOfAnAlbum">A passback List of all the images in an album.</param>
+        /// <returns>The error roport for this action.</returns>
+        public ErrorReport getAllImagesInAlbum_backend(int AlbumUID, out ReadOnlyObservableCollection<ComplexPhotoData> imagesOfAnAlbum)
         {
             ErrorReport error = new ErrorReport();
 
@@ -687,29 +567,14 @@ namespace SoftwareEng
             //make sure the album database is valid.
             if (!util_checkAlbumDatabase(error))
             {
-                guiCallback(error, null);
-                return;
+                imagesOfAnAlbum = null;
+                return error;
             }
 
             //Try searching for the album with the uid specified.
             XElement specificAlbum = util_getAlbum(error, AlbumUID);
-            // Commenting out the below in favor of a util class. - BillSanders
-            //try
-            //{
-            //    //for(from) every c in the database's children (all albums),
-            //    //see if it's attribute uid is the one we want,
-            //    //and if so return the first instance of a match.
-            //    specificAlbum = (from c in _albumsDatabase.Elements()
-            //                     where (int)c.Attribute("uid") == AlbumUID
-            //                     select c).Single();//NOTE: this will throw error if more than one OR none at all.
-            //}
-            //catch
-            //{
-            //    error.reportID = ErrorReport.FAILURE;
-            //    error.description = "PhotoBomb.getAllPhotosInAlbum():Failed to find the album specified.";
-            //    guiCallback(error, null);
-            //    return;
-            //}
+            // TODO: JN: Add a check here??
+
 
             //Now lets get all the picture data from
             //the album and fill out the picture object list.
@@ -728,55 +593,56 @@ namespace SoftwareEng
                 }
             }//foreach
 
-            ReadOnlyObservableCollection<ComplexPhotoData> picturesToGui = new ReadOnlyObservableCollection<ComplexPhotoData>(_photosCollection);
-            guiCallback(error, picturesToGui);
+            imagesOfAnAlbum = new ReadOnlyObservableCollection<ComplexPhotoData>(_photosCollection);
+            return error;
         }//method
 
-        //----------------------------------------------------------------------
 
-        //By: Ryan Moe
-        //Edited Last:
-        private void getPhoto_backend(getPhotoByUID_callback guiCallback, int idInAlbum, int albumUID)
+
+        /// By Ryan Moe
+        /// Edited: Julian Nguyen(4/28/13)
+        /// <summary>
+        /// Will get an Image from an Album.
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="imageIDinAlbum">The ID of the image.</param>
+        /// <param name="albumUID">The ID of the Album to look in. </param>
+        /// <param name="imageData">The pass back of the image's ComplexPhotoData</param>
+        /// <returns>The errorReport of this Action.</returns>
+        public ErrorReport getImage_backend(int imageIDinAlbum, int albumUID, out ComplexPhotoData imageData)
         {
             ErrorReport error = new ErrorReport();
+            imageData = null;
 
             // To get a photo from the photoDB knowing only an albumID and its ID in that album
             // We have to first retrieve the album...
             XElement albumNode = util_getAlbum(error, albumUID);
             // ... then with that, we can get the picture element from that album...
-            XElement albumPicElement = util_getAlbumDBPhotoNode(error, albumNode, idInAlbum);
+            XElement albumPicElement = util_getAlbumDBPhotoNode(error, albumNode, imageIDinAlbum);
             // ... which we use to get the hash of the photo to do a lookup in the PhotoDB!
             XElement picElement = util_getPhotoDBNode(error, (string)albumPicElement.Attribute("sha1").Value);
 
             //if the picture finding function reported success.
             if (error.reportID == ErrorReport.SUCCESS || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
             {
-                ComplexPhotoData photo = new ComplexPhotoData();
+                imageData = new ComplexPhotoData();
 
                 try
                 {
-                    photo.hash = StringToByteArray((string)picElement.Attribute("sha1"));
-                    photo.UID = (int)picElement.Attribute("uid");
-                    photo.refCount = (int)picElement.Attribute("refCount");
-                    photo.fullPath = (string)picElement.Element("filePath").Value;
+                    imageData.hash = StringToByteArray((string)picElement.Attribute("sha1"));
+                    imageData.UID = (int)picElement.Attribute("uid");
+                    imageData.refCount = (int)picElement.Attribute("refCount");
+                    imageData.fullPath = (string)picElement.Element("filePath").Value;
                 }
                 catch
                 {
                     error.reportID = ErrorReport.FAILURE;
                     error.description = "PhotoBomb.getPictureByUID():Photo info could not be loaded.";
-                    guiCallback(error, null);
-                    return;
+                    return error;
                 }
-                //Success!
-                guiCallback(error, photo);
-                return;
             }
-            //picture failed to be found.
-            else
-            {
-                guiCallback(error, null);
-                return;
-            }
+            return error;
+   
         }//method
 
         // BS: Is this function at all used given that we don't add photos one at a time?
@@ -849,8 +715,8 @@ namespace SoftwareEng
         //    }
 
         //    //add to disk.
-        //    savePicturesXML_backend(null);
-        //    saveAlbumsXML_backend(null);
+        //    saveImagesXML_backend();
+        //    saveAlbumsXML_backend();
 
         //    guiCallback(errorReport);
         //}
@@ -968,8 +834,8 @@ namespace SoftwareEng
             }
 
             //save to disk.
-            savePicturesXML_backend(null);
-            saveAlbumsXML_backend(null);
+            saveImagesXML_backend();
+            saveAlbumsXML_backend();
 
             //update the photosCollection
             //_photosCollection.Add(newPicture);
@@ -977,17 +843,16 @@ namespace SoftwareEng
             return errorReport;
         }
 
-        //-------------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/6/13
+
+        /// By: Bill Sanders
+        /// Edited Julian Nguyen(4/27/13)
         /// <summary>
         /// Removes the specified photo from the specified album
         /// </summary>
         /// <param name="guiCallback"></param>
         /// <param name="idInAlbum">The photo's ID</param>
         /// <param name="albumUID">The album's UID</param>
-        private ErrorReport removePictureFromAlbum_backend(generic_callback guiCallback, int idInAlbum, int albumUID)
+        public ErrorReport removePictureFromAlbum_backend(int idInAlbum, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1047,18 +912,6 @@ namespace SoftwareEng
             //and remove it
             _photosCollection.Remove(photoToRemove);
 
-            /*
-             * commenting out because possibly more efficient code above.
-            //Now update the collection(linear searches are the best! <_< NO FUTURE!)
-            for (int i = 0; i < _photosCollection.Count; ++i)
-            {
-                if (_photosCollection[i].UID == idInAlbum)
-                {
-                    _photosCollection.RemoveAt(i);
-                    break;
-                }
-            }*/
-
             return errorReport;
         }
 
@@ -1106,8 +959,8 @@ namespace SoftwareEng
                     picFromPicsDB.Attribute("refCount").Value = refCount.ToString();
                 }
                 // TODO: move these two calls out of here for efficiency in removing multiple files!
-                saveAlbumsXML_backend(null);
-                savePicturesXML_backend(null);
+                saveAlbumsXML_backend();
+                saveImagesXML_backend();
             }
             catch // the photo mysteriously disappeared (from the xml!) before removing it..?
             {
@@ -1156,8 +1009,8 @@ namespace SoftwareEng
             {
                 pictureElement.Remove();
                 // TODO: move these calls out of here for efficiency in removing multiple files!
-                saveAlbumsXML_backend(null);
-                savePicturesXML_backend(null);
+                saveAlbumsXML_backend();
+                saveImagesXML_backend();
             }
             catch // the photo mysteriously disappeared (from the xml!) before removing it..?
             {
@@ -1168,16 +1021,14 @@ namespace SoftwareEng
             return errorReport;
         }
 
-        //-------------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last: 4/3/13
-        //Edited Last By: Ryan Causey
+        /// By: Bill Sanders
+        /// Edited Last: Julian Nguyen(4/28/13)
         /// <summary>
         /// Removes the specified album
         /// </summary>
         /// <param name="guiCallback"></param>
         /// <param name="albumUID">The album's UID</param>
-        private ErrorReport removeAlbum_backend(generic_callback guiCallback, int albumUID)
+        public ErrorReport removeAlbum_backend(int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1203,42 +1054,27 @@ namespace SoftwareEng
             specificAlbum.Remove();
 
             // now sync to the disk
-            saveAlbumsXML_backend(null);
-            savePicturesXML_backend(null);
+            saveAlbumsXML_backend();
+            saveImagesXML_backend();
 
             // Searches through the albumsCollection and finds the first album with a matching UID
             var albumToRemove = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
             // ... and then deletes it.
             _albumsCollection.Remove(albumToRemove);
-            // _albumsCollection is an ObservableCollection and should be updated automatically
-
-            // Commenting this out, as the above should be more efficient.
-            ////need to update _albumsCollection observable collection by removing the album with this UID
-            //for (int i = 0; i < _albumsCollection.Count; ++i)
-            //{
-            //    //if this is the album we are looking for
-            //    if (_albumsCollection[i].UID == albumUID)
-            //    {
-            //        //remove it from the observableCollection
-            //        _albumsCollection.RemoveAt(i);
-            //        //end the loop as there are no more albums to remove
-            //        break;
-            //    }
-            //}
 
             return errorReport;
         }
 
-        //-------------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last: 4/6/13
+        
+        /// By: Bill Sanders
+        /// Edited Last: Julian Nguyen(4/28/13)
         /// <summary>
-        /// Renames the specified album
+        /// Renames the specified album.
         /// </summary>
-        /// <param name="guiCallback"></param>
         /// <param name="albumUID">The album's UID</param>
         /// <param name="newName">The new name of the album</param>
-        private void renameAlbum_backend(generic_callback guiCallback, int albumUID, string newName)
+        /// <return>The error report of this action.</return>
+        public ErrorReport renameAlbum_backend(int albumUID, string newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1247,9 +1083,7 @@ namespace SoftwareEng
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
             // change the album's name.
@@ -1257,30 +1091,30 @@ namespace SoftwareEng
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
-            saveAlbumsXML_backend(null);
+            saveAlbumsXML_backend();
 
             // Searches through the albumsCollection and finds the first album with a matching UID
             var albumToRename = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
             // ... and then renames it.
             albumToRename.albumName = newName;
 
-            return;
+            return errorReport;
         }
 
-        //By: Bill Sanders
-        //Edited Last: 4/6/13
+
+        /// By: Bill Sanders
+        /// Edited: Julian Nguyen(4/28/13)
         /// <summary>
         /// This function renames the specified image in this album.
         /// </summary>
-        /// <param name="guiCallback"></param>
         /// <param name="albumUID">The UID of the album the photo is in</param>
         /// <param name="idInAlbum">The id of the photo in this album</param>
         /// <param name="newName">The new name of the photo</param>
-        private void renamePhoto_backend(generic_callback guiCallback, int albumUID, int idInAlbum, string newName)
+        /// <returns></returns>
+        public ErrorReport renamePhoto_backend(int albumUID, int idInAlbum, string newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1288,38 +1122,37 @@ namespace SoftwareEng
             XElement photoElem = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
             // change the photo's name.
             util_renamePhoto(errorReport, photoElem, newName);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
-            saveAlbumsXML_backend(null);
+            saveAlbumsXML_backend();
 
             // Searches through the photosCollection and finds the first photo with a matching id
             var photoToRename = _photosCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
             // ... and then renames it.
             photoToRename.name = newName;
 
-            return;
+            return errorReport;
         }
 
+
         //By: Bill Sanders
-        //Edited Last: 4/6/13
+        //Edited Last: Julian Nguyen(4/27/13)
         /// <summary>
         /// This function sets the specified caption of the specified image in this album.
         /// </summary>
-        /// <param name="guiCallback"></param>
         /// <param name="albumUID">The UID of the album the photo is in</param>
         /// <param name="idInAlbum">The id of the photo in this album</param>
         /// <param name="newCaption">The new name of the photo</param>
-        private void setPhotoCaption_backend(generic_callback guiCallback, int albumUID, int idInAlbum, string newCaption)
+        /// <returns>The error report for this action.</returns>
+        public ErrorReport setPhotoCaption_backend(int albumUID, int idInAlbum, string newCaption)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1327,43 +1160,36 @@ namespace SoftwareEng
             XElement photoElem = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
-
-            // ensure the caption is valid, before setting it
-            /* commenting this out as we validate the caption with a regex in the front end
-            if (!util_checkCaptionIsValid(newCaption))
-            {
-                guiCallback(errorReport);
-                return;
-            }
-             */
 
             // change the photo's caption.
             util_setPhotoCaption(errorReport, photoElem, newCaption);
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
-            saveAlbumsXML_backend(null);
+            saveAlbumsXML_backend();
 
             // Searches through the photosCollection and finds the first photo with a matching id
             var photoToRecaption = _photosCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
             // ... and then changes its caption.
             photoToRecaption.caption = newCaption;
 
-            return;
+            return errorReport;
         }
 
 
-        //-------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/1/13
-        private void addNewAlbum_backend(generic_callback guiCallback, SimpleAlbumData albumData)
+        /// By: Ryan Moe
+        /// Edited Julian Nguyen
+        /// <summary>
+        /// Will add a new Album to the database.
+        /// Note: The UID of the albumData will not be used!!
+        /// </summary>
+        /// <param name="albumData">The data for the new album. The UID will not be used.</param>
+        /// <returns>The error Report of this action.</returns>
+        public ErrorReport addNewAlbum_backend(SimpleAlbumData albumData)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1376,18 +1202,16 @@ namespace SoftwareEng
             //if adding to the album database failed
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
             //save to disk.
-            saveAlbumsXML_backend(null);
+            saveAlbumsXML_backend();
 
             //need to update the _albumsCollection observableCollection to reflect this addition in the GUI
             _albumsCollection.Add(albumData); //adds to end of collection
 
-            guiCallback(errorReport);
-
+            return errorReport;
         }
 
         //-------------------------------------------------------------
@@ -1400,7 +1224,8 @@ namespace SoftwareEng
         /// <param name="guiCallback"></param>
         /// <param name="photoObj">A List of ComplexPhotoData objects which contain all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
-        private void addExistingPhotosToAlbum_backend(addNewPictures_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
+        /// 
+        public ErrorReport addExistingPhotosToAlbum_backend(List<ComplexPhotoData> photoList, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1422,68 +1247,93 @@ namespace SoftwareEng
                 //if adding to the album database failed
                 if (errorReport.reportID == ErrorReport.FAILURE)
                 {
-                    guiCallback(errorReport, albumUID);
+                    //guiCallback(errorReport, albumUID); //TODO: JN: What the hell is going on??
                     //save to disk.
-                    savePicturesXML_backend(null);
-                    saveAlbumsXML_backend(null);
+                    saveImagesXML_backend();
+                    saveAlbumsXML_backend();
                     break;
                 }
             }
 
             //save to disk.
-            savePicturesXML_backend(null);
-            saveAlbumsXML_backend(null);
+            saveImagesXML_backend();
+            saveAlbumsXML_backend();
 
-            guiCallback(errorReport, albumUID);
+            // addNewPictures_callback.
+            //guiCallback(errorReport, albumUID);
+            return errorReport;
             // You're on your own to update the GUI with the new pictures!
         }
 
-        //--------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        private void checkIfAlbumNameIsUnique_backend(generic_callback guiCallback, String albumName)
+        /// By Ryan Moe
+        /// Edited: Julian Nguyen
+        /// <summary>
+        /// Test an Album name for uniqueness.
+        /// </summary>
+        /// <param name="albumName">The Album name to test.</param>
+        /// <param name="isUnique">If the Album is unique. </param>
+        /// <returns></returns>
+        public ErrorReport checkIfAlbumNameIsUnique_backend(String albumName, out bool isUnique)
         {
             ErrorReport errorReport = new ErrorReport();
 
-            //get uniqueness
+            //Test for uniqueness.
             Boolean nameUnique = util_checkAlbumNameIsUnique(albumName);
+            
+            isUnique = nameUnique;
 
             if (!nameUnique)
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Album name is not unique.";
-                guiCallback(errorReport);
-                return;
             }
 
-            guiCallback(errorReport);
+            return errorReport;
         }
 
-        //--------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last:
-        private void checkIfPhotoNameIsUnique_backend(generic_callback guiCallback, String photoName, int albumUID)
+        /// By Bill Sanders
+        /// Edited Julian Nguyen(4/27/13)
+        /// <summary>
+        /// Will test if am Image name is unique.
+        /// The 
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="photoName"></param>
+        /// <param name="albumUID"></param>
+        /// <returns></returns>
+        public ErrorReport checkIfPhotoNameIsUnique_backend(String photoName, int albumUID, out bool isUnique)
         {
             ErrorReport errorReport = new ErrorReport();
 
-            //get uniqueness
+            // Test uniqueness!
             Boolean nameUnique = util_checkPhotoNameIsUniqueToAlbum(photoName, util_getAlbum(errorReport, albumUID));
+            // TODO: JN: Is testing the errorRoport??
+
+            isUnique = nameUnique;
 
             if (!nameUnique)
             {
                 errorReport.reportID = ErrorReport.FAILURE;
                 errorReport.description = "Album name is not unique.";
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
-
-            guiCallback(errorReport);
+            else
+            {
+                return errorReport;
+            }
         }
 
-        //--------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        private void changePhotoNameByUID_backend(generic_callback guiCallback, int albumUID, int idInAlbum, String newName)
+
+        /// By Ryan Moe
+        /// Edited Julian Nguyen(4/27/13)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID"></param>
+        /// <param name="idInAlbum"></param>
+        /// <param name="newName"></param>
+        public ErrorReport changePhotoNameByUID_backend(int albumUID, int idInAlbum, String newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1492,8 +1342,7 @@ namespace SoftwareEng
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
             //Get the photo from the album.
@@ -1501,8 +1350,7 @@ namespace SoftwareEng
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
             //change the photo's name.
@@ -1510,18 +1358,27 @@ namespace SoftwareEng
 
             if (errorReport.reportID == ErrorReport.FAILURE)
             {
-                guiCallback(errorReport);
-                return;
+                return errorReport;
             }
 
-            saveAlbumsXML_backend(null);
+            // TODO: JN: I don't this is real. 
+            return saveAlbumsXML_backend();
         }
 
-        //---------------------------------------------
-        //By: Ryan Moe
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/5/13
-        private void addNewPictures_backend(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+
+        /// By Ryan Moe
+        /// Edited: Julian Nguyen(4/28/13)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="photoUserPath"></param>
+        /// <param name="photoExtension"></param>
+        /// <param name="albumUID"></param>
+        /// <param name="pictureNameInAlbum"></param>
+        /// <param name="updateCallback"></param>
+        /// <param name="updateAmount"></param>
+        public void addNewPictures_backend(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addPhotosThread = new BackgroundWorker();
 
@@ -1546,10 +1403,14 @@ namespace SoftwareEng
             addPhotosThread.RunWorkerAsync(data);
         }
 
-        //------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        private ErrorReport cancelAddNewPicturesThread_backend()
+
+        /// By Ryan Moe
+        /// Edited: Julian Nguyen(4/27/13)
+        /// <summary>
+        /// This will stop the import of Images.
+        /// </summary>
+        /// <returns>The error report of this action. </returns>
+        public ErrorReport cancelAddNewImagesThread_backend()
         {
             ErrorReport error = new ErrorReport();
             try
@@ -1563,6 +1424,7 @@ namespace SoftwareEng
             }
             return error;
         }
-    }//class
+
+    } // End of PhotoBomb.
 
 }
