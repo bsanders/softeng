@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TestCS_one
+namespace SoftwareEng
 {
 
     /// By Julian Nguyen
@@ -13,9 +13,10 @@ namespace TestCS_one
     /// </summary>
     class XmlDataBase
     {
+        // Tool for loading and saving a xml file.
         private XmlLoader _xmlLoader;
 
-
+        // Class data structures 
         private List<AlbumXmlData> _allAlbumsList; 
         private Dictionary<byte[], ImageXmlData> _allHashToImageMap;
 
@@ -70,13 +71,21 @@ namespace TestCS_one
             _xmlLoader.saveToFile<AlbumXmlData>(pathToFile, _allAlbumsList);
         }
 
-        public void getAllAlbums(out List<AlbumXmlData> albums)
+        public void getAllAlbums(out List<AlbumXmlDataReadOnly> albums)
         {
-
-            
-
-            albums = null;
+            albums = new List<AlbumXmlDataReadOnly>();
+            foreach (AlbumXmlData albumData in _allAlbumsList)
+            {
+                albums.Add(new AlbumXmlDataReadOnly(albumData));
+            }
         }
+
+
+
+
+        // Image stuff -->
+
+        //public bool set
 
 
         /// <summary>
