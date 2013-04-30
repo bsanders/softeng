@@ -2195,6 +2195,126 @@ namespace SoftwareEng
         }
 
 
+        private void clearThemecheckboxes()
+        {
+            bureauBlackThemeMenuItem.IsChecked=false;
+            bureauBlueThemeMenuItem.IsChecked = false;
+            expressionDarkThemeMenuItem.IsChecked = false;
+            expressionLightThemeMenuItem.IsChecked = false;
+            shinyBlueThemeMenuItem.IsChecked = false;
+            shinyRedThemeMenuItem.IsChecked = false;
+            whistlerBlueThemeMenuItem.IsChecked = false;
+        }
+
+
+
+        private void bureauBlackThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                bureauBlackThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative));
+
+                var program = App.Current as App;
+
+                program.setTheme("/Themes/BureauBlack.xaml");
+        }
+
+        private void bureauBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                bureauBlueThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlue.xaml", UriKind.Relative)); 
+
+                var program = App.Current as App;
+
+                program.setTheme("/Themes/BureauBlue.xaml");
+        }
+
+        private void expressionDarkThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                expressionDarkThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionDark.xaml", UriKind.Relative));  
+
+                var program = App.Current as App;
+
+                program.setTheme("/Themes/ExpressionDark.xaml");
+        }
+
+        private void expressionLightThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                expressionLightThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionLight.xaml", UriKind.Relative));  
+
+                var program = App.Current as App;
+
+                program.setTheme("/Themes/ExpressionLight.xaml");
+        }
+
+        private void shinyBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                shinyBlueThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyBlue.xaml", UriKind.Relative)); 
+
+                var program = App.Current as App;
+
+                program.setTheme("/Themes/ShinyBlue.xaml");
+        }
+
+        private void shinyRedThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                shinyRedThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
+
+                var program = App.Current as App;
+
+                program.setTheme("/Themes/ShinyRed.xaml");
+        }
+
+        private void whistlerBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+                clearThemecheckboxes();
+                whistlerBlueThemeMenuItem.IsChecked = true;
+
+                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
+
+                var program = App.Current as App;
+
+                program.setTheme("/Themes/WhistlerBlue.xaml");
+        }
+
+        private void dockSizeChanged_EventHandler(object sender, SizeChangedEventArgs e)
+        {
+            if (mainWindowDock.Height != 48)
+            {
+                return;
+            }
+            //CODE HERE TO USE TIMER
+        }
+
+
+        //getCurrentPhotoBomberTheme
+        private void getCurrentThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var programInstance = App.Current as App;
+
+
+
+            ErrorWindow debugWindow = new ErrorWindow(programInstance.ThemeDictionary.Keys.ToString());
+
+            debugWindow.ShowDialog();
+        }
+
+        
     }
 
     /*

@@ -14,13 +14,6 @@
 
     <Window.Resources>
 
-        <DataTemplate x:Key="test">
-            <StackPanel>
-                <TextBlock Text="Ascending"></TextBlock>
-                <CheckBox IsChecked="True"></CheckBox>
-            </StackPanel>
-        </DataTemplate>
-
         <DataTemplate x:Key="AlbumListItemBackTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
             <Grid x:Name="albumItemBackGrid" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" Height="Auto" Width="Auto">
                 <Grid.RowDefinitions>
@@ -489,12 +482,12 @@
                     </ListBox.ItemsPanel>
                 </ListBox>
 
-                <VirtualizingStackPanel x:Name="mainWindowListVirtualWrapper" Margin="0,25,0,0"/>
 
 
 
-                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="0,0,25,0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
-                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" MouseLeave="mainWindowDock_MouseLeave" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="1" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockBrush}">
+
+                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="48" Margin="0,0,25,0" Stroke="#00000000" VerticalAlignment="Bottom" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
+                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="1" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockBrush}" SizeChanged="dockSizeChanged_EventHandler">
                     <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" Background="{DynamicResource PhotoBomberDockButtonBrush}" ToolTip="Create An Album">
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add.png" Width="32" Height="32"/>
                     </Button>
@@ -558,19 +551,29 @@
             </Grid>
         </Border>
         <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Background="{DynamicResource PhotoBomberTitleBarBrush}">
-            
-            
-            <Menu x:Name="PhotoBomberMenuButtonPlaceholder" IsMainMenu="True" Background="{DynamicResource PhotoBomberDockButtonBrush}" IsTabStop="False" Focusable="False" Width="30" Height="25">
-                <MenuItem x:Name="PhotoBomberMenu" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" ToolTip="MAIN MENU!!!">
+
+
+            <Menu x:Name="PhotoBomberMenuButtonPlaceholder" IsMainMenu="True" IsTabStop="False" Focusable="False" Margin="2,2,0,0" BorderBrush="#FFE0E0E0" BorderThickness="1">
+                <Menu.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#AAFFFFFF" Offset="0.95" />
+                        <GradientStop Color="#00000000" Offset="0.95" />
+                    </RadialGradientBrush>
+                </Menu.Background>
+                <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Grid.IsSharedSizeScope="False">
                     <MenuItem.Header>
-                        <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/logoSmall.png"/>
+                        <Image x:Name="aboutToolbarButtonImage" Source="ImagesResources2012/logoSmall.png" Width="30"/>
                     </MenuItem.Header>
-                    <MenuItem.Background>
-                        <RadialGradientBrush>
-                            <GradientStop Color="#AAFFFFFF" Offset="1" />
-                            <GradientStop Color="#00000000" Offset="1" />
-                        </RadialGradientBrush>
-                    </MenuItem.Background>
+                    <MenuItem x:Name="themeParentMenu" Header="Themes">
+                        <!--<MenuItem Header="Debug::Current Theme" Click="getCurrentThemeMenuItem_Click"/>-->
+                        <MenuItem x:Name="bureauBlackThemeMenuItem" Header="Bureau Black" IsCheckable="True" Click="bureauBlackThemeMenuItem_Click"/>
+                        <MenuItem x:Name="bureauBlueThemeMenuItem" Header="Beaureu Blue" IsCheckable="True" Click="bureauBlueThemeMenuItem_Click"/>
+                        <MenuItem x:Name="expressionDarkThemeMenuItem" Header="Expression Dark" IsCheckable="True" Click="expressionDarkThemeMenuItem_Click"/>
+                        <MenuItem x:Name="expressionLightThemeMenuItem" Header="Expression Light" IsCheckable="True" Click="expressionLightThemeMenuItem_Click"/>
+                        <MenuItem x:Name="shinyBlueThemeMenuItem" Header="Shiny Blue" IsCheckable="True" Click="shinyBlueThemeMenuItem_Click"/>
+                        <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_Click"/>
+                        <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_Click"/>
+                    </MenuItem>
                     <MenuItem Header="ABOUT PHOTOBOMBER!!" Click="aboutMenuItemPressed_eventHandler"/>
                 </MenuItem>
             </Menu>
@@ -583,10 +586,10 @@
                         <GradientStop Color="#00000000" Offset="1" />
                     </RadialGradientBrush>
                 </Button.Background>
-                <Image x:Name="aboutToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/logoSmall.png"/>
+                <Image x:Name="aboutToolbarButtonImage2" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/logoSmall.png"/>
             </Button>
             -->
-            
+
             <!-- Not sure how to set the content of this label dynamically from settings file -->
             <Label x:Name="appTitleBarLabel" Content="PhotoBomber - My Photo Library!" Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center">
                 <Label.Foreground>
@@ -665,7 +668,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberErrorBorderColor}"/>
                     </ed:Callout.Stroke>
                     <ed:Callout.Foreground>
-                        <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberDarkFontColor}"/>
                     </ed:Callout.Foreground>
                 </ed:Callout>
             </Grid>
@@ -678,7 +681,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberErrorBorderColor}"/>
                     </ed:Callout.Stroke>
                     <ed:Callout.Foreground>
-                        <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberDarkFontColor}"/>
                     </ed:Callout.Foreground>
                 </ed:Callout>
             </Grid>
@@ -691,7 +694,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberErrorBorderColor}"/>
                     </ed:Callout.Stroke>
                     <ed:Callout.Foreground>
-                        <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberDarkFontColor}"/>
                     </ed:Callout.Foreground>
                 </ed:Callout>
             </Grid>

@@ -40,6 +40,22 @@ namespace SoftwareEng
             }
         }
 
+
+        public ResourceDictionary ThemeDictionary
+        {
+            // You could probably get it via its name with some query logic as well.
+            get { return Resources.MergedDictionaries[0]; }
+        }
+
+        public void setTheme(string desiredTheme)
+        {
+            Uri themeURI = new Uri(desiredTheme, UriKind.Relative);
+
+            Resources.MergedDictionaries.Clear();
+
+            Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = (themeURI) });
+        }
+
         #region ISingleInstanceApp Members
 
         public bool SignalExternalCommandLineArgs(IList<string> args)

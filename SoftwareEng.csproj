@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="SimpleAlbumData.cs" />
     <Compile Include="SingleInstance.cs" />
+    <Compile Include="ThemeSelector.cs" />
     <Compile Include="updatedLabel.cs" />
     <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>

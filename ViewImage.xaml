@@ -8,7 +8,7 @@
         Title="ViewImage" Height="{Binding MinHeight, ElementName=ViewImageWindowGrid}"
         xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True" MinWidth="100" MinHeight="100" Width="{Binding MinWidth, ElementName=ViewImageWindowGrid}">
     <Window.Background>
-        <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
+        <SolidColorBrush Color="{DynamicResource PhotoBomberWindowColor}"/>
     </Window.Background>
     <Window.Resources>
         <Storyboard x:Key="DockAppear">
