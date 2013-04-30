@@ -18,6 +18,8 @@
  * class SimpleAlbumData was moved to SimpleAlbumData.cs.
  * class ComplexPhotoData was moved to ComplexPhotoData.cs
  * class SimplePhotoData was removed. 
+ * Julian Nguyen(2/30/13)
+ * Some the error Report was not being set in some of hte functions. 
  * 
  * 
  ***************************************************************************************************************/
@@ -264,7 +266,7 @@ namespace SoftwareEng
 
 
         //By: Bill Sanders
-        //Edited Last: Julian Nguyen(4/28/13)
+        //Edited Last: Julian Nguyen(4/30/13)
         /// <summary>
         /// This function sets the specified caption on the specified photo in an album.
         /// </summary>
@@ -276,7 +278,7 @@ namespace SoftwareEng
         {
 
             ErrorReport errReport = null;
-            photoBombDatabase.setPhotoCaption_backend(albumUID, idInAlbum, newCaption);
+            errReport = photoBombDatabase.setPhotoCaption_backend(albumUID, idInAlbum, newCaption);
             guiCallback(errReport);
         }
 
@@ -331,7 +333,7 @@ namespace SoftwareEng
 
         
         //By: Bill Sanders
-        //Edited: Julian Nguyen(4/28/13)
+        //Edited: Julian Nguyen(4/30/13)
         /// <summary>
         /// Checks to see if a photo name is unique.
         /// This will return FAILED in the error report (in the callback) 
@@ -344,7 +346,7 @@ namespace SoftwareEng
         {
             ErrorReport errReport = null;
             bool isUnique = false;
-            photoBombDatabase.checkIfPhotoNameIsUnique_backend(photoName, albumUID, out isUnique);
+            errReport = photoBombDatabase.checkIfPhotoNameIsUnique_backend(photoName, albumUID, out isUnique);
             guiCallback(errReport);
         }
 
