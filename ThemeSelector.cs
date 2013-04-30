@@ -23,11 +23,20 @@ namespace SoftwareEng
 {
 
     //Both classes courtesy of Svetoslav Savov   @ http://svetoslavsavov.blogspot.com/2009/07/switching-wpf-interface-themes-at.html
+    //OBSELETE
 
-    public class ThemeResourceDictionary : ResourceDictionary
+
+    /*********************************************************************************************
+     * wrapper class whose purpose I suupose is to clarify that only Resource Dictionaries 
+     * containing themes are to be used
+     *********************************************************************************************/
+    public class Theme : ResourceDictionary
     {
     }
 
+    /*********************************************************************************************
+     * manages the switching of themes
+     *********************************************************************************************/
     class ThemeSelector : DependencyObject
     {
 
@@ -57,10 +66,10 @@ namespace SoftwareEng
 
             try
             {
-                ThemeResourceDictionary themeDictionary = null;
+                Theme themeDictionary = null;
                 if (dictionaryUri != null)
                 {
-                    themeDictionary = new ThemeResourceDictionary();
+                    themeDictionary = new Theme();
                     try
                     {
                         themeDictionary.Source = dictionaryUri;
@@ -78,12 +87,12 @@ namespace SoftwareEng
                 }
 
                 // find if the target element already has a theme applied  
-                List<ThemeResourceDictionary> existingDictionaries =
-                    (from dictionary in targetElement.Resources.MergedDictionaries.OfType<ThemeResourceDictionary>()
+                List<Theme> existingDictionaries =
+                    (from dictionary in targetElement.Resources.MergedDictionaries.OfType<Theme>()
                      select dictionary).ToList();
 
                 // remove the existing dictionaries  
-                foreach (ThemeResourceDictionary thDictionary in existingDictionaries)
+                foreach (Theme thDictionary in existingDictionaries)
                 {
                     if (themeDictionary == thDictionary) continue;  // don't remove the newly added dictionary  
                     targetElement.Resources.MergedDictionaries.Remove(thDictionary);

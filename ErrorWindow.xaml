@@ -32,7 +32,7 @@
                 <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
             </TextBlock.Foreground>
         </TextBlock>
-        <Image VerticalAlignment="Center" Source="ImagesResources2012/Symbols_Critical_32xLG.png" HorizontalAlignment="Right" StretchDirection="DownOnly" Width="32" Height="32" Grid.Row="1" Margin="0,0,10,0"/>
+        <Image VerticalAlignment="Center" Source="ImagesResources2012/defaultImage.png" HorizontalAlignment="Right" StretchDirection="DownOnly" Width="32" Height="32" Grid.Row="1" Margin="0,0,10,0"/>
         
     </Grid>
 </Window>

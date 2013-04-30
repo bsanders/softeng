@@ -6,46 +6,19 @@
              >
     
     <Application.Resources>
-
-        <RadialGradientBrush x:Key="PhotoBomberDockButtonBrush">
-            <GradientStop Color="#BD767676" Offset="0.698" />
-            <GradientStop Color="#00C4C4C4" Offset="1" />
-            <GradientStop Color="#AAFFFFFF" Offset="0.39" />
-            <GradientStop Color="#B5000000" Offset="0.855" />
-        </RadialGradientBrush>
-
-        <LinearGradientBrush x:Key="PhotoBomberDockBrush" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#C7000000" Offset="1"/>
-            <GradientStop Color="#C7383838"/>
-            <GradientStop Color="#C7A7A7A7" Offset="0.581" />
-            <GradientStop Color="#C7A7A7A7" Offset="0.372" />
-        </LinearGradientBrush>
-
-        <LinearGradientBrush x:Key="PhotoBomberProgressBarBrush" EndPoint="1,0" StartPoint="0,0">
-            <GradientStop Color="#CC706767" Offset="0"/>
-            <GradientStop Color="#CCA2A2A2" Offset="0.5"/>
-            <GradientStop Color="#CC706767" Offset="1"/>
-        </LinearGradientBrush>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Name="ThemeDictionary">
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="/Themes/ExpressionDark.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
 
 
-        <LinearGradientBrush x:Key="PhotoBomberTitleBarBrush" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-            <GradientStop Color="#FF979797" Offset="0.641"/>
-            <GradientStop Color="#FF979797" Offset="0.249"/>
-            <GradientStop Color="#FF343434"/>
-            <GradientStop Color="Black" Offset="1"/>
-        </LinearGradientBrush>
-
-        <Color x:Key="PhotobomberListBackgroundColor">#FF1C2327</Color>
-
-        <Color x:Key="PhotoBomberLibraryTileColor">#A81C2327</Color>
-
-        <Color x:Key="PhotoBomberAlbumTileColor">#A81C2327</Color>
-        <Color x:Key="PhotoBomberErrorBorderColor">Red</Color>
-        <Color x:Key="PhotoBomberErrorBackground">#FFFBC5C5</Color>
-        <Color x:Key="PhotoBomberLightFontColor">#FFE8E8E8</Color>
-        <Color x:Key="PhotoBomberSemiTransparentBackground">#A81C2327</Color>
 
 
+        </ResourceDictionary>
 
     </Application.Resources>
 </Application>
