@@ -478,7 +478,7 @@
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
 
-                <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay, NotifyOnSourceUpdated=True}" Margin="0,25,0,0" SelectionChanged="mainWindowAlbumList_SelectionChanged">
+                <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay, NotifyOnSourceUpdated=True}" Margin="0,25,0,0" SelectionChanged="mainWindowAlbumList_SelectionChanged" MouseDoubleClick="mainWindowAlbumList_MouseDoubleClick" KeyDown="mainWindowAlbumList_KeyDown">
                     <ListBox.Background>
                         <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
                     </ListBox.Background>
@@ -696,21 +696,6 @@
                 </ed:Callout>
             </Grid>
         </Popup>
-
-        <!--
-        
-                    <Button x:Name="sortingDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="0" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" ToolTip="Sort Images" Click="sortingDockButton_Click">
-                        <Image x:Name="sortingDockButtonImage" Source="ImagesResources2012/Symbols_Critical_32xLG.png" Width="32" Height="32"/>
-                    </Button>
-        
-        
-        
-                        <Menu.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel IsItemsHost="True"/>
-            </ItemsPanelTemplate>
-            </Menu.ItemsPanel> 
-            -->
 
     </Grid>
 </Window>

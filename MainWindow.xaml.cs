@@ -75,6 +75,9 @@ namespace SoftwareEng
     /// </summary> 
     public partial class MainWindow : Window
     {
+        //check for determining which view the window is in
+        private bool isInsideAlbum;
+
         // A handy shortcut to the settings class...
         Properties.Settings Settings = Properties.Settings.Default;
 
@@ -156,7 +159,12 @@ namespace SoftwareEng
 
             populateAlbumView(true);
 
-            
+            isInsideAlbum = false;
+            if (mainWindowAlbumList.Items.IsEmpty == false)
+            {
+                mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
+                mainWindowAlbumList.Focus();
+            }
         }
 
 
@@ -659,6 +667,7 @@ namespace SoftwareEng
             //make sure an item is selected
             if (mainWindowAlbumList.SelectedItem != null)
             {
+
                 //call the backend to get all photos in this album.
                 currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
                 // Set the app's titlebar to display the app name and the album name
@@ -688,6 +697,9 @@ namespace SoftwareEng
             }
             else
             {
+                //going into album
+                isInsideAlbum = true;
+
                 if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
                 {
                     //show the user a notification that some pictures are not displayed
@@ -719,6 +731,11 @@ namespace SoftwareEng
                 deleteMenuItemPhotoButton.Visibility = Visibility.Visible;
                  */
 
+                if (mainWindowAlbumList.Items.IsEmpty == false)
+                {
+                    mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
+                    mainWindowAlbumList.Focus();
+                }
 
                 imageSortingButtonPlaceholder.Visibility = Visibility.Visible;
             }
@@ -768,6 +785,14 @@ namespace SoftwareEng
             }
 
             currentAlbumUID = -1;
+
+            //returning to libraryView
+            isInsideAlbum = false;
+            if (mainWindowAlbumList.Items.IsEmpty == false)
+            {
+                mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
+                mainWindowAlbumList.Focus();
+            }
         }
 
         /**************************************************************************************************************************
@@ -1896,8 +1921,7 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void mainWindow_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            libraryContextMenu.IsOpen = false;
-            AlbumContextMenu.IsOpen = false;
+            closePopups();
         }
 
         /*
@@ -1913,6 +1937,15 @@ namespace SoftwareEng
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void mainWindow_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            closePopups();
+        }
+
+        /*
+         *Created By Alejandro Sosa
+         *function to close all open popups (such as when main window is clicked)
+         */
+        private void closePopups()
         {
             libraryContextMenu.IsOpen = false;
             AlbumContextMenu.IsOpen = false;
@@ -2000,8 +2033,7 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void mainWindowAlbumList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AlbumContextMenu.IsOpen = false;
-            libraryContextMenu.IsOpen = false;
+            closePopups();
         }
 
         /*
@@ -2131,6 +2163,31 @@ namespace SoftwareEng
             else
             {
                 SortImageList(0, 0);
+            }
+        }
+
+        private void mainWindowAlbumList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            mainWindowListItemActivation();
+        }
+
+        private void mainWindowAlbumList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                mainWindowListItemActivation();
+            }
+        }
+
+        private void mainWindowListItemActivation()
+        {
+            if (isInsideAlbum == false)
+            {
+                guiEnterAlbumView();
+            }
+            else
+            {
+                guiViewPicture();
             }
         }
 
