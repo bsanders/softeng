@@ -837,6 +837,7 @@ namespace SoftwareEng
             // but the PhotoDB has important data as well.
             XElement photoDBNode = util_getPhotoDBNode(errorReport, (string)albumDBPhotoNode.Attribute("sha1"));
 
+
             ComplexPhotoData photoObj = new ComplexPhotoData();
 
             //TRANSFER ALL DATA TO THE DATA CLASS HERE.
@@ -864,10 +865,9 @@ namespace SoftwareEng
                 }
                 photoObj.caption = albumDBPhotoNode.Element("caption").Value;
             }
-            catch
+            catch(Exception e)
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Error converting XElement to data object.";
+                setErrorReportToFAILURE("Error converting XElement to data object.", ref errorReport);
                 return null;
             }
 
@@ -1162,7 +1162,7 @@ namespace SoftwareEng
                 setErrorReportToFAILURE("PhotoBomb: The album database has not been loaded yet!", ref errorReport);
                 return false;
             }
-
+            
             //put more checks here.
 
             return true;

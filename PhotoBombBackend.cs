@@ -107,7 +107,7 @@ namespace SoftwareEng
 
             // Try to open the databases. 
             if (!_xmlHandler.loadXmlRootElement(_albumsDatabasePath, out _albumsDatabase)
-                || !_xmlHandler.loadXmlRootElement(_albumsDatabasePath, out _imagesDatabase))
+                || !_xmlHandler.loadXmlRootElement(_picturesDatabasePath, out _imagesDatabase))
             {
                 setErrorReportToFAILURE("Failed to load the Album or Image xml.", ref errorReport);
             }
@@ -578,9 +578,14 @@ namespace SoftwareEng
                 return error;
             }
 
+
+
+
+
             //Try searching for the album with the uid specified.
             XElement specificAlbum = util_getAlbum(error, AlbumUID);
             // TODO: JN: Add a check here??
+
 
 
             //Now lets get all the picture data from
@@ -599,6 +604,7 @@ namespace SoftwareEng
                     error.warnings.Add("PhotoBomb.getAllPhotosInAlbum():A Picture in the album is missing either a name or an id.");
                 }
             }//foreach
+
 
             imagesOfAnAlbum = new ReadOnlyObservableCollection<ComplexPhotoData>(_photosCollection);
             return error;

@@ -1778,7 +1778,6 @@ namespace SoftwareEng
         private void showErrorMessage(String messageOfDoom)
         {
             ErrorWindow bearerOfBadNews = new ErrorWindow(messageOfDoom);
-
             bearerOfBadNews.ShowDialog();
         }
 
