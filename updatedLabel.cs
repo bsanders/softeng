@@ -13,10 +13,18 @@ using System.ComponentModel;
 
 namespace SoftwareEng
 {
+    /** ******************************************************************************************************
+    /// <author>Alejandro Sosa</author>
+    /// <summary>Delegate that conforms to the Dispatcher.BeginInvoke() method's requirements</summary>
+    *** *****************************************************************************************************/ 
     public delegate void customEvent_callback();
 
 
-    class customLabel : Label
+    /** ******************************************************************************************************
+    /// <author>Alejandro Sosa</author>
+    /// <summary>Class can inherit from a non-sealed class. Used to define and raise a custom event</summary>
+    *** *****************************************************************************************************/ 
+    class PhotoBomberCustomObject : Label
     {
         private Timer EventTimer;
         private bool isFrontFace;
@@ -24,10 +32,10 @@ namespace SoftwareEng
         const double mouseEnterTimer = 250.0;
         const double mouseLeaveTimer = 3000.0;
 
-        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
+        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
 
         
-        public customLabel(): base()
+        public PhotoBomberCustomObject(): base()
         {
             //okToFlipBack = false;
 
@@ -53,9 +61,9 @@ namespace SoftwareEng
             EventTimer.Stop();
 
 
-            //if (isFrontFace == true || okToFlipBack == true)
+            //if(isFrontFace == true)// || okToFlipBack == true)
             //{
-                this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null);
+            //    this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null);
             //}
             //else if (isFrontFace == false && this.Visibility == Visibility.Hidden)
             //{
@@ -63,6 +71,10 @@ namespace SoftwareEng
             //    EventTimer.Start();
             //    okToFlipBack = true;
             //}
+            if (IsMouseOver == true)
+            {
+                this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null);
+            }
         }
 
 
@@ -76,23 +88,36 @@ namespace SoftwareEng
         void RaisePhotoBomberTileTriggerEvent()
         {
             //okToFlipBack = false;
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.PhotoBomberTileTriggerEvent);
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.PhotoBomberTileTriggerEvent);
             RaiseEvent(newEventArgs);
         }
 
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
+        //protected override void OnMouseEnter(MouseEventArgs e)
+        //{
             
+        //    EventTimer.Interval = mouseEnterTimer;
+        //    EventTimer.Start();
+
+        //}
+
+        //protected override void OnMouseLeave(MouseEventArgs e)
+        //{
+
+        //    EventTimer.Stop();
+
+        //}
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
             EventTimer.Interval = mouseEnterTimer;
             EventTimer.Start();
-
         }
 
-        protected override void OnMouseLeave(MouseEventArgs e)
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-
-            //EventTimer.Stop();
-
+            EventTimer.Stop();
         }
+
+
     }
 }

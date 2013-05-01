@@ -47,7 +47,7 @@
     <Setting Name="CaptionMaxLength" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">140</Value>
     </Setting>
-    <Setting Name="AppTitleBarText" Type="System.String" Scope="User">
+    <Setting Name="AppTitleBarText" Type="System.String" Scope="Application">
       <Value Profile="(Default)">PhotoBomber - My Photo Library!</Value>
     </Setting>
   </Settings>
