@@ -20,7 +20,8 @@ namespace SoftwareEng
     {
         private Timer EventTimer;
         private bool isFrontFace;
-        const double mouseEnterTimer = 1000.0;
+        //private bool okToFlipBack;
+        const double mouseEnterTimer = 250.0;
         const double mouseLeaveTimer = 3000.0;
 
         public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
@@ -28,6 +29,8 @@ namespace SoftwareEng
         
         public customLabel(): base()
         {
+            //okToFlipBack = false;
+
             EventTimer = new Timer();
 
             EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
@@ -48,7 +51,18 @@ namespace SoftwareEng
         void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             EventTimer.Stop();
-            this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null); 
+
+
+            //if (isFrontFace == true || okToFlipBack == true)
+            //{
+                this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null);
+            //}
+            //else if (isFrontFace == false && this.Visibility == Visibility.Hidden)
+            //{
+            //    EventTimer.Interval = mouseLeaveTimer;
+            //    EventTimer.Start();
+            //    okToFlipBack = true;
+            //}
         }
 
 
@@ -61,36 +75,24 @@ namespace SoftwareEng
 
         void RaisePhotoBomberTileTriggerEvent()
         {
+            //okToFlipBack = false;
             RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.PhotoBomberTileTriggerEvent);
             RaiseEvent(newEventArgs);
         }
 
-
-
         protected override void OnMouseEnter(MouseEventArgs e)
         {
-            if (isFrontFace == true)
-            {
-                EventTimer.Interval = mouseEnterTimer;
-                EventTimer.Start();
-            }
-            else
-            {
-                EventTimer.Stop();
-            }
+            
+            EventTimer.Interval = mouseEnterTimer;
+            EventTimer.Start();
+
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
         {
-            if (isFrontFace == false)
-            {
-                EventTimer.Interval = mouseLeaveTimer;
-                EventTimer.Start();
-            }
-            else
-            {
-                EventTimer.Stop();
-            }
+
+            //EventTimer.Stop();
+
         }
     }
 }
