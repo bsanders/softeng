@@ -3,6 +3,9 @@
  * Edited Last: 
  * 
  * These are some backend tools to parse xml files.
+ * Julian Nguyen(4/30/13)
+ * XmlParser class is now Obsolete. 
+ * 
  **/
 
 using System;
@@ -13,6 +16,7 @@ using System.Text;
 
 namespace SoftwareEng
 {
+    [Obsolete]
     class XmlParser
     {
 
