@@ -5,8 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="d" 
-        Title="ViewImage" Height="{Binding MinHeight, ElementName=ViewImageWindowGrid}"
-        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True" MinWidth="100" MinHeight="100" Width="{Binding MinWidth, ElementName=ViewImageWindowGrid}">
+        Title="ViewImage"
+        xmlns:SoftwareEngControls="clr-namespace:SoftwareEng" WindowStyle="None" ShowInTaskbar="False" FontFamily="/PhotoBomber;component/Fonts/#monofur" AllowsTransparency="True" MinWidth="100" MinHeight="100" WindowStartupLocation="CenterScreen" >
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource PhotoBomberWindowColor}"/>
     </Window.Background>
@@ -43,8 +43,8 @@
 
 
     <Grid>
-        <Border x:Name="ViewImageWindowFrame" Padding="6" Background="#001C2327">
-            <Grid x:Name="ViewImageWindowGrid" MinWidth="500" MinHeight="500">
+        <Border x:Name="ViewImageWindowFrame" Padding="0" Background="#001C2327" HorizontalAlignment="Center">
+            <Grid x:Name="ViewImageWindowGrid" MinWidth="300" MinHeight="300">
                 <!--
                 <Popup x:Name="imageWindowContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#4DFFFFFF" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="False">
@@ -76,7 +76,7 @@
                         <SoftwareEngControls:ImagePathConverter x:Key="ImagePathConverter"/>
                     </Viewbox.Resources>
                     <!--<Image Source="{Binding currentPicture.asdf, Converter={StaticResource ImagePathConverter}, FallbackValue=ImagesResources2012\defaultImage.png}" RenderTransformOrigin="0.5,0.5"/>-->
-                    <Image RenderTransformOrigin="0.5,0.5">
+                    <Image Width="22">
                         <Image.Source>
                             <Binding ElementName="viewImageWindow" Path="currentPicture.fullPath" Converter="{StaticResource ImagePathConverter}">
                                 <Binding.FallbackValue>
@@ -90,20 +90,19 @@
                 </Viewbox>
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="20" Margin="25,0" Stroke="#00000000" VerticalAlignment="Bottom" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}" MouseEnter="dockHitBox_MouseEnter"/>
                 <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="25,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="48" Background="{DynamicResource PhotoBomberDockBrush}" Visibility="Hidden" MouseLeave="mainWindowDock_MouseLeave">
-                    <Button x:Name="slideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Play Slideshow" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="slideShowDockButton_Click">
+                    <Button x:Name="slideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Play Slideshow" Click="slideShowDockButton_Click">
                         <Image x:Name="slideShowDockButtonImage" Source="ImagesResources2012/action_play_pause.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="exitSlideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Stop Slideshow" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="exitSlideShowDockButton_Click">
+                    <Button x:Name="exitSlideShowDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Stop Slideshow" Visibility="Collapsed" Click="exitSlideShowDockButton_Click">
                         <Image x:Name="exitSlideShowDockButtonImage" Source="ImagesResources2012\action_stop_large.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="prevDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Previous Image" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="prevDockButton_Click">
+                    <Button x:Name="prevDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Previous Image" Click="prevDockButton_Click">
                         <Image x:Name="prevDockButtonImage" Source="ImagesResources2012/action_previous_large.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Next Image" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="nextDockButton_Click">
+                    <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Next Image" Click="nextDockButton_Click">
                         <Image x:Name="nextDockButtonImage" Source="ImagesResources2012/action_next_large.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="emptyDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
-                    </Button>
+                    <Button x:Name="emptyDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Hidden"/>
                     <Button x:Name="greyscaleDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" ToolTip="Convert to Grayscale">
                         <Image x:Name="greyscaleDockButtonImage" Source="ImagesResources2012/action_convert_grayscale.png" Width="32" Height="32"/>
                     </Button>
