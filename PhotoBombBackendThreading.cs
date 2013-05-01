@@ -11,6 +11,8 @@
  *                     observable collection needed so the run workercompleted can 
  *                     generate a ReadOnlyObservableCollection to give to the GUI 
  *                     callback.
+ * Julian Nguyen(4/30/13)
+ * ErrorReports constants numbers removed and replaced with ReportStatus enums.
  **/
 using System;
 using System.Collections.Generic;
@@ -45,13 +47,13 @@ namespace SoftwareEng
             int picsAddedSinceReport = 0;
 
             //start our uid search from the first known empty uid.
-            int initialSearchingLocation = util_getNextUID(_picturesDatabase, "picture", "uid", 1);
+            int initialSearchingLocation = util_getNextUID(_imagesDatabase, "picture", "uid", 1);
 
             //for each photo we are adding...
             for (int i = 0; i < data.photoUserPath.Count; ++i)
             {
                 //if we didn't get a cancel command...
-                if (data.errorReport.reportID != ErrorReport.FAILURE && !worker.CancellationPending)
+                if (data.errorReport.reportStatus != ReportStatus.FAILURE && !worker.CancellationPending)
                 {
                     // Is all this unnecessary?  Leaving it here in case someday we want to prompt the user
                     // to provide a default image name for a set of importing photos, I guess?
@@ -82,7 +84,7 @@ namespace SoftwareEng
                     }
                     catch (Exception)
                     {
-                        data.errorReport.reportID = ErrorReport.FAILURE;
+                        data.errorReport.reportStatus = ReportStatus.FAILURE;
                         data.errorReport.description = errorStrings.addImageFailure;
                         break;
                     }

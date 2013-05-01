@@ -6,6 +6,12 @@
  * This is a standardized error class to use
  * for communicating with the gui when things go back.
  * These will probably be passed to the GUI through callbacks.
+ * 
+ * Change log: 
+ * Julian Nguyen(4/30/13)
+ * ErrorReports constants numbers removed and replaced with ReportStatus enums.
+ * Comments added.
+ * 
  **/
 
 using System;
@@ -15,32 +21,45 @@ using System.Text;
 
 namespace SoftwareEng
 {
-    
+    /// By Julian Nguyen
+    /// Edited: Julian Nguyen(4/30/13)
+    /// <summary>
+    /// Standardized enums for telling the gui what happened.
+    /// </summary>
+    public enum ReportStatus
+    {
+        SUCCESS,
+        SUCCESS_WITH_WARNINGS,
+        FAILURE
+    } // End of ReportStatus.
 
     public class ErrorReport
     {
-        //---------------------------
-        //CONSTANTS, these are standardized numbers for telling
-        //the gui what happen in the backend.
-        public const int SUCCESS = 0;
-        public const int SUCCESS_WITH_WARNINGS = 1;
-        public const int FAILURE = 2;
-        //---------------------------
-        //Error object vars.
-        //These get set by the backend.
-        public int reportID;
+        // The status of the report.
+        public ReportStatus reportStatus;
+
+        // If there was an error, this is the description.
         public string description;
+
+
+        // If there was an warning, here is a list of them, why not??
         public List<string> warnings;
-        //---------------------------
-        //Default to success, of course!
+
+
+        /// By Ryan Moe
+        /// Edited: Julian Nguyen(4/30/13)
+        /// <summary>
+        /// Default constructor. 
+        /// Defaults to success.
+        /// </summary>
         public ErrorReport()
         {
-            reportID = 0;
-            description = "";
+            reportStatus = ReportStatus.SUCCESS;
+            description = String.Empty;
             warnings = new List<string>();
         }
 
 
-    }
+    } // End of ErrorReport.
 
 }

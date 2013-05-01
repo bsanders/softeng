@@ -17,6 +17,8 @@
  *                     Fixed a bug in the change caption utility where we were trying to access caption as
  *                     an attribute instead of an element.
  *                     Fixed a bug in thumbnail generation utility.
+ * Julian Nguyen(4/30/13)
+ * ErrorReports constants numbers removed and replaced with ReportStatus enums.
  **/
 using System;
 using System.Collections.Generic;
@@ -51,7 +53,7 @@ namespace SoftwareEng
                     //for(from) every c in the database's children (all albums),
                     //see if it's attribute uid is the one we want,
                     //and if so return the first instance of a match.
-                    specificPicture = (from c in _picturesDatabase.Elements()
+                    specificPicture = (from c in _imagesDatabase.Elements()
                                        where (string)c.Attribute("sha1") == hash
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
@@ -61,7 +63,7 @@ namespace SoftwareEng
                     if (ex is InvalidOperationException ||
                         ex is ArgumentNullException)
                     {
-                        error.reportID = ErrorReport.FAILURE;
+                        error.reportStatus = ReportStatus.FAILURE;
                         error.description = "Found more than one picture with that hash!";
                         return null;
                     }
@@ -102,14 +104,14 @@ namespace SoftwareEng
                     //for(from) every c in the database's children (all albums),
                     //see if it's attribute uid is the one we want,
                     //and if so return the first instance of a match.
-                    specificPicture = (from c in _picturesDatabase.Elements()
+                    specificPicture = (from c in _imagesDatabase.Elements()
                                        where (int)c.Attribute("uid") == photoUID
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
                 //failed to find the picture
                 catch
                 {
-                    error.reportID = ErrorReport.FAILURE;
+                    error.reportStatus = ReportStatus.FAILURE;
                     error.description = "Failed to find the picture specified.";
                     return null;
                 }
@@ -180,7 +182,7 @@ namespace SoftwareEng
                 // This query then returns a single xml instance matching these criteria,
                 // OR returns null if 0 are found
                 // OR throws an exception if more than 1 are found
-                photoInstance = (from picDB in _picturesDatabase.Elements("picture")
+                photoInstance = (from picDB in _imagesDatabase.Elements("picture")
                                  join picAlbDB in _albumsDatabase.Descendants("picture")
                                  on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
                                  where (string)picDB.Attribute("sha1") == hash
@@ -218,7 +220,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportStatus = ReportStatus.FAILURE;
                 error.description = "Failed to find a single picture by UID.";
                 return null;
             }
@@ -235,7 +237,7 @@ namespace SoftwareEng
             //if picture extension is not valid
             if (!util_checkPhotoExtension(newPictureData.extension))
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "Extension is not valid.";
                 return errorReport;
             }
@@ -243,7 +245,7 @@ namespace SoftwareEng
             //if path is not valid
             if (!util_checkFilePath(newPictureData.fullPath))
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "Path is not valid.";
                 return errorReport;
             }
@@ -258,7 +260,7 @@ namespace SoftwareEng
                 );
 
             //add to the database (in memory, not on disk).
-            _picturesDatabase.Add(newPicRoot);
+            _imagesDatabase.Add(newPicRoot);
             return errorReport;
         }
 
@@ -278,7 +280,7 @@ namespace SoftwareEng
             // If the lookup returns null, the album doesn't exist, or there's more than one album with that UID (db error)
             if (specificAlbum == null)
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "Found more than one album with that UID or none at all.";
                 return;
             }
@@ -288,7 +290,7 @@ namespace SoftwareEng
             // check to make sure we got a valid number back...
             if (!util_checkIDIsValid(newPicture.idInAlbum))
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "Photo id for album is not valid.";
                 return;
             }
@@ -383,7 +385,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportStatus = ReportStatus.FAILURE;
                 error.description = "Failed to change the caption of a photo.";
             }
         }
@@ -689,16 +691,17 @@ namespace SoftwareEng
         //load the database from disk into memory.
         // BS: This function is being slated for merging with util_openPicturesXML
         // Note that this does not set the in-memory DB to an XDocument, but rather the first element in it
+        [Obsolete]
         private void util_openAlbumsXML(ErrorReport error)
         {
             try
             {
-                _albumsDatabase = XDocument.Load(albumsDatabasePath).Element(Settings.XMLRootElement);
+                _albumsDatabase = XDocument.Load(_albumsDatabasePath).Element(Settings.XMLRootElement);
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
-                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + albumsDatabasePath;
+                error.reportStatus = ReportStatus.FAILURE;
+                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + _albumsDatabasePath;
                 return;
             }
 
@@ -712,22 +715,40 @@ namespace SoftwareEng
         //load the database from disk into memory.
         // BS: This function is being slated for merging with util_openAlbumXML
         // Note that this does not set the in-memory DB to an XDocument, but rather the first element in it
-        private void util_openPicturesXML(ErrorReport error)
+        [Obsolete]
+        private void util_openImagesXML(ErrorReport error)
         {
             try
             {
-                _picturesDatabase = XDocument.Load(picturesDatabasePath).Element(Settings.XMLRootElement);
+                _imagesDatabase = XDocument.Load(_picturesDatabasePath).Element(Settings.XMLRootElement);
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
-                error.description = "PhotoBomb.openPicturesXML():failed to load the pictures xml file: " + picturesDatabasePath;
+                error.reportStatus = ReportStatus.FAILURE;
+                error.description = "PhotoBomb.openPicturesXML():failed to load the pictures xml file: " + _picturesDatabasePath;
                 return;
             }
 
             //The loading of the xml was nominal.
             error.description = "great success!";
         }
+
+        private bool loadXmlRootElement(String pathToXml, out XElement xmlRootElement)
+        {
+ 
+            try
+            {
+                xmlRootElement = XDocument.Load(pathToXml).Element(Settings.XMLRootElement);
+                return true;
+            }
+            catch (IOException e)
+            {
+                xmlRootElement = null;
+                return false;
+            }
+
+        }
+
 
         //-------------------------------------------------------
         //By: Bill Sanders
@@ -770,7 +791,7 @@ namespace SoftwareEng
             // in the future I guess this could return every picture instance in the DB?
             if (hash == string.Empty)
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportStatus = ReportStatus.FAILURE;
                 error.description = "Invalid sha1";
                 return null;
             }
@@ -902,7 +923,7 @@ namespace SoftwareEng
             }
             catch
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "Error converting XElement to data object.";
                 return null;
             }
@@ -937,7 +958,7 @@ namespace SoftwareEng
         //    }
         //    catch
         //    {
-        //        errorReport.reportID = ErrorReport.FAILURE;
+        //        errorReport.reportID = ReportStatus.FAILURE;
         //        errorReport.description = "Error converting XElement to data object.";
         //        return null;
         //    }
@@ -964,7 +985,7 @@ namespace SoftwareEng
         //    }
         //    catch
         //    {
-        //        errorReport.reportID = ErrorReport.FAILURE;
+        //        errorReport.reportID = ReportStatus.FAILURE;
         //        errorReport.description = "Error getting required data from photo element.";
         //        return null;
         //    }
@@ -1039,7 +1060,7 @@ namespace SoftwareEng
             //if the picture does NOT exist.
             if (!File.Exists(srcPicFullFilepath))
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "Can't find the new picture to import to the library.";
                 return "";
             }
@@ -1047,7 +1068,7 @@ namespace SoftwareEng
             //check if the library is ok.
             if (!util_checkLibraryDirectory())
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "Something is wrong with the photo library.";
                 return "";
             }
@@ -1063,7 +1084,7 @@ namespace SoftwareEng
             }
             catch
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "Unable to make a copy of the photo in the library.";
                 return "";
             }
@@ -1091,7 +1112,7 @@ namespace SoftwareEng
             //anything else we need to check?
             if (!Directory.Exists(libraryPath))
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportStatus = ReportStatus.FAILURE;
                 error.description = "Library folder not found.";
             }
         }
@@ -1114,7 +1135,7 @@ namespace SoftwareEng
             catch
             {
                 // this probably means they passed in a XElem from the pictures library...?
-                error.reportID = ErrorReport.FAILURE;
+                error.reportStatus = ReportStatus.FAILURE;
                 error.description = "Failed to change the name of a photo.";
             }
         }
@@ -1135,7 +1156,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportStatus = ReportStatus.FAILURE;
                 error.description = "Failed to change the name of an album.";
             }
         }
@@ -1161,7 +1182,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportStatus = ReportStatus.FAILURE;
                 error.description = "Failed to find a single album by UID.";
                 return null;
             }
@@ -1175,7 +1196,7 @@ namespace SoftwareEng
         {
             if (_albumsDatabase == null)
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
                 return false;
             }
@@ -1190,9 +1211,9 @@ namespace SoftwareEng
         //returns true if the picture database is ok.
         private Boolean util_checkPhotoDBIntegrity(ErrorReport errorReport)
         {
-            if (_picturesDatabase == null)
+            if (_imagesDatabase == null)
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
                 return false;
             }
@@ -1209,12 +1230,12 @@ namespace SoftwareEng
             initDB.Add(root);
             try
             {
-                initDB.Save(albumsDatabasePath);
-                initDB.Save(picturesDatabasePath);
+                initDB.Save(_albumsDatabasePath);
+                initDB.Save(_picturesDatabasePath);
             }
             catch
             {
-                errorReport.reportID = ErrorReport.FAILURE;
+                errorReport.reportStatus = ReportStatus.FAILURE;
                 errorReport.description = "Unable to create the new database files.";
             }
         }
@@ -1235,7 +1256,7 @@ namespace SoftwareEng
         {
             if ((srcPath == string.Empty) || (picFileName == string.Empty) || !File.Exists(srcPath))
             {
-                error.reportID = ErrorReport.FAILURE;
+                error.reportStatus = ReportStatus.FAILURE;
                 error.description = "Unable to generate thumbnail, bad path or filename.";
                 return ""; 
             }

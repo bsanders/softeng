@@ -47,6 +47,8 @@
  *                     Changed the regex for caption validation to allow blank captions, in order to allow captions to be removed.
  * 4/28/13 Julian Nguyen:
  * rename PhotoBomb -> PhotoBomb_Controller.
+ * 4/30/13 Julian Nguyen:
+ * ErrorReports constants numbers removed and replaced with ReportStatus enums.
  * 
  */
 using System;
@@ -179,7 +181,7 @@ namespace SoftwareEng
         *********************************************************************************************/
         private void guiConstructorCallback(ErrorReport status)
         {
-            if (status.reportID != ErrorReport.SUCCESS)
+            if (status.reportStatus != ReportStatus.SUCCESS)
             {
                 //showErrorMessage("Failed at guiConstructorCallback"); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
@@ -196,7 +198,7 @@ namespace SoftwareEng
         *********************************************************************************************/
         private void rebuildBackend_Callback(ErrorReport status)
         {
-            if (status.reportID != ErrorReport.SUCCESS)
+            if (status.reportStatus != ReportStatus.SUCCESS)
             {
                 showErrorMessage(errorStrings.rebuildBackendFailure); //super temporary
             }
@@ -233,14 +235,14 @@ namespace SoftwareEng
         *********************************************************************************************/
         public void guiAlbumsRetrieved(ErrorReport status, ReadOnlyObservableCollection<SimpleAlbumData> albumsRetrieved)
         {
-            if (status.reportID == ErrorReport.FAILURE)
+            if (status.reportStatus == ReportStatus.FAILURE)
             {
                 //show an Error
                 showErrorMessage(errorStrings.retrieveAlbumsFailure);
             }
             else
             {
-                if (status.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                if (status.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
                 {
                     showErrorMessage(errorStrings.retrieveAlbumsWarning);
                 }
@@ -321,7 +323,7 @@ namespace SoftwareEng
         public void guiValidateAlbumName_Callback(ErrorReport error)
         {
             //if the album name was not unique
-            if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            if (error.reportStatus == ReportStatus.FAILURE || error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
             {
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
@@ -400,7 +402,7 @@ namespace SoftwareEng
         public void guiValidatePhotoName_Callback(ErrorReport error)
         {
             //if the photo name was not unique
-            if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            if (error.reportStatus == ReportStatus.FAILURE || error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
             {
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
@@ -454,7 +456,7 @@ namespace SoftwareEng
         /// <param name="error">Error report from the back end.</param>
         public void guiCreateNewAlbum_Callback(ErrorReport error)
         {
-            if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            if (error.reportStatus == ReportStatus.FAILURE || error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
@@ -534,7 +536,7 @@ namespace SoftwareEng
         /// <param name="error"></param>
         public void guiChangePhotoCaption_Callback(ErrorReport error)
         {
-            if (error.reportID == ErrorReport.FAILURE)
+            if (error.reportStatus == ReportStatus.FAILURE)
             {
                 showErrorMessage(errorStrings.changeCommentFailure);
             }
@@ -647,7 +649,7 @@ namespace SoftwareEng
         /// <param name="error">Error report from the back end.</param>
         public void guiDeleteSelectedAlbum_Callback(ErrorReport error)
         {
-            if (error.reportID == ErrorReport.FAILURE || error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+            if (error.reportStatus == ReportStatus.FAILURE || error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
@@ -693,7 +695,7 @@ namespace SoftwareEng
         /// <param name="picturesInAlbum">Collection of photos in the album.</param>
         public void guiEnterAlbumView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
         {
-            if (error.reportID == ErrorReport.FAILURE)
+            if (error.reportStatus == ReportStatus.FAILURE)
             {
                 //show user an error message that retrieving the pictures did not work
                 showErrorMessage(errorStrings.getPhotosFailure);
@@ -703,7 +705,7 @@ namespace SoftwareEng
                 //going into album
                 isInsideAlbum = true;
 
-                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                if (error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
                 {
                     //show the user a notification that some pictures are not displayed
                     showErrorMessage(errorStrings.getPhotosWarning);
@@ -870,7 +872,7 @@ namespace SoftwareEng
         public void guiImportPhotos_Callback(ErrorReport error, int albumUID)
         {
             //deal with it
-            if (error.reportID == ErrorReport.FAILURE)
+            if (error.reportStatus == ReportStatus.FAILURE)
             {
                 //shut down all garbage compactors on the detention level
                 showErrorMessage(errorStrings.addImageFailure);
@@ -898,7 +900,7 @@ namespace SoftwareEng
             }
             else
             {
-                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                if (error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
                 {
                     //set phasers to stun
                     //showErrorMessage(errorStrings.addImageWarning);
@@ -935,14 +937,14 @@ namespace SoftwareEng
          **************************************************************************************************************************/
         public void guiImportPhotosRefreshView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
         {
-            if (error.reportID == ErrorReport.FAILURE)
+            if (error.reportStatus == ReportStatus.FAILURE)
             {
                 //show user an error message that retrieving the pictures did not work
                 showErrorMessage(errorStrings.getPhotosFailure);
             }
             else
             {
-                if (error.reportID == ErrorReport.SUCCESS_WITH_WARNINGS)
+                if (error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
                 {
                     //show the user a notification that some pictures are not displayed
                     showErrorMessage(errorStrings.getPhotosWarning);
@@ -1000,7 +1002,7 @@ namespace SoftwareEng
         /// <param name="error">Error report from the back end.</param>
         public void guiRenameSelectedAlbum_Callback(ErrorReport error)
         {
-            if (error.reportID == ErrorReport.FAILURE)
+            if (error.reportStatus == ReportStatus.FAILURE)
             {
                 showErrorMessage(errorStrings.renameAlbumFailure);
             }
@@ -1036,7 +1038,7 @@ namespace SoftwareEng
         /// <param name="error">Error report from the back end.</param>
         public void guiRenameSelectedPhoto_Callback(ErrorReport error)
         {
-            if (error.reportID == ErrorReport.FAILURE)
+            if (error.reportStatus == ReportStatus.FAILURE)
             {
                 showErrorMessage(errorStrings.renamePhotoFailure);
             }
@@ -1053,7 +1055,7 @@ namespace SoftwareEng
         /// <param name="error">Error report from the back end.</param>
         public void guiDeleteSelectedPhoto_Callback(ErrorReport error)
         {
-            if (error.reportID == ErrorReport.FAILURE)
+            if (error.reportStatus == ReportStatus.FAILURE)
             {
                 showErrorMessage(errorStrings.deletePhotoFailure);
             }
@@ -1073,7 +1075,7 @@ namespace SoftwareEng
             ErrorReport error = bombaDeFotos.cancelAddNewPicturesThread();
 
             //if theres an error, show the error message, otherwise hide the cancel button.
-            if (error.reportID == ErrorReport.FAILURE)
+            if (error.reportStatus == ReportStatus.FAILURE)
             {
                 showErrorMessage(errorStrings.stopImportFailure);
             }
@@ -2057,7 +2059,7 @@ namespace SoftwareEng
             {
                 ErrorReport error = bombaDeFotos.cancelAddNewPicturesThread();
                 //if the thread failed to be stopped.
-                if (error.reportID == ErrorReport.FAILURE)
+                if (error.reportStatus == ReportStatus.FAILURE)
                 {
                     showErrorMessage(errorStrings.stopImportFailure);
                 }
