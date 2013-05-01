@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * Change Log:
+ * 4/30/13 Julian Nguyen
+ * The XmlHandler class was added to remove xml handling from the PhotoBomb class.
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +14,12 @@ namespace SoftwareEng
 {
     class XmlHandler
     {
-        // TODO: What are you doing, change this. 
+        // TODO: What are you doing? change this. 
         private Properties.Settings Settings = Properties.Settings.Default;
 
 
+        /// By Julian Nguyen
+        /// Edited: Julian Nguyen(4/30/13)
         /// <summary>
         /// 
         /// </summary>
@@ -36,5 +43,5 @@ namespace SoftwareEng
         }
 
 
-    }
+    } // End of XmlHandler. 
 }

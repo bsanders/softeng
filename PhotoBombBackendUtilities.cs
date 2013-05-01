@@ -19,6 +19,8 @@
  *                     Fixed a bug in thumbnail generation utility.
  * Julian Nguyen(4/30/13)
  * ErrorReports constants numbers removed and replaced with ReportStatus enums.
+ * Julian Nguyen(5/1/13)
+ * setErrorReportToFAILURE() replaced setting an an ErrorReport to FAILURE and it's description.
  **/
 using System;
 using System.Collections.Generic;
@@ -34,8 +36,8 @@ namespace SoftwareEng
     public partial class PhotoBomb
     {
         //----------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last: 4/4/13, clarified the error situations
+        /// By: Bill Sanders
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
         /// Query the Photo DB for a photo by hash
         /// </summary>
@@ -63,8 +65,7 @@ namespace SoftwareEng
                     if (ex is InvalidOperationException ||
                         ex is ArgumentNullException)
                     {
-                        error.reportStatus = ReportStatus.FAILURE;
-                        error.description = "Found more than one picture with that hash!";
+                        setErrorReportToFAILURE("Found more than one picture with that hash!", ref error);
                         return null;
                     }
                     else
@@ -84,9 +85,8 @@ namespace SoftwareEng
         }//method
 
 
-        //----------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last: Bill Sanders, 3/29/13
+        /// By: Ryan Moe
+        /// Edited Last: Julian Nguyen(5/1/13)
         /// <summary>
         /// Query the Photo DB for a photo by hash
         /// </summary>
@@ -111,8 +111,7 @@ namespace SoftwareEng
                 //failed to find the picture
                 catch
                 {
-                    error.reportStatus = ReportStatus.FAILURE;
-                    error.description = "Failed to find the picture specified.";
+                    setErrorReportToFAILURE("Failed to find the picture specified.", ref error);
                     return null;
                 }
                 //success!
@@ -197,9 +196,9 @@ namespace SoftwareEng
             return photoInstance;
         }
 
-        //--------------------------------------------------------------------------
-        //By: Ryan Moe, comments by Bill Sanders
-        //Edited Last: 3/24/13
+        
+        /// By: Ryan Moe, comments by Bill Sanders
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
         /// Searches for a photo by UID in the specified album.
         /// </summary>
@@ -220,33 +219,35 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Failed to find a single picture by UID.";
+                setErrorReportToFAILURE("Failed to find a single picture by UID.", ref error);
                 return null;
             }
         }
 
-        //--------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/5/13
-        // This adds a picture to JUST the picture database.
-        private ErrorReport util_addPicToPhotoDB(ErrorReport errorReport, ComplexPhotoData newPictureData)
+
+        /// By Ryan Moe
+        /// Edited: Julan nguyen(5/1/13)
+        /// <summary>
+        /// This adds a picture to JUST the picture database.
+        /// </summary>
+        /// <param name="errorReport">Why is this being passed in??</param>
+        /// <param name="newPictureData">The data of the new image to be added. </param>
+        /// <returns>The errorReport of this action.</returns>
+        private ErrorReport util_addImageToImageDB(ErrorReport errorReport, ComplexPhotoData newPictureData)
         {
+            // TODO: Test the incoming errorReport for failure. 
 
             //if picture extension is not valid
             if (!util_checkPhotoExtension(newPictureData.extension))
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Extension is not valid.";
+                setErrorReportToFAILURE("Extension is not valid.", ref errorReport);
                 return errorReport;
             }
 
             //if path is not valid
             if (!util_checkFilePath(newPictureData.fullPath))
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Path is not valid.";
+                setErrorReportToFAILURE("Path is not valid", ref errorReport);
                 return errorReport;
             }
 
@@ -264,24 +265,23 @@ namespace SoftwareEng
             return errorReport;
         }
 
-        //--------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last Date: 4/7/13
+
+        /// By Ryan Moe
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
-        /// Adds a photo to a specific album in the album database 
+        /// Adds a image to a specific album in the album database 
         /// </summary>
         /// <param name="errorReport"></param>
-        /// <param name="newPicture">An object with all the data necessary to create the picture in both DBs</param>
+        /// <param name="newPicture">An object with all the data necessary to create the Image in both DBs</param>
         /// <param name="albumUID">The unique ID of the album</param>
-        private void util_addPicToAlbumDB(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID)
+        private void util_addImageToAlbumDB(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID)
         {
             //Get the specific album we will be adding to.
             XElement specificAlbum = util_getAlbum(errorReport, albumUID);
             // If the lookup returns null, the album doesn't exist, or there's more than one album with that UID (db error)
             if (specificAlbum == null)
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Found more than one album with that UID or none at all.";
+                setErrorReportToFAILURE("Found more than one album with that UID or none at all.", ref errorReport);
                 return;
             }
 
@@ -290,8 +290,7 @@ namespace SoftwareEng
             // check to make sure we got a valid number back...
             if (!util_checkIDIsValid(newPicture.idInAlbum))
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Photo id for album is not valid.";
+                setErrorReportToFAILURE("Photo id for album is not valid.", ref errorReport);
                 return;
             }
 
@@ -306,7 +305,7 @@ namespace SoftwareEng
 
             // Note as per requirements, the default photo name is the name of the album, plus its id number
             string nameInAlbum = specificAlbum.Element("albumName").Value + " Image " + newPicture.idInAlbum;
-            while (!util_checkPhotoNameIsUniqueToAlbum(nameInAlbum, specificAlbum))
+            while (!util_isImageNameUniqueToAlbum(nameInAlbum, specificAlbum))
             {
                 newPicture.idInAlbum = util_getNextUID(specificAlbum.Element("albumPhotos"), "picture", "idInAlbum", newPicture.idInAlbum + 1);
                 nameInAlbum = specificAlbum.Element("albumName").Value + " Image " + newPicture.idInAlbum;
@@ -367,14 +366,12 @@ namespace SoftwareEng
             albumNode.Element("thumbnailPath").Attribute("thumbAlbumID").Value = photoObject.idInAlbum.ToString();
         }
 
-        //--------------------------------------------------------
-        // By: Bill Sanders
-        // Edited Last By: Ryan Causey
-        // Edited Last Date: 4/8/13
+        /// By: Bill Sanders
+        /// Edited: Julian Nguyen(5/1/13)
         /// <summary>
         /// Sets the caption of a photo in a specific album to the provided string
         /// </summary>
-        /// <param name="error"></param>
+        /// <param name="error">The errorReport. </param>
         /// <param name="albumPhotoNode">The XElement object of the photo </param>
         /// <param name="caption">The new caption to set for this image.</param>
         private void util_setPhotoCaption(ErrorReport error, XElement albumPhotoNode, string caption)
@@ -385,8 +382,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Failed to change the caption of a photo.";
+                setErrorReportToFAILURE("Failed to change the caption of a photo.", ref error);
             }
         }
 
@@ -440,58 +436,27 @@ namespace SoftwareEng
             }
         }
 
-        //--------------------------------------------------------
-        // By: Bill Sanders
-        // Edited Last: 3/25/13
-        // Possible alternate strategy: Add the photo anyway?  If found, see if it is in a different album.
-        // If so, get its XElement, give it a new UID, but keep the rest.
-        // TODO: Examine possible speed up by using a byte-array instead of string comparison in LINQ?
+
+        /// By: Bill Sanders
+        /// Edited Julian Nguyen(5/1/13)
+        /// BS: 
+        /// Possible alternate strategy: Add the photo anyway?  If found, see if it is in a different album.
+        /// If so, get its XElement, give it a new UID, but keep the rest.
+        /// TODO: Examine possible speed up by using a byte-array instead of string comparison in LINQ?
         /// <summary>
         /// Checks to see if the photo is unique (using a SHA1 hash) to a given album
         /// </summary>
         /// <param name="albumID">The unique ID of the album</param>
-        /// <param name="hash">A hex string representation of the hash of the photo</param>
-        /// <returns>False if the photo already exists in this album, otherwise true.</returns>
-        private Boolean util_checkPhotoIsUniqueToAlbum(int albumID, string hash)
+        /// <param name="hash">A hex string representation of the hash of the image</param>
+        /// <returns>If the image name is unique or not.</returns>
+        private Boolean util_isImageUniqueToAlbum(int albumID, string hash)
         {
             // start by assuming the photo does not exist in this album
             //Boolean photoExistsInAlbum = false;
-            XElement photo = util_getAlbumDBPhotoNode(albumID, hash);
+            XElement image = util_getAlbumDBPhotoNode(albumID, hash);
 
             // If the photo lookup returns null, the photo is not in this album, so the photo woudl be unique to this album
-            if (photo == null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            /*
-            try
-            {
-//                XElement album = util_getAlbum(null, albumID);
-                // Try to find a duplicate hash in this album.
-                // Note: this may be working inefficiently.
-                // Join every picture element from both databases, where the pictures have the same sha1
-                // Of those, we only care about the ones where the picture has the sha1 we're looking for
-                // finally, of those, we only care about the cases where the that match exists in the album we're interested in.
-                // This query then returns true if it found an item matching these criteria, or false if it did not.
-                photoExistsInAlbum =
-                          (from picDB in _picturesDatabase.Elements("picture")
-                           join picAlbDB in _albumsDatabase.Descendants("picture")
-                           on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
-                           where (string)picDB.Attribute("sha1") == hash
-                                && (int)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
-                           select picDB).Any();
-            }
-            catch // we shouldn't be able to get here, as long as the databases exist
-            {
-                throw new ArgumentNullException();
-            }
-            // If the query returned true, the picture is already in the album, and therefore NOT unique
-            return !photoExistsInAlbum;
-            */
+            return (image == null);
         }
 
         //--------------------------------------------------------
@@ -685,10 +650,9 @@ namespace SoftwareEng
             }
         }
 
-        //--------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last: Bill Sanders 4/1/13
-        //load the database from disk into memory.
+        // By: Ryan Moe
+        // Edited Julian Nguyen(5/1/13)
+        // load the database from disk into memory.
         // BS: This function is being slated for merging with util_openPicturesXML
         // Note that this does not set the in-memory DB to an XDocument, but rather the first element in it
         [Obsolete]
@@ -700,8 +664,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "PhotoBomb.openAlbumsXML():failed to load the albums xml file: " + _albumsDatabasePath;
+                setErrorReportToFAILURE("PhotoBomb.openAlbumsXML():failed to load the albums xml file: ", ref error);
                 return;
             }
 
@@ -709,12 +672,12 @@ namespace SoftwareEng
             error.description = "great success!";
         }
 
-        //-------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last: Bill Sanders 4/1/13
-        //load the database from disk into memory.
-        // BS: This function is being slated for merging with util_openAlbumXML
-        // Note that this does not set the in-memory DB to an XDocument, but rather the first element in it
+        
+        /// By: Ryan Moe
+        /// Edited Julian Nguyen(5/1/13)
+        /// load the database from disk into memory.
+        /// BS: This function is being slated for merging with util_openAlbumXML
+        /// Note that this does not set the in-memory DB to an XDocument, but rather the first element in it
         [Obsolete]
         private void util_openImagesXML(ErrorReport error)
         {
@@ -724,29 +687,11 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "PhotoBomb.openPicturesXML():failed to load the pictures xml file: " + _picturesDatabasePath;
+                setErrorReportToFAILURE("PhotoBomb.openPicturesXML():failed to load the pictures xml file: " + _picturesDatabasePath, ref error);
                 return;
             }
-
             //The loading of the xml was nominal.
-            error.description = "great success!";
-        }
-
-        private bool loadXmlRootElement(String pathToXml, out XElement xmlRootElement)
-        {
- 
-            try
-            {
-                xmlRootElement = XDocument.Load(pathToXml).Element(Settings.XMLRootElement);
-                return true;
-            }
-            catch (IOException e)
-            {
-                xmlRootElement = null;
-                return false;
-            }
-
+            //error.description = "great success!"; // No!
         }
 
 
@@ -772,14 +717,14 @@ namespace SoftwareEng
             // Now get the reference to it in the Photos DB
             XElement photoElem = util_getPhotoDBNode(error, hash);
             // And git rid of it and remove it from the backend.
-            removePictureFromPicsDB_backend(null, photoElem);
+            removeImageFromImageDB_backend(photoElem);
 
             return;
         }
 
         //-------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last: Bill Sanders 4/8/13
+        /// By: Bill Sanders
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
         /// Return all of the pictures in the AlbumsDB that match the provided hash
         /// </summary>
@@ -791,8 +736,7 @@ namespace SoftwareEng
             // in the future I guess this could return every picture instance in the DB?
             if (hash == string.Empty)
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Invalid sha1";
+                setErrorReportToFAILURE("Invalid sha1", ref error);
                 return null;
             }
 
@@ -877,10 +821,9 @@ namespace SoftwareEng
         }//method
 
         //-------------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/5/13
-        // This function replaces the function util_convertPhotoNodeToComplexPhotoData() below.
+        /// By: Bill Sanders
+        /// Edited Ryan Causey(4/5/13)
+        /// This function replaces the function util_convertPhotoNodeToComplexPhotoData() below.
         /// <summary>
         /// Combines the data from both databases for a specific photo instance.
         /// </summary>
@@ -1017,14 +960,14 @@ namespace SoftwareEng
 
         //-------------------------------------------------------------------------
         //By: Bill Sanders
-        //Edited Last:
+        //Edited Julian Nguyen(4/1/13)
         /// <summary>
         /// Check to see if a photo name is unique to an album.
         /// </summary>
         /// <param name="photoName">The name to check</param>
         /// <param name="albumNode">The XElement albumDB node to check in</param>
         /// <returns>Returns true if the photo name is unique to that album</returns>
-        private Boolean util_checkPhotoNameIsUniqueToAlbum(String photoName, XElement albumNode)
+        private Boolean util_isImageNameUniqueToAlbum(String photoName, XElement albumNode)
         {
             try
             {
@@ -1042,11 +985,9 @@ namespace SoftwareEng
             return false;
         }
 
-        //-------------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/5/13
-        // Currently, as a side effect, this function also generates thumbnails.
+        /// By: Ryan Moe
+        /// Edited Julian Nguyen(5/1/13)
+        /// Currently, as a side effect, this function also generates thumbnails.
         /// <summary>
         /// Copies a picture from a source to the library on the filesystem.
         /// </summary>
@@ -1060,17 +1001,15 @@ namespace SoftwareEng
             //if the picture does NOT exist.
             if (!File.Exists(srcPicFullFilepath))
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Can't find the new picture to import to the library.";
-                return "";
+                setErrorReportToFAILURE("Can't find the new picture to import to the library", ref errorReport);
+                return String.Empty;
             }
 
             //check if the library is ok.
             if (!util_checkLibraryDirectory())
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Something is wrong with the photo library.";
-                return "";
+                setErrorReportToFAILURE("Something is wrong with the photo library.", ref errorReport);
+                return String.Empty;
             }
 
             // Create the full path where the picture will go
@@ -1084,9 +1023,8 @@ namespace SoftwareEng
             }
             catch
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Unable to make a copy of the photo in the library.";
-                return "";
+                setErrorReportToFAILURE("Unable to make a copy of the photo in the library.", ref errorReport);
+                return String.Empty;
             }
 
             //new library path
@@ -1103,23 +1041,25 @@ namespace SoftwareEng
             return (Directory.Exists(libraryPath));
         }
 
-        //-------------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //check if the library is ok, with ErrorReport param.
+
+        /// By Ryan Moe
+        /// By Julian Nguyen(5/1/13)
+        /// <summary>
+        /// check if the library is ok, with ErrorReport param.
+        /// </summary>
+        /// <param name="error">The errorReport for this action, for bool are not good enough.</param>
         private void util_checkLibraryDirectory(ErrorReport error)
         {
             //anything else we need to check?
             if (!Directory.Exists(libraryPath))
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Library folder not found.";
+                setErrorReportToFAILURE("Library folder not found.", ref error);
             }
         }
 
         //--------------------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last:
+        /// By: Bill Sanders
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
         /// Renames an instance of a photo in an album
         /// </summary>
@@ -1135,13 +1075,12 @@ namespace SoftwareEng
             catch
             {
                 // this probably means they passed in a XElem from the pictures library...?
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Failed to change the name of a photo.";
+                setErrorReportToFAILURE("Failed to change the name of a photo.", ref error);
             }
         }
 
-        //--------------------------------------------------------------------------
-        //By: Bill Sanders 4/6/13
+        /// By: Bill Sanders 4/6/13
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
         /// Renames an album
         /// </summary>
@@ -1156,8 +1095,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Failed to change the name of an album.";
+                setErrorReportToFAILURE("Failed to change the name of an album.", ref error);
             }
         }
 
@@ -1182,22 +1120,25 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Failed to find a single album by UID.";
+                setErrorReportToFAILURE("Failed to find a single album by UID.", ref error);
                 return null;
             }
         }
 
-        //---------------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //returns true if the album database is ok.
-        private Boolean util_checkAlbumDatabase(ErrorReport errorReport)
+        
+
+        /// By Ryan Moe
+        /// Edited Julian Nguyen(5/1/13)
+        /// <summary>
+        /// returns true if the album database is ok.
+        /// </summary>
+        /// <param name="errorReport">The errorReport for this action. </param>
+        /// <returns>If the album is good or not.</returns>
+        private bool util_checkAlbumDatabase(ErrorReport errorReport)
         {
             if (_albumsDatabase == null)
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
+                setErrorReportToFAILURE("PhotoBomb: The album database has not been loaded yet!", ref errorReport);
                 return false;
             }
 
@@ -1205,16 +1146,20 @@ namespace SoftwareEng
 
             return true;
         }
-        //-----------------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //returns true if the picture database is ok.
+
+
+        /// By Ryan Moe
+        /// Edited Julian Nguyen(5/1/13)
+        /// <summary>
+        /// returns true if the picture database is ok.
+        /// </summary>
+        /// <param name="errorReport">The errorReport for this action.</param>
+        /// <returns>returns true if the picture database is ok else false.</returns>
         private Boolean util_checkPhotoDBIntegrity(ErrorReport errorReport)
         {
             if (_imagesDatabase == null)
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "PhotoBomb: The album database has not been loaded yet!";
+                setErrorReportToFAILURE("PhotoBomb: The album database has not been loaded yet!", ref errorReport);
                 return false;
             }
 
@@ -1223,6 +1168,12 @@ namespace SoftwareEng
             return true;
         }
 
+        /// By ??
+        /// Edited Julian Nguyen(5/1/13)
+        /// <summary>
+        /// Will make a new database for photobomb. (new xml files.)
+        /// </summary>
+        /// <param name="errorReport"></param>
         private void createDefaultXML(ErrorReport errorReport)
         {
             XDocument initDB = new XDocument();
@@ -1235,15 +1186,13 @@ namespace SoftwareEng
             }
             catch
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Unable to create the new database files.";
+                setErrorReportToFAILURE("Unable to create the new database files.", ref errorReport);
             }
         }
 
         //---------------------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/8/13
+        /// By: Bill Sanders
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
         /// Generates a thumbnail for a specified image file and places it in an appropriate sub directory
         /// </summary>
@@ -1256,14 +1205,13 @@ namespace SoftwareEng
         {
             if ((srcPath == string.Empty) || (picFileName == string.Empty) || !File.Exists(srcPath))
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Unable to generate thumbnail, bad path or filename.";
-                return ""; 
+                setErrorReportToFAILURE("Unable to generate thumbnail, bad path or filename.", ref error);
+                return String.Empty; 
             }
             // I haven't thought much about whether or not this is the right place to put this
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
-            string thumbSubDir = "";
-            string fullThumbPath = "";
+            string thumbSubDir = String.Empty;
+            string fullThumbPath = String.Empty;
 
             // Which sub directory of thumbs_db to put this in...
             if (size == Settings.lrgThumbSize)
@@ -1290,5 +1238,8 @@ namespace SoftwareEng
 
             return fullThumbPath;
         }
+
+
+
     }//class
 }

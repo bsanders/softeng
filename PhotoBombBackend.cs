@@ -24,6 +24,8 @@
  * Change a lot the fun(). A lot of the fun() with _backend was change to public. 
  * Julian Nguyen(4/30/13)
  * ErrorReports constants numbers removed and replaced with ReportStatus enums.
+ * Julian Nguyen(5/1/13)
+ * setErrorReportToFAILURE() replaced setting an an ErrorReport to FAILURE and it's description.
  * 
  **/
 using System;
@@ -107,12 +109,10 @@ namespace SoftwareEng
             if (!_xmlHandler.loadXmlRootElement(_albumsDatabasePath, out _albumsDatabase)
                 || !_xmlHandler.loadXmlRootElement(_albumsDatabasePath, out _imagesDatabase))
             {
-                
+                setErrorReportToFAILURE("Failed to load the Album or Image xml.", ref errorReport);
             }
-
-
-            util_openAlbumsXML(errorReport);
-            util_openImagesXML(errorReport);
+            //util_openAlbumsXML(errorReport);
+            //util_openImagesXML(errorReport);
 
             //check the library directory.
             util_checkLibraryDirectory(errorReport);
@@ -151,8 +151,8 @@ namespace SoftwareEng
                 }
                 catch
                 {
-                    errorReport.reportStatus = ReportStatus.FAILURE;
-                    errorReport.description = "Unable to create the new library folder.";
+                    setErrorReportToFAILURE("Unable to create the new library folder.", ref errorReport);
+
                     return errorReport;
                 }
                 recover = false;
@@ -168,8 +168,10 @@ namespace SoftwareEng
 
             //Load the new databases into memory.
             // BS: These functions are being slated for merging together
-            util_openAlbumsXML(errorReport);
-            util_openImagesXML(errorReport);
+            _xmlHandler.loadXmlRootElement(_albumsDatabasePath, out _albumsDatabase);
+            _xmlHandler.loadXmlRootElement(_albumsDatabasePath, out _imagesDatabase);
+            //util_openAlbumsXML(errorReport);
+            //util_openImagesXML(errorReport);
 
             if (errorReport.reportStatus == ReportStatus.FAILURE)
             {
@@ -235,19 +237,20 @@ namespace SoftwareEng
          * Last Edited By:
          * Last Edited Date:
          */
+        /// By: Ryan Causey
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
         /// Adds all the photos from the library into the *hopefully* already created
         /// Recovery Album.
         /// </summary>
         /// <param name="errorReport">ErrorReport object to be updated</param>
         /// <param name="albumUID">UID of the Recovery Album</param>
-        /// <returns>ErrorReport</returns>
+        /// <returns>The ErrorReport of this action. </returns>
         private ErrorReport addPhotoBackup(ErrorReport errorReport, int albumUID)
         {
             if (albumUID == -1)
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Failed to create recovery album";
+                setErrorReportToFAILURE("Failed to create recovery album", ref errorReport);
                 return errorReport;
             }
 
@@ -276,7 +279,7 @@ namespace SoftwareEng
 
                 // Compute the hash for this picture, and then check to make sure it is unique
                 newPicture.hash = util_getHashOfFile(fi.FullName);
-                if (!util_checkPhotoIsUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
+                if (!util_isImageUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
                 {
                     errorReport.reportStatus = ReportStatus.SUCCESS_WITH_WARNINGS;
                     errorReport.description = "Picture is not unique.";
@@ -293,8 +296,7 @@ namespace SoftwareEng
                 // error checking the call
                 if (!util_checkIDIsValid(newPicture.UID))
                 {
-                    errorReport.reportStatus = ReportStatus.FAILURE;
-                    errorReport.description = "Failed to get a UID for a new picture.";
+                    setErrorReportToFAILURE("Failed to get a UID for a new picture.", ref errorReport);
                     return errorReport;
                 }
 
@@ -312,7 +314,7 @@ namespace SoftwareEng
 
                     newPicture.fullPath = fi.FullName;
 
-                    util_addPicToPhotoDB(errorReport, newPicture);
+                    util_addImageToImageDB(errorReport, newPicture);
                 }
                 else
                 {
@@ -327,7 +329,7 @@ namespace SoftwareEng
                     return errorReport;
                 }
 
-                util_addPicToAlbumDB(errorReport, newPicture, albumUID);
+                util_addImageToAlbumDB(errorReport, newPicture, albumUID);
 
                 //if adding to the album database failed
                 if (errorReport.reportStatus == ReportStatus.FAILURE)
@@ -369,14 +371,13 @@ namespace SoftwareEng
             }
             catch (DirectoryNotFoundException)
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Library folder not found.";
+                setErrorReportToFAILURE("Library folder not found.", ref error);
             }
             return error;
         }
 
         /// By Ryan Moe
-        /// Edited: Julian Nguyen(4/28/13)
+        /// Edited: Julian Nguyen(5/1/13)
         /// <summary>
         /// This will save the XML to File. 
         /// </summary>
@@ -398,8 +399,7 @@ namespace SoftwareEng
             }
             catch (DirectoryNotFoundException)
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "Library folder not found.";
+                setErrorReportToFAILURE("Library folder not found.", ref error);
                 return error;
             }
             return error;
@@ -407,7 +407,7 @@ namespace SoftwareEng
 
 
         /// By: Bill Sanders, based on Ryan Moe's earlier function.
-        /// Edited: Julian Nguyen(4/28/13
+        /// Edited: Julian Nguyen(5/1/13)
         /// <summary>
         /// Retrieves a list of all albums in the albums.xml file, sent back via the callback.
         /// </summary>
@@ -425,8 +425,7 @@ namespace SoftwareEng
             // Ensure the database is valid before proceeding
             if (!util_checkAlbumDatabase(error))
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "The album database was determined to be not valid.";
+                setErrorReportToFAILURE("The album database was determined to be not valid", ref error);
                 return error;
             }
 
@@ -439,8 +438,7 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = "PhotoBomb.getAllAlbumsByID_backend():Failed at finding albums in the database.";
+                setErrorReportToFAILURE("PhotoBomb.getAllAlbums_backend():Failed at finding albums in the database.", ref error);
                 return error;
             }
             foreach (XElement thisAlbum in _albumSearchIE)
@@ -609,7 +607,7 @@ namespace SoftwareEng
 
 
         /// By Ryan Moe
-        /// Edited: Julian Nguyen(4/28/13)
+        /// Edited: Julian Nguyen(5/1/13)
         /// <summary>
         /// Will get an Image from an Album.
         /// </summary>
@@ -645,8 +643,7 @@ namespace SoftwareEng
                 }
                 catch
                 {
-                    error.reportStatus = ReportStatus.FAILURE;
-                    error.description = "PhotoBomb.getPictureByUID():Photo info could not be loaded.";
+                    setErrorReportToFAILURE("PhotoBomb.getPictureByUID():Photo info could not be loaded.", ref error);
                     return error;
                 }
             }
@@ -731,13 +728,11 @@ namespace SoftwareEng
         //}
 
 
-        //-------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/5/13
-        //NOTE: this is an overloaded function call FOR BACKEND USE ONLY.
-        //      It does not have a gui callback and instead returns the
-        //      Error report directly, for use in the backend.
+        /// By: Ryan Moe
+        /// Edited Julian Nguyen(5/1/13)
+        /// NOTE: this is an overloaded function call FOR BACKEND USE ONLY.
+        ///      It does not have a gui callback and instead returns the
+        ///      Error report directly, for use in the backend.
         /// <summary>
         /// Create a photo object and its metadata, then adds it to both databases and the library.
         /// </summary>
@@ -748,7 +743,7 @@ namespace SoftwareEng
         /// <param name="pictureNameInAlbum">The name the picture will have in the album</param>
         /// <param name="searchStartingPoint">Where to start looking for a new UID; defaults to 1</param>
         /// <returns></returns>
-        private ErrorReport addNewPicture_backend(ErrorReport errorReport,
+        private ErrorReport addNewImage_backend(ErrorReport errorReport,
             String photoUserPath,
             String photoExtension,
             int albumUID,
@@ -758,7 +753,7 @@ namespace SoftwareEng
 
             // Compute the hash for this picture, and then check to make sure it is unique
             newPicture.hash = util_getHashOfFile(photoUserPath);
-            if (!util_checkPhotoIsUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
+            if (!util_isImageUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
             {
                 errorReport.reportStatus = ReportStatus.SUCCESS_WITH_WARNINGS;
                 errorReport.description = "Picture is not unique.";
@@ -782,8 +777,7 @@ namespace SoftwareEng
                 // error checking the call
                 if (!util_checkIDIsValid(newPicture.UID))
                 {
-                    errorReport.reportStatus = ReportStatus.FAILURE;
-                    errorReport.description = "Failed to get a UID for a new picture.";
+                    setErrorReportToFAILURE("Failed to get a UID for a new picture.", ref errorReport);
                     return errorReport;
                 }
 
@@ -796,7 +790,7 @@ namespace SoftwareEng
                 {
                     return errorReport;
                 }
-                util_addPicToPhotoDB(errorReport, newPicture);
+                util_addImageToImageDB(errorReport, newPicture);
                 //Move picture and get a new path for the picture in our storage.
                 //generate the thumbnails and get their path.
                 newPicture.lgThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.lrgThumbSize);
@@ -834,7 +828,7 @@ namespace SoftwareEng
             }
 
             // Now add it to the albums database
-            util_addPicToAlbumDB(errorReport, newPicture, albumUID);
+            util_addImageToAlbumDB(errorReport, newPicture, albumUID);
 
             //if adding to the album database failed
             if (errorReport.reportStatus == ReportStatus.FAILURE)
@@ -854,7 +848,7 @@ namespace SoftwareEng
 
 
         /// By: Bill Sanders
-        /// Edited Julian Nguyen(4/27/13)
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
         /// Removes the specified photo from the specified album
         /// </summary>
@@ -900,8 +894,7 @@ namespace SoftwareEng
                             ex is ArgumentOutOfRangeException)
                         {
                             // Don't stop removing this photo though...
-                            errorReport.reportStatus = ReportStatus.FAILURE;
-                            errorReport.warnings.Add("Failed to get second photo in the album, though count() returned >1.");
+                            setErrorReportToFAILURE("Failed to get second photo in the album, though count() returned >1.", ref errorReport);
                         }
                         else
                         {
@@ -913,7 +906,7 @@ namespace SoftwareEng
             }
 
             // Now delete that node
-            errorReport = removePictureElement_backend(null, thisPicture);
+            errorReport = removePictureElement_backend(thisPicture);
 
             //copying bills swanky code
             //get the photo to remove
@@ -924,21 +917,20 @@ namespace SoftwareEng
             return errorReport;
         }
 
-        //-------------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Last: 4/8/13
+        /// By: Bill Sanders
+        /// Edited Last: Julian Nguyen(5/1/13)
         /// <summary>
         /// Removes the photo instance from the album, deleting it if it no longer appears in any album.
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="pictureElement">An XElement objeect representing a picture in the AlbumDB</param>
-        /// <returns></returns>
-        private ErrorReport removePictureElement_backend(generic_callback guiCallback, XElement pictureElement)
+        /// <param name="ImageElement">An XElement object representing a picture in the AlbumDB</param>
+        /// <returns>The Errorreport of this Action.</returns>
+        private ErrorReport removePictureElement_backend(XElement ImageElement)
         {
             ErrorReport errorReport = new ErrorReport();
 
             //error prone code here if XElement returned is null. An unhandled exception was raised here while I was testing program -Ryan Causey
-            XElement picFromPicsDB = util_getPhotoDBNode(errorReport, (string)pictureElement.Attribute("sha1"));
+            XElement picFromPicsDB = util_getPhotoDBNode(errorReport, (string)ImageElement.Attribute("sha1"));
             // added error handling code, but how is this call even happening on a photo that doesn't exist..?
             // a db integrity issue?
 
@@ -954,13 +946,13 @@ namespace SoftwareEng
             try
             {
                 // delete this instance of the picture from the album db, and decrement the refCounter
-                pictureElement.Remove();
+                ImageElement.Remove();
                 refCount--;
 
                 if (refCount == 0)
                 {
                     // This was the last reference to the picture, delete it from the photoDB and the filesystem
-                    removePictureFromPicsDB_backend(null, picFromPicsDB);
+                    removeImageFromImageDB_backend(picFromPicsDB);
                 }
                 else
                 {
@@ -973,8 +965,7 @@ namespace SoftwareEng
             }
             catch // the photo mysteriously disappeared (from the xml!) before removing it..?
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Failed to remove the photo instance from the xml database";
+                setErrorReportToFAILURE("Failed to remove the photo instance from the xml database", ref errorReport);
             }
             return errorReport;
         }
@@ -982,14 +973,14 @@ namespace SoftwareEng
         //-------------------------------------------------------------------
         //By: Bill Sanders
         //Edited Last: 4/6/13
-        //Edited By: Ryan Causey
+        //Edited Julian Nguyen(5/1/13)
         /// <summary>
-        /// Removes the specified photo from the PhotoDB as well as the filesystem
+        /// Removes the specified Image from the Image database and from the filesystem.
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="pictureElement">An XElement object referencing a photo from the PhotoDB</param>
+        /// <param name="imageElement">An XElement object referencing a photo from the PhotoDB</param>
         /// <returns></returns>
-        private ErrorReport removePictureFromPicsDB_backend(generic_callback guiCallback, XElement pictureElement)
+        private ErrorReport removeImageFromImageDB_backend(XElement imageElement)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -997,34 +988,32 @@ namespace SoftwareEng
             // First try to delete it from the filesystem
             try
             {
-                File.Delete(pictureElement.Element("filePath").Value);
+                File.Delete(imageElement.Element("filePath").Value);
                 //since we are using this large thumbnail in the program as the image for the picture tile
                 //(tested and it is NOT because the album is using the first photo's large thumbnail as its thumb)
                 //this throws a System.IO.IOException because it cannot access the file to delete it as it is in use.
                 //then the function skips over the rest of the delete, which can lead to dangling items in the xml
                 //causing a unhandled exception later on if more deletes are tried.
-                File.Delete(pictureElement.Element("lgThumbPath").Value);
+                File.Delete(imageElement.Element("lgThumbPath").Value);
             }
             catch
             {
                 // the path was probably wrong...
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Failed to delete the photo file or a thumbnail from the filesystem";
+                setErrorReportToFAILURE("Failed to delete the photo file or a thumbnail from the filesystem", ref errorReport);
                 return errorReport;
             }
             // Now delete this instance of the photo from the in-memory photo database
             // If we've gotten here, we've already deleted it from the albums database
             try
             {
-                pictureElement.Remove();
+                imageElement.Remove();
                 // TODO: move these calls out of here for efficiency in removing multiple files!
                 saveAlbumsXML_backend();
                 saveImagesXML_backend();
             }
             catch // the photo mysteriously disappeared (from the xml!) before removing it..?
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Failed to remove the photo instance from the xml database";
+                setErrorReportToFAILURE("Failed to remove the photo instance from the xml database", ref errorReport);
                 return errorReport;
             }
             return errorReport;
@@ -1055,7 +1044,7 @@ namespace SoftwareEng
             foreach (XElement subElement in pictureElements)
             {
                 // remove the picture element
-                removePictureElement_backend(null, subElement);
+                removePictureElement_backend(subElement);
             }
 
             // now delete the album itself.
@@ -1251,7 +1240,7 @@ namespace SoftwareEng
                 // Currently spec says not to carry captions forawrd when copying photos
                 photoObj.caption = "";
 
-                util_addPicToAlbumDB(errorReport, photoObj, albumUID);
+                util_addImageToAlbumDB(errorReport, photoObj, albumUID);
 
                 //if adding to the album database failed
                 if (errorReport.reportStatus == ReportStatus.FAILURE)
@@ -1275,13 +1264,14 @@ namespace SoftwareEng
         }
 
         /// By Ryan Moe
-        /// Edited: Julian Nguyen
+        /// Edited: Julian Nguyen(5/1/13)
         /// <summary>
         /// Test an Album name for uniqueness.
+        /// The answer is in the ErrorReport. (Why not??) 
         /// </summary>
         /// <param name="albumName">The Album name to test.</param>
         /// <param name="isUnique">If the Album is unique. </param>
-        /// <returns></returns>
+        /// <returns>The ErrorReport of this action.</returns>
         public ErrorReport checkIfAlbumNameIsUnique_backend(String albumName, out bool isUnique)
         {
             ErrorReport errorReport = new ErrorReport();
@@ -1293,37 +1283,34 @@ namespace SoftwareEng
 
             if (!nameUnique)
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Album name is not unique.";
+                setErrorReportToFAILURE("Album name is not unique.", ref errorReport);
             }
 
             return errorReport;
         }
 
         /// By Bill Sanders
-        /// Edited Julian Nguyen(4/27/13)
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
         /// Will test if am Image name is unique.
-        /// The 
+        /// The answer is in the ErrorReport. (Why not??) 
         /// </summary>
-        /// <param name="guiCallback"></param>
-        /// <param name="photoName"></param>
-        /// <param name="albumUID"></param>
-        /// <returns></returns>
-        public ErrorReport checkIfPhotoNameIsUnique_backend(String photoName, int albumUID, out bool isUnique)
+        /// <param name="photoName">The Image name to test.</param>
+        /// <param name="albumUID">The UID of the album.</param>
+        /// <returns>The error Report of this action. </returns>
+        public ErrorReport isImageNameUnique_backend(String photoName, int albumUID, out bool isUnique)
         {
             ErrorReport errorReport = new ErrorReport();
 
             // Test uniqueness!
-            Boolean nameUnique = util_checkPhotoNameIsUniqueToAlbum(photoName, util_getAlbum(errorReport, albumUID));
+            Boolean nameUnique = util_isImageNameUniqueToAlbum(photoName, util_getAlbum(errorReport, albumUID));
             // TODO: JN: Is testing the errorRoport??
 
             isUnique = nameUnique;
 
             if (!nameUnique)
             {
-                errorReport.reportStatus = ReportStatus.FAILURE;
-                errorReport.description = "Album name is not unique.";
+                setErrorReportToFAILURE("Album name is not unique.", ref errorReport);
                 return errorReport;
             }
             else
@@ -1334,15 +1321,14 @@ namespace SoftwareEng
 
 
         /// By Ryan Moe
-        /// Edited Julian Nguyen(4/27/13)
+        /// Edited Julian Nguyen(5/1/13)
         /// <summary>
-        /// 
+        /// Will set a name to an Image.
         /// </summary>
-        /// <param name="guiCallback"></param>
-        /// <param name="albumUID"></param>
-        /// <param name="idInAlbum"></param>
-        /// <param name="newName"></param>
-        public ErrorReport changePhotoNameByUID_backend(int albumUID, int idInAlbum, String newName)
+        /// <param name="albumUID">The album's UID</param>
+        /// <param name="idInAlbum">The in Album UID.</param>
+        /// <param name="newName">The new mame of the Image.</param>
+        public ErrorReport setImageNameByUID_backend(int albumUID, int idInAlbum, String newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1414,7 +1400,7 @@ namespace SoftwareEng
 
 
         /// By Ryan Moe
-        /// Edited: Julian Nguyen(4/27/13)
+        /// Edited: Julian Nguyen(5/1/13)
         /// <summary>
         /// This will stop the import of Images.
         /// </summary>
@@ -1428,10 +1414,23 @@ namespace SoftwareEng
             }
             catch
             {
-                error.reportStatus = ReportStatus.FAILURE;
-                error.description = errorStrings.stopImportFailure;
+                setErrorReportToFAILURE(errorStrings.stopImportFailure, ref error);
             }
             return error;
+        }
+
+
+        /// By Julian Nguyen
+        /// Edited Julian Nguyen(5/1/13)
+        /// <summary>
+        /// A wrapper for setting an ErrorReport To FAILURE.
+        /// </summary>
+        /// <param name="description">The description of the failure.</param>
+        /// <param name="errReport">The ErrorReport.</param>
+        private void setErrorReportToFAILURE(String description, ref ErrorReport errReport)
+        {
+            errReport.reportStatus = ReportStatus.FAILURE;
+            errReport.description = description;
         }
 
     } // End of PhotoBomb.

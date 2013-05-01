@@ -13,6 +13,8 @@
  *                     callback.
  * Julian Nguyen(4/30/13)
  * ErrorReports constants numbers removed and replaced with ReportStatus enums.
+ * Julian Nguyen(5/1/13)
+ * setErrorReportToFAILURE() replaced setting an an ErrorReport to FAILURE and it's description.
  **/
 using System;
 using System.Collections.Generic;
@@ -32,11 +34,13 @@ namespace SoftwareEng
 
 
 
-        //---------------METHODS--------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //This is the working function of the backgroundworker for
-        //adding photos to the backend.
+        /// By: Ryan Moe
+        /// Edited Julian Nguyen(5/1/13)
+        /// <summary>
+        /// This is the working function of the backgroundworker for adding photos to the backend.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void addPhotosThread_DoWork(object sender, DoWorkEventArgs e)
         {
             //get working variables
@@ -74,7 +78,7 @@ namespace SoftwareEng
                     //use backend function to add a single photo.
                     try
                     {
-                        addNewPicture_backend(data.errorReport,
+                        addNewImage_backend(data.errorReport,
                                         data.photoUserPath.ElementAt(i),
                                         data.photoExtension.ElementAt(i),
                                         data.albumUID,
@@ -84,8 +88,7 @@ namespace SoftwareEng
                     }
                     catch (Exception)
                     {
-                        data.errorReport.reportStatus = ReportStatus.FAILURE;
-                        data.errorReport.description = errorStrings.addImageFailure;
+                        setErrorReportToFAILURE(errorStrings.addImageFailure, ref data.errorReport);
                         break;
                     }
 
@@ -107,11 +110,15 @@ namespace SoftwareEng
             e.Result = data;
         }
 
-        //------------------------------------------
-        //By: Ryan Moe
-        //Edited Last By: Ryan Causey
-        //Edited Last Date: 4/6/13
-        //This gets called when addPhotosThread_DoWork() is complete.
+        
+
+        /// By: Ryan Moe
+        /// Edited: Ryan Causey(4/6/13)
+        /// <summary>
+        /// This gets called when addPhotosThread_DoWork() is complete.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void addPhotosThread_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             addPhotosThreadData results = (addPhotosThreadData)e.Result;
@@ -132,9 +139,11 @@ namespace SoftwareEng
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
 
-    //By: Ryan Moe
-    //Edited Last By: Ryan Causey
-    //Edited Last Date: 4/6/13
+    /// By: Ryan Moe
+    /// Edited: Ryan Causey(4/6/13)
+    /// <summary>
+    /// 
+    /// </summary>
     public class addPhotosThreadData
     {
         public ErrorReport errorReport;

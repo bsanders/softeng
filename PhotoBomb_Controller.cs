@@ -346,7 +346,7 @@ namespace SoftwareEng
         {
             ErrorReport errReport = null;
             bool isUnique = false;
-            errReport = photoBombDatabase.checkIfPhotoNameIsUnique_backend(photoName, albumUID, out isUnique);
+            errReport = photoBombDatabase.isImageNameUnique_backend(photoName, albumUID, out isUnique);
             guiCallback(errReport);
         }
 
@@ -366,7 +366,7 @@ namespace SoftwareEng
         public void changePhotoNameByUID(generic_callback guiCallback, int albumUID, int photoUID, String newName)
         {
             ErrorReport errReport = null;
-            errReport =  photoBombDatabase.changePhotoNameByUID_backend( albumUID, photoUID, newName);
+            errReport =  photoBombDatabase.setImageNameByUID_backend( albumUID, photoUID, newName);
             guiCallback(errReport);
 
         }
