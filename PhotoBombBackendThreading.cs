@@ -151,7 +151,7 @@ namespace SoftwareEng
         public addNewPictures_callback guiCallback;
         public List<String> photoUserPath;
         public List<String> photoExtension;
-        public int albumUID;
+        public Guid albumUID;
         public List<String> pictureNameInAlbum;
         public threadUpdateDelegate guiUpdateCallback;
         public int updateAmount;//number of photos to process before calling guiUpdate.

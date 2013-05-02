@@ -22,7 +22,7 @@ namespace SoftwareEng
     public class SimpleAlbumData : INotifyPropertyChanged
     {
         private String _albumName;
-        private int _UID;
+        private Guid _UID;
         private string _thumbnailPath;
         private int _thumbAlbumID;
         //add more information here if needed...
@@ -38,10 +38,13 @@ namespace SoftwareEng
         /// </summary>
         public SimpleAlbumData()
         {
-            _albumName = "";
-            _UID = -1;//indicates UID not set.
-            _thumbnailPath = "";
+            _albumName = String.Empty;
+            _UID = Guid.Empty;//-1;//indicates UID not set.
+            _thumbnailPath = String.Empty;
             _thumbAlbumID = -1;
+
+            
+
         }
 
 
@@ -81,7 +84,7 @@ namespace SoftwareEng
             }
         }
 
-        public int UID
+        public Guid UID
         {
             set
             {

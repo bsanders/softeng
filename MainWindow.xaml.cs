@@ -135,7 +135,7 @@ namespace SoftwareEng
         private String _captionValidationRegex = @promptStrings.captionValidationRegex;
 
         //current album UID, defaults to a invalid value(because we eont be in an album)
-        private int _currentAlbumUID = -1;
+        private Guid _currentAlbumUID = Guid.Empty;
 
         //keep track of if an import operation is occurring
         private bool _isImporting = false;
@@ -585,8 +585,8 @@ namespace SoftwareEng
 
             // So we have photos, where are we pasting them?
             // Check if we're in library view or album view
-            int albumUID = _currentAlbumUID;
-            if (albumUID == -1)
+            Guid albumUID = _currentAlbumUID;
+            if (albumUID == Guid.Empty)
             {
                 // library view
                 if (mainWindowAlbumList.SelectedItem == null)
@@ -676,10 +676,12 @@ namespace SoftwareEng
             if (mainWindowAlbumList.SelectedItem != null)
             {
 
+                SimpleAlbumData currentAlbumData = (SimpleAlbumData)mainWindowAlbumList.SelectedItem;
+
                 //call the backend to get all photos in this album.
-                _currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
+                _currentAlbumUID = currentAlbumData.UID;
                 // Set the app's titlebar to display the app name and the album name
-                this.appTitleBarLabel.Content = "PhotoBomber - " + ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).albumName;
+                this.appTitleBarLabel.Content = "PhotoBomber - " + currentAlbumData.albumName;
                 _bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), _currentAlbumUID);
             }
         }
@@ -792,7 +794,7 @@ namespace SoftwareEng
                 _view.Close();
             }
 
-            _currentAlbumUID = -1;
+            _currentAlbumUID = Guid.Empty;
 
             //returning to libraryView
             _isInsideAlbum = false;
@@ -872,7 +874,7 @@ namespace SoftwareEng
         /// Callback for guiImportPhotos which recieves the error report from the back end.
         /// </summary>
         /// <param name="error">Error report from the back end addNewPictures function.</param>
-        public void guiImportPhotos_Callback(ErrorReport error, int albumUID)
+        public void guiImportPhotos_Callback(ErrorReport error, Guid albumUID)
         {
             //deal with it
             if (error.reportStatus == ReportStatus.FAILURE)
@@ -889,7 +891,7 @@ namespace SoftwareEng
                 //remove the cancel import button
                 cancelPhotoImportDockButton.Visibility = Visibility.Collapsed;
                 //if we are in an album view
-                if (_currentAlbumUID != -1)
+                if (_currentAlbumUID != Guid.Empty)
                 {
                     //show the addPhotosButton again
                     addPhotosDockButton.Visibility = Visibility.Visible;
@@ -918,7 +920,7 @@ namespace SoftwareEng
                 //remove the cancel import button
                 cancelPhotoImportDockButton.Visibility = Visibility.Collapsed;
                 //if we are in an album view
-                if (_currentAlbumUID != -1)
+                if (_currentAlbumUID != Guid.Empty)
                 {
                     //show the addPhotosButton again
                     addPhotosDockButton.Visibility = Visibility.Visible;
@@ -1107,7 +1109,7 @@ namespace SoftwareEng
             }
 
             // determine if we're in the library view...
-            if (_currentAlbumUID == -1)
+            if (_currentAlbumUID == Guid.Empty)
             {
                 ErrorReport errorReport = new ErrorReport();
 
@@ -1286,7 +1288,7 @@ namespace SoftwareEng
             acceptAddToolbarButton.Visibility = Visibility.Visible;
             cancelAddToolbarButton.Visibility = Visibility.Visible;
 
-            if (_currentAlbumUID != -1)
+            if (_currentAlbumUID != Guid.Empty)
             {
                 photoNameTextBox.Visibility = Visibility.Visible;
                 photoNameTextBlock.Visibility = Visibility.Visible;
@@ -1636,7 +1638,7 @@ namespace SoftwareEng
         private void acceptAddToolBarButton_Click(object sender, RoutedEventArgs e)
         {
             //if we aren't in the library view
-            if (_currentAlbumUID != -1)
+            if (_currentAlbumUID != Guid.Empty)
             {
                 //if the photo name text box is empty, but the caption text box is not
                 if (photoNameTextBox.Text == "")
@@ -1853,11 +1855,7 @@ namespace SoftwareEng
 
         private void addMenuItemLibraryButton_Click(object sender, RoutedEventArgs e)
         {
-            if (mainWindowAlbumList.SelectedItem == null)
-            {
-                //showAddAlbumBox();
-            }
-            else
+            if (mainWindowAlbumList.SelectedItem != null)
             {
                 guiEnterAlbumView();
                 guiImportPhotos();
@@ -2188,7 +2186,7 @@ namespace SoftwareEng
 
         private void mainWindowListItemActivation()
         {
-            if (_isInsideAlbum == false)
+            if (!_isInsideAlbum)
             {
                 guiEnterAlbumView();
             }

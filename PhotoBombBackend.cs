@@ -218,7 +218,7 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="errorReport">ErrorReport object to be updated</param>
         /// <returns>ErrorReport</returns>
-        private int buildBackupAlbum(ErrorReport errorReport)
+        private Guid buildBackupAlbum(ErrorReport errorReport)
         {
             //empty the existing album collection
             _albumsCollection.Clear();
@@ -230,15 +230,20 @@ namespace SoftwareEng
             backupAlbum.albumName = Settings.PhotoLibraryBackupName;
 
             //get a new uid for the new album.
-            backupAlbum.UID = util_getNextUID(_albumsRootXml, "album", "uid", 1);
+            backupAlbum.UID = Guid.NewGuid();   //util_getNextUID(_albumsRootXml, "album", "uid", 1);
 
+            // TODO:
+            ErrorWindow bearerOfBadNews = new ErrorWindow(backupAlbum.UID.ToString());
+            bearerOfBadNews.ShowDialog();
+
+            
             //add the album to the memory database.
             util_addAlbumToAlbumDB(errorReport, backupAlbum);
 
             //if adding to the album database failed
             if (errorReport.reportStatus == ReportStatus.FAILURE)
             {
-                return -1;
+                return Guid.Empty;
             }
 
             //save to disk.
@@ -262,9 +267,9 @@ namespace SoftwareEng
         /// <param name="errorReport">ErrorReport object to be updated</param>
         /// <param name="albumUID">UID of the Recovery Album</param>
         /// <returns>The ErrorReport of this action. </returns>
-        private ErrorReport addPhotoBackup(ErrorReport errorReport, int albumUID)
+        private ErrorReport addPhotoBackup(ErrorReport errorReport, Guid albumUID)
         {
-            if (albumUID == -1)
+            if (albumUID == Guid.Empty)
             {
                 setErrorReportToFAILURE("Failed to create recovery album", ref errorReport);
                 return errorReport;
@@ -461,7 +466,7 @@ namespace SoftwareEng
             {
                 SimpleAlbumData userAlbum = new SimpleAlbumData();
 
-                userAlbum.UID = (int)thisAlbum.Attribute("uid");
+                userAlbum.UID = (Guid)thisAlbum.Attribute("uid");
 
                 // Get the thumbnail path...
                 userAlbum.thumbnailPath = thisAlbum.Element("thumbnailPath").Value;
@@ -538,7 +543,7 @@ namespace SoftwareEng
         /// <param name="AlbumUID">The unique ID of the album to get the photos from</param>
         /// <param name="imagesToGUI">The pass back of the list of iamges.</param>
         /// <returns>The error report of this action.</returns>
-        public ErrorReport sendSelectedImagesToClipboard_backend(int AlbumUID, out List<ComplexPhotoData> imagesToGUI)
+        public ErrorReport sendSelectedImagesToClipboard_backend(Guid AlbumUID, out List<ComplexPhotoData> imagesToGUI)
         {
             ErrorReport error = new ErrorReport();
             imagesToGUI = null;
@@ -580,7 +585,7 @@ namespace SoftwareEng
         /// <param name="AlbumUID">The id of the album to look up.</param>
         /// <param name="imagesOfAnAlbum">A passback List of all the images in an album.</param>
         /// <returns>The error roport for this action.</returns>
-        public ErrorReport getAllImagesInAlbum_backend(int AlbumUID, out ReadOnlyObservableCollection<ComplexPhotoData> imagesOfAnAlbum)
+        public ErrorReport getAllImagesInAlbum_backend(Guid AlbumUID, out ReadOnlyObservableCollection<ComplexPhotoData> imagesOfAnAlbum)
         {
             ErrorReport error = new ErrorReport();
 
@@ -638,7 +643,7 @@ namespace SoftwareEng
         /// <param name="albumUID">The ID of the Album to look in. </param>
         /// <param name="imageData">The pass back of the image's ComplexPhotoData</param>
         /// <returns>The errorReport of this Action.</returns>
-        public ErrorReport getImage_backend(int imageIDinAlbum, int albumUID, out ComplexPhotoData imageData)
+        public ErrorReport getImage_backend(int imageIDinAlbum, Guid albumUID, out ComplexPhotoData imageData)
         {
             ErrorReport error = new ErrorReport();
             imageData = null;
@@ -768,7 +773,7 @@ namespace SoftwareEng
         private ErrorReport addNewImage_backend(ErrorReport errorReport,
             String photoUserPath,
             String photoExtension,
-            int albumUID,
+            Guid albumUID,
             int searchStartingPoint = 1)
         {
             ComplexPhotoData newPicture = new ComplexPhotoData();
@@ -877,7 +882,7 @@ namespace SoftwareEng
         /// <param name="guiCallback"></param>
         /// <param name="idInAlbum">The photo's ID</param>
         /// <param name="albumUID">The album's UID</param>
-        public ErrorReport removeImageFromAlbum_backend(int idInAlbum, int albumUID)
+        public ErrorReport removeImageFromAlbum_backend(int idInAlbum, Guid albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1048,7 +1053,7 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="guiCallback"></param>
         /// <param name="albumUID">The album's UID</param>
-        public ErrorReport removeAlbum_backend(int albumUID)
+        public ErrorReport removeAlbum_backend(Guid albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1094,7 +1099,7 @@ namespace SoftwareEng
         /// <param name="albumUID">The album's UID</param>
         /// <param name="newName">The new name of the album</param>
         /// <return>The error report of this action.</return>
-        public ErrorReport setAlbumName_backend(int albumUID, string newName)
+        public ErrorReport setAlbumName_backend(Guid albumUID, string newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1134,7 +1139,7 @@ namespace SoftwareEng
         /// <param name="idInAlbum">The id of the photo in this album</param>
         /// <param name="newName">The new name of the photo</param>
         /// <returns></returns>
-        public ErrorReport setImageName_backend(int albumUID, int idInAlbum, string newName)
+        public ErrorReport setImageName_backend(Guid albumUID, int idInAlbum, string newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1172,7 +1177,7 @@ namespace SoftwareEng
         /// <param name="idInAlbum">The id of the photo in this album</param>
         /// <param name="newCaption">The new name of the photo</param>
         /// <returns>The error report for this action.</returns>
-        public ErrorReport setImageCaption_backend(int albumUID, int idInAlbum, string newCaption)
+        public ErrorReport setImageCaption_backend(Guid albumUID, int idInAlbum, string newCaption)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1214,7 +1219,7 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             //get a new uid for the new album.
-            albumData.UID = util_getNextUID(_albumsRootXml, "album", "uid", 1);
+            albumData.UID = Guid.NewGuid(); //util_getNextUID(_albumsRootXml, "album", "uid", 1);
 
             //add the album to the memory database.
             util_addAlbumToAlbumDB(errorReport, albumData);
@@ -1245,7 +1250,7 @@ namespace SoftwareEng
         /// <param name="photoObj">A List of ComplexPhotoData objects which contain all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
         /// 
-        public ErrorReport addExistingImagesToAlbum_backend(List<ComplexPhotoData> photoList, int albumUID)
+        public ErrorReport addExistingImagesToAlbum_backend(List<ComplexPhotoData> photoList, Guid albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1320,7 +1325,7 @@ namespace SoftwareEng
         /// <param name="photoName">The Image name to test.</param>
         /// <param name="albumUID">The UID of the album.</param>
         /// <returns>The error Report of this action. </returns>
-        public ErrorReport isImageNameUnique_backend(String photoName, int albumUID, out bool isUnique)
+        public ErrorReport isImageNameUnique_backend(String photoName, Guid albumUID, out bool isUnique)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1350,7 +1355,7 @@ namespace SoftwareEng
         /// <param name="albumUID">The album's UID</param>
         /// <param name="idInAlbum">The in Album UID.</param>
         /// <param name="newName">The new mame of the Image.</param>
-        public ErrorReport setImageNameByUID_backend(int albumUID, int idInAlbum, String newName)
+        public ErrorReport setImageNameByUID_backend(Guid albumUID, int idInAlbum, String newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1395,7 +1400,7 @@ namespace SoftwareEng
         /// <param name="pictureNameInAlbum"></param>
         /// <param name="updateCallback"></param>
         /// <param name="updateAmount"></param>
-        public void addNewImages_backend(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+        public void addNewImages_backend(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, Guid albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addPhotosThread = new BackgroundWorker();
 

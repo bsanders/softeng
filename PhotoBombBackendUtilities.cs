@@ -136,7 +136,7 @@ namespace SoftwareEng
         /// <param name="albumID">The unique ID of the album</param>
         /// <param name="idInAlbum">The ID number of the image in that album</param>
         /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
-        private XElement util_getAlbumDBPhotoNode(int albumID, int idInAlbum)
+        private XElement util_getAlbumDBPhotoNode(Guid albumID, int idInAlbum)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -169,7 +169,7 @@ namespace SoftwareEng
         /// <param name="albumID">The unique ID of the album</param>
         /// <param name="hash">A hex string representation of the hash of the photo</param>
         /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
-        private XElement util_getAlbumDBPhotoNode(int albumID, string hash)
+        private XElement util_getAlbumDBPhotoNode(Guid albumID, string hash)
         {
             XElement photoInstance = null;
             try
@@ -186,7 +186,7 @@ namespace SoftwareEng
                                  join picAlbDB in _albumsRootXml.Descendants("picture")
                                  on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
                                  where (string)picDB.Attribute("sha1") == hash
-                                      && (int)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
+                                      && (Guid)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
                                  select picAlbDB).SingleOrDefault();
             }
             catch // We only get here if the database is already messed up (two of the same photo in an album)
@@ -275,7 +275,7 @@ namespace SoftwareEng
         /// <param name="errorReport"></param>
         /// <param name="newPicture">An object with all the data necessary to create the Image in both DBs</param>
         /// <param name="albumUID">The unique ID of the album</param>
-        private void util_addImageToAlbumDB(ErrorReport errorReport, ComplexPhotoData newPicture, int albumUID)
+        private void util_addImageToAlbumDB(ErrorReport errorReport, ComplexPhotoData newPicture, Guid albumUID)
         {
             //Get the specific album we will be adding to.
             XElement specificAlbum = util_getAlbum(errorReport, albumUID);
@@ -450,7 +450,7 @@ namespace SoftwareEng
         /// <param name="albumID">The unique ID of the album</param>
         /// <param name="hash">A hex string representation of the hash of the image</param>
         /// <returns>If the image name is unique or not.</returns>
-        private Boolean util_isImageUniqueToAlbum(int albumID, string hash)
+        private Boolean util_isImageUniqueToAlbum(Guid albumID, string hash)
         {
             // start by assuming the photo does not exist in this album
             //Boolean photoExistsInAlbum = false;
@@ -607,6 +607,8 @@ namespace SoftwareEng
         /// <returns>A valid UID to use, or -1 if there was a problem</returns>
         private int util_getNextUID(XElement searchNode, string nodeType, string attributeName, int potentialID = 1)
         {
+
+            
             int newID;//the UID we will search against and return eventually.
 
             //error checking the starting point.
@@ -832,7 +834,7 @@ namespace SoftwareEng
         /// <param name="albumDBPhotoNode">An XElement of a picture from the Album DB</param>
         /// <param name="albumUID">The unique ID number of the album the photo instance is in</param>
         /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
-        private ComplexPhotoData util_getComplexPhotoData(ErrorReport errorReport, XElement albumDBPhotoNode, int albumUID)
+        private ComplexPhotoData util_getComplexPhotoData(ErrorReport errorReport, XElement albumDBPhotoNode, Guid albumUID)
         {
             // We have all the data we need from the AlbumDB,
             // but the PhotoDB has important data as well.
@@ -1109,14 +1111,14 @@ namespace SoftwareEng
         /// <param name="error"></param>
         /// <param name="albumUID">The Unique ID of the album</param>
         /// <returns>An XElement object referring to the specified album, or null if not found.</returns>
-        private XElement util_getAlbum(ErrorReport error, int albumUID)
+        private XElement util_getAlbum(ErrorReport error, Guid albumUID)
         {
             try
             {
                 //find and return an album whos uid is the one we are looking for.
                 //Throws exception if none or more than one match is found.
                 return (from c in _albumsRootXml.Elements("album")
-                        where (int)c.Attribute("uid") == albumUID
+                        where (Guid)c.Attribute("uid") == albumUID
                         select c).Single();
             }
             catch
