@@ -2139,98 +2139,6 @@ namespace SoftwareEng
         }
 
 
-
-
-        //this Function region deals with image sorting
-        #region sortingFunctionRegion
-
-        private void commonSortMenu_EventHandler(bool ascendingTrue )
-        {
-            ;
-        }
-
-
-        //orderSelector{ 0=(name, extension) 1=(extension, name) }
-        //ascendingTrue{ 0=(descending) 1=(ascending) }
-        private void SortImageList(int orderSelector, int ascendingTrue)
-        {
-            if (ImageListCollectionView.SortDescriptions == null)
-            {
-                return;
-            }
-            ImageListCollectionView.SortDescriptions.Clear();
-
-
-            //shifting by 3 means x8
-            orderSelector += (ascendingTrue << 3);
-
-            switch (orderSelector)
-            {
-                case 1:
-                    //descending extension
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
-                    break;
-
-                case 8:
-                    //ascending name
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
-                    break;
-
-                case 9:
-                    //ascending extension
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
-                    break;
-
-                default:
-                    //descending name
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
-                    break;
-            }
-        }
-
-        private void sortingDockMenu_Click(object sender, RoutedEventArgs e)
-        {
-            imageSortingMenu.IsSubmenuOpen = true;
-            //if (imageSortingMenuPopup.IsOpen == false)
-            //{
-            //    imageSortingMenuPopup.IsOpen = true;
-            //}
-            //else
-            //{
-            //    imageSortingMenuPopup.IsOpen = false;
-            //}
-        }
-
-        private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (ascendingMenuItem.IsChecked == true)
-            {
-                SortImageList(1, 1);
-            }
-            else
-            {
-                SortImageList(1, 0);
-            }
-        }
-
-        private void nameMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (ascendingMenuItem.IsChecked == true)
-            {
-                SortImageList(0, 1);
-            }
-            else
-            {
-                SortImageList(0, 0);
-            }
-        }
-
-        #endregion
-
         private void mainWindowAlbumList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             mainWindowListItemActivation();
@@ -2263,6 +2171,83 @@ namespace SoftwareEng
                 return;
             }
         }
+
+        //this Function region deals with image sorting
+        #region sortingFunctionRegion
+
+        private void clearSortingCheckBoxes()
+        {
+            extensionMenuItem.IsChecked = false;
+            nameMenuItem.IsChecked = false;
+        }
+
+        private void SortImageList()
+        {
+            if (ImageListCollectionView.SortDescriptions == null)
+            {
+                return;
+            }
+            ImageListCollectionView.SortDescriptions.Clear();
+
+            String sortByThis;
+
+            if (nameMenuItem.IsChecked == true)
+            {
+                sortByThis= "name";
+            }
+            else if (extensionMenuItem.IsChecked == true)
+            {
+                sortByThis = "extension";
+            }
+            else
+            {
+                return;
+            }
+                
+
+            switch(ascendingMenuItem.IsChecked)
+            {
+                case true:
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription(sortByThis, ListSortDirection.Ascending));
+                    break;
+                case false:
+                    ImageListCollectionView.SortDescriptions.Add(new SortDescription(sortByThis, ListSortDirection.Descending));
+                    break;
+            }
+        }
+
+        private void sortingDockMenu_Click(object sender, RoutedEventArgs e)
+        {
+            imageSortingMenu.IsSubmenuOpen = true;
+        }
+
+        private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (extensionMenuItem.IsChecked == false)
+            {
+                clearSortingCheckBoxes();
+                extensionMenuItem.IsChecked = true;
+                SortImageList();
+            }
+        }
+
+        private void nameMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (nameMenuItem.IsChecked == false)
+            {
+                clearSortingCheckBoxes();
+                nameMenuItem.IsChecked = true;
+                SortImageList();
+            }
+        }
+
+        private void ascendingMenuItem_CheckToggled(object sender, RoutedEventArgs e)
+        {
+            SortImageList();
+        }
+
+        #endregion
+
         
         //This function region deals with choosing themes
         #region ThemeRelatedFunctions 

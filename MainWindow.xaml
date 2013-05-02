@@ -509,9 +509,9 @@
                             <MenuItem.Icon>
                                 <Image x:Name="cancelPhotoImportDockMenuImage" Source="ImagesResources2012/action_cancel.png" Width="32" Height="32"/>
                             </MenuItem.Icon>
-                            <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalAlignment="Right"  HorizontalContentAlignment="Right"/>
-                            <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click" IsCheckable="True"/>
-                            <MenuItem x:Name="extensionMenuItem" Header="Extension" IsCheckable="True"/>
+                            <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalAlignment="Right"  HorizontalContentAlignment="Right" Click="ascendingMenuItem_CheckToggled"/>
+                            <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click" IsCheckable="True" IsChecked="True"/>
+                            <MenuItem x:Name="extensionMenuItem" Header="Extension" IsCheckable="True" Click="extensionMenuItem_Click"/>
                         </MenuItem>
 
                     </Button>
