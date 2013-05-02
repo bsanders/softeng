@@ -215,14 +215,10 @@ namespace SoftwareEng
         *********************************************************************************************/
         private void populateAlbumView(bool refreshView)
         {
-
             if (refreshView == true)
             {
                 bombaDeFotos.getAllAlbums(new getAllAlbumNames_callback(guiAlbumsRetrieved));
             }
-
-
-
         }
 
         /*********************************************************************************************
@@ -253,6 +249,10 @@ namespace SoftwareEng
             }
 
         }
+
+
+        //this function region is for validating all user input
+        #region userInputValidation
 
         /**************************************************************************************************************************
          * Author: Ryan Causey
@@ -427,6 +427,55 @@ namespace SoftwareEng
             }
         }
 
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// GUI function to validate the caption content and add it if it is valid.
+        /// If we have gotten this far we have already validated the photo name.
+        /// </summary>
+        private void guiValidateCaptionContent()
+        {
+            //trim the input of leading and trailing whitespace
+            commentTextBox.Text = commentTextBox.Text.Trim();
+            //if it is not a valid string
+            if (!validateTheString(captionValidationRegex, commentTextBox.Text))
+            {
+                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                commentTextBoxAnimation.Begin();
+
+                handleCommentErrorPopup(true, errorStrings.invalidComment);
+                commentTextBox.Focus();
+                commentTextBox.SelectAll();
+            }
+            else
+            {
+                guiChangePhotoCaption(commentTextBox.Text);
+                if (photoNameTextBox.Text != "")
+                {
+                    guiRenameSelectedPhoto(photoNameTextBox.Text);
+                }
+                //clean up the comment box error dialogues and also clear the text boxes
+                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                commentTextBoxAnimation.Stop();
+                handleCommentErrorPopup(false, "");
+                commentTextBox.Clear();
+                photoNameTextBox.Clear();
+                hideAddAlbumBox();
+            }
+        }
+
+
+        #endregion
+
+
+
+        //manipulating albums in library view
+        #region manipulateAlbumsInLibrary
+
         /**************************************************************************************************************************
          * Author: Ryan Causey
          * Created on: 4/3/13
@@ -463,102 +512,6 @@ namespace SoftwareEng
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
                 showErrorMessage(errorStrings.addAlbumFailure); //super temporary
                 bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
-            }
-        }
-
-        /*
-         * Created By: Ryan Causey
-         * Created Date: 4/8/13
-         * Last Edited By:
-         * Last Edited Date:
-         */
-        /// <summary>
-        /// GUI function to validate the caption content and add it if it is valid.
-        /// If we have gotten this far we have already validated the photo name.
-        /// </summary>
-        private void guiValidateCaptionContent()
-        {
-            //trim the input of leading and trailing whitespace
-            commentTextBox.Text = commentTextBox.Text.Trim();
-            //if it is not a valid string
-            if (!validateTheString(captionValidationRegex, commentTextBox.Text))
-            {
-                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
-                commentTextBoxAnimation.Begin();
-
-                handleCommentErrorPopup(true, errorStrings.invalidComment);
-                commentTextBox.Focus();
-                commentTextBox.SelectAll();
-            }
-            else
-            {
-                guiChangePhotoCaption(commentTextBox.Text);
-                if (photoNameTextBox.Text != "")
-                {
-                    guiRenameSelectedPhoto(photoNameTextBox.Text); 
-                }
-                //clean up the comment box error dialogues and also clear the text boxes
-                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
-                commentTextBoxAnimation.Stop();
-                handleCommentErrorPopup(false, "");
-                commentTextBox.Clear();
-                photoNameTextBox.Clear();
-                hideAddAlbumBox();
-            }
-        }
-
-        /*
-         * Created By: Ryan Causey
-         * Created Date: 4/8/13
-         * Last Edited By:
-         * Last Edited Date:
-         */
-        /// <summary>
-        /// Gui function to change a photo's caption
-        /// </summary>
-        /// <param name="caption">The new caption value</param>
-        private void guiChangePhotoCaption(String caption)
-        {
-            if(mainWindowAlbumList.SelectedItem != null)
-            {
-                bombaDeFotos.setImageCaption(new generic_callback(guiChangePhotoCaption_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
-            }
-        }
-
-        /*
-         * Created By: Ryan Causey
-         * Created Date: 4/8/13
-         * Last Edited By:
-         * Last Edited Date:
-         */
-        /// <summary>
-        /// Callback for guiChangePhotoCaption. Simply displays an error if there was one.
-        /// </summary>
-        /// <param name="error"></param>
-        public void guiChangePhotoCaption_Callback(ErrorReport error)
-        {
-            if (error.reportStatus == ReportStatus.FAILURE)
-            {
-                showErrorMessage(errorStrings.changeCommentFailure);
-            }
-        }
-
-        /**************************************************************************************************************************
-         * Author: Bill Sanders
-         * Created on: 4/7/13
-         **************************************************************************************************************************/
-        /// <summary>
-        /// Copies the selected photos to the background clipboard.
-        /// </summary>
-        private void guiCopySelectedPhotosToClipboard()
-        {
-            //make sure an item is selected
-            if (mainWindowAlbumList.SelectedItems != null)
-            {
-                // if the clipboard is currently empty, we're in copy-mode
-                ComplexPhotoData[] clipArray = new ComplexPhotoData[mainWindowAlbumList.SelectedItems.Count];
-                mainWindowAlbumList.SelectedItems.CopyTo(clipArray, 0);
-                _clipboardOfPhotos = clipArray.ToList();
             }
         }
 
@@ -660,144 +613,102 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
-         * Created By: Ryan Causey
-         * Created On: 4/4/13
+         * Created By: Bill Sanders
+         * Created Date: 4/6/13
          * Last Edited By:
          * Last Edited Date:
          **************************************************************************************************************************/
         /// <summary>
-        /// GUI function to begin the transition to the album view from the library view.
+        /// GUI function to rename the selected Album
         /// </summary>
-        private void guiEnterAlbumView()
+        private void guiRenameSelectedAlbum(String albumName)
         {
-            //make sure an item is selected
             if (mainWindowAlbumList.SelectedItem != null)
             {
-
-                //call the backend to get all photos in this album.
-                currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
-                // Set the app's titlebar to display the app name and the album name
-                this.appTitleBarLabel.Content = "PhotoBomber - " + ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).albumName;
-                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), currentAlbumUID);
+                bombaDeFotos.renameAlbum(new generic_callback(guiRenameSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID, albumName);
             }
         }
 
         /**************************************************************************************************************************
-         * Created By: Ryan Causey
-         * Created On: 4/5/13
+        **************************************************************************************************************************/
+        /* Created By: Bill Sanders
+         * Created Date: 4/6/13
          * Last Edited By: Ryan Causey
          * Last Edited Date: 4/7/13
-         **************************************************************************************************************************/
+         */
         /// <summary>
-        /// Callback for guiEnterAlbumView. Takes the returned ReadOnlyObservableCollection and binds the listView to it
-        /// as well as swaps the data template.
+        /// Callback for guiRenameSelectedAlbum. Just shows an error message if there is one.
         /// </summary>
-        /// <param name="error">Error report from backend</param>
-        /// <param name="picturesInAlbum">Collection of photos in the album.</param>
-        public void guiEnterAlbumView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
+        /// <param name="error">Error report from the back end.</param>
+        public void guiRenameSelectedAlbum_Callback(ErrorReport error)
         {
             if (error.reportStatus == ReportStatus.FAILURE)
             {
-                //show user an error message that retrieving the pictures did not work
-                showErrorMessage(errorStrings.getPhotosFailure);
+                showErrorMessage(errorStrings.renameAlbumFailure);
             }
-            else
+        }
+
+
+
+        #endregion
+
+
+
+        //manipulating images in album view
+        #region manipulateImagesInAlbum
+
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Gui function to change a photo's caption
+        /// </summary>
+        /// <param name="caption">The new caption value</param>
+        private void guiChangePhotoCaption(String caption)
+        {
+            if (mainWindowAlbumList.SelectedItem != null)
             {
-                //going into album
-                isInsideAlbum = true;
+                bombaDeFotos.setImageCaption(new generic_callback(guiChangePhotoCaption_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
+            }
+        }
 
-                if (error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
-                {
-                    //show the user a notification that some pictures are not displayed
-                    showErrorMessage(errorStrings.getPhotosWarning);
-                }
-                //swap data templates and change bindings.
-                mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
-                _listOfPhotos = picturesInAlbum;
-                mainWindowAlbumList.ItemsSource = _listOfPhotos;
-
-                ImageListCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(_listOfPhotos);
-                //change the selection mode to Extended
-                mainWindowAlbumList.SelectionMode = SelectionMode.Extended;
-                //show the return to library view button on the dock
-                libraryDockButton.Visibility = Visibility.Visible;
-                //show the addPhotos dock button if we are not running an import operation
-                if (!isImporting)
-                {
-                    addPhotosDockButton.Visibility = Visibility.Visible;
-                }
-                //hide the add new album button on the dock
-                addDockButton.Visibility = Visibility.Collapsed;
-                /* Commenting out these as we will swap whole context menu's!
-                //temporary fix to prevent an unhandled exception
-                viewMenuItemLibraryButton.Visibility = Visibility.Collapsed;
-                //hide the delete album button
-                deleteMenuItemLibraryButton.Visibility = Visibility.Collapsed;
-                //show the delete photo button
-                deleteMenuItemPhotoButton.Visibility = Visibility.Visible;
-                 */
-
-                if (mainWindowAlbumList.Items.IsEmpty == false)
-                {
-                    mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
-                    mainWindowAlbumList.Focus();
-                }
-
-                imageSortingButtonPlaceholder.Visibility = Visibility.Visible;
+        /*
+         * Created By: Ryan Causey
+         * Created Date: 4/8/13
+         * Last Edited By:
+         * Last Edited Date:
+         */
+        /// <summary>
+        /// Callback for guiChangePhotoCaption. Simply displays an error if there was one.
+        /// </summary>
+        /// <param name="error"></param>
+        public void guiChangePhotoCaption_Callback(ErrorReport error)
+        {
+            if (error.reportStatus == ReportStatus.FAILURE)
+            {
+                showErrorMessage(errorStrings.changeCommentFailure);
             }
         }
 
         /**************************************************************************************************************************
-         * Created By: Ryan Causey
-         * Created Date: 4/5/13
-         * Last Edited By: Ryan Causey
-         * Last Edited Date: 4/8/13
+         * Author: Bill Sanders
+         * Created on: 4/7/13
          **************************************************************************************************************************/
         /// <summary>
-        /// GUI function to transition back to the library view by changing the data template and item source.
+        /// Copies the selected photos to the background clipboard.
         /// </summary>
-        private void guiReturnToLibraryView()
+        private void guiCopySelectedPhotosToClipboard()
         {
-            mainWindowAlbumList.ItemTemplate = this.Resources["LibraryListItemFrontTemplate"] as DataTemplate;
-            //refresh the view to make sure we update with new album thumbnails
-            populateAlbumView(true);
-            // Set the titlebar back to the default: Appname and "my photo library!"
-            this.appTitleBarLabel.Content = Settings.AppTitleBarText;
-            mainWindowAlbumList.ItemsSource = _listOfAlbums;
-            //change the selection mode to single
-            mainWindowAlbumList.SelectionMode = SelectionMode.Single;
-            //collapse the go back button
-            libraryDockButton.Visibility = Visibility.Collapsed;
-            //collapse the addPhotos button
-            addPhotosDockButton.Visibility = Visibility.Collapsed;
-            //show the add album dock button
-            addDockButton.Visibility = Visibility.Visible;
-            /* Commenting out these as we will swap whole context menu's!
-            //temporary fix to prevent an unhandled exception
-            viewMenuItemLibraryButton.Visibility = Visibility.Visible;
-            //show the delete album button
-            deleteMenuItemLibraryButton.Visibility = Visibility.Visible;
-            //hide the delete photo button
-            deleteMenuItemPhotoButton.Visibility = Visibility.Collapsed;
-             */
-            //hise the sorting button
-            imageSortingButtonPlaceholder.Visibility = Visibility.Collapsed;
-
-
-            //close any open viewImage windows
-            if (view != null)
+            //make sure an item is selected
+            if (mainWindowAlbumList.SelectedItems != null)
             {
-                view.Close();
-            }
-
-            currentAlbumUID = -1;
-
-            //returning to libraryView
-            isInsideAlbum = false;
-            if (mainWindowAlbumList.Items.IsEmpty == false)
-            {
-                mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
-                mainWindowAlbumList.Focus();
+                // if the clipboard is currently empty, we're in copy-mode
+                ComplexPhotoData[] clipArray = new ComplexPhotoData[mainWindowAlbumList.SelectedItems.Count];
+                mainWindowAlbumList.SelectedItems.CopyTo(clipArray, 0);
+                _clipboardOfPhotos = clipArray.ToList();
             }
         }
 
@@ -980,42 +891,6 @@ namespace SoftwareEng
          * Last Edited Date:
          **************************************************************************************************************************/
         /// <summary>
-        /// GUI function to rename the selected Album
-        /// </summary>
-        private void guiRenameSelectedAlbum(String albumName)
-        {
-            if (mainWindowAlbumList.SelectedItem != null)
-            {
-                bombaDeFotos.renameAlbum(new generic_callback(guiRenameSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID, albumName);
-            }
-        }
-
-        /**************************************************************************************************************************
-        **************************************************************************************************************************/
-        /* Created By: Bill Sanders
-         * Created Date: 4/6/13
-         * Last Edited By: Ryan Causey
-         * Last Edited Date: 4/7/13
-         */
-        /// <summary>
-        /// Callback for guiRenameSelectedAlbum. Just shows an error message if there is one.
-        /// </summary>
-        /// <param name="error">Error report from the back end.</param>
-        public void guiRenameSelectedAlbum_Callback(ErrorReport error)
-        {
-            if (error.reportStatus == ReportStatus.FAILURE)
-            {
-                showErrorMessage(errorStrings.renameAlbumFailure);
-            }
-        }
-
-        /**************************************************************************************************************************
-         * Created By: Bill Sanders
-         * Created Date: 4/6/13
-         * Last Edited By:
-         * Last Edited Date:
-         **************************************************************************************************************************/
-        /// <summary>
         /// GUI function to rename the selected Photo
         /// </summary>
         private void guiRenameSelectedPhoto(string newName)
@@ -1085,6 +960,166 @@ namespace SoftwareEng
                 cancelPhotoImportDockButton.Visibility = Visibility.Collapsed;
             }
         }
+
+        #endregion
+
+        
+
+        // this function region deals with switching between library view and album view
+        #region switchingListsRegion
+
+        /**************************************************************************************************************************
+         * Created By: Ryan Causey
+         * Created On: 4/4/13
+         * Last Edited By:
+         * Last Edited Date:
+         **************************************************************************************************************************/
+        /// <summary>
+        /// GUI function to begin the transition to the album view from the library view.
+        /// </summary>
+        private void guiEnterAlbumView()
+        {
+            //make sure an item is selected
+            if (mainWindowAlbumList.SelectedItem != null)
+            {
+
+                //call the backend to get all photos in this album.
+                currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
+                // Set the app's titlebar to display the app name and the album name
+                this.appTitleBarLabel.Content = "PhotoBomber - " + ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).albumName;
+                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), currentAlbumUID);
+            }
+        }
+
+        /**************************************************************************************************************************
+         * Created By: Ryan Causey
+         * Created On: 4/5/13
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/7/13
+         **************************************************************************************************************************/
+        /// <summary>
+        /// Callback for guiEnterAlbumView. Takes the returned ReadOnlyObservableCollection and binds the listView to it
+        /// as well as swaps the data template.
+        /// </summary>
+        /// <param name="error">Error report from backend</param>
+        /// <param name="picturesInAlbum">Collection of photos in the album.</param>
+        public void guiEnterAlbumView_Callback(ErrorReport error, ReadOnlyObservableCollection<ComplexPhotoData> picturesInAlbum)
+        {
+            if (error.reportStatus == ReportStatus.FAILURE)
+            {
+                //show user an error message that retrieving the pictures did not work
+                showErrorMessage(errorStrings.getPhotosFailure);
+            }
+            else
+            {
+                //going into album
+                isInsideAlbum = true;
+
+                if (error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
+                {
+                    //show the user a notification that some pictures are not displayed
+                    showErrorMessage(errorStrings.getPhotosWarning);
+                }
+                //swap data templates and change bindings.
+                mainWindowAlbumList.ItemTemplate = this.Resources["ListItemTemplate"] as DataTemplate;
+                _listOfPhotos = picturesInAlbum;
+                mainWindowAlbumList.ItemsSource = _listOfPhotos;
+
+                ImageListCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(_listOfPhotos);
+                //change the selection mode to Extended
+                mainWindowAlbumList.SelectionMode = SelectionMode.Extended;
+                //show the return to library view button on the dock
+                libraryDockButton.Visibility = Visibility.Visible;
+                //show the addPhotos dock button if we are not running an import operation
+                if (!isImporting)
+                {
+                    addPhotosDockButton.Visibility = Visibility.Visible;
+                }
+                //hide the add new album button on the dock
+                addDockButton.Visibility = Visibility.Collapsed;
+                /* Commenting out these as we will swap whole context menu's!
+                //temporary fix to prevent an unhandled exception
+                viewMenuItemLibraryButton.Visibility = Visibility.Collapsed;
+                //hide the delete album button
+                deleteMenuItemLibraryButton.Visibility = Visibility.Collapsed;
+                //show the delete photo button
+                deleteMenuItemPhotoButton.Visibility = Visibility.Visible;
+                 */
+
+                if (mainWindowAlbumList.Items.IsEmpty == false)
+                {
+                    mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
+                    mainWindowAlbumList.Focus();
+                }
+
+                imageSortingButtonPlaceholder.Visibility = Visibility.Visible;
+            }
+        }
+
+        /**************************************************************************************************************************
+         * Created By: Ryan Causey
+         * Created Date: 4/5/13
+         * Last Edited By: Ryan Causey
+         * Last Edited Date: 4/8/13
+         **************************************************************************************************************************/
+        /// <summary>
+        /// GUI function to transition back to the library view by changing the data template and item source.
+        /// </summary>
+        private void guiReturnToLibraryView()
+        {
+            mainWindowAlbumList.ItemTemplate = this.Resources["LibraryListItemFrontTemplate"] as DataTemplate;
+            //refresh the view to make sure we update with new album thumbnails
+            populateAlbumView(true);
+            // Set the titlebar back to the default: Appname and "my photo library!"
+            this.appTitleBarLabel.Content = Settings.AppTitleBarText;
+            mainWindowAlbumList.ItemsSource = _listOfAlbums;
+            //change the selection mode to single
+            mainWindowAlbumList.SelectionMode = SelectionMode.Single;
+            //collapse the go back button
+            libraryDockButton.Visibility = Visibility.Collapsed;
+            //collapse the addPhotos button
+            addPhotosDockButton.Visibility = Visibility.Collapsed;
+            //show the add album dock button
+            addDockButton.Visibility = Visibility.Visible;
+            /* Commenting out these as we will swap whole context menu's!
+            //temporary fix to prevent an unhandled exception
+            viewMenuItemLibraryButton.Visibility = Visibility.Visible;
+            //show the delete album button
+            deleteMenuItemLibraryButton.Visibility = Visibility.Visible;
+            //hide the delete photo button
+            deleteMenuItemPhotoButton.Visibility = Visibility.Collapsed;
+             */
+
+
+
+            //close any open viewImage windows
+            if (view != null)
+            {
+                view.Close();
+            }
+
+            currentAlbumUID = -1;
+
+            //returning to libraryView
+            isInsideAlbum = false;
+            if (mainWindowAlbumList.Items.IsEmpty == false)
+            {
+                mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
+                mainWindowAlbumList.Focus();
+            }
+            //hide the sorting button
+            imageSortingButtonPlaceholder.Visibility = Visibility.Collapsed;
+        }
+
+
+        #endregion
+
+
+        
+
+        
+
+        
 
         /*
          * Created By: Ryan Causey
@@ -1272,9 +1307,6 @@ namespace SoftwareEng
         }
 
 
-
-
-
         /**************************************************************************************************************************
         **************************************************************************************************************************/
         private void toggleWindowState()
@@ -1362,7 +1394,7 @@ namespace SoftwareEng
         /*****************************************
          * start region of thumb bar resize events
         *****************************************/
-
+        #region thumbarResizing
 
 
         /**************************************************************************************************************************
@@ -1596,7 +1628,7 @@ namespace SoftwareEng
         /***************************************
          * end region of thumb bar resize events
         ***************************************/
-
+        #endregion
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
@@ -1944,7 +1976,7 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void mainWindow_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            closePopups();
+            closePopupsAndMenus();
         }
 
         /*
@@ -1961,17 +1993,18 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void mainWindow_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            closePopups();
+            closePopupsAndMenus();
         }
 
         /*
          *Created By Alejandro Sosa
          *function to close all open popups (such as when main window is clicked)
          */
-        private void closePopups()
+        private void closePopupsAndMenus()
         {
             libraryContextMenu.IsOpen = false;
             AlbumContextMenu.IsOpen = false;
+            imageSortingMenu.IsSubmenuOpen = false;
         }
 
         /*
@@ -2056,7 +2089,7 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void mainWindowAlbumList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            closePopups();
+            closePopupsAndMenus();
         }
 
         /*
@@ -2104,6 +2137,12 @@ namespace SoftwareEng
                 App.Current.Shutdown();
             }
         }
+
+
+
+
+        //this Function region deals with image sorting
+        #region sortingFunctionRegion
 
         private void commonSortMenu_EventHandler(bool ascendingTrue )
         {
@@ -2190,6 +2229,8 @@ namespace SoftwareEng
             }
         }
 
+        #endregion
+
         private void mainWindowAlbumList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             mainWindowListItemActivation();
@@ -2215,117 +2256,16 @@ namespace SoftwareEng
             }
         }
 
-
-        private void clearThemecheckboxes()
-        {
-            bureauBlackThemeMenuItem.IsChecked=false;
-            bureauBlueThemeMenuItem.IsChecked = false;
-            expressionDarkThemeMenuItem.IsChecked = false;
-            expressionLightThemeMenuItem.IsChecked = false;
-            shinyBlueThemeMenuItem.IsChecked = false;
-            shinyRedThemeMenuItem.IsChecked = false;
-            whistlerBlueThemeMenuItem.IsChecked = false;
-        }
-
-
-
-        private void bureauBlackThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                bureauBlackThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative));
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/BureauBlack.xaml");
-        }
-
-        private void bureauBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                bureauBlueThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlue.xaml", UriKind.Relative)); 
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/BureauBlue.xaml");
-        }
-
-        private void expressionDarkThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                expressionDarkThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionDark.xaml", UriKind.Relative));  
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/ExpressionDark.xaml");
-        }
-
-        private void expressionLightThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                expressionLightThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionLight.xaml", UriKind.Relative));  
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/ExpressionLight.xaml");
-        }
-
-        private void shinyBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                shinyBlueThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyBlue.xaml", UriKind.Relative)); 
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/ShinyBlue.xaml");
-        }
-
-        private void shinyRedThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                shinyRedThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/ShinyRed.xaml");
-        }
-
-        private void whistlerBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                whistlerBlueThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/WhistlerBlue.xaml");
-        }
-
         private void dockSizeChanged_EventHandler(object sender, SizeChangedEventArgs e)
         {
             if (mainWindowDock.Height != 48)
             {
                 return;
             }
-
-
         }
-
-
-
-
+        
+        //This function region deals with choosing themes
+        #region ThemeRelatedFunctions 
 
         //getCurrentPhotoBomberTheme
         private void getCurrentThemeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2339,7 +2279,105 @@ namespace SoftwareEng
             debugWindow.ShowDialog();
         }
 
-        
+        private void clearThemecheckboxes()
+        {
+            bureauBlackThemeMenuItem.IsChecked = false;
+            bureauBlueThemeMenuItem.IsChecked = false;
+            expressionDarkThemeMenuItem.IsChecked = false;
+            expressionLightThemeMenuItem.IsChecked = false;
+            shinyBlueThemeMenuItem.IsChecked = false;
+            shinyRedThemeMenuItem.IsChecked = false;
+            whistlerBlueThemeMenuItem.IsChecked = false;
+        }
+
+
+
+        private void bureauBlackThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            bureauBlackThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative));
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/BureauBlack.xaml");
+        }
+
+        private void bureauBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            bureauBlueThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlue.xaml", UriKind.Relative)); 
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/BureauBlue.xaml");
+        }
+
+        private void expressionDarkThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            expressionDarkThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionDark.xaml", UriKind.Relative));  
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/ExpressionDark.xaml");
+        }
+
+        private void expressionLightThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            expressionLightThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionLight.xaml", UriKind.Relative));  
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/ExpressionLight.xaml");
+        }
+
+        private void shinyBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            shinyBlueThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyBlue.xaml", UriKind.Relative)); 
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/ShinyBlue.xaml");
+        }
+
+        private void shinyRedThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            shinyRedThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/ShinyRed.xaml");
+        }
+
+        private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            whistlerBlueThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/WhistlerBlue.xaml");
+        }
+
+        #endregion
+
     }
 
 
