@@ -22,15 +22,21 @@ namespace SoftwareEng
     {
         //the name of the picture in the album, displayed by the gui
 
+        // Image ID.
         private int _UID;
-        private int _idInAlbum;
         private byte[] _hash;
+
+        // File data. 
         private String _fullPath;
         private String _lgThumbPath;
         private String _extension;
+        private int _refCount;
+
+        // In Album data.
+        private int _idInAlbum;
         private String _caption;
         private String _name;
-        private int _refCount;
+        
 
         Properties.Settings Settings = Properties.Settings.Default;
 
@@ -60,7 +66,7 @@ namespace SoftwareEng
         /// <param name="source"></param>
         /// <param name="filename"></param>
         /// <param name="size"></param>
-        /// <returns></returns>
+        /// <returns>The full Thumb Path.</returns>
         private string regenerateThumbnail(string source, string filename, int size)
         {
             Imazen.LightResize.ResizeJob resizeJob = new Imazen.LightResize.ResizeJob();
