@@ -2,6 +2,8 @@
  * Change Log:
  * Julian Nguyen(4/30/13)
  * This file was made with the classes XmlDataReadOnly, ImageXmlDataReadOnly, AlbumXmlDataReadOnly, and AlbumImageXmlDataReadOnly
+ * Julian Nguyen(5/1/13)
+ * change albumID from int to Guid
  */
 using System;
 using System.Collections.Generic;
@@ -90,7 +92,7 @@ namespace SoftwareEng
     // Album Xml Data classes.
 
     /// By Julian Nguyen
-    /// Edited: Julian Nguyen(4/30/13)
+    /// Edited: Julian Nguyen(5/2/13)
     /// <summary>
     /// A read only data class for the album. 
     /// </summary>
