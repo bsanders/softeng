@@ -21,6 +21,7 @@
  * ErrorReports constants numbers removed and replaced with ReportStatus enums.
  * Julian Nguyen(5/1/13)
  * setErrorReportToFAILURE() replaced setting an an ErrorReport to FAILURE and it's description.
+ * Fun() with "Picture" in the name were changed to "Image"
  **/
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,7 @@ namespace SoftwareEng
                     //for(from) every c in the database's children (all albums),
                     //see if it's attribute uid is the one we want,
                     //and if so return the first instance of a match.
-                    specificPicture = (from c in _imagesDatabase.Elements()
+                    specificPicture = (from c in _imagesRootXml.Elements()
                                        where (string)c.Attribute("sha1") == hash
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
@@ -104,7 +105,7 @@ namespace SoftwareEng
                     //for(from) every c in the database's children (all albums),
                     //see if it's attribute uid is the one we want,
                     //and if so return the first instance of a match.
-                    specificPicture = (from c in _imagesDatabase.Elements()
+                    specificPicture = (from c in _imagesRootXml.Elements()
                                        where (int)c.Attribute("uid") == photoUID
                                        select c).Single();//NOTE: this will throw error if more than one OR none at all.
                 }
@@ -181,8 +182,8 @@ namespace SoftwareEng
                 // This query then returns a single xml instance matching these criteria,
                 // OR returns null if 0 are found
                 // OR throws an exception if more than 1 are found
-                photoInstance = (from picDB in _imagesDatabase.Elements("picture")
-                                 join picAlbDB in _albumsDatabase.Descendants("picture")
+                photoInstance = (from picDB in _imagesRootXml.Elements("picture")
+                                 join picAlbDB in _albumsRootXml.Descendants("picture")
                                  on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
                                  where (string)picDB.Attribute("sha1") == hash
                                       && (int)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
@@ -261,7 +262,7 @@ namespace SoftwareEng
                 );
 
             //add to the database (in memory, not on disk).
-            _imagesDatabase.Add(newPicRoot);
+            _imagesRootXml.Add(newPicRoot);
             return errorReport;
         }
 
@@ -660,7 +661,7 @@ namespace SoftwareEng
         {
             try
             {
-                _albumsDatabase = XDocument.Load(_albumsDatabasePath).Element(Settings.XMLRootElement);
+                _albumsRootXml = XDocument.Load(_albumsXmlPath).Element(Settings.XMLRootElement);
             }
             catch
             {
@@ -683,11 +684,11 @@ namespace SoftwareEng
         {
             try
             {
-                _imagesDatabase = XDocument.Load(_picturesDatabasePath).Element(Settings.XMLRootElement);
+                _imagesRootXml = XDocument.Load(_imageXmlPath).Element(Settings.XMLRootElement);
             }
             catch
             {
-                setErrorReportToFAILURE("PhotoBomb.openPicturesXML():failed to load the pictures xml file: " + _picturesDatabasePath, ref error);
+                setErrorReportToFAILURE("PhotoBomb.openPicturesXML():failed to load the pictures xml file: " + _imageXmlPath, ref error);
                 return;
             }
             //The loading of the xml was nominal.
@@ -746,7 +747,7 @@ namespace SoftwareEng
             // Descendants() lets us search for the element ignoring tag nesting
             try
             {
-                allAlbumDBPhotos = (from c in _albumsDatabase.Descendants("picture")
+                allAlbumDBPhotos = (from c in _albumsRootXml.Descendants("picture")
                                     where (string)c.Attribute("sha1") == hash
                                     select c);
             }
@@ -817,7 +818,7 @@ namespace SoftwareEng
                                             new XElement("albumPhotos"));
 
             //add to the database in memory.
-            _albumsDatabase.Add(newAlbum);
+            _albumsRootXml.Add(newAlbum);
         }//method
 
         //-------------------------------------------------------------------
@@ -946,7 +947,7 @@ namespace SoftwareEng
             {
                 //try and find a matching album name.
                 //throws exception if we find NO matching names.
-                (from c in _albumsDatabase.Elements("album")
+                (from c in _albumsRootXml.Elements("album")
                  where (String)c.Element("albumName") == albumName
                  select c).First();
             }
@@ -1013,7 +1014,7 @@ namespace SoftwareEng
             }
 
             // Create the full path where the picture will go
-            String newPath = System.IO.Path.Combine(libraryPath, picNameInLibrary);
+            String newPath = System.IO.Path.Combine(_imagelibraryDirPath, picNameInLibrary);
 
             // Wrapped in a try primarily in case of IO errors
             try
@@ -1038,7 +1039,7 @@ namespace SoftwareEng
         private Boolean util_checkLibraryDirectory()
         {
             //anything else we need to check?
-            return (Directory.Exists(libraryPath));
+            return (Directory.Exists(_imagelibraryDirPath));
         }
 
 
@@ -1051,7 +1052,7 @@ namespace SoftwareEng
         private void util_checkLibraryDirectory(ErrorReport error)
         {
             //anything else we need to check?
-            if (!Directory.Exists(libraryPath))
+            if (!Directory.Exists(_imagelibraryDirPath))
             {
                 setErrorReportToFAILURE("Library folder not found.", ref error);
             }
@@ -1114,7 +1115,7 @@ namespace SoftwareEng
             {
                 //find and return an album whos uid is the one we are looking for.
                 //Throws exception if none or more than one match is found.
-                return (from c in _albumsDatabase.Elements("album")
+                return (from c in _albumsRootXml.Elements("album")
                         where (int)c.Attribute("uid") == albumUID
                         select c).Single();
             }
@@ -1136,7 +1137,7 @@ namespace SoftwareEng
         /// <returns>If the album is good or not.</returns>
         private bool util_checkAlbumDatabase(ErrorReport errorReport)
         {
-            if (_albumsDatabase == null)
+            if (_albumsRootXml == null)
             {
                 setErrorReportToFAILURE("PhotoBomb: The album database has not been loaded yet!", ref errorReport);
                 return false;
@@ -1157,7 +1158,7 @@ namespace SoftwareEng
         /// <returns>returns true if the picture database is ok else false.</returns>
         private Boolean util_checkPhotoDBIntegrity(ErrorReport errorReport)
         {
-            if (_imagesDatabase == null)
+            if (_imagesRootXml == null)
             {
                 setErrorReportToFAILURE("PhotoBomb: The album database has not been loaded yet!", ref errorReport);
                 return false;
@@ -1181,8 +1182,8 @@ namespace SoftwareEng
             initDB.Add(root);
             try
             {
-                initDB.Save(_albumsDatabasePath);
-                initDB.Save(_picturesDatabasePath);
+                initDB.Save(_albumsXmlPath);
+                initDB.Save(_imageXmlPath);
             }
             catch
             {
@@ -1225,7 +1226,7 @@ namespace SoftwareEng
             resizeJob.Mode = Imazen.LightResize.FitMode.Crop;
 
             //get the full path
-            fullThumbPath = System.IO.Path.Combine(libraryPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picFileName);
+            fullThumbPath = System.IO.Path.Combine(_imagelibraryDirPath, Settings.PhotoLibraryThumbsDir, thumbSubDir, picFileName);
 
             // Actually processes the image, copying it to the new location, should go in a try/catch for IO
             // One of Build's overloads allows you to use file streams instead of filepaths.

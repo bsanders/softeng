@@ -15,6 +15,7 @@
  * ErrorReports constants numbers removed and replaced with ReportStatus enums.
  * Julian Nguyen(5/1/13)
  * setErrorReportToFAILURE() replaced setting an an ErrorReport to FAILURE and it's description.
+ * Fun() with "Picture" in the name were changed to "Image"
  **/
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace SoftwareEng
             int picsAddedSinceReport = 0;
 
             //start our uid search from the first known empty uid.
-            int initialSearchingLocation = util_getNextUID(_imagesDatabase, "picture", "uid", 1);
+            int initialSearchingLocation = util_getNextUID(_imagesRootXml, "picture", "uid", 1);
 
             //for each photo we are adding...
             for (int i = 0; i < data.photoUserPath.Count; ++i)

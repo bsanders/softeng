@@ -26,6 +26,7 @@
  * ErrorReports constants numbers removed and replaced with ReportStatus enums.
  * Julian Nguyen(5/1/13)
  * setErrorReportToFAILURE() replaced setting an an ErrorReport to FAILURE and it's description.
+ * Fun() with "Picture" in the name were changed to "Image"
  * 
  **/
 using System;
@@ -52,18 +53,19 @@ namespace SoftwareEng
         // Xml parsing utils.
         private XmlHandler _xmlHandler; 
 
-        //path to the pictures folder we put all the pictures
+        //path to the images folder we put all the images.
         //tracked by the database.
-        private string libraryPath;
+        private string _imagelibraryDirPath;
 
         //The XML in memory for the albumbs.
         //Add new vars here if we get more xmls.
-        private XElement _albumsDatabase;
-        private string _albumsDatabasePath;
+        private XElement _albumsRootXml;
+        private string _albumsXmlPath;
 
-        private XElement _imagesDatabase;
-        private string _picturesDatabasePath;
+        private XElement _imagesRootXml;
+        private string _imageXmlPath;
 
+        // TODO: What is this for? 
         private const int UID_MAX_SIZE = 2000000000;
 
         /******************************************************************************
@@ -73,15 +75,32 @@ namespace SoftwareEng
         private ObservableCollection<SimpleAlbumData> _albumsCollection;
 
         //observable collection for pictures
-        private ObservableCollection<ComplexPhotoData> _photosCollection;
+        private ObservableCollection<ComplexPhotoData> _imagesCollection;
 
-        private List<ComplexPhotoData> _photosClipboard;
+        private List<ComplexPhotoData> _imagesClipboard;
 
 
-
+        /// By Julian Nguyen
+        /// Edited: Julian Nguyen(5/1/13)
+        /// <summary>
+        /// 
+        /// </summary>
         public PhotoBomb()
         {
             _xmlHandler = new XmlHandler();
+
+            //the list of all albums to return to the gui.
+            _albumsCollection = new ObservableCollection<SimpleAlbumData>();
+
+            //the list of photographs to be used to populate the album view
+            _imagesCollection = new ObservableCollection<ComplexPhotoData>();
+
+            // initialize a list for the clipboard
+            _imagesClipboard = new List<ComplexPhotoData>();
+
+            _albumsXmlPath = String.Empty;
+            _imageXmlPath = String.Empty; 
+            _imagelibraryDirPath = String.Empty;
         }
 
 
@@ -92,22 +111,22 @@ namespace SoftwareEng
         /// This will setup the data base. Files and all. 
         /// 
         /// </summary>
-        /// <param name="albumDatabasePathIn"></param>
-        /// <param name="pictureDatabasePathIn"></param>
-        /// <param name="libraryPathIn"></param>
-        public ErrorReport init_backend(string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPathIn)
+        /// <param name="albumXmlPathIn"></param>
+        /// <param name="imageXmlPathIn"></param>
+        /// <param name="imagelibraryDirPathIn"></param>
+        public ErrorReport init_backend(string albumXmlPathIn, string imageXmlPathIn, string imagelibraryDirPathIn)
         {
             ErrorReport errorReport = new ErrorReport();
 
             //keep the paths to databases and library.
-            _albumsDatabasePath = albumDatabasePathIn;
-            _picturesDatabasePath = pictureDatabasePathIn;
-            libraryPath = libraryPathIn;
+            _albumsXmlPath = albumXmlPathIn;
+            _imageXmlPath = imageXmlPathIn;
+            _imagelibraryDirPath = imagelibraryDirPathIn;
 
 
             // Try to open the databases. 
-            if (!_xmlHandler.loadXmlRootElement(_albumsDatabasePath, out _albumsDatabase)
-                || !_xmlHandler.loadXmlRootElement(_picturesDatabasePath, out _imagesDatabase))
+            if (!_xmlHandler.loadXmlRootElement(_albumsXmlPath, out _albumsRootXml)
+                || !_xmlHandler.loadXmlRootElement(_imageXmlPath, out _imagesRootXml))
             {
                 setErrorReportToFAILURE("Failed to load the Album or Image xml.", ref errorReport);
             }
@@ -116,15 +135,6 @@ namespace SoftwareEng
 
             //check the library directory.
             util_checkLibraryDirectory(errorReport);
-
-            //the list of all albums to return to the gui.
-            _albumsCollection = new ObservableCollection<SimpleAlbumData>();
-
-            //the list of photographs to be used to populate the album view
-            _photosCollection = new ObservableCollection<ComplexPhotoData>();
-
-            // initialize a list for the clipboard
-            _photosClipboard = new List<ComplexPhotoData>();
 
             return errorReport;
         }
@@ -142,12 +152,12 @@ namespace SoftwareEng
             bool recover = true;
 
             //if the library folder does not exist, we are not recovering because there is nothing to recover. Sorry =(
-            if (!Directory.Exists(libraryPath))
+            if (!Directory.Exists(_imagelibraryDirPath))
             {
                 //now make a new library folder
                 try
                 {
-                    Directory.CreateDirectory(libraryPath);
+                    Directory.CreateDirectory(_imagelibraryDirPath);
                 }
                 catch
                 {
@@ -168,8 +178,8 @@ namespace SoftwareEng
 
             //Load the new databases into memory.
             // BS: These functions are being slated for merging together
-            _xmlHandler.loadXmlRootElement(_albumsDatabasePath, out _albumsDatabase);
-            _xmlHandler.loadXmlRootElement(_albumsDatabasePath, out _imagesDatabase);
+            _xmlHandler.loadXmlRootElement(_albumsXmlPath, out _albumsRootXml);
+            _xmlHandler.loadXmlRootElement(_albumsXmlPath, out _imagesRootXml);
             //util_openAlbumsXML(errorReport);
             //util_openImagesXML(errorReport);
 
@@ -214,7 +224,7 @@ namespace SoftwareEng
             backupAlbum.albumName = Settings.PhotoLibraryBackupName;
 
             //get a new uid for the new album.
-            backupAlbum.UID = util_getNextUID(_albumsDatabase, "album", "uid", 1);
+            backupAlbum.UID = util_getNextUID(_albumsRootXml, "album", "uid", 1);
 
             //add the album to the memory database.
             util_addAlbumToAlbumDB(errorReport, backupAlbum);
@@ -264,7 +274,7 @@ namespace SoftwareEng
             //set up a directory info object from the path
             //FileInfo[] files = new DirectoryInfo(tmpDir).GetFiles();
 
-            IEnumerable<FileInfo> libraryDir = new DirectoryInfo(libraryPath).EnumerateFiles();
+            IEnumerable<FileInfo> libraryDir = new DirectoryInfo(_imagelibraryDirPath).EnumerateFiles();
             // The files in libraryDir will not be sorted...
             
             //so we'll sort them here by removing the extension and then sorting them numerically
@@ -292,7 +302,7 @@ namespace SoftwareEng
 
                 //get a unique ID for this photo and update its 
                 //data object to reflect this new UID.
-                newPicture.UID = util_getNextUID(_imagesDatabase, "picture", "uid", 1);
+                newPicture.UID = util_getNextUID(_imagesRootXml, "picture", "uid", 1);
                 // error checking the call
                 if (!util_checkIDIsValid(newPicture.UID))
                 {
@@ -310,7 +320,7 @@ namespace SoftwareEng
                 if (newPicture.refCount == 1)
                 {
                     //rename the file
-                    fi.MoveTo(Path.Combine(libraryPath, picNameInLibrary));
+                    fi.MoveTo(Path.Combine(_imagelibraryDirPath, picNameInLibrary));
 
                     newPicture.fullPath = fi.FullName;
 
@@ -367,7 +377,7 @@ namespace SoftwareEng
 
             try
             {
-                _albumsDatabase.Document.Save(_albumsDatabasePath);
+                _albumsRootXml.Document.Save(_albumsXmlPath);
             }
             catch (DirectoryNotFoundException)
             {
@@ -394,7 +404,7 @@ namespace SoftwareEng
 
             try
             {
-                _imagesDatabase.Document.Save(_picturesDatabasePath);
+                _imagesRootXml.Document.Save(_imageXmlPath);
 
             }
             catch (DirectoryNotFoundException)
@@ -434,7 +444,7 @@ namespace SoftwareEng
             try
             {
                 // get all the albums
-                _albumSearchIE = (from c in _albumsDatabase.Elements() select c);
+                _albumSearchIE = (from c in _albumsRootXml.Elements() select c);
             }
             catch
             {
@@ -522,12 +532,12 @@ namespace SoftwareEng
         /// <param name="AlbumUID">The unique ID of the album to get the photos from</param>
         /// <param name="imagesToGUI">The pass back of the list of iamges.</param>
         /// <returns>The error report of this action.</returns>
-        public ErrorReport sendSelectedPhotosToClipboard_backend(int AlbumUID, out List<ComplexPhotoData> imagesToGUI)
+        public ErrorReport sendSelectedImagesToClipboard_backend(int AlbumUID, out List<ComplexPhotoData> imagesToGUI)
         {
             ErrorReport error = new ErrorReport();
             imagesToGUI = null;
 
-            _photosClipboard.Clear();
+            _imagesClipboard.Clear();
             //make sure the album database is valid.
             if (!util_checkAlbumDatabase(error))
             {
@@ -543,7 +553,7 @@ namespace SoftwareEng
                 try
                 {
                     //bills new swanky function here
-                    _photosClipboard.Add(util_getComplexPhotoData(error, subElement, AlbumUID));
+                    _imagesClipboard.Add(util_getComplexPhotoData(error, subElement, AlbumUID));
                 }
                 catch
                 {
@@ -552,7 +562,7 @@ namespace SoftwareEng
                 }
             }//foreach
 
-            imagesToGUI = new List<ComplexPhotoData>(_photosCollection);
+            imagesToGUI = new List<ComplexPhotoData>(_imagesCollection);
             return error;
         }
 
@@ -569,7 +579,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
 
             //first thing to do is clear the old data out of the photoCollection
-            _photosCollection.Clear();
+            _imagesCollection.Clear();
 
             //make sure the album database is valid.
             if (!util_checkAlbumDatabase(error))
@@ -596,7 +606,7 @@ namespace SoftwareEng
                 try
                 {
                     //bills new swanky function here
-                    _photosCollection.Add(util_getComplexPhotoData(error, subElement, AlbumUID));
+                    _imagesCollection.Add(util_getComplexPhotoData(error, subElement, AlbumUID));
                 }
                 catch
                 {
@@ -606,7 +616,7 @@ namespace SoftwareEng
             }//foreach
 
 
-            imagesOfAnAlbum = new ReadOnlyObservableCollection<ComplexPhotoData>(_photosCollection);
+            imagesOfAnAlbum = new ReadOnlyObservableCollection<ComplexPhotoData>(_imagesCollection);
             return error;
         }//method
 
@@ -779,7 +789,7 @@ namespace SoftwareEng
             {
                 //get a unique ID for this photo and update its 
                 //data object to reflect this new UID.
-                newPicture.UID = util_getNextUID(_imagesDatabase, "picture", "uid", searchStartingPoint);
+                newPicture.UID = util_getNextUID(_imagesRootXml, "picture", "uid", searchStartingPoint);
                 // error checking the call
                 if (!util_checkIDIsValid(newPicture.UID))
                 {
@@ -861,7 +871,7 @@ namespace SoftwareEng
         /// <param name="guiCallback"></param>
         /// <param name="idInAlbum">The photo's ID</param>
         /// <param name="albumUID">The album's UID</param>
-        public ErrorReport removePictureFromAlbum_backend(int idInAlbum, int albumUID)
+        public ErrorReport removeImageFromAlbum_backend(int idInAlbum, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -916,9 +926,9 @@ namespace SoftwareEng
 
             //copying bills swanky code
             //get the photo to remove
-            var photoToRemove = _photosCollection.FirstOrDefault(photo => photo.idInAlbum == idInAlbum);
+            var photoToRemove = _imagesCollection.FirstOrDefault(photo => photo.idInAlbum == idInAlbum);
             //and remove it
-            _photosCollection.Remove(photoToRemove);
+            _imagesCollection.Remove(photoToRemove);
 
             return errorReport;
         }
@@ -1078,7 +1088,7 @@ namespace SoftwareEng
         /// <param name="albumUID">The album's UID</param>
         /// <param name="newName">The new name of the album</param>
         /// <return>The error report of this action.</return>
-        public ErrorReport renameAlbum_backend(int albumUID, string newName)
+        public ErrorReport setAlbumName_backend(int albumUID, string newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1118,7 +1128,7 @@ namespace SoftwareEng
         /// <param name="idInAlbum">The id of the photo in this album</param>
         /// <param name="newName">The new name of the photo</param>
         /// <returns></returns>
-        public ErrorReport renamePhoto_backend(int albumUID, int idInAlbum, string newName)
+        public ErrorReport setImageName_backend(int albumUID, int idInAlbum, string newName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1139,7 +1149,7 @@ namespace SoftwareEng
             saveAlbumsXML_backend();
 
             // Searches through the photosCollection and finds the first photo with a matching id
-            var photoToRename = _photosCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
+            var photoToRename = _imagesCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
             // ... and then renames it.
             photoToRename.name = newName;
 
@@ -1156,7 +1166,7 @@ namespace SoftwareEng
         /// <param name="idInAlbum">The id of the photo in this album</param>
         /// <param name="newCaption">The new name of the photo</param>
         /// <returns>The error report for this action.</returns>
-        public ErrorReport setPhotoCaption_backend(int albumUID, int idInAlbum, string newCaption)
+        public ErrorReport setImageCaption_backend(int albumUID, int idInAlbum, string newCaption)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1177,7 +1187,7 @@ namespace SoftwareEng
             saveAlbumsXML_backend();
 
             // Searches through the photosCollection and finds the first photo with a matching id
-            var photoToRecaption = _photosCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
+            var photoToRecaption = _imagesCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
             // ... and then changes its caption.
             photoToRecaption.caption = newCaption;
 
@@ -1198,7 +1208,7 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             //get a new uid for the new album.
-            albumData.UID = util_getNextUID(_albumsDatabase, "album", "uid", 1);
+            albumData.UID = util_getNextUID(_albumsRootXml, "album", "uid", 1);
 
             //add the album to the memory database.
             util_addAlbumToAlbumDB(errorReport, albumData);
@@ -1229,7 +1239,7 @@ namespace SoftwareEng
         /// <param name="photoObj">A List of ComplexPhotoData objects which contain all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
         /// 
-        public ErrorReport addExistingPhotosToAlbum_backend(List<ComplexPhotoData> photoList, int albumUID)
+        public ErrorReport addExistingImagesToAlbum_backend(List<ComplexPhotoData> photoList, int albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1379,7 +1389,7 @@ namespace SoftwareEng
         /// <param name="pictureNameInAlbum"></param>
         /// <param name="updateCallback"></param>
         /// <param name="updateAmount"></param>
-        public void addNewPictures_backend(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+        public void addNewImages_backend(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             addPhotosThread = new BackgroundWorker();
 

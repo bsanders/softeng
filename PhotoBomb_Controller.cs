@@ -20,6 +20,7 @@
  * class SimplePhotoData was removed. 
  * Julian Nguyen(2/30/13)
  * Some the error Reports were not being set in some of the functions. (null exception) 
+ * Fun() with "Picture" in the name were changed to "Image"
  * 
  * 
  ***************************************************************************************************************/
@@ -127,7 +128,7 @@ namespace SoftwareEng
         /// Will save the Image XML to file.
         /// </summary>
         /// <param name="guiCallback">The call back to the GUI.</param>
-        public void savePicturesXML(generic_callback guiCallback)
+        public void saveImagesXML(generic_callback guiCallback)
         {
             ErrorReport errReport = null;
             errReport = photoBombDatabase.saveImagesXML_backend();
@@ -161,7 +162,7 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="guiCallback">The callback for the GUI.</param>
         /// <param name="albumUID">The ID of the Album. </param>
-        public void getAllPhotosInAlbum(getAllPhotosInAlbum_callback guiCallback, int albumUID)
+        public void getAllImagesInAlbum(getAllPhotosInAlbum_callback guiCallback, int albumUID)
         {
             ErrorReport errReport = null;
             ReadOnlyObservableCollection<ComplexPhotoData> imagesOfAnAlbum = null;
@@ -176,11 +177,11 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="guiCallback"></param>
         /// <param name="albumUID">The unique ID of the album</param>
-        public void sendSelectedPhotosToClipboard(sendAllPhotosInAlbum_callback guiCallback, int albumUID)
+        public void sendSelectedImagesToClipboard(sendAllPhotosInAlbum_callback guiCallback, int albumUID)
         {
             ErrorReport errReport = null;
             List<ComplexPhotoData> images = null;
-            errReport = photoBombDatabase.sendSelectedPhotosToClipboard_backend(albumUID, out images);
+            errReport = photoBombDatabase.sendSelectedImagesToClipboard_backend(albumUID, out images);
             guiCallback(errReport, images);
         }
 
@@ -195,7 +196,7 @@ namespace SoftwareEng
         /// <param name="guiCallback">The callback to the GUI</param>
         /// <param name="photoUID">The Image's ID in the Album.</param>
         /// <param name="albumUID">The Album's ID.</param>
-        public void getPhoto(getPhotoByUID_callback guiCallback, int photoUID, int albumUID)
+        public void getImage(getPhotoByUID_callback guiCallback, int photoUID, int albumUID)
         {
             ErrorReport errReport = null;
             ComplexPhotoData imageData = null;
@@ -212,10 +213,10 @@ namespace SoftwareEng
         /// <param name="guiCallback"></param>
         /// <param name="uid">The idInAlbum of the photo</param>
         /// <param name="albumUID">The UID of the album</param>
-        public void removePictureFromAlbum(generic_callback guiCallback, int idInAlbum, int albumUID)
+        public void removeImageFromAlbum(generic_callback guiCallback, int idInAlbum, int albumUID)
         {
             ErrorReport errReport = null;
-            errReport = photoBombDatabase.removePictureFromAlbum_backend(idInAlbum, albumUID);
+            errReport = photoBombDatabase.removeImageFromAlbum_backend(idInAlbum, albumUID);
             guiCallback(errReport);
         }
 
@@ -241,10 +242,10 @@ namespace SoftwareEng
         /// <param name="guiCallback"></param>
         /// <param name="albumUID">The UID of the album</param>
         /// <param name="newName">The new name of the album</param>
-        public void renameAlbum(generic_callback guiCallback, int albumUID, string newName)
+        public void setAlbumName(generic_callback guiCallback, int albumUID, string newName)
         {
             ErrorReport errReport = null;
-            errReport = photoBombDatabase.renameAlbum_backend(albumUID, newName);
+            errReport = photoBombDatabase.setAlbumName_backend(albumUID, newName);
             guiCallback(errReport);
         }
 
@@ -257,10 +258,10 @@ namespace SoftwareEng
         /// <param name="albumUID">The UID of the album the photo is in</param>
         /// <param name="idInAlbum">The id of the photo in this album</param>
         /// <param name="newName">The new name of the photo</param>
-        public void renamePhoto(generic_callback guiCallback, int albumUID, int idInAlbum, string newName)
+        public void setImageName(generic_callback guiCallback, int albumUID, int idInAlbum, string newName)
         {
             ErrorReport errReport = null; 
-            errReport = photoBombDatabase.renamePhoto_backend(albumUID, idInAlbum, newName);
+            errReport = photoBombDatabase.setImageName_backend(albumUID, idInAlbum, newName);
             guiCallback(errReport);
         }
 
@@ -278,7 +279,7 @@ namespace SoftwareEng
         {
 
             ErrorReport errReport = null;
-            errReport = photoBombDatabase.setPhotoCaption_backend(albumUID, idInAlbum, newCaption);
+            errReport = photoBombDatabase.setImageCaption_backend(albumUID, idInAlbum, newCaption);
             guiCallback(errReport);
         }
 
@@ -307,10 +308,10 @@ namespace SoftwareEng
         /// <param name="guiCallback"></param>
         /// <param name="photoList">A ComplexPhotoData object which contains all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
-        public void addExistingPhotosToAlbum(addNewPictures_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
+        public void addExistingImagesToAlbum(addNewPictures_callback guiCallback, List<ComplexPhotoData> photoList, int albumUID)
         {
             ErrorReport errReport = null;
-             errReport = photoBombDatabase.addExistingPhotosToAlbum_backend(photoList, albumUID);
+             errReport = photoBombDatabase.addExistingImagesToAlbum_backend(photoList, albumUID);
              guiCallback(errReport, albumUID);
         }
 
@@ -342,7 +343,7 @@ namespace SoftwareEng
         /// <param name="guiCallback">The callback to the GUI.</param>
         /// <param name="photoName">The name of the image to be tested.</param>
         /// <param name="albumUID">The ID of the Album that the Image is in.</param>
-        public void checkIfPhotoNameIsUnique(generic_callback guiCallback, String photoName, int albumUID)
+        public void isImageNameUnique(generic_callback guiCallback, String photoName, int albumUID)
         {
             ErrorReport errReport = null;
             bool isUnique = false;
@@ -363,7 +364,7 @@ namespace SoftwareEng
         /// <param name="albumUID">The ID of the album.</param>
         /// <param name="photoUID">The ID of Image (In Album ID)</param>
         /// <param name="newName"></param>
-        public void changePhotoNameByUID(generic_callback guiCallback, int albumUID, int photoUID, String newName)
+        public void setImageNameByUID(generic_callback guiCallback, int albumUID, int photoUID, String newName)
         {
             ErrorReport errReport = null;
             errReport =  photoBombDatabase.setImageNameByUID_backend( albumUID, photoUID, newName);
@@ -386,10 +387,10 @@ namespace SoftwareEng
         /// <param name="pictureNameInAlbum">NOTE: you can pass in NULL for the list for all default names, or you can have "" for a single element for a single default name.</param>
         /// <param name="updateCallback">The callback for the thread to send progress updates to.</param>
         /// <param name="updateAmount">The number of pictures to add BEFORE sending a progress update</param>
-        public void addNewPictures(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+        public void addNewImages(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, int albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             //TODO: JN: passing in a data class?
-            photoBombDatabase.addNewPictures_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum, updateCallback, updateAmount);
+            photoBombDatabase.addNewImages_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum, updateCallback, updateAmount);
         }
 
 
@@ -398,7 +399,7 @@ namespace SoftwareEng
         //
         //This will cancel the thread from addNewPictures() if it exists.
         //Returns the error report directly.
-        public ErrorReport cancelAddNewPicturesThread()
+        public ErrorReport cancelAddNewImagesThread()
         {
             return photoBombDatabase.cancelAddNewImagesThread_backend();
         }

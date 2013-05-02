@@ -49,6 +49,7 @@
  * rename PhotoBomb -> PhotoBomb_Controller.
  * 4/30/13 Julian Nguyen:
  * ErrorReports constants numbers removed and replaced with ReportStatus enums.
+ * Fun() with "Picture" in the name were changed to "Image"
  * 
  */
 using System;
@@ -388,7 +389,7 @@ namespace SoftwareEng
             }
             // Otherwise the text was good, but still might not be unique.
             //check to see if the photo name is unique in the program
-            bombaDeFotos.checkIfPhotoNameIsUnique(new generic_callback(guiValidatePhotoName_Callback), photoNameTextBox.Text, currentAlbumUID);
+            bombaDeFotos.isImageNameUnique(new generic_callback(guiValidatePhotoName_Callback), photoNameTextBox.Text, currentAlbumUID);
         }
 
         /**************************************************************************************************************************
@@ -606,7 +607,7 @@ namespace SoftwareEng
 
             //pass all the files names to a backend function call to start adding the files.
             // sneakily reuse the guiImportPhotos_Callback....
-            bombaDeFotos.addExistingPhotosToAlbum(
+            bombaDeFotos.addExistingImagesToAlbum(
                 new addNewPictures_callback(guiImportPhotos_Callback),
                 _clipboardOfPhotos,
                 albumUID);
@@ -677,7 +678,7 @@ namespace SoftwareEng
                 currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
                 // Set the app's titlebar to display the app name and the album name
                 this.appTitleBarLabel.Content = "PhotoBomber - " + ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).albumName;
-                bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), currentAlbumUID);
+                bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), currentAlbumUID);
             }
         }
 
@@ -848,7 +849,7 @@ namespace SoftwareEng
 
                 //pass all the files names to a backend function call to start adding the files.
                 //fix the function parameters before releasing.
-                bombaDeFotos.addNewPictures(
+                bombaDeFotos.addNewImages(
                     new addNewPictures_callback(guiImportPhotos_Callback),
                     new List<string>(photoDialogue.FileNames),
                     extensions,
@@ -895,7 +896,7 @@ namespace SoftwareEng
                 //if we are in the album we are importing photos too then get all the photos and refresh the view
                 if (currentAlbumUID == albumUID)
                 {
-                    bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
+                    bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
                 }
             }
             else
@@ -924,7 +925,7 @@ namespace SoftwareEng
                 //if we are in the album we are importing photos too then get all the photos and refresh the view
                 if (currentAlbumUID == albumUID)
                 {
-                    bombaDeFotos.getAllPhotosInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
+                    bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
                 }
             }
         }
@@ -968,7 +969,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.removePictureFromAlbum(new generic_callback(guiDeleteSelectedPhoto_Callback), ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, currentAlbumUID);
+                bombaDeFotos.removeImageFromAlbum(new generic_callback(guiDeleteSelectedPhoto_Callback), ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, currentAlbumUID);
             }
         }
 
@@ -985,7 +986,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.renameAlbum(new generic_callback(guiRenameSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID, albumName);
+                bombaDeFotos.setAlbumName(new generic_callback(guiRenameSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID, albumName);
             }
         }
 
@@ -1021,7 +1022,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.renamePhoto(new generic_callback(guiRenameSelectedPhoto_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, newName);
+                bombaDeFotos.setImageName(new generic_callback(guiRenameSelectedPhoto_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, newName);
             }
         }
 
@@ -1072,7 +1073,7 @@ namespace SoftwareEng
         /// </summary>
         private void guiCancelImport()
         {
-            ErrorReport error = bombaDeFotos.cancelAddNewPicturesThread();
+            ErrorReport error = bombaDeFotos.cancelAddNewImagesThread();
 
             //if theres an error, show the error message, otherwise hide the cancel button.
             if (error.reportStatus == ReportStatus.FAILURE)
@@ -2056,7 +2057,7 @@ namespace SoftwareEng
             //if we are importing we need to handle stopping the thread.
             if (isImporting)
             {
-                ErrorReport error = bombaDeFotos.cancelAddNewPicturesThread();
+                ErrorReport error = bombaDeFotos.cancelAddNewImagesThread();
                 //if the thread failed to be stopped.
                 if (error.reportStatus == ReportStatus.FAILURE)
                 {
@@ -2067,7 +2068,7 @@ namespace SoftwareEng
                 {
                     // Make sure the backend saves cleanly
                     bombaDeFotos.saveAlbumsXML(null);
-                    bombaDeFotos.savePicturesXML(null);
+                    bombaDeFotos.saveImagesXML(null);
 
                     //add this line to make sure the app properly closes now that we've screwed with the
                     //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
@@ -2078,7 +2079,7 @@ namespace SoftwareEng
             {
                 // Make sure the backend saves cleanly
                 bombaDeFotos.saveAlbumsXML(null);
-                bombaDeFotos.savePicturesXML(null);
+                bombaDeFotos.saveImagesXML(null);
 
                 //add this line to make sure the app properly closes now that we've screwed with the
                 //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.

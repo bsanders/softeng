@@ -28,7 +28,6 @@ namespace SoftwareEng
         /// <returns></returns>
         public bool loadXmlRootElement(String pathToXml, out XElement xmlRootElement)
         {
-
             try
             {
                 xmlRootElement = XDocument.Load(pathToXml).Element(Settings.XMLRootElement);
