@@ -941,7 +941,7 @@ namespace SoftwareEng
         //By: Ryan Moe
         //Edited Last:
         //returns true if the album name is unique.
-        private Boolean util_checkAlbumNameIsUnique(String albumName)
+        private Boolean util_isAlbumNameUnique(String albumName)
         {
             try
             {

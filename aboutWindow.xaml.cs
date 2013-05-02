@@ -22,12 +22,12 @@ namespace SoftwareEng
     /// <summary>
     /// Interaction logic for aboutWindow.xaml
     /// </summary>
-    public partial class aboutWindow : Window
+    public partial class AboutWindow : Window
     {
         private bool windowOpen;
 
 
-        public aboutWindow()
+        public AboutWindow()
         {
             InitializeComponent();
             windowOpen = true;

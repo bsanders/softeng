@@ -30,7 +30,20 @@ namespace SoftwareEng
     {
         SUCCESS,
         SUCCESS_WITH_WARNINGS,
-        FAILURE
+        FAILURE,
+
+        CANNNOT_LOAD_XML,
+        
+        INVALID_IMAGE_DIR,
+        INVALID_THUMB_DIR,
+
+
+
+        BAD_ALBUM_UID,
+        BAD_IMAGE_UID
+
+
+
     } // End of ReportStatus.
 
     public class ErrorReport

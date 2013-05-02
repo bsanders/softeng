@@ -2,6 +2,8 @@
  * Change Log:
  * Julian Nguyen(4/29/13)
  * This file was made with the classes XmlData, ImageXmlData, AlbumXmlData, and AlbumImageXmlData
+ * Julian Nguyen(5/1/13)
+ * Add Equals GetHashCode fun() to all class. But not XmlData class.
  */
 using System;
 using System.Collections.Generic;
@@ -26,7 +28,7 @@ namespace SoftwareEng
     // Image Xml Data Classes.
 
     /// By Julian Nguyen
-    /// Edited: Julian Nguyen(4/29/13)
+    /// Edited: Julian Nguyen(5/1/13)
     /// <summary>
     /// A data class for the image.
     /// </summary>
@@ -45,6 +47,28 @@ namespace SoftwareEng
         public String _extension { get; set; }
         public DateTime addedDate { get; set; }
 
+        public override bool Equals(System.Object obj)
+        {
+            if (obj == null)
+                return false;
+
+            ImageXmlData otherData = obj as ImageXmlData;
+            if ((System.Object)otherData == null)
+                return false;
+
+            return _hashValue.Equals(otherData._hashValue);
+        }
+
+        public override int GetHashCode()
+        {
+            int sum = 0;
+            foreach (byte b in _hashValue)
+            {
+                sum ^= b * b;
+            }
+            return sum;
+        }
+
     } // End of ImageXmlData.
 
 
@@ -52,7 +76,7 @@ namespace SoftwareEng
     // Album Xml Data classes.
 
     /// By Julian Nguyen
-    /// Edited: Julian Nguyen(4/29/13)
+    /// Edited: Julian Nguyen(5/1/13)
     /// <summary>
     /// A data class for the album. 
     /// </summary>
@@ -67,10 +91,28 @@ namespace SoftwareEng
         // All the images in the Album.
         public List<AlbumImageXmlData> _images { get; set; }
 
+        public override bool Equals(System.Object obj)
+        {
+            if (obj == null)
+                return false;
+
+            AlbumXmlData otherData = obj as AlbumXmlData;
+            if ((System.Object)otherData == null)
+                return false;
+
+            return _albumUID.Equals(otherData._albumUID);
+        }
+
+        public override int GetHashCode()
+        {
+            //TODO:  What are you doing??
+            return _albumUID * 13;
+        }
+
     } // End of AlbumXmlData.
 
     /// By Julian Nguyen
-    /// Edited: Julian Nguyen(4/29/13)
+    /// Edited: Julian Nguyen(5/1/13)
     /// <summary>
     /// A data class for the iamges in an Album.
     /// </summary>
@@ -84,6 +126,28 @@ namespace SoftwareEng
         // Image data.
         public String _imageName { get; set; }
         public String _imageCaption { get; set; }
+
+        public override bool Equals(System.Object obj)
+        {
+            if (obj == null)
+                return false;
+
+            AlbumImageXmlData otherData = obj as AlbumImageXmlData;
+            if ((System.Object)otherData == null)
+                return false;
+
+            return _imageHashValue.Equals(otherData._imageHashValue);
+        }
+
+        public override int GetHashCode()
+        {
+            int sum = 0;
+            foreach (byte b in _imageHashValue)
+            {
+                sum ^= b * b;
+            }
+            return sum;
+        }
 
     } // End of AlbumImageXmlData. 
 

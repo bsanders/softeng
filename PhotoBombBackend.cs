@@ -51,7 +51,10 @@ namespace SoftwareEng
         Properties.Settings Settings = Properties.Settings.Default;
 
         // Xml parsing utils.
-        private XmlHandler _xmlHandler; 
+        private XmlHandler _xmlHandler;
+
+        private XmlDataBase _xmlDataBase;
+        private FileDataBase _fileDataBase;
 
         //path to the images folder we put all the images.
         //tracked by the database.
@@ -88,6 +91,9 @@ namespace SoftwareEng
         public PhotoBomb()
         {
             _xmlHandler = new XmlHandler();
+            _xmlDataBase = new XmlDataBase();
+            _fileDataBase = new FileDataBase();
+
 
             //the list of all albums to return to the gui.
             _albumsCollection = new ObservableCollection<SimpleAlbumData>();
@@ -1288,12 +1294,12 @@ namespace SoftwareEng
         /// <param name="albumName">The Album name to test.</param>
         /// <param name="isUnique">If the Album is unique. </param>
         /// <returns>The ErrorReport of this action.</returns>
-        public ErrorReport checkIfAlbumNameIsUnique_backend(String albumName, out bool isUnique)
+        public ErrorReport isAlbumNameUnique_backend(String albumName, out bool isUnique)
         {
             ErrorReport errorReport = new ErrorReport();
 
             //Test for uniqueness.
-            Boolean nameUnique = util_checkAlbumNameIsUnique(albumName);
+            Boolean nameUnique = util_isAlbumNameUnique(albumName);
             
             isUnique = nameUnique;
 

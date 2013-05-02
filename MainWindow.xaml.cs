@@ -50,6 +50,8 @@
  * 4/30/13 Julian Nguyen:
  * ErrorReports constants numbers removed and replaced with ReportStatus enums.
  * Fun() with "Picture" in the name were changed to "Image"
+ * 5/1/13 Julian Nguyen
+ * Renamed the class fields to have '_'! 
  * 
  */
 using System;
@@ -82,16 +84,16 @@ namespace SoftwareEng
     public partial class MainWindow : Window
     {
         //check for determining which view the window is in
-        private bool isInsideAlbum;
+        private bool _isInsideAlbum;
 
         // A handy shortcut to the settings class...
         Properties.Settings Settings = Properties.Settings.Default;
 
         //the view image window
-        ViewImage view = new ViewImage();
+        ViewImage _view = new ViewImage();
 
         //the about window
-        aboutWindow photoBomberAboutWindow;
+        AboutWindow _photoBomberAboutWindow;
 
         //DATABINDING SOURCE 
         private ReadOnlyObservableCollection<SimpleAlbumData> _listOfAlbums;
@@ -115,35 +117,35 @@ namespace SoftwareEng
         }
 
         //--didn't know what to call it, so I named it the literal spanish translation
-        public SoftwareEng.PhotoBomb_Controller bombaDeFotos;
+        public SoftwareEng.PhotoBomb_Controller _bombaDeFotos;
 
         //--stores the albumImageList index of the default image for albums
-        private const short defaultAlbumImageListIndex = 0;
+        private const short _defaultAlbumImageListIndex = 0;
 
         //--used to specify the UID of the "add new album" icon
         private const int addAlbumID = 0;
 
         //The regex for validation of album names
-        private String albumValidationRegex = @promptStrings.albumValidationRegex; //must be at least 1 character, max 32 in length
+        private String _albumValidationRegex = @promptStrings.albumValidationRegex; //must be at least 1 character, max 32 in length
 
         //The regex for validation of photo names
-        private String photoValidationRegex = @promptStrings.photoValidationRegex; //must be at least 1 character, max 32 in length
+        private String _photoValidationRegex = @promptStrings.photoValidationRegex; //must be at least 1 character, max 32 in length
 
         //The regex for validation of captions
-        private String captionValidationRegex = @promptStrings.captionValidationRegex;
+        private String _captionValidationRegex = @promptStrings.captionValidationRegex;
 
         //current album UID, defaults to a invalid value(because we eont be in an album)
-        private int currentAlbumUID = -1;
+        private int _currentAlbumUID = -1;
 
         //keep track of if an import operation is occurring
-        private bool isImporting = false;
+        private bool _isImporting = false;
 
         //--A more stable storage for the ID of the user album instead
         //-- of relying on a form's selected items collection
         //private int albumChosenbyUser;
 
         //temp variable to test out collection views
-        private CollectionView ImageListCollectionView;
+        private CollectionView _ImageListCollectionView;
 
         public MainWindow()
         {
@@ -155,8 +157,8 @@ namespace SoftwareEng
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Settings.OrgName);
 
-            bombaDeFotos = new PhotoBomb_Controller();
-            bombaDeFotos.init(guiConstructorCallback,
+            _bombaDeFotos = new PhotoBomb_Controller();
+            _bombaDeFotos.init(guiConstructorCallback,
                 System.IO.Path.Combine(basePath, Settings.AlbumXMLFile),
                 System.IO.Path.Combine(basePath, Settings.PhotoXMLFile),
                 System.IO.Path.Combine(basePath, Settings.PhotoLibraryName));
@@ -165,7 +167,7 @@ namespace SoftwareEng
 
             populateAlbumView(true);
 
-            isInsideAlbum = false;
+            _isInsideAlbum = false;
             if (mainWindowAlbumList.Items.IsEmpty == false)
             {
                 mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
@@ -185,7 +187,7 @@ namespace SoftwareEng
             if (status.reportStatus != ReportStatus.SUCCESS)
             {
                 //showErrorMessage("Failed at guiConstructorCallback"); //super temporary
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
+                _bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
@@ -218,7 +220,7 @@ namespace SoftwareEng
 
             if (refreshView == true)
             {
-                bombaDeFotos.getAllAlbums(new getAllAlbumNames_callback(guiAlbumsRetrieved));
+                _bombaDeFotos.getAllAlbums(new getAllAlbumNames_callback(guiAlbumsRetrieved));
             }
 
 
@@ -310,7 +312,7 @@ namespace SoftwareEng
             // Otherwise the text was good, but still might not be unique.
             // Let's check Library vs Album check again...
             //check to see if the album name is unique in the program
-            bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), nameTextBox.Text);
+            _bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), nameTextBox.Text);
         }
 
         /**************************************************************************************************************************
@@ -389,7 +391,7 @@ namespace SoftwareEng
             }
             // Otherwise the text was good, but still might not be unique.
             //check to see if the photo name is unique in the program
-            bombaDeFotos.isImageNameUnique(new generic_callback(guiValidatePhotoName_Callback), photoNameTextBox.Text, currentAlbumUID);
+            _bombaDeFotos.isImageNameUnique(new generic_callback(guiValidatePhotoName_Callback), photoNameTextBox.Text, _currentAlbumUID);
         }
 
         /**************************************************************************************************************************
@@ -441,7 +443,7 @@ namespace SoftwareEng
 
             newAlbum.albumName = albumName;
 
-            bombaDeFotos.addNewAlbum(new generic_callback(guiCreateNewAlbum_Callback), newAlbum);
+            _bombaDeFotos.addNewAlbum(new generic_callback(guiCreateNewAlbum_Callback), newAlbum);
         }
 
         /**************************************************************************************************************************
@@ -462,7 +464,7 @@ namespace SoftwareEng
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
                 showErrorMessage(errorStrings.addAlbumFailure); //super temporary
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
+                _bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
@@ -481,7 +483,7 @@ namespace SoftwareEng
             //trim the input of leading and trailing whitespace
             commentTextBox.Text = commentTextBox.Text.Trim();
             //if it is not a valid string
-            if (!validateTheString(captionValidationRegex, commentTextBox.Text))
+            if (!validateTheString(_captionValidationRegex, commentTextBox.Text))
             {
                 Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
                 commentTextBoxAnimation.Begin();
@@ -521,7 +523,7 @@ namespace SoftwareEng
         {
             if(mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.setImageCaption(new generic_callback(guiChangePhotoCaption_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
+                _bombaDeFotos.setImageCaption(new generic_callback(guiChangePhotoCaption_Callback), _currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
             }
         }
 
@@ -583,7 +585,7 @@ namespace SoftwareEng
 
             // So we have photos, where are we pasting them?
             // Check if we're in library view or album view
-            int albumUID = currentAlbumUID;
+            int albumUID = _currentAlbumUID;
             if (albumUID == -1)
             {
                 // library view
@@ -599,7 +601,7 @@ namespace SoftwareEng
             // Now that we have the album and a given set of pictures
 
             // Tell the GUI we are importing
-            isImporting = true;
+            _isImporting = true;
             //hide the addPhotosDockButton
             addPhotosDockButton.Visibility = Visibility.Collapsed;
             //show the cancel import dock button
@@ -607,7 +609,7 @@ namespace SoftwareEng
 
             //pass all the files names to a backend function call to start adding the files.
             // sneakily reuse the guiImportPhotos_Callback....
-            bombaDeFotos.addExistingImagesToAlbum(
+            _bombaDeFotos.addExistingImagesToAlbum(
                 new addNewPictures_callback(guiImportPhotos_Callback),
                 _clipboardOfPhotos,
                 albumUID);
@@ -633,7 +635,7 @@ namespace SoftwareEng
             //make sure an item is selected
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.removeAlbum(new generic_callback(guiDeleteSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
+                _bombaDeFotos.removeAlbum(new generic_callback(guiDeleteSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
             }
         }
 
@@ -655,7 +657,7 @@ namespace SoftwareEng
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
                 showErrorMessage(errorStrings.deleteAlbumFailure); //super temporary
-                bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
+                _bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
@@ -675,10 +677,10 @@ namespace SoftwareEng
             {
 
                 //call the backend to get all photos in this album.
-                currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
+                _currentAlbumUID = ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID;
                 // Set the app's titlebar to display the app name and the album name
                 this.appTitleBarLabel.Content = "PhotoBomber - " + ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).albumName;
-                bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), currentAlbumUID);
+                _bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), _currentAlbumUID);
             }
         }
 
@@ -704,7 +706,7 @@ namespace SoftwareEng
             else
             {
                 //going into album
-                isInsideAlbum = true;
+                _isInsideAlbum = true;
 
                 if (error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
                 {
@@ -716,13 +718,13 @@ namespace SoftwareEng
                 _listOfPhotos = picturesInAlbum;
                 mainWindowAlbumList.ItemsSource = _listOfPhotos;
 
-                ImageListCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(_listOfPhotos);
+                _ImageListCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(_listOfPhotos);
                 //change the selection mode to Extended
                 mainWindowAlbumList.SelectionMode = SelectionMode.Extended;
                 //show the return to library view button on the dock
                 libraryDockButton.Visibility = Visibility.Visible;
                 //show the addPhotos dock button if we are not running an import operation
-                if (!isImporting)
+                if (!_isImporting)
                 {
                     addPhotosDockButton.Visibility = Visibility.Visible;
                 }
@@ -785,15 +787,15 @@ namespace SoftwareEng
 
 
             //close any open viewImage windows
-            if (view != null)
+            if (_view != null)
             {
-                view.Close();
+                _view.Close();
             }
 
-            currentAlbumUID = -1;
+            _currentAlbumUID = -1;
 
             //returning to libraryView
-            isInsideAlbum = false;
+            _isInsideAlbum = false;
             if (mainWindowAlbumList.Items.IsEmpty == false)
             {
                 mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
@@ -827,7 +829,7 @@ namespace SoftwareEng
             if ((bool)openFilesResult)
             {
                 //tell the GUI at large we are importing
-                isImporting = true;
+                _isImporting = true;
                 //hide the addPhotosDockButton
                 addPhotosDockButton.Visibility = Visibility.Collapsed;
                 //show the cancel import dock button
@@ -849,11 +851,11 @@ namespace SoftwareEng
 
                 //pass all the files names to a backend function call to start adding the files.
                 //fix the function parameters before releasing.
-                bombaDeFotos.addNewImages(
+                _bombaDeFotos.addNewImages(
                     new addNewPictures_callback(guiImportPhotos_Callback),
                     new List<string>(photoDialogue.FileNames),
                     extensions,
-                    currentAlbumUID,
+                    _currentAlbumUID,
                     null,
                     new ProgressChangedEventHandler(guiUpdateProgressBar_Callback),
                     1);
@@ -878,7 +880,7 @@ namespace SoftwareEng
                 //shut down all garbage compactors on the detention level
                 showErrorMessage(errorStrings.addImageFailure);
                 //let the gui know we are done with an import
-                isImporting = false;
+                _isImporting = false;
 
                 //reset the progress bar.
                 progressBar.Visibility = Visibility.Collapsed;
@@ -887,16 +889,16 @@ namespace SoftwareEng
                 //remove the cancel import button
                 cancelPhotoImportDockButton.Visibility = Visibility.Collapsed;
                 //if we are in an album view
-                if (currentAlbumUID != -1)
+                if (_currentAlbumUID != -1)
                 {
                     //show the addPhotosButton again
                     addPhotosDockButton.Visibility = Visibility.Visible;
                 }
 
                 //if we are in the album we are importing photos too then get all the photos and refresh the view
-                if (currentAlbumUID == albumUID)
+                if (_currentAlbumUID == albumUID)
                 {
-                    bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
+                    _bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), _currentAlbumUID);
                 }
             }
             else
@@ -907,7 +909,7 @@ namespace SoftwareEng
                     //showErrorMessage(errorStrings.addImageWarning);
                 }
                 //let the gui know we are done with an import
-                isImporting = false;
+                _isImporting = false;
 
                 //reset the progress bar.
                 progressBar.Visibility = Visibility.Collapsed;
@@ -916,16 +918,16 @@ namespace SoftwareEng
                 //remove the cancel import button
                 cancelPhotoImportDockButton.Visibility = Visibility.Collapsed;
                 //if we are in an album view
-                if (currentAlbumUID != -1)
+                if (_currentAlbumUID != -1)
                 {
                     //show the addPhotosButton again
                     addPhotosDockButton.Visibility = Visibility.Visible;
                 }
 
                 //if we are in the album we are importing photos too then get all the photos and refresh the view
-                if (currentAlbumUID == albumUID)
+                if (_currentAlbumUID == albumUID)
                 {
-                    bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), currentAlbumUID);
+                    _bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), _currentAlbumUID);
                 }
             }
         }
@@ -969,7 +971,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.removeImageFromAlbum(new generic_callback(guiDeleteSelectedPhoto_Callback), ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, currentAlbumUID);
+                _bombaDeFotos.removeImageFromAlbum(new generic_callback(guiDeleteSelectedPhoto_Callback), ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, _currentAlbumUID);
             }
         }
 
@@ -986,7 +988,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.setAlbumName(new generic_callback(guiRenameSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID, albumName);
+                _bombaDeFotos.setAlbumName(new generic_callback(guiRenameSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID, albumName);
             }
         }
 
@@ -1022,7 +1024,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                bombaDeFotos.setImageName(new generic_callback(guiRenameSelectedPhoto_Callback), currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, newName);
+                _bombaDeFotos.setImageName(new generic_callback(guiRenameSelectedPhoto_Callback), _currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, newName);
             }
         }
 
@@ -1073,7 +1075,7 @@ namespace SoftwareEng
         /// </summary>
         private void guiCancelImport()
         {
-            ErrorReport error = bombaDeFotos.cancelAddNewImagesThread();
+            ErrorReport error = _bombaDeFotos.cancelAddNewImagesThread();
 
             //if theres an error, show the error message, otherwise hide the cancel button.
             if (error.reportStatus == ReportStatus.FAILURE)
@@ -1099,13 +1101,13 @@ namespace SoftwareEng
         private void guiViewPicture(Boolean slideShowStart = false)
         {
             //close the previous view
-            if (view != null)
+            if (_view != null)
             {
-                view.Close();
+                _view.Close();
             }
 
             // determine if we're in the library view...
-            if (currentAlbumUID == -1)
+            if (_currentAlbumUID == -1)
             {
                 ErrorReport errorReport = new ErrorReport();
 
@@ -1116,7 +1118,7 @@ namespace SoftwareEng
                 if (_listOfPhotos.Count > 0)
                 {
                     // start the slideshow at picture[0]
-                    view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, slideShowStart);
+                    _view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, slideShowStart);
                 }
                 else
                 {
@@ -1128,13 +1130,13 @@ namespace SoftwareEng
             else
             {
                 // start the slideshow at the selected photo.
-                view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, slideShowStart);
+                _view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, slideShowStart);
             }
 
             // finally, show the form, if there's anything to show.
             if (_listOfPhotos.Count > 0)
             {
-                view.Show();
+                _view.Show();
             }
         }
 
@@ -1284,7 +1286,7 @@ namespace SoftwareEng
             acceptAddToolbarButton.Visibility = Visibility.Visible;
             cancelAddToolbarButton.Visibility = Visibility.Visible;
 
-            if (currentAlbumUID != -1)
+            if (_currentAlbumUID != -1)
             {
                 photoNameTextBox.Visibility = Visibility.Visible;
                 photoNameTextBlock.Visibility = Visibility.Visible;
@@ -1586,27 +1588,27 @@ namespace SoftwareEng
         private void aboutButtonPressed_eventHandler(object sender, RoutedEventArgs e)
         {
             //if this window is already open, close it.
-            if (photoBomberAboutWindow != null)
+            if (_photoBomberAboutWindow != null)
             {
-                photoBomberAboutWindow.Close();
+                _photoBomberAboutWindow.Close();
             }
 
-            photoBomberAboutWindow = new aboutWindow();
+            _photoBomberAboutWindow = new AboutWindow();
 
-            photoBomberAboutWindow.Show();
+            _photoBomberAboutWindow.Show();
         }
 
         private void aboutMenuItemPressed_eventHandler(object sender, RoutedEventArgs e)
         {
             //if this window is already open, close it.
-            if (photoBomberAboutWindow != null)
+            if (_photoBomberAboutWindow != null)
             {
-                photoBomberAboutWindow.Close();
+                _photoBomberAboutWindow.Close();
             }
 
-            photoBomberAboutWindow = new aboutWindow();
+            _photoBomberAboutWindow = new AboutWindow();
 
-            photoBomberAboutWindow.Show();
+            _photoBomberAboutWindow.Show();
         }
 
         /**************************************************************************************************************************
@@ -1634,7 +1636,7 @@ namespace SoftwareEng
         private void acceptAddToolBarButton_Click(object sender, RoutedEventArgs e)
         {
             //if we aren't in the library view
-            if (currentAlbumUID != -1)
+            if (_currentAlbumUID != -1)
             {
                 //if the photo name text box is empty, but the caption text box is not
                 if (photoNameTextBox.Text == "")
@@ -2055,9 +2057,9 @@ namespace SoftwareEng
         private void mainWindow_Closing(object sender, CancelEventArgs e)
         {
             //if we are importing we need to handle stopping the thread.
-            if (isImporting)
+            if (_isImporting)
             {
-                ErrorReport error = bombaDeFotos.cancelAddNewImagesThread();
+                ErrorReport error = _bombaDeFotos.cancelAddNewImagesThread();
                 //if the thread failed to be stopped.
                 if (error.reportStatus == ReportStatus.FAILURE)
                 {
@@ -2067,8 +2069,8 @@ namespace SoftwareEng
                 else
                 {
                     // Make sure the backend saves cleanly
-                    bombaDeFotos.saveAlbumsXML(null);
-                    bombaDeFotos.saveImagesXML(null);
+                    _bombaDeFotos.saveAlbumsXML(null);
+                    _bombaDeFotos.saveImagesXML(null);
 
                     //add this line to make sure the app properly closes now that we've screwed with the
                     //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
@@ -2078,8 +2080,8 @@ namespace SoftwareEng
             else
             {
                 // Make sure the backend saves cleanly
-                bombaDeFotos.saveAlbumsXML(null);
-                bombaDeFotos.saveImagesXML(null);
+                _bombaDeFotos.saveAlbumsXML(null);
+                _bombaDeFotos.saveImagesXML(null);
 
                 //add this line to make sure the app properly closes now that we've screwed with the
                 //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
@@ -2097,11 +2099,11 @@ namespace SoftwareEng
         //ascendingTrue{ 0=(descending) 1=(ascending) }
         private void SortImageList(int orderSelector, int ascendingTrue)
         {
-            if (ImageListCollectionView.SortDescriptions == null)
+            if (_ImageListCollectionView.SortDescriptions == null)
             {
                 return;
             }
-            ImageListCollectionView.SortDescriptions.Clear();
+            _ImageListCollectionView.SortDescriptions.Clear();
 
 
             //shifting by 3 means x8
@@ -2111,26 +2113,26 @@ namespace SoftwareEng
             {
                 case 1:
                     //descending extension
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
                     break;
 
                 case 8:
                     //ascending name
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
                     break;
 
                 case 9:
                     //ascending extension
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
                     break;
 
                 default:
                     //descending name
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
-                    ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
                     break;
             }
         }
@@ -2186,7 +2188,7 @@ namespace SoftwareEng
 
         private void mainWindowListItemActivation()
         {
-            if (isInsideAlbum == false)
+            if (_isInsideAlbum == false)
             {
                 guiEnterAlbumView();
             }

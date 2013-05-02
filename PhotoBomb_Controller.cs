@@ -328,7 +328,7 @@ namespace SoftwareEng
         {
             ErrorReport errReport = null;
             bool isUnique = false;
-            errReport = photoBombDatabase.checkIfAlbumNameIsUnique_backend(albumName, out isUnique);
+            errReport = photoBombDatabase.isAlbumNameUnique_backend(albumName, out isUnique);
             guiCallback(errReport);
         }
 

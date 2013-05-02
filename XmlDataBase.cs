@@ -81,6 +81,21 @@ namespace SoftwareEng
         }
 
 
+        public bool getAnAlbum(int uid, out AlbumXmlDataReadOnly albumData)
+        {
+            foreach (AlbumXmlData aData in _allAlbumsList)
+            {
+                if(aData._albumUID.Equals(uid))
+                {
+                    albumData = new AlbumXmlDataReadOnly(aData);
+                    return true;
+                }
+            }
+
+            albumData = null;
+            return false;
+        }
+
 
 
         // Image stuff -->
@@ -88,12 +103,43 @@ namespace SoftwareEng
         //public bool set
 
 
+
+        public bool setImageName(int albumUID, byte[] imageHash, String newImageName)
+        {
+            AlbumXmlData albumData = null;
+            if (!getAnAlbum(albumUID, out albumData))
+                return false;
+
+            AlbumImageXmlData imageDate = null;
+            if (!getAnImage(albumData, imageHash, out imageDate))
+                return false;
+
+            imageDate._imageName = newImageName;
+            return true;
+        }
+
+        public bool setImageCaption(int albumUID, byte[] imageHash, String newImageCaption)
+        {
+            AlbumXmlData albumData = null;
+            if (!getAnAlbum(albumUID, out albumData))
+                return false;
+
+            AlbumImageXmlData imageDate = null;
+            if (!getAnImage(albumData, imageHash, out imageDate))
+                return false;
+
+            imageDate._imageName = newImageCaption;
+            return true;
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="albumsXmlPath"></param>
         /// <param name="imagesXmlPath"></param>
-        public void reLoadXmlAndOverwrite(String albumsXmlPath, String imagesXmlPath)
+        /// <returns></returns>
+        public bool reLoadXmlAndOverwrite(String albumsXmlPath, String imagesXmlPath)
         {
             // Load the images from the XML file.
             // A list of all images in the XML,
@@ -117,8 +163,9 @@ namespace SoftwareEng
             {
                 _allAlbumsList = allAlbumsList_tmp;
                 _allHashToImageMap = allHashToImageMap_tmp;
+                return true;
             }
-
+            return false;
         }
 
 
@@ -145,8 +192,39 @@ namespace SoftwareEng
                 // This will overwrite data for days.
                 map.Add(imageData._hashValue, imageData);
             }
-
         }
 
-    }
+        private bool getAnAlbum(int uid, out AlbumXmlData albumData)
+        {
+            foreach (AlbumXmlData aData in _allAlbumsList)
+            {
+                if (aData._albumUID.Equals(uid))
+                {
+                    albumData = aData;
+                    return true;
+                }
+            }
+
+            albumData = null;
+            return false;
+        }
+
+
+        private bool getAnImage(AlbumXmlData albumData, byte[] imageHash, out AlbumImageXmlData imageData)
+        {
+            foreach (AlbumImageXmlData iData in albumData._images)
+            {
+                if(iData._imageHashValue.Equals(imageHash))
+                {
+                    imageData = iData;
+                    return true;
+                }
+            }
+            imageData = null;
+            return false;
+        }
+
+
+
+    } // End of XmlDataBase.
 }
