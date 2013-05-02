@@ -27,21 +27,23 @@ namespace SoftwareEng
     class PhotoBomberCustomObject : Label
     {
         private Timer EventTimer;
+        private Point mouseInitialPosition;
         private bool isFrontFace;
-        //private bool okToFlipBack;
+        private bool mouseDown;
         const double mouseEnterTimer = 250.0;
         const double mouseLeaveTimer = 3000.0;
 
-        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
+        public static readonly RoutedEvent PhotoBomberTileTriggerEventLeft = EventManager.RegisterRoutedEvent("PhotoBomberTileEventRight", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
 
+        public static readonly RoutedEvent PhotoBomberTileTriggerEventRight = EventManager.RegisterRoutedEvent("PhotoBomberTileEventLeft", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
         
         public PhotoBomberCustomObject(): base()
         {
-            //okToFlipBack = false;
+            mouseDown = false;
 
-            EventTimer = new Timer();
+            //EventTimer = new Timer();
 
-            EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
+            //EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
         }
 
         public bool isFront
@@ -73,22 +75,36 @@ namespace SoftwareEng
             //}
             if (IsMouseOver == true)
             {
-                this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null);
+                this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileLeftTriggerEvent), DispatcherPriority.Input, null);
             }
         }
 
 
-        public event RoutedEventHandler OnPhotoBomberTileEvent
+        public event RoutedEventHandler OnPhotoBomberTileEventLeft
         {
-            add { AddHandler(PhotoBomberTileTriggerEvent, value); }
-            remove { RemoveHandler(PhotoBomberTileTriggerEvent, value); }
+            add { AddHandler(PhotoBomberTileTriggerEventLeft, value); }
+            remove { RemoveHandler(PhotoBomberTileTriggerEventLeft, value); }
+        }
+
+        public event RoutedEventHandler OnPhotoBomberTileEventRight
+        {
+            add { AddHandler(PhotoBomberTileTriggerEventLeft, value); }
+            remove { RemoveHandler(PhotoBomberTileTriggerEventLeft, value); }
         }
 
 
-        void RaisePhotoBomberTileTriggerEvent()
+        void RaisePhotoBomberTileLeftTriggerEvent()
         {
             //okToFlipBack = false;
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.PhotoBomberTileTriggerEvent);
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.PhotoBomberTileTriggerEventLeft);
+            RaiseEvent(newEventArgs);
+        }
+
+
+        void RaisePhotoBomberTileRightTriggerEvent()
+        {
+            //okToFlipBack = false;
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.PhotoBomberTileTriggerEventRight);
             RaiseEvent(newEventArgs);
         }
 
@@ -109,13 +125,98 @@ namespace SoftwareEng
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            EventTimer.Interval = mouseEnterTimer;
-            EventTimer.Start();
+            //this.CaptureMouse();
+            //mouseDown=true;
+
+            mouseInitialPosition=e.GetPosition(this);
+
+            //RaiseEvent(new RoutedEventArgs(ManipulationStartingEvent, this));
+
+
+            //EventTimer.Interval = mouseEnterTimer;
+            //EventTimer.Start();
+
+
+
+            //Point currentPosition = (Point)e.GetPosition(this);
+
+            //ErrorWindow debug = new ErrorWindow(currentPosition.ToString());
+
+            //debug.Show();
+
+            Mouse.SetCursor(Cursors.Hand);
+
+
         }
+
+
+        //protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
+        //{
+        //    ;
+        //}
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            EventTimer.Stop();
+
+            Mouse.SetCursor(Cursors.Arrow);
+
+
+            //mouseDown=false;
+            //this.ReleaseMouseCapture();
+
+            //EventTimer.Stop();
+
+
+
+            //Point currentPosition = (Point)e.GetPosition(this);
+
+            //Vector someVector = Point.Subtract(currentPosition, mouseInitialPosition);
+
+            //ErrorWindow debug = new ErrorWindow(someVector.ToString());
+
+            //debug.Show();
+
+
+        }
+
+
+
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            
+
+            if (Mouse.LeftButton== MouseButtonState.Pressed)
+            {
+                Point currentPosition = (Point)e.GetPosition(this);
+
+                //Vector someVector = (Vector)currentPosition;
+
+                Vector someVector = Point.Subtract(currentPosition, mouseInitialPosition);
+
+                //ErrorWindow debug = new ErrorWindow(someVector.ToString());
+
+                //debug.Show();
+
+
+                if (someVector.X > 25)
+                {
+
+                    RaisePhotoBomberTileRightTriggerEvent();
+                    //this.ReleaseMouseCapture();
+                    mouseInitialPosition.X = 0.0;
+                }
+                else if (someVector.X < -25)
+                {
+                    RaisePhotoBomberTileLeftTriggerEvent();
+                    //this.ReleaseMouseCapture();
+                    mouseInitialPosition.X = 0.0;
+                }
+
+
+
+            }
+
         }
 
 

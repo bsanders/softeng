@@ -147,7 +147,7 @@
 
         <DataTemplate x:Key="ListItemTemplate">
             <DataTemplate.Resources>
-                <Storyboard x:Key="flipToBackAnimation">
+                <Storyboard x:Key="flipToBackAnimationLeft">
                     <!-- Make the Viewport3D visible only for the duration of the rotation. -->
                     <ObjectAnimationUsingKeyFrames
                                            Storyboard.TargetName="object3D"
@@ -199,8 +199,61 @@
                                            Storyboard.TargetName="rotate"
                                            Storyboard.TargetProperty="Angle" />
                 </Storyboard>
+                
+                <Storyboard x:Key="flipToBackAnimationRight">
+                    <!-- Make the Viewport3D visible only for the duration of the rotation. -->
+                    <ObjectAnimationUsingKeyFrames
+                                           Storyboard.TargetName="object3D"
+                                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
 
-                <Storyboard x:Key="flipToFrontAnimation">
+                    <!-- Make the background element visible. (It won't actually appear until it is faded in right at the end of the animation.) -->
+                    <ObjectAnimationUsingKeyFrames
+                                           Storyboard.TargetName="ItemBackSideContainer"
+                                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
+                    </ObjectAnimationUsingKeyFrames>
+
+
+                    <!-- Hide the foreground element. It will already be invisible by this time
+                                         because we fade it out right at the start of the animation. However, until
+                                         we set its Visibility to Hidden, it will still be visible to the mouse... -->
+                    <ObjectAnimationUsingKeyFrames
+                                           Storyboard.TargetName="ItemFrontSideContainer"
+                                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
+
+
+                    <!-- Fade the front wrapper out. The Viewport3D is behind us, so it'll fade into
+                                         view at this point. The reason for fading is to avoid a visible step as we
+                                         switch from the real UI to the copy projected onto the 3D model. -->
+                    <DoubleAnimation To="0" Duration="0:0:0.05"
+                                           Storyboard.TargetName="ItemFrontSideContainer"
+                                           Storyboard.TargetProperty="Opacity" />
+
+                    <!-- Fade the back wrapper in. Once the spin completes, we fade the real back UI
+                                         in over the Viewport3D - using a fade to avoid a sudden jolt between the
+                                         slightly fuzzy 3D look and the real UI. -->
+                    <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05" To="1"
+                                           Storyboard.TargetName="ItemBackSideContainer"
+                                           Storyboard.TargetProperty="Opacity" />
+
+                    <!-- 3D animation. Move the camera out slightly as we spin, so the model fits entirely
+                                        within the field of view. Rotate the model 180 degrees. -->
+                    <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
+                                           BeginTime="0:0:0.05" Duration="0:0:0.5" AutoReverse="True" DecelerationRatio="0.3"
+                                           Storyboard.TargetName="camera"
+                                           Storyboard.TargetProperty="(ProjectionCamera.Position)" />
+                    <DoubleAnimation From="360" To="180" AccelerationRatio="0.3" DecelerationRatio="0.3"
+                                           BeginTime="0:0:0.05" Duration="0:0:1"
+                                           Storyboard.TargetName="rotate"
+                                           Storyboard.TargetProperty="Angle" />
+                </Storyboard>
+
+                <Storyboard x:Key="flipToFrontAnimationLeft">
                     <ObjectAnimationUsingKeyFrames
                            Storyboard.TargetName="object3D"
                            Storyboard.TargetProperty="Visibility">
@@ -235,6 +288,43 @@
                            Storyboard.TargetName="rotate"
                            Storyboard.TargetProperty="Angle" />
                 </Storyboard>
+
+                <Storyboard x:Key="flipToFrontAnimationRight">
+                    <ObjectAnimationUsingKeyFrames
+                           Storyboard.TargetName="object3D"
+                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
+
+                    <ObjectAnimationUsingKeyFrames
+                           Storyboard.TargetName="ItemFrontSideContainer"
+                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
+                    </ObjectAnimationUsingKeyFrames>
+                    <ObjectAnimationUsingKeyFrames
+                           Storyboard.TargetName="ItemBackSideContainer"
+                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
+
+                    <DoubleAnimation To="0" Duration="0:0:0.05"
+                           Storyboard.TargetName="ItemBackSideContainer"
+                           Storyboard.TargetProperty="Opacity" />
+                    <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05"
+                           Storyboard.TargetName="ItemFrontSideContainer"
+                           Storyboard.TargetProperty="Opacity" />
+
+                    <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
+                           BeginTime="0:0:0.05" Duration="0:0:0.5" AutoReverse="True" DecelerationRatio="0.3"
+                           Storyboard.TargetName="camera"
+                           Storyboard.TargetProperty="(ProjectionCamera.Position)" />
+                    <DoubleAnimation From="180" To="0" AccelerationRatio="0.3" DecelerationRatio="0.3"
+                           BeginTime="0:0:0.05" Duration="0:0:1"
+                           Storyboard.TargetName="rotate"
+                           Storyboard.TargetProperty="Angle" />
+                </Storyboard>
+
             </DataTemplate.Resources>
             <Grid x:Name="grid" Margin="-2,0" Width="{Binding Value, ElementName=thumbnailSizeSlider}" Height="{Binding Value, ElementName=thumbnailSizeSlider}">
                 <!--
@@ -243,13 +333,13 @@
                 </Grid.Background>
                 -->
                 <Border x:Name="ItemFrontSideContainer" Width="Auto" Margin="0" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <SoftwareEngControls:PhotoBomberCustomObject x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" isFront="True">
+                    <SoftwareEngControls:PhotoBomberCustomObject x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" isFront="True" Cursor="Hand">
                         <ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
                     </SoftwareEngControls:PhotoBomberCustomObject>
                 </Border>
 
                 <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0" PreviewMouseRightButtonUp="ItemBackSideContainer_PreviewRightMouseUp">
-                    <SoftwareEngControls:PhotoBomberCustomObject x:Name="ItemBackSide"  Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <SoftwareEngControls:PhotoBomberCustomObject x:Name="ItemBackSide"  Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand">
                         <ContentPresenter x:Name="contentPresenterBack" ContentTemplate="{DynamicResource AlbumListItemBackTemplate}" Content="{Binding}"/>
                     </SoftwareEngControls:PhotoBomberCustomObject>
                 </Border>
@@ -320,11 +410,17 @@
 
             </Grid>
             <DataTemplate.Triggers>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEvent" SourceName="ItemFrontSide">
-                    <BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
+                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEventLeft" SourceName="ItemFrontSide">
+                    <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationLeft}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEvent" SourceName="ItemBackSide">
-                    <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
+                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEventLeft" SourceName="ItemBackSide">
+                    <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimationLeft}"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEventRight" SourceName="ItemFrontSide">
+                    <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationRight}"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEventRight" SourceName="ItemBackSide">
+                    <BeginStoryboard Storyboard="{StaticResource flipToFrontAnimationRight}"/>
                 </EventTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
