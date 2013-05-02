@@ -4,6 +4,8 @@
  * This file was made with the classes XmlData, ImageXmlData, AlbumXmlData, and AlbumImageXmlData
  * Julian Nguyen(5/1/13)
  * Add Equals GetHashCode fun() to all class. But not XmlData class.
+ * Julian Nguyen(5/1/13)
+ * change albumID from int to Guid
  */
 using System;
 using System.Collections.Generic;
@@ -76,7 +78,7 @@ namespace SoftwareEng
     // Album Xml Data classes.
 
     /// By Julian Nguyen
-    /// Edited: Julian Nguyen(5/1/13)
+    /// Edited: Julian Nguyen(5/2/13)
     /// <summary>
     /// A data class for the album. 
     /// </summary>
@@ -84,7 +86,7 @@ namespace SoftwareEng
     public class AlbumXmlData 
     {
         // Album data.
-        public int _albumUID { get; set; }
+        public Guid _albumUID { get; set; }
         public String _albumName { get; set; }
         public byte[] _thumbHashValue { get; set; }
 
@@ -106,7 +108,7 @@ namespace SoftwareEng
         public override int GetHashCode()
         {
             //TODO:  What are you doing??
-            return _albumUID * 13;
+            return _albumUID.GetHashCode();
         }
 
     } // End of AlbumXmlData.

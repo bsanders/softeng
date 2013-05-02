@@ -97,7 +97,7 @@ namespace SoftwareEng
     public class AlbumXmlDataReadOnly
     {
         // Album data
-        private readonly int _albumUID;
+        private readonly Guid _albumUID;
         private readonly String _albumName;
         private readonly byte[] _thumbHashValue;
 
@@ -127,7 +127,7 @@ namespace SoftwareEng
 
 
 
-        public int AlbumUID
+        public Guid AlbumUID
         {
             get { return _albumUID; }
         }
