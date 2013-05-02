@@ -29,7 +29,7 @@ namespace SoftwareEng
         private Timer EventTimer;
         private Point mouseInitialPosition;
         private bool isFrontFace;
-        private bool mouseDown;
+        private bool lockOut;
         const double mouseEnterTimer = 250.0;
         const double mouseLeaveTimer = 3000.0;
 
@@ -39,7 +39,7 @@ namespace SoftwareEng
         
         public PhotoBomberCustomObject(): base()
         {
-            mouseDown = false;
+            lockOut = true;
 
             //EventTimer = new Timer();
 
@@ -108,20 +108,6 @@ namespace SoftwareEng
             RaiseEvent(newEventArgs);
         }
 
-        //protected override void OnMouseEnter(MouseEventArgs e)
-        //{
-            
-        //    EventTimer.Interval = mouseEnterTimer;
-        //    EventTimer.Start();
-
-        //}
-
-        //protected override void OnMouseLeave(MouseEventArgs e)
-        //{
-
-        //    EventTimer.Stop();
-
-        //}
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
@@ -129,6 +115,8 @@ namespace SoftwareEng
             //mouseDown=true;
 
             mouseInitialPosition=e.GetPosition(this);
+
+            lockOut = false;
 
             //RaiseEvent(new RoutedEventArgs(ManipulationStartingEvent, this));
 
@@ -144,21 +132,15 @@ namespace SoftwareEng
 
             //debug.Show();
 
-            Mouse.SetCursor(Cursors.Hand);
+            //Mouse.SetCursor(Cursors.Hand);
 
 
         }
 
-
-        //protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
-        //{
-        //    ;
-        //}
-
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
 
-            Mouse.SetCursor(Cursors.Arrow);
+            //Mouse.SetCursor(Cursors.Arrow);
 
 
             //mouseDown=false;
@@ -166,7 +148,7 @@ namespace SoftwareEng
 
             //EventTimer.Stop();
 
-
+            lockOut = true;
 
             //Point currentPosition = (Point)e.GetPosition(this);
 
@@ -186,7 +168,7 @@ namespace SoftwareEng
         {
             
 
-            if (Mouse.LeftButton== MouseButtonState.Pressed)
+            if (Mouse.LeftButton== MouseButtonState.Pressed && lockOut == false)
             {
                 Point currentPosition = (Point)e.GetPosition(this);
 
@@ -204,18 +186,23 @@ namespace SoftwareEng
 
                     RaisePhotoBomberTileRightTriggerEvent();
                     //this.ReleaseMouseCapture();
-                    mouseInitialPosition.X = 0.0;
+                    mouseInitialPosition = currentPosition;
+                    lockOut = true;
                 }
                 else if (someVector.X < -25)
                 {
                     RaisePhotoBomberTileLeftTriggerEvent();
                     //this.ReleaseMouseCapture();
-                    mouseInitialPosition.X = 0.0;
+                    mouseInitialPosition = currentPosition;
+                    lockOut = true;
                 }
 
 
 
+
             }
+
+            
 
         }
 
