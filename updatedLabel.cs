@@ -33,13 +33,19 @@ namespace SoftwareEng
         const double mouseEnterTimer = 250.0;
         const double mouseLeaveTimer = 3000.0;
 
-        public static readonly RoutedEvent PhotoBomberTileTriggerEventLeft = EventManager.RegisterRoutedEvent("PhotoBomberTileEventRight", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
 
-        public static readonly RoutedEvent PhotoBomberTileTriggerEventRight = EventManager.RegisterRoutedEvent("PhotoBomberTileEventLeft", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
+        //public static readonly RoutedEvent PhotoBomberTileTriggerEventRight = EventManager.RegisterRoutedEvent("PhotoBomberTileEventRight", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
+
+        public static readonly RoutedEvent TileTriggerEventRight = EventManager.RegisterRoutedEvent("TileEventRight", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
+
+        public static readonly RoutedEvent TileTriggerEventLeft = EventManager.RegisterRoutedEvent("LeftTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
+
         
         public PhotoBomberCustomObject(): base()
         {
             lockOut = true;
+
+
 
             //EventTimer = new Timer();
 
@@ -82,21 +88,21 @@ namespace SoftwareEng
 
         public event RoutedEventHandler OnPhotoBomberTileEventLeft
         {
-            add { AddHandler(PhotoBomberTileTriggerEventLeft, value); }
-            remove { RemoveHandler(PhotoBomberTileTriggerEventLeft, value); }
+            add { AddHandler(TileTriggerEventLeft, value); }
+            remove { RemoveHandler(TileTriggerEventLeft, value); }
         }
 
         public event RoutedEventHandler OnPhotoBomberTileEventRight
         {
-            add { AddHandler(PhotoBomberTileTriggerEventLeft, value); }
-            remove { RemoveHandler(PhotoBomberTileTriggerEventLeft, value); }
+            add { AddHandler(TileTriggerEventRight, value); }
+            remove { RemoveHandler(TileTriggerEventRight, value); }
         }
 
 
         void RaisePhotoBomberTileLeftTriggerEvent()
         {
             //okToFlipBack = false;
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.PhotoBomberTileTriggerEventLeft);
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.TileTriggerEventLeft);
             RaiseEvent(newEventArgs);
         }
 
@@ -104,10 +110,9 @@ namespace SoftwareEng
         void RaisePhotoBomberTileRightTriggerEvent()
         {
             //okToFlipBack = false;
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.PhotoBomberTileTriggerEventRight);
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.TileTriggerEventRight);
             RaiseEvent(newEventArgs);
         }
-
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
@@ -185,6 +190,7 @@ namespace SoftwareEng
                 {
 
                     RaisePhotoBomberTileRightTriggerEvent();
+                    
                     //this.ReleaseMouseCapture();
                     mouseInitialPosition = currentPosition;
                     lockOut = true;

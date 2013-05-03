@@ -410,16 +410,16 @@
 
             </Grid>
             <DataTemplate.Triggers>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEventLeft" SourceName="ItemFrontSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.TileEventRight" SourceName="ItemFrontSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationLeft}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEventLeft" SourceName="ItemBackSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.TileEventRight" SourceName="ItemBackSide">
                     <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimationLeft}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEventRight" SourceName="ItemFrontSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.Touchleave" SourceName="ItemFrontSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationRight}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.PhotoBomberTileEventRight" SourceName="ItemBackSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObjectTouchleave" SourceName="ItemBackSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToFrontAnimationRight}"/>
                 </EventTrigger>
             </DataTemplate.Triggers>
