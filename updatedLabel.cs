@@ -16,16 +16,15 @@ namespace SoftwareEng
     public delegate void customEvent_callback();
 
 
-    class customLabel : Label
+    public class customLabel : Label
     {
         private Timer EventTimer;
         private bool isFrontFace;
         const double mouseEnterTimer = 1000.0;
         const double mouseLeaveTimer = 3000.0;
 
-        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
+        public static readonly RoutedEvent TypeOneTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeOneTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
 
-        
         public customLabel(): base()
         {
             EventTimer = new Timer();
@@ -51,17 +50,16 @@ namespace SoftwareEng
             this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null); 
         }
 
-
         public event RoutedEventHandler OnPhotoBomberTileEvent
         {
-            add { AddHandler(PhotoBomberTileTriggerEvent, value); }
-            remove { RemoveHandler(PhotoBomberTileTriggerEvent, value); }
+            add { AddHandler(TypeOneTileTriggerEvent, value); }
+            remove { RemoveHandler(TypeOneTileTriggerEvent, value); }
         }
 
 
         void RaisePhotoBomberTileTriggerEvent()
         {
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.PhotoBomberTileTriggerEvent);
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.TypeOneTileTriggerEvent);
             RaiseEvent(newEventArgs);
         }
 
@@ -92,5 +90,25 @@ namespace SoftwareEng
                 EventTimer.Stop();
             }
         }
+    }
+
+    public class preCustomLabel: customLabel
+    {
+        static readonly RoutedEvent TypeTwoTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeTwoTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(preCustomLabel));
+
+
+        public event RoutedEventHandler OnPhotoBomberTypeTwoEvent
+        {
+            add { AddHandler(TypeTwoTileTriggerEvent, value); }
+            remove { RemoveHandler(TypeTwoTileTriggerEvent, value); }
+        }
+
+
+        void RaisePhotoBomberTileTriggerEvent()
+        {
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(preCustomLabel.TypeTwoTileTriggerEvent);
+            RaiseEvent(newEventArgs);
+        }
+    
     }
 }

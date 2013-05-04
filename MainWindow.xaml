@@ -309,10 +309,10 @@
 
             </Grid>
             <DataTemplate.Triggers>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.PhotoBomberTileEvent" SourceName="ItemFrontSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemFrontSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.PhotoBomberTileEvent" SourceName="ItemBackSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemBackSide">
                     <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
                 </EventTrigger>
             </DataTemplate.Triggers>
