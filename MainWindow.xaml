@@ -199,7 +199,7 @@
                                            Storyboard.TargetName="rotate"
                                            Storyboard.TargetProperty="Angle" />
                 </Storyboard>
-                
+
                 <Storyboard x:Key="flipToBackAnimationRight">
                     <!-- Make the Viewport3D visible only for the duration of the rotation. -->
                     <ObjectAnimationUsingKeyFrames
@@ -333,7 +333,7 @@
                 </Grid.Background>
                 -->
                 <Border x:Name="ItemFrontSideContainer" Width="Auto" Margin="0" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" isFront="True" Cursor="Hand">
+                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand">
                         <ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
                     </SoftwareEngControls:customLabel>
                 </Border>
@@ -410,16 +410,16 @@
 
             </Grid>
             <DataTemplate.Triggers>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemFrontSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemFrontSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationLeft}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemBackSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemBackSide">
                     <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimationLeft}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemFrontSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemFrontSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationRight}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemBackSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemBackSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToFrontAnimationRight}"/>
                 </EventTrigger>
             </DataTemplate.Triggers>
@@ -767,7 +767,7 @@
                 <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
             </Button>
         </SoftwareEngControls:customRadialPanel>
-        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Background="{DynamicResource PhotoBomberTitleBarBrush}">
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Background="{DynamicResource PhotoBomberTitleBarBrush}" Height="36">
 
             <!--
             <Menu x:Name="PhotoBomberMenuButtonPlaceholder" IsMainMenu="True" IsTabStop="False" Focusable="False" Margin="2,2,0,0" BorderBrush="#FFE0E0E0" BorderThickness="1">
@@ -792,36 +792,11 @@
             </Button>
             -->
 
-            <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="1,1,0,0" Click="aboutButtonPressed_eventHandler" ToolTip="About PhotoBomber" IsTabStop="False" Focusable="False">
-                <Menu>
-                    <Menu.Background>
-                        <RadialGradientBrush>
-                            <GradientStop Color="{DynamicResource {x:Static SystemColors.InactiveCaptionTextColorKey}}" Offset="0.901"/>
-                            <GradientStop Color="#FFF0F0F0" Offset="0.685"/>
-                            <GradientStop Color="#FFF0F0F0" Offset="1.2"/>
-                        </RadialGradientBrush>
-                    </Menu.Background>
-                    <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.IsSharedSizeScope="False" Margin="0" Width="48">
-                        <MenuItem.Icon>
-                            <Image x:Name="aboutToolbarButtonImage" Source="ImagesResources2012/logoSmall.png" Width="30"/>
-                        </MenuItem.Icon>
-                        <MenuItem x:Name="themeParentMenu" Header="Themes">
-                            <!--<MenuItem Header="Debug::Current Theme" Click="getCurrentThemeMenuItem_Click"/>-->
-                            <MenuItem x:Name="bureauBlackThemeMenuItem" Header="Bureau Black" IsCheckable="True" Click="bureauBlackThemeMenuItem_CheckToggle"/>
-                            <MenuItem x:Name="bureauBlueThemeMenuItem" Header="Beaureu Blue" IsCheckable="True" Click="bureauBlueThemeMenuItem_CheckToggle"/>
-                            <MenuItem x:Name="expressionDarkThemeMenuItem" Header="Expression Dark" IsCheckable="True" Click="expressionDarkThemeMenuItem_CheckToggle"/>
-                            <MenuItem x:Name="expressionLightThemeMenuItem" Header="Expression Light" IsCheckable="True" Click="expressionLightThemeMenuItem_CheckToggle"/>
-                            <MenuItem x:Name="shinyBlueThemeMenuItem" Header="Shiny Blue" IsCheckable="True" Click="shinyBlueThemeMenuItem_CheckToggle"/>
-                            <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_CheckToggle"/>
-                            <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_CheckToggle"/>
-                        </MenuItem>
-                        <MenuItem Header="About" Click="aboutMenuItemPressed_eventHandler"/>
-                    </MenuItem>
-                </Menu>
-            </Button>
+
+
 
             <!-- Not sure how to set the content of this label dynamically from settings file -->
-            <Label x:Name="appTitleBarLabel" Content="PhotoBomber - My Photo Library!"  Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center">
+            <Label x:Name="appTitleBarLabel" Content="PhotoBomber - My Photo Library!"  Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center" Margin="40,0,0,0">
                 <Label.Foreground>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                 </Label.Foreground>
@@ -841,9 +816,27 @@
 
         </DockPanel>
 
-
-
-
+        <Menu BorderBrush="#00333333" Foreground="#00000000" Width="25" Height="25" Margin="8,8,664,373">
+            <Menu.Background>
+                <ImageBrush ImageSource="ImagesResources2012/logoSmall.png"/>
+            </Menu.Background>
+            <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.IsSharedSizeScope="False" Margin="-7,0,0,0" Width="35" IsHitTestVisible="True" Height="30">
+                <MenuItem.Icon>
+                    <Image x:Name="aboutToolbarButtonImage" Source="ImagesResources2012/logoSmall.png" Width="30"/>
+                </MenuItem.Icon>
+                <MenuItem x:Name="themeParentMenu" Header="Themes" IsHitTestVisible="True">
+                    <MenuItem x:Name="bureauBlackThemeMenuItem" Header="Bureau Black" IsCheckable="True" Click="bureauBlackThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="bureauBlueThemeMenuItem" Header="Beaureu Blue" IsCheckable="True" Click="bureauBlueThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="expressionDarkThemeMenuItem" Header="Expression Dark" IsCheckable="True" Click="expressionDarkThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="expressionLightThemeMenuItem" Header="Expression Light" IsCheckable="True" Click="expressionLightThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="shinyBlueThemeMenuItem" Header="Shiny Blue" IsCheckable="True" Click="shinyBlueThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_CheckToggle"/>
+                </MenuItem>
+                <MenuItem Header="About" Click="aboutMenuItemPressed_eventHandler"/>
+            </MenuItem>
+        </Menu>
+        <Button x:Name="aboutToolbarButton" Style="{StaticResource GlassButton}" Click="aboutButtonPressed_eventHandler" IsTabStop="False" Height="36" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,1,0,0" Width="36" Opacity="0.7"/>
 
 
     </Grid>

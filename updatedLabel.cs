@@ -21,6 +21,9 @@ namespace SoftwareEng
         private Timer EventTimer;
         private bool isFrontFace;
         private bool lockOut;
+        Point mouseInitialPosition;
+        Point mouseCurrentPosition;
+        ErrorWindow debug;
 
         public static readonly RoutedEvent TypeOneTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeOneTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
 
@@ -29,29 +32,66 @@ namespace SoftwareEng
             lockOut = true;
         }
 
-        public bool isFront
-        {
-        }
-
-        public event RoutedEventHandler OnPhotoBomberTileEvent
+        public event RoutedEventHandler OnPhotoBomberTypeOneEvent
         {
             add { AddHandler(TypeOneTileTriggerEvent, value); }
             remove { RemoveHandler(TypeOneTileTriggerEvent, value); }
         }
 
 
-        protected void RaisePhotoBomberTileTriggerEvent()
+        protected void RaisePhotoBomberTileTypeOneEvent()
         {
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.TypeOneTileTriggerEvent);
-            RaiseEvent(newEventArgs);
+            if (lockOut == false)
+            {
+                RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.TypeOneTileTriggerEvent);
+                RaiseEvent(newEventArgs);
+            }
         }
 
 
-        protected override void OnMouseLeftDown(MouseEventArgs e)
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            lockOut= true;
+            lockOut= false;
+
+            mouseInitialPosition = e.GetPosition(this);
+
+            Mouse.SetCursor(Cursors.Hand);
         }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            lockOut = true;
+
+            Mouse.SetCursor(Cursors.Arrow);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (Mouse.LeftButton== MouseButtonState.Pressed)
+            {
+                mouseCurrentPosition = (Point)e.GetPosition(this);
+
+                Vector someVector = Point.Subtract(mouseCurrentPosition, mouseInitialPosition);
+
+
+                if (someVector.X > 25)
+                {
+
+                    RaisePhotoBomberTileTypeOneEvent();
+                    mouseInitialPosition.X = 0.0;
+                    lockOut = true;
+                }
+                else if (someVector.X < -25)
+                {
+                    RaisePhotoBomberTileTypeTwoEvent();
+                    mouseInitialPosition.X = 0.0;
+                    lockOut = true;
+                }
+            }
+         }
     }
+
+
 
     public class preCustomLabel : Label
     {
@@ -65,7 +105,7 @@ namespace SoftwareEng
         }
 
 
-        protected void RaisePhotoBomberTileTriggerEvent()
+        protected void RaisePhotoBomberTileTypeTwoEvent()
         {
             RoutedEventArgs newEventArgs = new RoutedEventArgs(preCustomLabel.TypeTwoTileTriggerEvent);
             RaiseEvent(newEventArgs);

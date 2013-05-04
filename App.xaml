@@ -13,6 +13,7 @@
                         <ResourceDictionary Source="/Themes/PhotoBomber.xaml"/>
                     </ResourceDictionary.MergedDictionaries>
                 </ResourceDictionary>
+                
             </ResourceDictionary.MergedDictionaries>
 
 

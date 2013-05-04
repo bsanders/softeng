@@ -1640,9 +1640,10 @@ namespace SoftwareEng
                 photoBomberAboutWindow.Close();
             }
 
-            photoBomberAboutWindow = new aboutWindow();
+            //photoBomberAboutWindow = new aboutWindow();
 
-            photoBomberAboutWindow.Show();
+            //photoBomberAboutWindow.Show();
+            PhotoBomberMenu.IsSubmenuOpen = true;
         }
 
         private void aboutMenuItemPressed_eventHandler(object sender, RoutedEventArgs e)
