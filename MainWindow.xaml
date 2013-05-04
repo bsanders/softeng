@@ -81,7 +81,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding name}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="3,0,0,0" Margin="0"/>
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding name}" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="3,0,0,0" Margin="0" Foreground="{DynamicResource PhotoBomberLightFontColor}"/>
                 <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
                     <Image.Source>
                         <Binding Path="lgThumbPath" Converter="{StaticResource ImagePathConverter}">
@@ -104,7 +104,7 @@
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
                 <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" />
-                <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Width="Auto" Content="{Binding albumName}" Foreground="#AAFFFFFF" />
+                <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Width="Auto" Content="{Binding albumName}" Foreground="{DynamicResource PhotoBomberLightFontColor}"  />
             </Grid>
         </DataTemplate>
 
@@ -118,11 +118,8 @@
                     <RowDefinition Height="37"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid.Background>
-                    <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
-                </Grid.Background>
 
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0"/>
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="{DynamicResource PhotoBomberLightFontColor}" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0"/>
                 <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" >
                     <Image.Source>
                         <!-- THE GODDAMNED SPLICERS HAVE SAVED THE DAY, WE HAVE DEFAULT FALLBACK IMAGES BITCHES-->
@@ -798,7 +795,7 @@
             <!-- Not sure how to set the content of this label dynamically from settings file -->
             <Label x:Name="appTitleBarLabel" Content="PhotoBomber - My Photo Library!"  Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center" Margin="40,0,0,0">
                 <Label.Foreground>
-                    <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    <SolidColorBrush Color="Black"/>
                 </Label.Foreground>
             </Label>
 
@@ -817,10 +814,7 @@
         </DockPanel>
 
         <Menu BorderBrush="#00333333" Foreground="#00000000" Width="25" Height="25" Margin="8,8,664,373">
-            <Menu.Background>
-                <ImageBrush ImageSource="ImagesResources2012/logoSmall.png"/>
-            </Menu.Background>
-            <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.IsSharedSizeScope="False" Margin="-7,0,0,0" Width="35" IsHitTestVisible="True" Height="30">
+            <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.IsSharedSizeScope="False" Margin="-7,0,0,0" Width="35" IsHitTestVisible="True" Height="30" Background="#00000000">
                 <MenuItem.Icon>
                     <Image x:Name="aboutToolbarButtonImage" Source="ImagesResources2012/logoSmall.png" Width="30"/>
                 </MenuItem.Icon>
