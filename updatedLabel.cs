@@ -13,43 +13,24 @@ using System.ComponentModel;
 
 namespace SoftwareEng
 {
-    /** ******************************************************************************************************
-    /// <author>Alejandro Sosa</author>
-    /// <summary>Delegate that conforms to the Dispatcher.BeginInvoke() method's requirements</summary>
-    *** *****************************************************************************************************/ 
     public delegate void customEvent_callback();
 
 
-    /** ******************************************************************************************************
-    /// <author>Alejandro Sosa</author>
-    /// <summary>Class can inherit from a non-sealed class. Used to define and raise a custom event</summary>
-    *** *****************************************************************************************************/ 
-    class PhotoBomberCustomObject : Label
+    public class customLabel : Label
     {
         private Timer EventTimer;
-        private Point mouseInitialPosition;
         private bool isFrontFace;
-        private bool lockOut;
-        const double mouseEnterTimer = 250.0;
+        const double mouseEnterTimer = 1000.0;
         const double mouseLeaveTimer = 3000.0;
 
+        public static readonly RoutedEvent TypeOneTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeOneTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
 
-        //public static readonly RoutedEvent PhotoBomberTileTriggerEventRight = EventManager.RegisterRoutedEvent("PhotoBomberTileEventRight", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
-
-        public static readonly RoutedEvent TileTriggerEventRight = EventManager.RegisterRoutedEvent("TileEventRight", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
-
-        public static readonly RoutedEvent TileTriggerEventLeft = EventManager.RegisterRoutedEvent("LeftTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoBomberCustomObject));
-
-        
-        public PhotoBomberCustomObject(): base()
+        public customLabel()
+            : base()
         {
-            lockOut = true;
+            EventTimer = new Timer();
 
-
-
-            //EventTimer = new Timer();
-
-            //EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
+            EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
         }
 
         public bool isFront
@@ -67,151 +48,68 @@ namespace SoftwareEng
         void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             EventTimer.Stop();
+            this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null);
+        }
 
-
-            //if(isFrontFace == true)// || okToFlipBack == true)
-            //{
-            //    this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null);
-            //}
-            //else if (isFrontFace == false && this.Visibility == Visibility.Hidden)
-            //{
-            //    EventTimer.Interval = mouseLeaveTimer;
-            //    EventTimer.Start();
-            //    okToFlipBack = true;
-            //}
-            if (IsMouseOver == true)
-            {
-                this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileLeftTriggerEvent), DispatcherPriority.Input, null);
-            }
+        public event RoutedEventHandler OnPhotoBomberTileEvent
+        {
+            add { AddHandler(TypeOneTileTriggerEvent, value); }
+            remove { RemoveHandler(TypeOneTileTriggerEvent, value); }
         }
 
 
-        public event RoutedEventHandler OnPhotoBomberTileEventLeft
+        protected void RaisePhotoBomberTileTriggerEvent()
         {
-            add { AddHandler(TileTriggerEventLeft, value); }
-            remove { RemoveHandler(TileTriggerEventLeft, value); }
-        }
-
-        public event RoutedEventHandler OnPhotoBomberTileEventRight
-        {
-            add { AddHandler(TileTriggerEventRight, value); }
-            remove { RemoveHandler(TileTriggerEventRight, value); }
-        }
-
-
-        void RaisePhotoBomberTileLeftTriggerEvent()
-        {
-            //okToFlipBack = false;
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.TileTriggerEventLeft);
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.TypeOneTileTriggerEvent);
             RaiseEvent(newEventArgs);
         }
 
 
-        void RaisePhotoBomberTileRightTriggerEvent()
+
+        protected override void OnMouseEnter(MouseEventArgs e)
         {
-            //okToFlipBack = false;
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(PhotoBomberCustomObject.TileTriggerEventRight);
+            if (isFrontFace == true)
+            {
+                EventTimer.Interval = mouseEnterTimer;
+                EventTimer.Start();
+            }
+            else
+            {
+                EventTimer.Stop();
+            }
+        }
+
+        protected override void OnMouseLeave(MouseEventArgs e)
+        {
+            if (isFrontFace == false)
+            {
+                EventTimer.Interval = mouseLeaveTimer;
+                EventTimer.Start();
+            }
+            else
+            {
+                EventTimer.Stop();
+            }
+        }
+    }
+
+    public class preCustomLabel : customLabel
+    {
+        static readonly RoutedEvent TypeTwoTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeTwoTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(preCustomLabel));
+
+
+        public event RoutedEventHandler OnPhotoBomberTypeTwoEvent
+        {
+            add { AddHandler(TypeTwoTileTriggerEvent, value); }
+            remove { RemoveHandler(TypeTwoTileTriggerEvent, value); }
+        }
+
+
+        protected void RaisePhotoBomberTileTriggerEvent()
+        {
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(preCustomLabel.TypeTwoTileTriggerEvent);
             RaiseEvent(newEventArgs);
         }
-
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            //this.CaptureMouse();
-            //mouseDown=true;
-
-            mouseInitialPosition=e.GetPosition(this);
-
-            lockOut = false;
-
-            //RaiseEvent(new RoutedEventArgs(ManipulationStartingEvent, this));
-
-
-            //EventTimer.Interval = mouseEnterTimer;
-            //EventTimer.Start();
-
-
-
-            //Point currentPosition = (Point)e.GetPosition(this);
-
-            //ErrorWindow debug = new ErrorWindow(currentPosition.ToString());
-
-            //debug.Show();
-
-            //Mouse.SetCursor(Cursors.Hand);
-
-
-        }
-
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-
-            //Mouse.SetCursor(Cursors.Arrow);
-
-
-            //mouseDown=false;
-            //this.ReleaseMouseCapture();
-
-            //EventTimer.Stop();
-
-            lockOut = true;
-
-            //Point currentPosition = (Point)e.GetPosition(this);
-
-            //Vector someVector = Point.Subtract(currentPosition, mouseInitialPosition);
-
-            //ErrorWindow debug = new ErrorWindow(someVector.ToString());
-
-            //debug.Show();
-
-
-        }
-
-
-
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            
-
-            if (Mouse.LeftButton== MouseButtonState.Pressed && lockOut == false)
-            {
-                Point currentPosition = (Point)e.GetPosition(this);
-
-                //Vector someVector = (Vector)currentPosition;
-
-                Vector someVector = Point.Subtract(currentPosition, mouseInitialPosition);
-
-                //ErrorWindow debug = new ErrorWindow(someVector.ToString());
-
-                //debug.Show();
-
-
-                if (someVector.X > 25)
-                {
-
-                    RaisePhotoBomberTileRightTriggerEvent();
-                    
-                    //this.ReleaseMouseCapture();
-                    mouseInitialPosition = currentPosition;
-                    lockOut = true;
-                }
-                else if (someVector.X < -25)
-                {
-                    RaisePhotoBomberTileLeftTriggerEvent();
-                    //this.ReleaseMouseCapture();
-                    mouseInitialPosition = currentPosition;
-                    lockOut = true;
-                }
-
-
-
-
-            }
-
-            
-
-        }
-
 
     }
 }

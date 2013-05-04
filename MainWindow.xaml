@@ -333,15 +333,15 @@
                 </Grid.Background>
                 -->
                 <Border x:Name="ItemFrontSideContainer" Width="Auto" Margin="0" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <SoftwareEngControls:PhotoBomberCustomObject x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" isFront="True" Cursor="Hand">
+                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" isFront="True" Cursor="Hand">
                         <ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
-                    </SoftwareEngControls:PhotoBomberCustomObject>
+                    </SoftwareEngControls:customLabel>
                 </Border>
 
                 <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0" PreviewMouseRightButtonUp="ItemBackSideContainer_PreviewRightMouseUp">
-                    <SoftwareEngControls:PhotoBomberCustomObject x:Name="ItemBackSide"  Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand">
+                    <SoftwareEngControls:customLabel x:Name="ItemBackSide"  Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand">
                         <ContentPresenter x:Name="contentPresenterBack" ContentTemplate="{DynamicResource AlbumListItemBackTemplate}" Content="{Binding}"/>
-                    </SoftwareEngControls:PhotoBomberCustomObject>
+                    </SoftwareEngControls:customLabel>
                 </Border>
 
                 <Viewport3D Grid.Column="0" x:Name="object3D" Visibility="Hidden">
@@ -410,16 +410,16 @@
 
             </Grid>
             <DataTemplate.Triggers>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.TileEventRight" SourceName="ItemFrontSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemFrontSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationLeft}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.TileEventRight" SourceName="ItemBackSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemBackSide">
                     <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimationLeft}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObject.Touchleave" SourceName="ItemFrontSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemFrontSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationRight}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:PhotoBomberCustomObjectTouchleave" SourceName="ItemBackSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemBackSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToFrontAnimationRight}"/>
                 </EventTrigger>
             </DataTemplate.Triggers>
