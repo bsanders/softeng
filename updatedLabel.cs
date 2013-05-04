@@ -16,7 +16,7 @@ namespace SoftwareEng
     public delegate void customEvent_callback();
 
 
-    public class customLabel : Label
+    public class customLabel : preCustomLabel
     {
         private Timer EventTimer;
         private bool isFrontFace;
@@ -47,7 +47,7 @@ namespace SoftwareEng
         void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             EventTimer.Stop();
-            this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null); 
+            this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTypeOneEvent), DispatcherPriority.Input, null); 
         }
 
         public event RoutedEventHandler OnPhotoBomberTileEvent
@@ -57,7 +57,7 @@ namespace SoftwareEng
         }
 
 
-        void RaisePhotoBomberTileTriggerEvent()
+        protected void RaisePhotoBomberTileTypeOneEvent()
         {
             RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.TypeOneTileTriggerEvent);
             RaiseEvent(newEventArgs);
@@ -92,7 +92,7 @@ namespace SoftwareEng
         }
     }
 
-    public class preCustomLabel: customLabel
+    public class preCustomLabel: Label
     {
         static readonly RoutedEvent TypeTwoTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeTwoTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(preCustomLabel));
 
@@ -104,7 +104,7 @@ namespace SoftwareEng
         }
 
 
-        void RaisePhotoBomberTileTriggerEvent()
+        protected void RaisePhotoBomberTileTypeTwoEvent()
         {
             RoutedEventArgs newEventArgs = new RoutedEventArgs(preCustomLabel.TypeTwoTileTriggerEvent);
             RaiseEvent(newEventArgs);
