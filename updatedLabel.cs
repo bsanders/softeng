@@ -16,39 +16,21 @@ namespace SoftwareEng
     public delegate void customEvent_callback();
 
 
-    public class customLabel : Label
+    public class customLabel : preCustomLabel
     {
         private Timer EventTimer;
         private bool isFrontFace;
-        const double mouseEnterTimer = 1000.0;
-        const double mouseLeaveTimer = 3000.0;
+        private bool lockOut;
 
         public static readonly RoutedEvent TypeOneTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeOneTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
 
-        public customLabel()
-            : base()
+        public customLabel() : base()
         {
-            EventTimer = new Timer();
-
-            EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
+            lockOut = true;
         }
 
         public bool isFront
         {
-            get
-            {
-                return isFrontFace;
-            }
-            set
-            {
-                isFrontFace = value;
-            }
-        }
-
-        void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            EventTimer.Stop();
-            this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null);
         }
 
         public event RoutedEventHandler OnPhotoBomberTileEvent
@@ -65,35 +47,13 @@ namespace SoftwareEng
         }
 
 
-
-        protected override void OnMouseEnter(MouseEventArgs e)
+        protected override void OnMouseLeftDown(MouseEventArgs e)
         {
-            if (isFrontFace == true)
-            {
-                EventTimer.Interval = mouseEnterTimer;
-                EventTimer.Start();
-            }
-            else
-            {
-                EventTimer.Stop();
-            }
-        }
-
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            if (isFrontFace == false)
-            {
-                EventTimer.Interval = mouseLeaveTimer;
-                EventTimer.Start();
-            }
-            else
-            {
-                EventTimer.Stop();
-            }
+            lockOut= true;
         }
     }
 
-    public class preCustomLabel : customLabel
+    public class preCustomLabel : Label
     {
         static readonly RoutedEvent TypeTwoTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeTwoTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(preCustomLabel));
 

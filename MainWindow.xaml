@@ -416,10 +416,10 @@
                 <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemBackSide">
                     <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimationLeft}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemFrontSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemFrontSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationRight}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemBackSide">
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemBackSide">
                     <BeginStoryboard Storyboard="{StaticResource flipToFrontAnimationRight}"/>
                 </EventTrigger>
             </DataTemplate.Triggers>
