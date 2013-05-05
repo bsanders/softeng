@@ -5,14 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     
         xmlns:SoftwareEngControls="clr-namespace:SoftwareEng"
-    
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects" xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" x:Name="mainWindow" 
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:Strings="clr-namespace:SoftwareEng.Properties"
+
+
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects" xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" x:Name="mainWindow" 
         mc:Ignorable="d" 
         x:Class="SoftwareEng.MainWindow"
     
-        Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" Background="#FF1C2327" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" PreviewMouseLeftButtonUp="mainWindow_PreviewMouseLeftButtonUp" PreviewMouseRightButtonDown="mainWindow_PreviewMouseRightButtonDown" Closing="mainWindow_Closing">
+        Title="PhotoBomber" Height="406.256" Width="696.992" ScrollViewer.VerticalScrollBarVisibility="Disabled" MinWidth="638.992" MinHeight="362.256" Padding="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Bold" BorderBrush="#00B4B4B4" AllowsTransparency="True" WindowStyle="None" MaxWidth="{DynamicResource {x:Static SystemParameters.PrimaryScreenWidthKey}}" MaxHeight="{DynamicResource {x:Static SystemParameters.PrimaryScreenHeightKey}}" PreviewMouseLeftButtonUp="mainWindow_PreviewMouseLeftButtonUp" PreviewMouseRightButtonDown="mainWindow_PreviewMouseRightButtonDown" Closing="mainWindow_Closing" WindowStartupLocation="CenterScreen" Background="{DynamicResource ControlBackgroundBrush}" >
+
+
+
 
     <Window.Resources>
+
+
+
 
         <DataTemplate x:Key="AlbumListItemBackTemplate" DataType="{x:Type SoftwareEngControls:ComplexPhotoData}">
             <Grid x:Name="albumItemBackGrid" MaxWidth="{Binding Value, ElementName=thumbnailSizeSlider}" Height="Auto" Width="Auto">
@@ -72,7 +81,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding name}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="3,0,0,0" Margin="0"/>
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding name}" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="3,0,0,0" Margin="0" Foreground="{DynamicResource PhotoBomberLightFontColor}"/>
                 <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
                     <Image.Source>
                         <Binding Path="lgThumbPath" Converter="{StaticResource ImagePathConverter}">
@@ -95,7 +104,7 @@
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
                 <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" />
-                <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Width="Auto" Content="{Binding albumName}" Foreground="#AAFFFFFF" />
+                <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Width="Auto" Content="{Binding albumName}" Foreground="{DynamicResource PhotoBomberLightFontColor}"  />
             </Grid>
         </DataTemplate>
 
@@ -109,11 +118,8 @@
                     <RowDefinition Height="37"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid.Background>
-                    <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
-                </Grid.Background>
 
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="White" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0"/>
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="{DynamicResource PhotoBomberLightFontColor}" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0"/>
                 <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" >
                     <Image.Source>
                         <!-- THE GODDAMNED SPLICERS HAVE SAVED THE DAY, WE HAVE DEFAULT FALLBACK IMAGES BITCHES-->
@@ -138,7 +144,7 @@
 
         <DataTemplate x:Key="ListItemTemplate">
             <DataTemplate.Resources>
-                <Storyboard x:Key="flipToBackAnimation">
+                <Storyboard x:Key="flipToBackAnimationLeft">
                     <!-- Make the Viewport3D visible only for the duration of the rotation. -->
                     <ObjectAnimationUsingKeyFrames
                                            Storyboard.TargetName="object3D"
@@ -191,7 +197,60 @@
                                            Storyboard.TargetProperty="Angle" />
                 </Storyboard>
 
-                <Storyboard x:Key="flipToFrontAnimation">
+                <Storyboard x:Key="flipToBackAnimationRight">
+                    <!-- Make the Viewport3D visible only for the duration of the rotation. -->
+                    <ObjectAnimationUsingKeyFrames
+                                           Storyboard.TargetName="object3D"
+                                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
+
+                    <!-- Make the background element visible. (It won't actually appear until it is faded in right at the end of the animation.) -->
+                    <ObjectAnimationUsingKeyFrames
+                                           Storyboard.TargetName="ItemBackSideContainer"
+                                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
+                    </ObjectAnimationUsingKeyFrames>
+
+
+                    <!-- Hide the foreground element. It will already be invisible by this time
+                                         because we fade it out right at the start of the animation. However, until
+                                         we set its Visibility to Hidden, it will still be visible to the mouse... -->
+                    <ObjectAnimationUsingKeyFrames
+                                           Storyboard.TargetName="ItemFrontSideContainer"
+                                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
+
+
+                    <!-- Fade the front wrapper out. The Viewport3D is behind us, so it'll fade into
+                                         view at this point. The reason for fading is to avoid a visible step as we
+                                         switch from the real UI to the copy projected onto the 3D model. -->
+                    <DoubleAnimation To="0" Duration="0:0:0.05"
+                                           Storyboard.TargetName="ItemFrontSideContainer"
+                                           Storyboard.TargetProperty="Opacity" />
+
+                    <!-- Fade the back wrapper in. Once the spin completes, we fade the real back UI
+                                         in over the Viewport3D - using a fade to avoid a sudden jolt between the
+                                         slightly fuzzy 3D look and the real UI. -->
+                    <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05" To="1"
+                                           Storyboard.TargetName="ItemBackSideContainer"
+                                           Storyboard.TargetProperty="Opacity" />
+
+                    <!-- 3D animation. Move the camera out slightly as we spin, so the model fits entirely
+                                        within the field of view. Rotate the model 180 degrees. -->
+                    <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
+                                           BeginTime="0:0:0.05" Duration="0:0:0.5" AutoReverse="True" DecelerationRatio="0.3"
+                                           Storyboard.TargetName="camera"
+                                           Storyboard.TargetProperty="(ProjectionCamera.Position)" />
+                    <DoubleAnimation From="360" To="180" AccelerationRatio="0.3" DecelerationRatio="0.3"
+                                           BeginTime="0:0:0.05" Duration="0:0:1"
+                                           Storyboard.TargetName="rotate"
+                                           Storyboard.TargetProperty="Angle" />
+                </Storyboard>
+
+                <Storyboard x:Key="flipToFrontAnimationLeft">
                     <ObjectAnimationUsingKeyFrames
                            Storyboard.TargetName="object3D"
                            Storyboard.TargetProperty="Visibility">
@@ -226,19 +285,58 @@
                            Storyboard.TargetName="rotate"
                            Storyboard.TargetProperty="Angle" />
                 </Storyboard>
+
+                <Storyboard x:Key="flipToFrontAnimationRight">
+                    <ObjectAnimationUsingKeyFrames
+                           Storyboard.TargetName="object3D"
+                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}" />
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1.1" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
+
+                    <ObjectAnimationUsingKeyFrames
+                           Storyboard.TargetName="ItemFrontSideContainer"
+                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
+                    </ObjectAnimationUsingKeyFrames>
+                    <ObjectAnimationUsingKeyFrames
+                           Storyboard.TargetName="ItemBackSideContainer"
+                           Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:0:0.05" Value="{x:Static Visibility.Hidden}" />
+                    </ObjectAnimationUsingKeyFrames>
+
+                    <DoubleAnimation To="0" Duration="0:0:0.05"
+                           Storyboard.TargetName="ItemBackSideContainer"
+                           Storyboard.TargetProperty="Opacity" />
+                    <DoubleAnimation BeginTime="0:0:1.05" Duration="0:0:0.05"
+                           Storyboard.TargetName="ItemFrontSideContainer"
+                           Storyboard.TargetProperty="Opacity" />
+
+                    <Point3DAnimation To="0,0,1.1" From="0,0,0.5"
+                           BeginTime="0:0:0.05" Duration="0:0:0.5" AutoReverse="True" DecelerationRatio="0.3"
+                           Storyboard.TargetName="camera"
+                           Storyboard.TargetProperty="(ProjectionCamera.Position)" />
+                    <DoubleAnimation From="180" To="0" AccelerationRatio="0.3" DecelerationRatio="0.3"
+                           BeginTime="0:0:0.05" Duration="0:0:1"
+                           Storyboard.TargetName="rotate"
+                           Storyboard.TargetProperty="Angle" />
+                </Storyboard>
+
             </DataTemplate.Resources>
             <Grid x:Name="grid" Margin="-2,0" Width="{Binding Value, ElementName=thumbnailSizeSlider}" Height="{Binding Value, ElementName=thumbnailSizeSlider}">
+                <!--
                 <Grid.Background>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
+                -->
                 <Border x:Name="ItemFrontSideContainer" Width="Auto" Margin="0" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" isFront="True">
+                    <SoftwareEngControls:customLabel x:Name="ItemFrontSide" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand">
                         <ContentPresenter x:Name="contentPresenterFront" ContentTemplate="{DynamicResource AlbumListItemFrontTemplate}" Margin="0" Width="Auto" Height="Auto"  Content="{Binding}"/>
                     </SoftwareEngControls:customLabel>
                 </Border>
 
                 <Border x:Name="ItemBackSideContainer"  Visibility="Hidden" Opacity="0" PreviewMouseRightButtonUp="ItemBackSideContainer_PreviewRightMouseUp">
-                    <SoftwareEngControls:customLabel x:Name="ItemBackSide"  Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <SoftwareEngControls:customLabel x:Name="ItemBackSide"  Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand">
                         <ContentPresenter x:Name="contentPresenterBack" ContentTemplate="{DynamicResource AlbumListItemBackTemplate}" Content="{Binding}"/>
                     </SoftwareEngControls:customLabel>
                 </Border>
@@ -309,15 +407,17 @@
 
             </Grid>
             <DataTemplate.Triggers>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.PhotoBomberTileEvent" SourceName="ItemFrontSide">
-                    <BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
                 <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemFrontSide">
-                    <BeginStoryboard Storyboard="{StaticResource flipToBackAnimation}"/>
+                    <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationLeft}"/>
                 </EventTrigger>
-                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.PhotoBomberTileEvent" SourceName="ItemBackSide">
-                    <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeOneTileEvent" SourceName="ItemBackSide">
+                    <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimationLeft}"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemFrontSide">
+                    <BeginStoryboard Storyboard="{StaticResource flipToBackAnimationRight}"/>
+                </EventTrigger>
                 <EventTrigger RoutedEvent="SoftwareEngControls:customLabel.TypeTwoTileEvent" SourceName="ItemBackSide">
-                    <BeginStoryboard x:Name="flipToFrontAnimation_BeginStoryboard" Storyboard="{StaticResource flipToFrontAnimation}"/>
+                    <BeginStoryboard Storyboard="{StaticResource flipToFrontAnimationRight}"/>
                 </EventTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
@@ -325,19 +425,11 @@
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="mainWindowDock">
-                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="48"/>
-            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="DockDisappear">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Hidden}"/>
             </ObjectAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="mainWindowDock">
-                <EasingDoubleKeyFrame KeyTime="0" Value="48"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="InvalidNameFlash">
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
@@ -410,12 +502,15 @@
     </Window.Resources>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="dockHitBox">
-            <ResumeStoryboard BeginStoryboardName="DockAppear_BeginStoryboard"/>
-            <BeginStoryboard x:Name="DockAppear_BeginStoryboard" Storyboard="{StaticResource DockAppear}"/>
+            <BeginStoryboard x:Name="DockAppear_BeginStoryboard1" Storyboard="{StaticResource DockAppear}"/>
+
         </EventTrigger>
         <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="mainWindowDock">
-            <ResumeStoryboard BeginStoryboardName="DockDisappear_BeginStoryboard"/>
             <BeginStoryboard x:Name="DockDisappear_BeginStoryboard" Storyboard="{StaticResource DockDisappear}"/>
+
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="mainWindowDock">
+            <SkipStoryboardToFill BeginStoryboardName="DockAppear_BeginStoryboard1"/>
         </EventTrigger>
     </Window.Triggers>
 
@@ -428,24 +523,24 @@
 
                 <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60" >
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#99DDDDDD" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="True">
-                        <Button x:Name="addMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemLibraryButton_Click" ToolTip="Add Photos">
-                            <Image x:Name="addButtonLibraryImage" Source="ImagesResources2012/action_add.png" Stretch="Fill"/>
+                        <Button x:Name="addMenuItemLibraryButton" Click="addMenuItemLibraryButton_Click" ToolTip="Add Photos">
+                            <Image x:Name="addButtonLibraryImage" Width="25" Height="25" Source="ImagesResources2012/action_add.png" Stretch="Fill"/>
                         </Button>
                         <!-- this is actually paste? -->
-                        <Button x:Name="copyMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="copyMenuItemLibraryButton_Click" ToolTip="Paste Photos">
-                            <Image x:Name="copyButtonLibraryImage" Source="ImagesResources2012/action_paste.png" Stretch="Fill"/>
+                        <Button x:Name="pasteMenuItemLibraryButton"  Click="copyMenuItemLibraryButton_Click" ToolTip="Paste Photos">
+                            <Image x:Name="pasteButtonLibraryImage"  Width="25" Height="25" Source="ImagesResources2012/action_paste.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="deleteMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemLibraryButton_Click" ToolTip="Delete Album">
-                            <Image x:Name="deleteButtonLibraryImage" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
+                        <Button x:Name="deleteMenuItemLibraryButton"  Click="deleteMenuItemLibraryButton_Click" ToolTip="Delete Album">
+                            <Image x:Name="deleteButtonLibraryImage" Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="renameMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemLibraryButton_Click" ToolTip="Rename Album">
-                            <Image x:Name="renameButtonLibraryImage" Source="ImagesResources2012/action_annotate.png" Stretch="Fill"/>
+                        <Button x:Name="renameMenuItemLibraryButton"  Click="renameMenuItemLibraryButton_Click" ToolTip="Rename Album">
+                            <Image x:Name="renameButtonLibraryImage" Width="25" Height="25" Source="ImagesResources2012/action_annotate.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="slideshowMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="slideshowMenuItemLibraryButton_Click" ToolTip="Start Slideshow">
-                            <Image x:Name="slideshowButtonLibraryImage" Source="ImagesResources2012/action_play_pause.png" Stretch="Fill"/>
+                        <Button x:Name="slideshowMenuItemLibraryButton"  Click="slideshowMenuItemLibraryButton_Click" ToolTip="Start Slideshow">
+                            <Image x:Name="slideshowButtonLibraryImage" Width="25" Height="25" Source="ImagesResources2012/action_play_pause.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="viewMenuItemLibraryButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemLibraryButton_Click" ToolTip="View Album">
-                            <Image x:Name="viewButtonLibraryImage" Source="ImagesResources2012/action_view.png" Stretch="Fill"/>
+                        <Button x:Name="viewMenuItemLibraryButton"  Click="viewMenuItemLibraryButton_Click" ToolTip="View Album">
+                            <Image x:Name="viewButtonLibraryImage" Width="25" Height="25" Source="ImagesResources2012/action_view.png" Stretch="Fill"/>
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
@@ -454,28 +549,29 @@
 
                 <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#99DDDDDD" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="True">
-                        <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="addMenuItemAlbumButton_Click" ToolTip="Add Photos">
+                        <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Click="addMenuItemAlbumButton_Click" ToolTip="Add Photos">
                             <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="copyMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="copyMenuItemAlbumButton_Click" ToolTip="Copy Photos">
+                        <Button x:Name="copyMenuItemAlbumButton" Width="25" Height="25" Click="copyMenuItemAlbumButton_Click" ToolTip="Copy Photos">
                             <Image x:Name="copyButtonAlbumImage" Source="ImagesResources2012/action_copy.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="deleteMenuItemAlbumButton_Click" ToolTip="Delete Photo">
+                        <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Click="deleteMenuItemAlbumButton_Click" ToolTip="Delete Photo">
                             <Image x:Name="deleteButtonAlbumImage" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="renameMenuItemAlbumButton_Click" ToolTip="Annotate Photo">
+                        <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Click="renameMenuItemAlbumButton_Click" ToolTip="Annotate Photo">
                             <Image x:Name="renameButtonAlbumImage" Source="ImagesResources2012/action_annotate.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="slideshowMenuItemAlbumButton_Click" ToolTip="Start Slideshow">
+                        <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Click="slideshowMenuItemAlbumButton_Click" ToolTip="Start Slideshow">
                             <Image x:Name="slideshowButtonAlbumImage" Source="ImagesResources2012/action_play_pause.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="viewMenuItemAlbumButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="viewMenuItemAlbumButton_Click" ToolTip="View Photo">
+                        <Button x:Name="viewMenuItemAlbumButton" Width="25" Height="25" Click="viewMenuItemAlbumButton_Click" ToolTip="View Photo">
                             <Image x:Name="viewButtonAlbumImage" Source="ImagesResources2012/action_view.png" Stretch="Fill"/>
                         </Button>
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
 
                 <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay, NotifyOnSourceUpdated=True}" Margin="0,25,0,0" SelectionChanged="mainWindowAlbumList_SelectionChanged" MouseDoubleClick="mainWindowAlbumList_MouseDoubleClick" KeyDown="mainWindowAlbumList_KeyDown">
+                    <!--
                     <ListBox.Background>
                         <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
                     </ListBox.Background>
@@ -484,37 +580,39 @@
                             <WrapPanel/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
+                    -->
                 </ListBox>
 
-
-
-
-
-                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="48" Margin="0,0,25,0" Stroke="#00000000" VerticalAlignment="Bottom" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
-                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="1" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockBrush}" SizeChanged="dockSizeChanged_EventHandler">
-                    <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" Background="{DynamicResource PhotoBomberDockButtonBrush}" ToolTip="Create An Album">
+                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="48" Margin="0" Stroke="#00000000" VerticalAlignment="Bottom" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}" HorizontalAlignment="Center"/>
+                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{DynamicResource PhotoBomberDockBrush}" SizeChanged="dockSizeChanged_EventHandler">
+                    <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" ToolTip="Create An Album">
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="addPhotosDockButton_Click" ToolTip="Add Photos">
+                    <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Visibility="Collapsed" Click="addPhotosDockButton_Click" ToolTip="Add Photos">
                         <Image x:Name="addPhotosDockButtonImage" Source="ImagesResources2012/action_add.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Click="libraryDockButton_Click" ToolTip="Go To My Albums">
+                    <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48" Click="libraryDockButton_Click" ToolTip="Go To My Albums">
                         <Image x:Name="libraryDockButtonImage" Source="ImagesResources2012/action_go_back.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="cancelPhotoImportDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Background="{DynamicResource PhotoBomberDockButtonBrush}" Visibility="Collapsed" Click="cancelPhotoImportDockButton_Click" ToolTip="Cancel Import">
+                    <Button x:Name="cancelPhotoImportDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Visibility="Collapsed" Click="cancelPhotoImportDockButton_Click" ToolTip="Cancel Import">
                         <Image x:Name="cancelPhotoImportDockButtonImage" Source="ImagesResources2012/action_cancel.png" Width="32" Height="32"/>
                     </Button>
-                    <Menu x:Name="imageSortingButtonPlaceholder" IsMainMenu="True" Background="{DynamicResource PhotoBomberDockButtonBrush}" Width="48" Height="48" Visibility="Collapsed">
-                        <MenuItem x:Name="imageSortingMenu" Click="sortingDockMenu_Click" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" ToolTip="CLICK ME TO SORT!!!">
-                            <MenuItem.Header>
-                                <Image x:Name="cancelPhotoImportDockMenuImage" Source="ImagesResources2012/action_cancel.png"/>
-                            </MenuItem.Header>
-                            <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalAlignment="Right"  HorizontalContentAlignment="Right"/>
-                            <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click" IsCheckable="True"/>
-                            <MenuItem x:Name="extensionMenuItem" Header="Extension" IsCheckable="True"/>
+                    <Button x:Name="imageSortingButtonPlaceholder" IsHitTestVisible="True" Click="sortingDockMenu_Click" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Visibility="Collapsed">
+                        <MenuItem x:Name="imageSortingMenu" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ToolTip="CLICK ME TO SORT!!!" Padding="0" Width="55" IsHitTestVisible="False">
+                            <MenuItem.Icon>
+                                <Image x:Name="cancelPhotoImportDockMenuImage" Source="ImagesResources2012/action_cancel.png" Width="32" Height="32"/>
+                            </MenuItem.Icon>
+                            <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalAlignment="Right"  HorizontalContentAlignment="Right" Click="ascendingMenuItem_CheckToggled"/>
+                            <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click" IsCheckable="True" IsChecked="True"/>
+                            <MenuItem x:Name="extensionMenuItem" Header="Extension" IsCheckable="True" Click="extensionMenuItem_Click"/>
                         </MenuItem>
+
+                    </Button>
+                    <!-- This button is only used to preserve spacing between the buttons
+                                            <Menu x:Name="imageSortingButtonPlaceholder" IsMainMenu="True" Background="{DynamicResource PhotoBomberDockButtonBrush}" Width="48" Height="48" Visibility="Collapsed">
+
                     </Menu>
-                    <!-- This button is only used to preserve spacing between the buttons -->
+                    -->
                     <Button x:Name="blankDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                     </Button>
                     <StackPanel x:Name="ThumbnailControlStackPanel" Width="107" ToolTip="Adjust Thumbnail Size">
@@ -525,7 +623,7 @@
                 </DockPanel>
 
 
-                <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Foreground="#FF2E4C57" Visibility="Hidden" Background="{DynamicResource PhotoBomberProgressBarBrush}"/>
+                <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="15" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Visibility="Hidden"/>
                 <Popup AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <Grid Background="#FFE5E5E5">
                         <ed:Callout AnchorPoint="0,1.5" CalloutStyle="RoundedRectangle" Content="Invalid name chosen for album." FontSize="14.667" Margin="0" FontFamily="/PhotoBomber;component/Fonts/#monofur" MaxWidth="200"/>
@@ -554,73 +652,14 @@
 
             </Grid>
         </Border>
-        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Background="{DynamicResource PhotoBomberTitleBarBrush}">
 
-
-            <Menu x:Name="PhotoBomberMenuButtonPlaceholder" IsMainMenu="True" IsTabStop="False" Focusable="False" Margin="2,2,0,0" BorderBrush="#FFE0E0E0" BorderThickness="1">
-                <Menu.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="#AAFFFFFF" Offset="0.95" />
-                        <GradientStop Color="#00000000" Offset="0.95" />
-                    </RadialGradientBrush>
-                </Menu.Background>
-                <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Center" Width="32" Grid.IsSharedSizeScope="False">
-                    <MenuItem.Header>
-                        <Image x:Name="aboutToolbarButtonImage" Source="ImagesResources2012/logoSmall.png" Width="30"/>
-                    </MenuItem.Header>
-                    <MenuItem x:Name="themeParentMenu" Header="Themes">
-                        <!--<MenuItem Header="Debug::Current Theme" Click="getCurrentThemeMenuItem_Click"/>-->
-                        <MenuItem x:Name="bureauBlackThemeMenuItem" Header="Bureau Black" IsCheckable="True" Click="bureauBlackThemeMenuItem_Click"/>
-                        <MenuItem x:Name="bureauBlueThemeMenuItem" Header="Beaureu Blue" IsCheckable="True" Click="bureauBlueThemeMenuItem_Click"/>
-                        <MenuItem x:Name="expressionDarkThemeMenuItem" Header="Expression Dark" IsCheckable="True" Click="expressionDarkThemeMenuItem_Click"/>
-                        <MenuItem x:Name="expressionLightThemeMenuItem" Header="Expression Light" IsCheckable="True" Click="expressionLightThemeMenuItem_Click"/>
-                        <MenuItem x:Name="shinyBlueThemeMenuItem" Header="Shiny Blue" IsCheckable="True" Click="shinyBlueThemeMenuItem_Click"/>
-                        <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_Click"/>
-                        <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_Click"/>
-                    </MenuItem>
-                    <MenuItem Header="ABOUT PHOTOBOMBER!!" Click="aboutMenuItemPressed_eventHandler"/>
-                </MenuItem>
-            </Menu>
-
-            <!--
-            <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="6,6,0,0" Click="aboutButtonPressed_eventHandler" ToolTip="About PhotoBomber" IsTabStop="False" Focusable="False">
-                <Button.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="#AAFFFFFF" Offset="1" />
-                        <GradientStop Color="#00000000" Offset="1" />
-                    </RadialGradientBrush>
-                </Button.Background>
-                <Image x:Name="aboutToolbarButtonImage2" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/logoSmall.png"/>
-            </Button>
-            -->
-
-            <!-- Not sure how to set the content of this label dynamically from settings file -->
-            <Label x:Name="appTitleBarLabel" Content="PhotoBomber - My Photo Library!" Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center">
-                <Label.Foreground>
-                    <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
-                </Label.Foreground>
-            </Label>
-
-            <Button x:Name="exitToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitDockButton_Click" ToolTip="Exit" IsTabStop="False" Focusable="False">
-                <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_close.png"/>
-            </Button>
-            <Button x:Name="maximizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="maximizeToolbarButton_Click" ToolTip="Maximize" IsTabStop="False" Focusable="False">
-                <Image x:Name="maximizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_maximize.png"/>
-            </Button>
-            <Button x:Name="minimizeToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="minimizeButton_Click" ToolTip="Minimize" IsTabStop="False" Focusable="False">
-                <Image x:Name="minimizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_minimize.png"/>
-            </Button>
-
-
-        </DockPanel>
-
-        <Thumb x:Name="topThumb" Background="#001C2327" Height="6" VerticalAlignment="Top" Cursor="SizeNS" Margin="27,0,0,0" DragDelta="topThumb_DragDeltaHandler" Opacity="0"/>
-        <Thumb x:Name="bottomThumb" Background="#001C2327" Height="6" VerticalAlignment="Bottom" Cursor="SizeNS" DragDelta="bottomThumb_DragDeltaHandler" Opacity="0"/>
-        <Thumb x:Name="rightThumb" Background="#001C2327" Width="6" HorizontalAlignment="Right" Cursor="SizeWE" DragDelta="rightThumb_DragDeltaHandler" Opacity="0"/>
-        <Thumb x:Name="leftThumb" Background="#001C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeWE" Margin="0,27,0,0" DragDelta="leftThumb_DragDeltaHandler" Opacity="0"/>
-        <Thumb x:Name="bottomRightThumb" Background="#001C2327" Cursor="SizeNWSE" HorizontalAlignment="Right" Width="6" DragDelta="bottomRightThumb_DragDeltaHandler" Height="6" VerticalAlignment="Bottom" Opacity="0"/>
-        <Thumb x:Name="topRightThumb" Background="#001C2327" HorizontalAlignment="Right" Width="6" VerticalAlignment="Top" Height="6" Cursor="SizeNESW" DragDelta="topRightThumb_DragDeltaHandler" Opacity="0"/>
-        <Thumb x:Name="bottomLeftThumb" Background="#001C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeNESW" DragDelta="bottomLeftThumb_DragDeltaHandler" VerticalAlignment="Bottom" Height="6" Opacity="0"/>
+        <Thumb x:Name="topThumb" Background="#FFE8C2C2" Height="6" VerticalAlignment="Top" Cursor="SizeNS" Margin="27,0,0,0" DragDelta="topThumb_DragDeltaHandler" Opacity="0"/>
+        <Thumb x:Name="bottomThumb" Background="#A81C2327" Height="6" VerticalAlignment="Bottom" Cursor="SizeNS" DragDelta="bottomThumb_DragDeltaHandler" Opacity="0.3"/>
+        <Thumb x:Name="rightThumb" Background="#A81C2327" Width="6" HorizontalAlignment="Right" Cursor="SizeWE" DragDelta="rightThumb_DragDeltaHandler" Opacity="0.3"/>
+        <Thumb x:Name="leftThumb" Background="#A81C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeWE" Margin="0,27,0,0" DragDelta="leftThumb_DragDeltaHandler" Opacity="0.3"/>
+        <Thumb x:Name="bottomRightThumb" Background="#A81C2327" Cursor="SizeNWSE" HorizontalAlignment="Right" Width="6" DragDelta="bottomRightThumb_DragDeltaHandler" Height="6" VerticalAlignment="Bottom" Opacity="0.3"/>
+        <Thumb x:Name="topRightThumb" Background="#A81C2327" HorizontalAlignment="Right" Width="6" VerticalAlignment="Top" Height="6" Cursor="SizeNESW" DragDelta="topRightThumb_DragDeltaHandler" Opacity="0.3"/>
+        <Thumb x:Name="bottomLeftThumb" Background="#A81C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeNESW" DragDelta="bottomLeftThumb_DragDeltaHandler" VerticalAlignment="Bottom" Height="6" Opacity="0.3"/>
         <DockPanel x:Name="ItemAddOrEditDialogBar" LastChildFill="False" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,27,0,0" Visibility="Collapsed">
             <DockPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -658,10 +697,10 @@
                 <TextBox x:Name="commentTextBox" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="5" MaxLength="140" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a comment for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed" TextWrapping="Wrap"/>
 
             </StackPanel>
-            <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,0,70,0" DockPanel.Dock="Right" ToolTip="Accept" >
+            <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,0,70,0" DockPanel.Dock="Right" ToolTip="Accept" >
                 <Image x:Name="acceptAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/checkbox.png"/>
             </Button>
-            <Button x:Name="cancelAddToolbarButton" Width="25" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="cancelAddToolbarButton_Click" IsCancel="True" Margin="70,0,0,0" ToolTip="Cancel" >
+            <Button x:Name="cancelAddToolbarButton" Width="25" Height="25" Click="cancelAddToolbarButton_Click" IsCancel="True" Margin="70,0,0,0" ToolTip="Cancel" >
                 <Image x:Name="cancelAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_cancel.png"/>
             </Button>
         </DockPanel>
@@ -703,6 +742,96 @@
                 </ed:Callout>
             </Grid>
         </Popup>
+        <SoftwareEngControls:customRadialPanel HorizontalAlignment="Left" Height="122" Margin="226,308,0,-44" VerticalAlignment="Top" Width="149" ShowPieLines="True" InnerRadius="40" OuterRadius="71" BackgroundOpacity="1" StartAngle="300" Angle="180" Visibility="Collapsed">
+            <Button  Width="30" >
+                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
+            </Button>
+            <Button  Width="30" >
+                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
+            </Button>
+            <Button  Width="30" >
+                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
+            </Button>
+        </SoftwareEngControls:customRadialPanel>
+        <SoftwareEngControls:customRadialPanel HorizontalAlignment="Left" Height="135" Margin="-41,-41,0,0" VerticalAlignment="Top" Width="150" InnerRadius="30" OuterRadius="60" BackgroundOpacity="1" StartAngle="90" Angle="135" Visibility="Collapsed">
+            <Button  Width="30" >
+                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
+            </Button>
+            <Button  Width="30" >
+                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
+            </Button>
+            <Button  Width="30" >
+                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
+            </Button>
+        </SoftwareEngControls:customRadialPanel>
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Background="{DynamicResource PhotoBomberTitleBarBrush}" Height="36">
+
+            <!--
+            <Menu x:Name="PhotoBomberMenuButtonPlaceholder" IsMainMenu="True" IsTabStop="False" Focusable="False" Margin="2,2,0,0" BorderBrush="#FFE0E0E0" BorderThickness="1">
+                <Menu.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#AAFFFFFF" Offset="0.95" />
+                        <GradientStop Color="#00000000" Offset="0.95" />
+                    </RadialGradientBrush>
+                </Menu.Background>
+
+            </Menu>
+
+            
+            <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="6,6,0,0" Click="aboutButtonPressed_eventHandler" ToolTip="About PhotoBomber" IsTabStop="False" Focusable="False">
+                <Button.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#AAFFFFFF" Offset="1" />
+                        <GradientStop Color="#00000000" Offset="1" />
+                    </RadialGradientBrush>
+                </Button.Background>
+                <Image x:Name="aboutToolbarButtonImage2" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/logoSmall.png"/>
+            </Button>
+            -->
+
+
+
+
+            <!-- Not sure how to set the content of this label dynamically from settings file -->
+            <Label x:Name="appTitleBarLabel" Content="PhotoBomber - My Photo Library!"  Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center" Margin="40,0,0,0">
+                <Label.Foreground>
+                    <SolidColorBrush Color="Black"/>
+                </Label.Foreground>
+            </Label>
+
+            <!--Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"-->
+            <Button x:Name="exitToolbarButton" Width="25" Height="25" DockPanel.Dock="Right" Click="exitDockButton_Click" ToolTip="Exit" IsTabStop="False" Focusable="False">
+                <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_close.png"/>
+            </Button>
+            <Button x:Name="maximizeToolbarButton" Width="25" Height="25" DockPanel.Dock="Right" Click="maximizeToolbarButton_Click" ToolTip="Maximize" IsTabStop="False" Focusable="False">
+                <Image x:Name="maximizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_maximize.png"/>
+            </Button>
+            <Button x:Name="minimizeToolbarButton" Width="25" Height="25" DockPanel.Dock="Right" Click="minimizeButton_Click" ToolTip="Minimize" IsTabStop="False" Focusable="False">
+                <Image x:Name="minimizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_minimize.png"/>
+            </Button>
+
+
+        </DockPanel>
+
+        <Menu BorderBrush="#00333333" Foreground="#00000000" Width="25" Height="25" Margin="8,8,664,373">
+            <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.IsSharedSizeScope="False" Margin="-7,0,0,0" Width="35" IsHitTestVisible="True" Height="30" Background="#00000000">
+                <MenuItem.Icon>
+                    <Image x:Name="aboutToolbarButtonImage" Source="ImagesResources2012/logoSmall.png" Width="30"/>
+                </MenuItem.Icon>
+                <MenuItem x:Name="themeParentMenu" Header="Themes" IsHitTestVisible="True">
+                    <MenuItem x:Name="bureauBlackThemeMenuItem" Header="Bureau Black" IsCheckable="True" Click="bureauBlackThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="bureauBlueThemeMenuItem" Header="Beaureu Blue" IsCheckable="True" Click="bureauBlueThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="expressionDarkThemeMenuItem" Header="Expression Dark" IsCheckable="True" Click="expressionDarkThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="expressionLightThemeMenuItem" Header="Expression Light" IsCheckable="True" Click="expressionLightThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="shinyBlueThemeMenuItem" Header="Shiny Blue" IsCheckable="True" Click="shinyBlueThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_CheckToggle"/>
+                </MenuItem>
+                <MenuItem Header="About" Click="aboutMenuItemPressed_eventHandler"/>
+            </MenuItem>
+        </Menu>
+        <Button x:Name="aboutToolbarButton" Style="{StaticResource GlassButton}" Click="aboutButtonPressed_eventHandler" IsTabStop="False" Height="36" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,1,0,0" Width="36" Opacity="0.7"/>
+
 
     </Grid>
 </Window>
