@@ -814,12 +814,13 @@
                     <MenuItem x:Name="bureauBlueThemeMenuItem" Header="Beaureu Blue" IsCheckable="True" Click="bureauBlueThemeMenuItem_CheckToggle"/>
                     <MenuItem x:Name="expressionDarkThemeMenuItem" Header="Expression Dark" IsCheckable="True" Click="expressionDarkThemeMenuItem_CheckToggle"/>
                     <MenuItem x:Name="expressionLightThemeMenuItem" Header="Expression Light" IsCheckable="True" Click="expressionLightThemeMenuItem_CheckToggle"/>
-                    <MenuItem x:Name="shinyBlueThemeMenuItem" Header="Shiny Blue" IsCheckable="True" Click="shinyBlueThemeMenuItem_CheckToggle"/>
                     <!--
-                    <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="shinyBlueThemeMenuItem" Header="Shiny Blue" IsCheckable="True" Click="shinyBlueThemeMenuItem_CheckToggle"/>
                     
-                    <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_CheckToggle"/>
                     -->
+                    <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_CheckToggle"/>
+                    
                 </MenuItem>
                 <MenuItem Header="About" Click="aboutMenuItemPressed_eventHandler"/>
             </MenuItem>
