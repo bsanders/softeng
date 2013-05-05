@@ -39,6 +39,8 @@ using System.IO;
 using System.ComponentModel;
 using System.Threading;
 using System.Reflection;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace SoftwareEng
 {
@@ -232,9 +234,6 @@ namespace SoftwareEng
             //get a new uid for the new album.
             backupAlbum.UID = Guid.NewGuid();   //util_getNextUID(_albumsRootXml, "album", "uid", 1);
 
-            // TODO:
-            ErrorWindow bearerOfBadNews = new ErrorWindow(backupAlbum.UID.ToString());
-            bearerOfBadNews.ShowDialog();
 
             
             //add the album to the memory database.
@@ -617,7 +616,43 @@ namespace SoftwareEng
                 try
                 {
                     //bills new swanky function here
-                    _imagesCollection.Add(util_getComplexPhotoData(error, subElement, AlbumUID));
+                    ComplexPhotoData imageData = util_getComplexPhotoData(error, subElement, AlbumUID);
+
+
+                    try
+                    {
+                        System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+
+                        PropertyItem[] pList = _fileDataBase.getImageProperty(imageData.fullPath);
+
+
+                        int countToBreak = 2;
+                        foreach (PropertyItem pImage in pList)
+                        {
+
+                            if (pImage.Id == 0x010F)
+                            {
+                                imageData.equipmentManufacturer = encoding.GetString(pImage.Value);
+                                --countToBreak;
+                            }
+                            else if (pImage.Id == 0x0110)
+                            {
+                                imageData.equipmentModel = encoding.GetString(pImage.Value);
+                                --countToBreak;
+                            }
+
+                            if (countToBreak == 0)
+                                break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // TODO : Do something. 
+                    }
+
+
+
+                    _imagesCollection.Add(imageData);
                 }
                 catch
                 {
@@ -625,6 +660,8 @@ namespace SoftwareEng
                     error.warnings.Add("PhotoBomb.getAllPhotosInAlbum():A Picture in the album is missing either a name or an id.");
                 }
             }//foreach
+
+
 
 
             imagesOfAnAlbum = new ReadOnlyObservableCollection<ComplexPhotoData>(_imagesCollection);
