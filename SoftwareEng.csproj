@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="FileDataBase.cs" />
     <Compile Include="ImageManipulation.cs" />
+    <Compile Include="PhotoBomb_Xml.cs" />
     <Compile Include="zPhotoBomb_HackerHook.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

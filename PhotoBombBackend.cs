@@ -58,6 +58,8 @@ namespace SoftwareEng
         private XmlDataBase _xmlDataBase;
         private FileDataBase _fileDataBase;
 
+        private PhotoBomb_Xml _photoBomb_xml;
+
         //path to the images folder we put all the images.
         //tracked by the database.
         private string _imagelibraryDirPath;
@@ -95,6 +97,8 @@ namespace SoftwareEng
             _xmlHandler = new XmlHandler();
             _xmlDataBase = new XmlDataBase();
             _fileDataBase = new FileDataBase();
+
+            _photoBomb_xml = new PhotoBomb_Xml();
 
 
             //the list of all albums to return to the gui.
@@ -339,8 +343,15 @@ namespace SoftwareEng
                 else
                 {
                     // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
-                    XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(newPicture.hash));
-                    thisPic.Attribute("refCount").Value = newPicture.refCount.ToString();
+                    XElement iamgeNode = _photoBomb_xml.getImageNodeFromImageXml(ByteArrayToString(newPicture.hash), _imagesRootXml);
+
+                    if (iamgeNode == null)
+                    {
+                        // TODO
+                        return errorReport;
+                    }
+
+                    iamgeNode.Attribute("refCount").Value = newPicture.refCount.ToString();
                 }
 
                 //if adding to the picture database failed
@@ -487,7 +498,7 @@ namespace SoftwareEng
                 if ((userAlbum.thumbnailPath != string.Empty) && (!File.Exists(userAlbum.thumbnailPath)))
                 {
                     // if the thumbnail doesn't exist... does the image itself?
-                    XElement thumbnailPhoto = util_getAlbumDBPhotoNode(userAlbum.UID, userAlbum.thumbAlbumID);
+                    XElement thumbnailPhoto = getAlbumImageNodeFromAlbumXml(userAlbum.UID, userAlbum.thumbAlbumID);
                     ComplexPhotoData photoObj = util_getComplexPhotoData(error, thumbnailPhoto, userAlbum.UID);
 
                     if (!File.Exists(photoObj.fullPath))
@@ -687,109 +698,48 @@ namespace SoftwareEng
 
             // To get a photo from the photoDB knowing only an albumID and its ID in that album
             // We have to first retrieve the album...
-            XElement albumNode = util_getAlbum(error, albumUID);
+            XElement albumNode = _photoBomb_xml.getAlbumNodeFromAlbumXml(albumUID, _albumsRootXml);
+            if (albumNode == null)
+            {
+                setErrorReportToFAILURE("failed to find the albumNode.", ref error);
+                return error;
+            }
+                
             // ... then with that, we can get the picture element from that album...
-            XElement albumPicElement = util_getAlbumDBPhotoNode(error, albumNode, imageIDinAlbum);
-            // ... which we use to get the hash of the photo to do a lookup in the PhotoDB!
-            XElement picElement = util_getPhotoDBNode(error, (string)albumPicElement.Attribute("sha1").Value);
+            XElement albumImageNode = _photoBomb_xml.getAlbumImageNodeFromAlbumNode(albumNode, imageIDinAlbum);
 
-            //if the picture finding function reported success.
-            if (error.reportStatus == ReportStatus.SUCCESS || error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
+            if (albumImageNode == null)
+            {
+                setErrorReportToFAILURE("failed to find the albumImageNode.", ref error);
+                return error;
+            }
+
+            // ... which we use to get the hash of the photo to do a lookup in the PhotoDB!
+            XElement imageNode = _photoBomb_xml.getImageNodeFromImageXml((string)albumImageNode.Attribute("sha1").Value, _imagesRootXml);
+
+            if (imageNode == null)
+            {
+                setErrorReportToFAILURE("failed to find the imageNode.", ref error);
+                return error;
+            }
+
+            try
             {
                 imageData = new ComplexPhotoData();
-
-                try
-                {
-                    imageData.hash = StringToByteArray((string)picElement.Attribute("sha1"));
-                    imageData.UID = (int)picElement.Attribute("uid");
-                    imageData.refCount = (int)picElement.Attribute("refCount");
-                    imageData.fullPath = (string)picElement.Element("filePath").Value;
-                }
-                catch
-                {
-                    setErrorReportToFAILURE("PhotoBomb.getPictureByUID():Photo info could not be loaded.", ref error);
-                    return error;
-                }
+                imageData.hash = StringToByteArray((string)imageNode.Attribute("sha1"));
+                imageData.UID = (int)imageNode.Attribute("uid");
+                imageData.refCount = (int)imageNode.Attribute("refCount");
+                imageData.fullPath = (string)imageNode.Element("filePath").Value;
             }
+            catch
+            {
+                setErrorReportToFAILURE("PhotoBomb.getPictureByUID():Photo info could not be loaded.", ref error);
+            }
+            
             return error;
    
         }//method
 
-        // BS: Is this function at all used given that we don't add photos one at a time?
-        // Added by Bill 4/1/13: This function is used only by frontend to add a single photo at a time
-        // Commenting it out
-        // This function doesn't take that param but starts hardcoded at 1
-        // So I added a default parameter of 1 to the below function.
-        //-------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //private void addNewPicture_backend(generic_callback guiCallback,
-        //    String photoUserPath,
-        //    String photoExtension,
-        //    int albumUID,
-        //    String pictureNameInAlbum)
-        //{
-        //    ErrorReport errorReport = new ErrorReport();
-        //    ComplexPhotoData newPicture = new ComplexPhotoData();
-
-        //    newPicture.hash = util_getHashOfFile(photoUserPath);
-
-        //    // get an ID number for the picture.
-        //    // Note that a photo may have two different ID numbers in albumsdb and picturesdb
-        //    newPicture.UID = util_getNextUID(_picturesDatabase, "picture", 1);
-        //    // error checking the call
-        //    if (!util_checkUIDIsValid(newPicture.UID))
-        //    {
-        //        errorReport.reportID = ReportStatus.FAILURE;
-        //        errorReport.description = "Failed to get a UID for a new picture.";
-        //        guiCallback(errorReport);
-        //        return;
-        //    }
-
-        //    //Change me if you want to start naming the pictures differently in the library.
-        //    String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
-
-        //    //Change me if you want the default image name to be different.
-        //    if (pictureNameInAlbum == "")
-        //    {
-        //        pictureNameInAlbum = Properties.Settings.Default.DefaultImageName + " " + newPicture.UID.ToString();
-        //    }
-
-        //    //Move picture and get a new path for the picture in our storage.
-        //    newPicture.path = util_copyPicToLibrary(errorReport, photoUserPath, picNameInLibrary);
-        //    //error checking
-        //    if (errorReport.reportID == ReportStatus.FAILURE)
-        //    {
-        //        guiCallback(errorReport);
-        //        return;
-        //    }
-
-        //    newPicture.extension = photoExtension;
-
-        //    util_addPicToPhotoDB(errorReport, newPicture);
-
-        //    //if adding to the picture database failed
-        //    if (errorReport.reportID == ReportStatus.FAILURE)
-        //    {
-        //        guiCallback(errorReport);
-        //        return;
-        //    }
-
-        //    util_addPicToAlbumDB(errorReport, newPicture, albumUID, pictureNameInAlbum);
-
-        //    //if adding to the album database failed
-        //    if (errorReport.reportID == ReportStatus.FAILURE)
-        //    {
-        //        guiCallback(errorReport);
-        //        return;
-        //    }
-
-        //    //add to disk.
-        //    saveImagesXML_backend();
-        //    saveAlbumsXML_backend();
-
-        //    guiCallback(errorReport);
-        //}
 
 
         /// By: Ryan Moe
@@ -862,26 +812,27 @@ namespace SoftwareEng
             else
             {
                 // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
-                XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(newPicture.hash));
+                XElement imageNode =_photoBomb_xml.getImageNodeFromImageXml(ByteArrayToString(newPicture.hash), _imagesRootXml);
+
 
                 // Assign this new refcount
-                thisPic.Attribute("refCount").Value = newPicture.refCount.ToString();
+                imageNode.Attribute("refCount").Value = newPicture.refCount.ToString();
 
                 // fetch the uid and put it in the complex photo data, we'll need it later too
-                newPicture.UID = (int)thisPic.Attribute("uid");
+                newPicture.UID = (int)imageNode.Attribute("uid");
 
                 // make sure the photo still exists on the filesystem
-                if (!File.Exists(thisPic.Element("filePath").Value))
+                if (!File.Exists(imageNode.Element("filePath").Value))
                 {
                     // good thing we checked!  Copy it to the filesystem again.
                     newPicture.fullPath = util_copyPhotoToLibrary(
                         errorReport,
-                        thisPic.Element("filePath").Value,
+                        imageNode.Element("filePath").Value,
                         newPicture.UID.ToString() + photoExtension);
                 }
                 else
                 {
-                    newPicture.fullPath = thisPic.Element("filePath").Value;
+                    newPicture.fullPath = imageNode.Element("filePath").Value;
                 }
             }
 
@@ -917,28 +868,35 @@ namespace SoftwareEng
         /// Removes the specified photo from the specified album
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="idInAlbum">The photo's ID</param>
+        /// <param name="inAlbumID">The photo's ID</param>
         /// <param name="albumUID">The album's UID</param>
-        public ErrorReport removeImageFromAlbum_backend(int idInAlbum, Guid albumUID)
+        public ErrorReport removeImageFromAlbum_backend(int inAlbumID, Guid albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
-            XElement thisAlbum = util_getAlbum(errorReport, albumUID);
+
+            XElement albumNode = _photoBomb_xml.getAlbumNodeFromAlbumXml(albumUID, _albumsRootXml);
+
+            if (albumNode == null)
+            {
+                setErrorReportToFAILURE("Failed to find an album with that UID", ref errorReport);
+                return errorReport;
+            }
 
             // First get the instance of the photo (from the album DB!)
-            XElement thisPicture = util_getAlbumDBPhotoNode(errorReport, thisAlbum, idInAlbum);
+            XElement albumImageNode = _photoBomb_xml.getAlbumImageNodeFromAlbumNode(albumNode, inAlbumID);
 
             // check to see if we're removing the first photo in the album.
-            XElement firstPhotoInAlbum = (from c in thisAlbum.Descendants("picture") select c).FirstOrDefault();
+            XElement firstPhotoInAlbum = (from c in albumNode.Descendants("picture") select c).FirstOrDefault();
 
             // if we are deleting the first...
-            if ((int)firstPhotoInAlbum.Attribute("idInAlbum") == idInAlbum)
+            if ((int)firstPhotoInAlbum.Attribute("idInAlbum") == inAlbumID)
             {
                 // if this is the first *and* last photo, set the thumbnailpath to empty string
-                if (thisAlbum.Descendants("picture").Count() == 1)
+                if (albumNode.Descendants("picture").Count() == 1)
                 {
-                    thisAlbum.Element("thumbnailPath").Value = "";
-                    thisAlbum.Element("thumbnailPath").Attribute("thumbAlbumID").Value = "-1";
+                    albumNode.Element("thumbnailPath").Value = "";
+                    albumNode.Element("thumbnailPath").Attribute("thumbAlbumID").Value = "-1";
                 }
                 else
                 {
@@ -948,9 +906,9 @@ namespace SoftwareEng
                     try
                     {
                         // Get the second element (soon to be first) and set it to be the thumbnail
-                        secondPhotoInAlbum = thisAlbum.Descendants("picture").ElementAt(1); // (0-indexed)
+                        secondPhotoInAlbum = albumNode.Descendants("picture").ElementAt(1); // (0-indexed)
                         // Set the thumbnail.
-                        util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(errorReport, secondPhotoInAlbum, albumUID));
+                        util_setAlbumThumbnail(albumNode, util_getComplexPhotoData(errorReport, secondPhotoInAlbum, albumUID));
                     }
                     catch (Exception ex)
                     {
@@ -970,11 +928,11 @@ namespace SoftwareEng
             }
 
             // Now delete that node
-            errorReport = removePictureElement_backend(thisPicture);
+            errorReport = removeImageFromImageXml(albumImageNode, true);
 
             //copying bills swanky code
             //get the photo to remove
-            var photoToRemove = _imagesCollection.FirstOrDefault(photo => photo.idInAlbum == idInAlbum);
+            var photoToRemove = _imagesCollection.FirstOrDefault(photo => photo.idInAlbum == inAlbumID);
             //and remove it
             _imagesCollection.Remove(photoToRemove);
 
@@ -987,45 +945,52 @@ namespace SoftwareEng
         /// Removes the photo instance from the album, deleting it if it no longer appears in any album.
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="ImageElement">An XElement object representing a picture in the AlbumDB</param>
+        /// <param name="albumImageNode">An XElement object representing a picture in the AlbumDB</param>
         /// <returns>The Errorreport of this Action.</returns>
-        private ErrorReport removePictureElement_backend(XElement ImageElement)
+        private ErrorReport removeImageFromImageXml(XElement albumImageNode, bool saveXmlFiles)
         {
             ErrorReport errorReport = new ErrorReport();
 
             //error prone code here if XElement returned is null. An unhandled exception was raised here while I was testing program -Ryan Causey
-            XElement picFromPicsDB = util_getPhotoDBNode(errorReport, (string)ImageElement.Attribute("sha1"));
+            XElement imageNode = _photoBomb_xml.getImageNodeFromImageXml((string)albumImageNode.Attribute("sha1"), _imagesRootXml);
+
             // added error handling code, but how is this call even happening on a photo that doesn't exist..?
             // a db integrity issue?
 
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
+            if (imageNode == null)
             {
+                setErrorReportToFAILURE("There is not imageNode with that hash", ref errorReport);
                 return errorReport;
             }
 
             // From the photo database, get the number of references remaining to this photo.
-            int refCount = (int)picFromPicsDB.Attribute("refCount");
+            int refCount = (int)imageNode.Attribute("refCount");
 
             // Delete this instance of the photo from the in-memory xml database
             try
             {
                 // delete this instance of the picture from the album db, and decrement the refCounter
-                ImageElement.Remove();
-                refCount--;
+                _photoBomb_xml.removeNode(albumImageNode);
+                --refCount;
 
                 if (refCount == 0)
                 {
                     // This was the last reference to the picture, delete it from the photoDB and the filesystem
-                    removeImageFromImageDB_backend(picFromPicsDB);
+                    removeImageFromImageDB_backend(imageNode);
                 }
                 else
                 {
                     // The photo is still in the albumDB somewhere, so just update xml with new refcount
-                    picFromPicsDB.Attribute("refCount").Value = refCount.ToString();
+                    imageNode.Attribute("refCount").Value = refCount.ToString();
                 }
                 // TODO: move these two calls out of here for efficiency in removing multiple files!
-                saveAlbumsXML_backend();
-                saveImagesXML_backend();
+
+                if (saveXmlFiles)
+                {
+                    saveAlbumsXML_backend();
+                    saveImagesXML_backend();
+                }
+
             }
             catch // the photo mysteriously disappeared (from the xml!) before removing it..?
             {
@@ -1042,9 +1007,9 @@ namespace SoftwareEng
         /// Removes the specified Image from the Image database and from the filesystem.
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="imageElement">An XElement object referencing a photo from the PhotoDB</param>
+        /// <param name="imageNode">An XElement object referencing a photo from the PhotoDB</param>
         /// <returns></returns>
-        private ErrorReport removeImageFromImageDB_backend(XElement imageElement)
+        private ErrorReport removeImageFromImageDB_backend(XElement imageNode)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1052,13 +1017,13 @@ namespace SoftwareEng
             // First try to delete it from the filesystem
             try
             {
-                File.Delete(imageElement.Element("filePath").Value);
+                File.Delete(imageNode.Element("filePath").Value);
                 //since we are using this large thumbnail in the program as the image for the picture tile
                 //(tested and it is NOT because the album is using the first photo's large thumbnail as its thumb)
                 //this throws a System.IO.IOException because it cannot access the file to delete it as it is in use.
                 //then the function skips over the rest of the delete, which can lead to dangling items in the xml
                 //causing a unhandled exception later on if more deletes are tried.
-                File.Delete(imageElement.Element("lgThumbPath").Value);
+                File.Delete(imageNode.Element("lgThumbPath").Value);
             }
             catch
             {
@@ -1068,18 +1033,19 @@ namespace SoftwareEng
             }
             // Now delete this instance of the photo from the in-memory photo database
             // If we've gotten here, we've already deleted it from the albums database
-            try
-            {
-                imageElement.Remove();
-                // TODO: move these calls out of here for efficiency in removing multiple files!
-                saveAlbumsXML_backend();
-                saveImagesXML_backend();
-            }
-            catch // the photo mysteriously disappeared (from the xml!) before removing it..?
+
+
+            if (!_photoBomb_xml.removeNode(imageNode))
             {
                 setErrorReportToFAILURE("Failed to remove the photo instance from the xml database", ref errorReport);
                 return errorReport;
             }
+
+   
+            // TODO: move these calls out of here for efficiency in removing multiple files!
+            saveAlbumsXML_backend();
+            saveImagesXML_backend();
+            
             return errorReport;
         }
 
@@ -1095,25 +1061,26 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             //error prone code here if there is no album with that UID. An unhandled exception was raised here during testing. -Ryan Causey
-            XElement specificAlbum = util_getAlbum(errorReport, albumUID);
+            XElement albumNode = _photoBomb_xml.getAlbumNodeFromAlbumXml(albumUID, _albumsRootXml);
 
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
+            if (albumNode == null)
             {
+                setErrorReportToFAILURE("Failed to find a single album by UID.", ref errorReport);
                 return errorReport;
             }
 
             // linq returns a lazy evaluated ienumberable, which foreach apparently doesn't like, so we convert to a list.
-            List<XElement> pictureElements = specificAlbum.Element("albumPhotos").Elements("picture").ToList();
+            List<XElement> albumImageNodes = albumNode.Element("albumPhotos").Elements("picture").ToList();
 
-            foreach (XElement subElement in pictureElements)
+            foreach (XElement albumImageNode in albumImageNodes)
             {
                 // remove the picture element
-                removePictureElement_backend(subElement);
+                removeImageFromImageXml(albumImageNode, false);
             }
 
             // now delete the album itself.
             // Since we've deleted every photo in the album, we can just remove the node.
-            specificAlbum.Remove();
+            _photoBomb_xml.removeNode(albumNode);
 
             // now sync to the disk
             saveAlbumsXML_backend();
@@ -1181,16 +1148,16 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             // get the photo node that we are working on.
-            XElement photoElem = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
+            XElement photoElem = getAlbumImageNodeFromAlbumXml(albumUID, idInAlbum);
             if (errorReport.reportStatus == ReportStatus.FAILURE)
             {
                 return errorReport;
             }
 
             // change the photo's name.
-            util_renamePhoto(errorReport, photoElem, newName);
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
+            if (!setAlbumImageNodeName(photoElem, newName))
             {
+                
                 return errorReport;
             }
 
@@ -1219,7 +1186,7 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             // get the photo node that we are working on.
-            XElement photoElem = util_getAlbumDBPhotoNode(albumUID, idInAlbum);
+            XElement photoElem = getAlbumImageNodeFromAlbumXml(albumUID, idInAlbum);
             if (errorReport.reportStatus == ReportStatus.FAILURE)
             {
                 return errorReport;
@@ -1229,6 +1196,7 @@ namespace SoftwareEng
             util_setPhotoCaption(errorReport, photoElem, newCaption);
             if (errorReport.reportStatus == ReportStatus.FAILURE)
             {
+                // TODO:
                 return errorReport;
             }
 
@@ -1287,32 +1255,40 @@ namespace SoftwareEng
         /// <param name="photoObj">A List of ComplexPhotoData objects which contain all the information about a photo</param>
         /// <param name="albumUID">The unique ID of the album to copy the photo into</param>
         /// 
-        public ErrorReport addExistingImagesToAlbum_backend(List<ComplexPhotoData> photoList, Guid albumUID)
+        public ErrorReport addExistingImagesToAlbum_backend(List<ComplexPhotoData> imageList, Guid albumUID)
         {
             ErrorReport errorReport = new ErrorReport();
 
-            foreach (ComplexPhotoData photoObj in photoList)
+            foreach (ComplexPhotoData imageData in imageList)
             {
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
-                photoObj.refCount = util_getPhotoRefCount(ByteArrayToString(photoObj.hash));
-                photoObj.refCount++;
+                imageData.refCount = util_getPhotoRefCount(ByteArrayToString(imageData.hash));
+                imageData.refCount++;
 
                 // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
-                XElement thisPic = util_getPhotoDBNode(errorReport, ByteArrayToString(photoObj.hash));
-                thisPic.Attribute("refCount").Value = photoObj.refCount.ToString();
+
+                XElement imageNode = _photoBomb_xml.getImageNodeFromImageXml(ByteArrayToString(imageData.hash), _imagesRootXml);
+
+                if (imageNode == null)
+                {
+                    // TODO
+                    return errorReport;
+                }
+
+                imageNode.Attribute("refCount").Value = imageData.refCount.ToString();
 
                 // Currently spec says not to carry captions forawrd when copying photos
-                photoObj.caption = "";
+                imageData.caption = "";
 
-                util_addImageToAlbumDB(errorReport, photoObj, albumUID);
+                util_addImageToAlbumDB(errorReport, imageData, albumUID);
 
                 //if adding to the album database failed
                 if (errorReport.reportStatus == ReportStatus.FAILURE)
                 {
                     //guiCallback(errorReport, albumUID); //TODO: JN: What the hell is going on??
                     //save to disk.
-                    saveImagesXML_backend();
-                    saveAlbumsXML_backend();
+                    //saveImagesXML_backend();
+                    //saveAlbumsXML_backend();
                     break;
                 }
             }
@@ -1396,29 +1372,24 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
-            //get the album that has the name of the photo we are changing.
-            XElement album = util_getAlbum(errorReport, albumUID);
-
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
-            {
-                return errorReport;
-            }
 
             //Get the photo from the album.
-            XElement photoElem = util_getAlbumDBPhotoNode(errorReport, album, idInAlbum);
+            XElement albumImageNode = _photoBomb_xml.getAlbumImageNodeFromAlbumXml(albumUID, idInAlbum, _albumsRootXml); 
 
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
+            if (albumImageNode == null)
             {
+                // TODO
                 return errorReport;
             }
 
             //change the photo's name.
-            util_renamePhoto(errorReport, photoElem, newName);
-
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
+            if (!setAlbumImageNodeName(albumImageNode, newName))
             {
+                // TODO
                 return errorReport;
             }
+
+
 
             // TODO: JN: I don't this is real. 
             return saveAlbumsXML_backend();
@@ -1493,6 +1464,9 @@ namespace SoftwareEng
         /// <param name="errReport">The ErrorReport.</param>
         private void setErrorReportToFAILURE(String description, ref ErrorReport errReport)
         {
+            if (errReport == null)
+                return;
+
             errReport.reportStatus = ReportStatus.FAILURE;
             errReport.description = description;
         }
