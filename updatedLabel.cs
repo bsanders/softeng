@@ -16,81 +16,101 @@ namespace SoftwareEng
     public delegate void customEvent_callback();
 
 
-    class customLabel : Label
+    public class customLabel : preCustomLabel
     {
         private Timer EventTimer;
         private bool isFrontFace;
-        const double mouseEnterTimer = 1000.0;
-        const double mouseLeaveTimer = 3000.0;
+        private bool lockOut;
+        Point mouseInitialPosition;
+        Point mouseCurrentPosition;
+        ErrorWindow debug;
 
-        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
+        public static readonly RoutedEvent TypeOneTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeOneTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
 
-        
-        public customLabel(): base()
+        public customLabel()
+            : base()
         {
-            EventTimer = new Timer();
-
-            EventTimer.Elapsed += new ElapsedEventHandler(EventTimer_Elapsed);
+            lockOut = true;
         }
 
-        public bool isFront
+        public event RoutedEventHandler OnPhotoBomberTypeOneEvent
         {
-            get
+            add { AddHandler(TypeOneTileTriggerEvent, value); }
+            remove { RemoveHandler(TypeOneTileTriggerEvent, value); }
+        }
+
+
+        protected void RaisePhotoBomberTileTypeOneEvent()
+        {
+            if (lockOut == false)
             {
-                return isFrontFace;
+                RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.TypeOneTileTriggerEvent);
+                RaiseEvent(newEventArgs);
             }
-            set
+        }
+
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            lockOut = false;
+
+            mouseInitialPosition = e.GetPosition(this);
+
+            Mouse.SetCursor(Cursors.Hand);
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            lockOut = true;
+
+            Mouse.SetCursor(Cursors.Arrow);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
-                isFrontFace = value;
+                mouseCurrentPosition = (Point)e.GetPosition(this);
+
+                Vector someVector = Point.Subtract(mouseCurrentPosition, mouseInitialPosition);
+
+
+                if (someVector.X > 25)
+                {
+
+                    RaisePhotoBomberTileTypeOneEvent();
+                    mouseInitialPosition.X = 0.0;
+                    lockOut = true;
+                }
+                else if (someVector.X < -25)
+                {
+                    RaisePhotoBomberTileTypeTwoEvent();
+                    mouseInitialPosition.X = 0.0;
+                    lockOut = true;
+                }
             }
         }
+    }
 
-        void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
+
+
+    public class preCustomLabel : Label
+    {
+        static readonly RoutedEvent TypeTwoTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeTwoTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(preCustomLabel));
+
+
+        public event RoutedEventHandler OnPhotoBomberTypeTwoEvent
         {
-            EventTimer.Stop();
-            this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null); 
+            add { AddHandler(TypeTwoTileTriggerEvent, value); }
+            remove { RemoveHandler(TypeTwoTileTriggerEvent, value); }
         }
 
 
-        public event RoutedEventHandler OnPhotoBomberTileEvent
+        protected void RaisePhotoBomberTileTypeTwoEvent()
         {
-            add { AddHandler(PhotoBomberTileTriggerEvent, value); }
-            remove { RemoveHandler(PhotoBomberTileTriggerEvent, value); }
-        }
-
-
-        void RaisePhotoBomberTileTriggerEvent()
-        {
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(customLabel.PhotoBomberTileTriggerEvent);
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(preCustomLabel.TypeTwoTileTriggerEvent);
             RaiseEvent(newEventArgs);
         }
 
-
-
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            if (isFrontFace == true)
-            {
-                EventTimer.Interval = mouseEnterTimer;
-                EventTimer.Start();
-            }
-            else
-            {
-                EventTimer.Stop();
-            }
-        }
-
-        protected override void OnMouseLeave(MouseEventArgs e)
-        {
-            if (isFrontFace == false)
-            {
-                EventTimer.Interval = mouseLeaveTimer;
-                EventTimer.Start();
-            }
-            else
-            {
-                EventTimer.Stop();
-            }
-        }
     }
 }

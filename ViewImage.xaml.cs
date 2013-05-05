@@ -99,6 +99,9 @@ namespace SoftwareEng
             slideShowTimer.Interval = new TimeSpan(0, 0, 5);
             slideShowTimer.Tick += new EventHandler(slideShowTimer_Tick);
 
+            this.Height = 500.0;
+            this.Width = 600.0;
+
             if (slideShowStart)
             {
                 enterSlideShowState();

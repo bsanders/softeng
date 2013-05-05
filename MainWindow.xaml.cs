@@ -298,8 +298,8 @@ namespace SoftwareEng
                 // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
-                nameTextBoxErrorAnimation.Begin();
+                //Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+                //nameTextBoxErrorAnimation.Begin();
 
                 handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -379,8 +379,8 @@ namespace SoftwareEng
                 // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
-                nameTextBoxErrorAnimation.Begin();
+                //Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
+                //nameTextBoxErrorAnimation.Begin();
 
                 handlePhotoNameErrorPopup(true, errorStrings.invalidImageNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -485,8 +485,8 @@ namespace SoftwareEng
             //if it is not a valid string
             if (!validateTheString(_captionValidationRegex, commentTextBox.Text))
             {
-                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
-                commentTextBoxAnimation.Begin();
+                //Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                //commentTextBoxAnimation.Begin();
 
                 handleCommentErrorPopup(true, errorStrings.invalidComment);
                 commentTextBox.Focus();
@@ -497,7 +497,7 @@ namespace SoftwareEng
                 guiChangePhotoCaption(commentTextBox.Text);
                 if (photoNameTextBox.Text != "")
                 {
-                    guiRenameSelectedPhoto(photoNameTextBox.Text); 
+                    guiRenameSelectedPhoto(photoNameTextBox.Text);
                 }
                 //clean up the comment box error dialogues and also clear the text boxes
                 Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
@@ -521,7 +521,7 @@ namespace SoftwareEng
         /// <param name="caption">The new caption value</param>
         private void guiChangePhotoCaption(String caption)
         {
-            if(mainWindowAlbumList.SelectedItem != null)
+            if (mainWindowAlbumList.SelectedItem != null)
             {
                 _bombaDeFotos.setImageCaption(new generic_callback(guiChangePhotoCaption_Callback), _currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
             }
@@ -1115,7 +1115,7 @@ namespace SoftwareEng
 
                 // transition to the album the user selected for a slideshow
                 guiEnterAlbumView();
-                
+
                 // if there are pictures in the album
                 if (_listOfPhotos.Count > 0)
                 {
@@ -1595,9 +1595,10 @@ namespace SoftwareEng
                 _photoBomberAboutWindow.Close();
             }
 
-            _photoBomberAboutWindow = new AboutWindow();
+            //photoBomberAboutWindow = new aboutWindow();
 
-            _photoBomberAboutWindow.Show();
+            //photoBomberAboutWindow.Show();
+            PhotoBomberMenu.IsSubmenuOpen = true;
         }
 
         private void aboutMenuItemPressed_eventHandler(object sender, RoutedEventArgs e)
@@ -2087,90 +2088,6 @@ namespace SoftwareEng
             }
         }
 
-        private void commonSortMenu_EventHandler(bool ascendingTrue )
-        {
-            ;
-        }
-
-
-        //orderSelector{ 0=(name, extension) 1=(extension, name) }
-        //ascendingTrue{ 0=(descending) 1=(ascending) }
-        private void SortImageList(int orderSelector, int ascendingTrue)
-        {
-            if (_ImageListCollectionView.SortDescriptions == null)
-            {
-                return;
-            }
-            _ImageListCollectionView.SortDescriptions.Clear();
-
-
-            //shifting by 3 means x8
-            orderSelector += (ascendingTrue << 3);
-
-            switch (orderSelector)
-            {
-                case 1:
-                    //descending extension
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
-                    break;
-
-                case 8:
-                    //ascending name
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
-                    break;
-
-                case 9:
-                    //ascending extension
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
-                    break;
-
-                default:
-                    //descending name
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
-                    break;
-            }
-        }
-
-        private void sortingDockMenu_Click(object sender, RoutedEventArgs e)
-        {
-            //if (imageSortingMenuPopup.IsOpen == false)
-            //{
-            //    imageSortingMenuPopup.IsOpen = true;
-            //}
-            //else
-            //{
-            //    imageSortingMenuPopup.IsOpen = false;
-            //}
-        }
-
-        private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (ascendingMenuItem.IsChecked == true)
-            {
-                SortImageList(1, 1);
-            }
-            else
-            {
-                SortImageList(1, 0);
-            }
-        }
-
-        private void nameMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (ascendingMenuItem.IsChecked == true)
-            {
-                SortImageList(0, 1);
-            }
-            else
-            {
-                SortImageList(0, 0);
-            }
-        }
-
         private void mainWindowAlbumList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             mainWindowListItemActivation();
@@ -2186,7 +2103,7 @@ namespace SoftwareEng
 
         private void mainWindowListItemActivation()
         {
-            if (!_isInsideAlbum)
+            if (_isInsideAlbum == false)
             {
                 guiEnterAlbumView();
             }
@@ -2196,113 +2113,105 @@ namespace SoftwareEng
             }
         }
 
-
-        private void clearThemecheckboxes()
-        {
-            bureauBlackThemeMenuItem.IsChecked=false;
-            bureauBlueThemeMenuItem.IsChecked = false;
-            expressionDarkThemeMenuItem.IsChecked = false;
-            expressionLightThemeMenuItem.IsChecked = false;
-            shinyBlueThemeMenuItem.IsChecked = false;
-            shinyRedThemeMenuItem.IsChecked = false;
-            whistlerBlueThemeMenuItem.IsChecked = false;
-        }
-
-
-
-        private void bureauBlackThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                bureauBlackThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative));
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/BureauBlack.xaml");
-        }
-
-        private void bureauBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                bureauBlueThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlue.xaml", UriKind.Relative)); 
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/BureauBlue.xaml");
-        }
-
-        private void expressionDarkThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                expressionDarkThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionDark.xaml", UriKind.Relative));  
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/ExpressionDark.xaml");
-        }
-
-        private void expressionLightThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                expressionLightThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionLight.xaml", UriKind.Relative));  
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/ExpressionLight.xaml");
-        }
-
-        private void shinyBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                shinyBlueThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyBlue.xaml", UriKind.Relative)); 
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/ShinyBlue.xaml");
-        }
-
-        private void shinyRedThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                shinyRedThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/ShinyRed.xaml");
-        }
-
-        private void whistlerBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-                clearThemecheckboxes();
-                whistlerBlueThemeMenuItem.IsChecked = true;
-
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
-
-                var program = App.Current as App;
-
-                program.setTheme("/Themes/WhistlerBlue.xaml");
-        }
-
         private void dockSizeChanged_EventHandler(object sender, SizeChangedEventArgs e)
         {
             if (mainWindowDock.Height != 48)
             {
                 return;
             }
-            //CODE HERE TO USE TIMER
         }
 
+
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
+
+        private void closePopupsAndMenus()
+        {
+            libraryContextMenu.IsOpen = false;
+            AlbumContextMenu.IsOpen = false;
+            imageSortingMenu.IsSubmenuOpen = false;
+        }
+
+
+        //this Function region deals with image sorting
+        #region sortingFunctionRegion
+
+        private void clearSortingCheckBoxes()
+        {
+            extensionMenuItem.IsChecked = false;
+            nameMenuItem.IsChecked = false;
+        }
+
+        private void SortImageList()
+        {
+            if (_ImageListCollectionView.SortDescriptions == null)
+            {
+                return;
+            }
+            _ImageListCollectionView.SortDescriptions.Clear();
+
+            String sortByThis;
+
+            if (nameMenuItem.IsChecked == true)
+            {
+                sortByThis = "name";
+            }
+            else if (extensionMenuItem.IsChecked == true)
+            {
+                sortByThis = "extension";
+            }
+            else
+            {
+                return;
+            }
+
+
+            switch (ascendingMenuItem.IsChecked)
+            {
+                case true:
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription(sortByThis, ListSortDirection.Ascending));
+                    break;
+                case false:
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription(sortByThis, ListSortDirection.Descending));
+                    break;
+            }
+        }
+
+        private void sortingDockMenu_Click(object sender, RoutedEventArgs e)
+        {
+            imageSortingMenu.IsSubmenuOpen = true;
+        }
+
+        private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (extensionMenuItem.IsChecked == false)
+            {
+                clearSortingCheckBoxes();
+                extensionMenuItem.IsChecked = true;
+                SortImageList();
+            }
+        }
+
+        private void nameMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (nameMenuItem.IsChecked == false)
+            {
+                clearSortingCheckBoxes();
+                nameMenuItem.IsChecked = true;
+                SortImageList();
+            }
+        }
+
+        private void ascendingMenuItem_CheckToggled(object sender, RoutedEventArgs e)
+        {
+            SortImageList();
+        }
+
+        #endregion
+
+
+        //This function region deals with choosing themes
+        #region ThemeRelatedFunctions
 
         //getCurrentPhotoBomberTheme
         private void getCurrentThemeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2316,51 +2225,114 @@ namespace SoftwareEng
             debugWindow.ShowDialog();
         }
 
-        
-    }
-
-    /*
-     * Created By: Ryan Causey
-     * Created Date: 4/6/13
-     * Last Edited By: Ryan Causey
-     * Last Edited Date: 4/7/13
-     */
-    /// <summary>
-    /// Converter to allow data binding to be used in the BitmapImage UriSource attribute with the
-    /// cache option on.
-    /// </summary>
-    public class ImagePathConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        private void clearThemecheckboxes()
         {
-            // value contains the full path to the image
-            String path = (String)value;
-            //handled the path not being loaded yet.
-            if (path != "")
-            {
-                if (File.Exists(path))
-                {
-                    // load the image, convert to bitmap, set cache option so it
-                    //does not lock out the file, then return the new image.
-                    BitmapImage image = new BitmapImage();
-                    image.BeginInit();
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.UriSource = new Uri(path);
-                    image.EndInit();
-
-                    return image;
-                }
-            }
-
-            return DependencyProperty.UnsetValue;
+            bureauBlackThemeMenuItem.IsChecked = false;
+            bureauBlueThemeMenuItem.IsChecked = false;
+            expressionDarkThemeMenuItem.IsChecked = false;
+            expressionLightThemeMenuItem.IsChecked = false;
+            shinyBlueThemeMenuItem.IsChecked = false;
+            //shinyRedThemeMenuItem.IsChecked = false;
+            whistlerBlueThemeMenuItem.IsChecked = false;
         }
 
-        //put this here so that if someone tries to convert back we throw an exception as
-        //the operation is not implemented.
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+
+
+        private void bureauBlackThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException("The method or operation is not implemented.");
+            clearThemecheckboxes();
+            bureauBlackThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative));
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/BureauBlack.xaml");
         }
+
+        private void bureauBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            bureauBlueThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlue.xaml", UriKind.Relative)); 
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/BureauBlue.xaml");
+        }
+
+        private void expressionDarkThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            expressionDarkThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionDark.xaml", UriKind.Relative));  
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/ExpressionDark.xaml");
+        }
+
+        private void expressionLightThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            expressionLightThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionLight.xaml", UriKind.Relative));  
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/ExpressionLight.xaml");
+        }
+
+        private void shinyBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            shinyBlueThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyBlue.xaml", UriKind.Relative)); 
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/ShinyBlue.xaml");
+        }
+
+        //private void shinyRedThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        //{
+        //    clearThemecheckboxes();
+        //    shinyRedThemeMenuItem.IsChecked = true;
+
+        //    //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
+
+        //    var program = App.Current as App;
+
+        //    program.setTheme("/Themes/ShinyRed.xaml");
+        //}
+
+        private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            whistlerBlueThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/WhistlerBlue.xaml");
+        }
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
     }
 
 }
