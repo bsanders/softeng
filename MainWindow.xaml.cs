@@ -46,12 +46,15 @@
  *                     the photo name and then validate the caption.
  *                     Changed the regex for caption validation to allow blank captions, in order to allow captions to be removed.
  * 4/28/13 Julian Nguyen:
- * rename PhotoBomb -> PhotoBomb_Controller.
+ *                     rename PhotoBomb -> PhotoBomb_Controller.
+ *         Alejandro Sosa:
+ *                     Gui fixes,  implemented themes, added custom routed event
+ *          
  * 4/30/13 Julian Nguyen:
- * ErrorReports constants numbers removed and replaced with ReportStatus enums.
- * Fun() with "Picture" in the name were changed to "Image"
+ *                      ErrorReports constants numbers removed and replaced with ReportStatus enums.
+ *                      Fun() with "Picture" in the name were changed to "Image"
  * 5/1/13 Julian Nguyen
- * Renamed the class fields to have '_'! 
+ *                      Renamed the class fields to have '_'! 
  * 
  */
 using System;
@@ -2138,8 +2141,11 @@ namespace SoftwareEng
 
         private void clearSortingCheckBoxes()
         {
-            extensionMenuItem.IsChecked = false;
+            dateTakenMenuItem.IsChecked = false;
             nameMenuItem.IsChecked = false;
+            dateAddedMenuItem.IsChecked = false;
+            equipmentManufacturerMenuItem.IsChecked = false;
+            equipmentModelMenuItem.IsChecked = false;
         }
 
         private void SortImageList()
@@ -2156,9 +2162,21 @@ namespace SoftwareEng
             {
                 sortByThis = "name";
             }
-            else if (extensionMenuItem.IsChecked == true)
+            else if (dateTakenMenuItem.IsChecked == true)
             {
-                sortByThis = "extension";
+                sortByThis = "takenDate";
+            }
+            else if (dateAddedMenuItem.IsChecked == true)
+            {
+                sortByThis = "addedDate";
+            }
+            else if (equipmentManufacturerMenuItem.IsChecked == true)
+            {
+                sortByThis = "equipmentManufacturer";
+            }
+            else if (equipmentModelMenuItem.IsChecked == true)
+            {
+                sortByThis = "equipmentModel";
             }
             else
             {
@@ -2182,25 +2200,74 @@ namespace SoftwareEng
             imageSortingMenu.IsSubmenuOpen = true;
         }
 
-        private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (extensionMenuItem.IsChecked == false)
-            {
-                clearSortingCheckBoxes();
-                extensionMenuItem.IsChecked = true;
-                SortImageList();
-            }
-        }
+        //private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (extensionMenuItem.IsChecked == false)
+        //    {
+        //        clearSortingCheckBoxes();
+        //        extensionMenuItem.IsChecked = true;
+        //        SortImageList();
+        //    }
+        //}
 
         private void nameMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (nameMenuItem.IsChecked == false)
+            if (nameMenuItem.IsChecked == true)
             {
                 clearSortingCheckBoxes();
-                nameMenuItem.IsChecked = true;
+                
                 SortImageList();
             }
+            nameMenuItem.IsChecked = true;
         }
+
+
+        private void dateAddedMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (dateAddedMenuItem.IsChecked == true)
+            {
+                clearSortingCheckBoxes();
+                
+                SortImageList();
+            }
+            dateAddedMenuItem.IsChecked = true;
+        }
+
+
+        private void dateTakenMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (dateTakenMenuItem.IsChecked == true)
+            {
+                clearSortingCheckBoxes();
+                
+                SortImageList();
+            }
+            dateTakenMenuItem.IsChecked = true;
+        }
+
+        private void equipmentManufacturerMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (equipmentManufacturerMenuItem.IsChecked == true)
+            {
+                clearSortingCheckBoxes();
+                
+                SortImageList();
+            }
+            equipmentManufacturerMenuItem.IsChecked = true;
+        }
+
+        private void equipmentModelMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (equipmentModelMenuItem.IsChecked == true)
+            {
+                clearSortingCheckBoxes();
+
+                SortImageList();
+            }
+                equipmentModelMenuItem.IsChecked = true;
+        }
+
+
 
         private void ascendingMenuItem_CheckToggled(object sender, RoutedEventArgs e)
         {
@@ -2323,6 +2390,10 @@ namespace SoftwareEng
         }
 
         #endregion
+
+
+
+
 
 
 
