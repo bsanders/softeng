@@ -258,7 +258,8 @@ namespace SoftwareEng
                 new XAttribute("sha1", ByteArrayToString(newPictureData.hash)),
                 new XAttribute("refCount", newPictureData.refCount),
                 new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.fullPath),
-                new XElement("lgThumbPath", newPictureData.lgThumbPath)
+                new XElement("lgThumbPath", newPictureData.lgThumbPath),
+                new XElement("dateAdded", DateTime.Today.ToString())
                 );
 
             //add to the database (in memory, not on disk).
@@ -486,9 +487,14 @@ namespace SoftwareEng
         //Edited Last:
         //Check a picture's path.
         //RETURN: true if the uid is valid, false otherwise.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         private Boolean util_checkFilePath(String path)
         {
-            if (path != "")
+            if (path != String.Empty)
                 return true;
             return false;
         }
@@ -841,32 +847,38 @@ namespace SoftwareEng
             XElement photoDBNode = util_getPhotoDBNode(errorReport, (string)albumDBPhotoNode.Attribute("sha1"));
 
 
-            ComplexPhotoData photoObj = new ComplexPhotoData();
+            ComplexPhotoData imageData = new ComplexPhotoData();
 
             //TRANSFER ALL DATA TO THE DATA CLASS HERE.
             try
             {
                 // PhotoDB data
-                photoObj.UID = (int)photoDBNode.Attribute("uid");
-                photoObj.hash = StringToByteArray((string)photoDBNode.Attribute("sha1"));
-                photoObj.refCount = (int)photoDBNode.Attribute("refCount");
-                photoObj.fullPath = photoDBNode.Element("filePath").Value;
-                photoObj.lgThumbPath = photoDBNode.Element("lgThumbPath").Value;
-                photoObj.extension = (String)photoDBNode.Element("filePath").Attribute("extension");
+                imageData.UID = (int)photoDBNode.Attribute("uid");
+                imageData.hash = StringToByteArray((string)photoDBNode.Attribute("sha1"));
+                imageData.refCount = (int)photoDBNode.Attribute("refCount");
+                imageData.fullPath = photoDBNode.Element("filePath").Value;
+                imageData.lgThumbPath = photoDBNode.Element("lgThumbPath").Value;
+                imageData.addedDate = stringToDateTime(photoDBNode.Element("dateAdded").Value);
+
+                
+                
+
+                imageData.extension = (String)photoDBNode.Element("filePath").Attribute("extension");
+
                 // AlbumDB data
-                photoObj.idInAlbum = (int)albumDBPhotoNode.Attribute("idInAlbum");
-                photoObj.name = albumDBPhotoNode.Element("name").Value;
-                if (photoObj.name == string.Empty)
+                imageData.idInAlbum = (int)albumDBPhotoNode.Attribute("idInAlbum");
+                imageData.name = albumDBPhotoNode.Element("name").Value;
+                if (imageData.name == string.Empty)
                 {
                     string defaultPhotoName = albumDBPhotoNode.Parent.Parent.Element("albumName").Value
                         + " "
                         + Settings.DefaultImageName
                         + " "
-                        + photoObj.idInAlbum;
-                    photoObj.name = defaultPhotoName;
+                        + imageData.idInAlbum;
+                    imageData.name = defaultPhotoName;
                     albumDBPhotoNode.Element("name").Value = defaultPhotoName;
                 }
-                photoObj.caption = albumDBPhotoNode.Element("caption").Value;
+                imageData.caption = albumDBPhotoNode.Element("caption").Value;
             }
             catch(Exception e)
             {
@@ -874,7 +886,21 @@ namespace SoftwareEng
                 return null;
             }
 
-            return photoObj;
+            return imageData;
+        }
+
+
+        private DateTime stringToDateTime(String sDate)
+        {
+
+            DateTime date = DateTime.MinValue;
+
+            if (!DateTime.TryParse(sDate, out date))
+            {
+                return DateTime.MinValue;
+            }
+
+            return date;
         }
 
         // BS: (4/5/13) Commenting this function out, as util_getComplexPhotoData() now suits the programs needs better.

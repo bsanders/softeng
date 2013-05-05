@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography; //Namespace for SHA1
-
+using System.Text.RegularExpressions;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace SoftwareEng
 {
@@ -282,6 +284,38 @@ namespace SoftwareEng
             }
 
             return fileHash;
+        }
+
+
+        //we init this once so that if the function is repeatedly called
+        //it isn't stressing the garbage man
+        private static Regex r = new Regex(":");
+
+        /// By: http://stackoverflow.com/questions/180030/how-can-i-find-out-when-a-picture-was-actually-taken-in-c-sharp-running-on-vista
+        /// Edited Julian Nguyen(5/4/13)
+        /// <summary>
+        /// retrieves the datetime WITHOUT loading the whole image
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public PropertyItem[] getImageProperty(string path)
+        {
+            FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+            Image myImage = Bitmap.FromStream(fs, false, false);
+
+            return myImage.PropertyItems;
+
+        }
+
+
+        private Image openImage(String path)
+        {
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            using (Image myImage = Image.FromStream(fs, false, false))
+            {
+                fs.Close();
+                return myImage;
+            }
         }
 
     } // End of FileDataBase.

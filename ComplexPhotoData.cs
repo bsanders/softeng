@@ -32,6 +32,12 @@ namespace SoftwareEng
         private String _extension;
         private int _refCount;
 
+        private DateTime _addedDate;
+        private DateTime _takenDate;
+        private String _equipmentManufacturer;
+        private String _equipmentModel;
+
+
         // In Album data.
         private int _idInAlbum;
         private String _caption;
@@ -55,6 +61,10 @@ namespace SoftwareEng
             caption = String.Empty;
             name = String.Empty;
             refCount = 0;
+            _takenDate = DateTime.MinValue;
+            _addedDate = DateTime.MinValue;
+            _equipmentManufacturer = String.Empty;
+            _equipmentModel = String.Empty;
         }
 
         /// TODO:
@@ -294,6 +304,62 @@ namespace SoftwareEng
                 }
             }
         }
+
+
+        public DateTime takenDate
+        {
+            get { return _takenDate; }
+            set
+            {
+                if (!_takenDate.Equals(value))
+                {
+                    _takenDate = value;
+                    OnPropertyChanged("takenDate");
+                }
+            }
+        }
+
+        public String equipmentManufacturer
+        {
+            get { return _equipmentManufacturer; }
+            set
+            {
+                if (!_equipmentManufacturer.Equals(value))
+                {
+                    _equipmentManufacturer = value;
+                    OnPropertyChanged("equipmentManufacturer");
+                }
+            }
+        }
+
+        public String equipmentModel
+        {
+            get { return _equipmentModel; }
+            set
+            {
+                if (_equipmentModel.Equals(value))
+                {
+                    _equipmentModel = value;
+                    OnPropertyChanged("equipmentModel");
+                }
+            }
+        }
+
+
+        public DateTime addedDate
+        {
+            get { return _addedDate; }
+            set
+            {
+                if (_addedDate.Equals(value))
+                {
+                    _addedDate = value;
+                    OnPropertyChanged("addedDate");
+                }
+            }
+        }
+            
+
 
         // Add a toXML function here?
 
