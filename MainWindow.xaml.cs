@@ -2103,13 +2103,21 @@ namespace SoftwareEng
 
         private void mainWindowListItemActivation()
         {
-            if (!_isInsideAlbum)
+            if (_isInsideAlbum == false)
             {
                 guiEnterAlbumView();
             }
             else
             {
                 guiViewPicture();
+            }
+        }
+
+        private void dockSizeChanged_EventHandler(object sender, SizeChangedEventArgs e)
+        {
+            if (mainWindowDock.Height != 48)
+            {
+                return;
             }
         }
 

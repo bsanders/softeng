@@ -81,7 +81,11 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding name}" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="3,0,0,0" Margin="0" Foreground="{DynamicResource PhotoBomberLightFontColor}"/>
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding name}" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="3,0,0,0" Margin="0">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DockPanel.Dock="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" >
                     <Image.Source>
                         <Binding Path="lgThumbPath" Converter="{StaticResource ImagePathConverter}">
@@ -104,7 +108,7 @@
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
                 </Grid.Background>
                 <Image Margin="0,0,0,44" x:Name="image1" Stretch="Fill" />
-                <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Width="Auto" Content="{Binding albumName}" Foreground="{DynamicResource PhotoBomberLightFontColor}"  />
+                <Label Height="40" x:Name="nameLabelFront" VerticalAlignment="Bottom" Margin="0,0,0,0" Width="Auto" Content="{Binding albumName}" />
             </Grid>
         </DataTemplate>
 
@@ -119,7 +123,11 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}" Foreground="{DynamicResource PhotoBomberLightFontColor}" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0"/>
+                <TextBlock Height="Auto" x:Name="nameLabelFront" VerticalAlignment="Bottom" Text="{Binding albumName}"  FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" LineStackingStrategy="BlockLineHeight" Width="{Binding Value, ElementName=thumbnailSizeSlider}" FontWeight="Normal" HorizontalAlignment="Center" DockPanel.Dock="Top" Padding="2,0,0,0">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLibraryTileColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <Image x:Name="image1" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Grid.Row="1" >
                     <Image.Source>
                         <!-- THE GODDAMNED SPLICERS HAVE SAVED THE DAY, WE HAVE DEFAULT FALLBACK IMAGES BITCHES-->
