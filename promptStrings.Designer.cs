@@ -22,7 +22,7 @@ namespace SoftwareEng {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class promptStrings {
+    public class promptStrings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace SoftwareEng {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SoftwareEng.promptStrings", typeof(promptStrings).Assembly);
@@ -51,7 +51,7 @@ namespace SoftwareEng {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace SoftwareEng {
         /// <summary>
         ///   Looks up a localized string similar to Jpeg images|*.jpg;*.jpeg;*.jpe;*.jfif;.
         /// </summary>
-        internal static string addFileDialogueFilter {
+        public static string addFileDialogueFilter {
             get {
                 return ResourceManager.GetString("addFileDialogueFilter", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace SoftwareEng {
         /// <summary>
         ///   Looks up a localized string similar to ^[\w\d][\w\d ]{0,31}$.
         /// </summary>
-        internal static string albumValidationRegex {
+        public static string albumValidationRegex {
             get {
                 return ResourceManager.GetString("albumValidationRegex", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace SoftwareEng {
         /// <summary>
         ///   Looks up a localized string similar to ^[\w\d ]{0,140}$.
         /// </summary>
-        internal static string captionValidationRegex {
+        public static string captionValidationRegex {
             get {
                 return ResourceManager.GetString("captionValidationRegex", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace SoftwareEng {
         /// <summary>
         ///   Looks up a localized string similar to Images were skipped because they are already in this album. .
         /// </summary>
-        internal static string importSkippedMessage {
+        public static string importSkippedMessage {
             get {
                 return ResourceManager.GetString("importSkippedMessage", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace SoftwareEng {
         /// <summary>
         ///   Looks up a localized string similar to Images added to this album..
         /// </summary>
-        internal static string importSuccessMessage {
+        public static string importSuccessMessage {
             get {
                 return ResourceManager.GetString("importSuccessMessage", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace SoftwareEng {
         /// <summary>
         ///   Looks up a localized string similar to Choose name:.
         /// </summary>
-        internal static string newAlbumNameLabel {
+        public static string newAlbumNameLabel {
             get {
                 return ResourceManager.GetString("newAlbumNameLabel", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace SoftwareEng {
         /// <summary>
         ///   Looks up a localized string similar to Choose caption:.
         /// </summary>
-        internal static string newImageCommentLabel {
+        public static string newImageCommentLabel {
             get {
                 return ResourceManager.GetString("newImageCommentLabel", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace SoftwareEng {
         /// <summary>
         ///   Looks up a localized string similar to Choose name:.
         /// </summary>
-        internal static string newImageNameLabel {
+        public static string newImageNameLabel {
             get {
                 return ResourceManager.GetString("newImageNameLabel", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace SoftwareEng {
         /// <summary>
         ///   Looks up a localized string similar to ^[\w\d][\w\d ]{0,31}$.
         /// </summary>
-        internal static string photoValidationRegex {
+        public static string photoValidationRegex {
             get {
                 return ResourceManager.GetString("photoValidationRegex", resourceCulture);
             }

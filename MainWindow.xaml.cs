@@ -497,7 +497,7 @@ namespace SoftwareEng
                 guiChangePhotoCaption(commentTextBox.Text);
                 if (photoNameTextBox.Text != "")
                 {
-                    guiRenameSelectedPhoto(photoNameTextBox.Text); 
+                    guiRenameSelectedPhoto(photoNameTextBox.Text);
                 }
                 //clean up the comment box error dialogues and also clear the text boxes
                 Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
@@ -521,7 +521,7 @@ namespace SoftwareEng
         /// <param name="caption">The new caption value</param>
         private void guiChangePhotoCaption(String caption)
         {
-            if(mainWindowAlbumList.SelectedItem != null)
+            if (mainWindowAlbumList.SelectedItem != null)
             {
                 _bombaDeFotos.setImageCaption(new generic_callback(guiChangePhotoCaption_Callback), _currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
             }
@@ -1115,7 +1115,7 @@ namespace SoftwareEng
 
                 // transition to the album the user selected for a slideshow
                 guiEnterAlbumView();
-                
+
                 // if there are pictures in the album
                 if (_listOfPhotos.Count > 0)
                 {
@@ -2087,7 +2087,7 @@ namespace SoftwareEng
             }
         }
 
-        private void commonSortMenu_EventHandler(bool ascendingTrue )
+        private void commonSortMenu_EventHandler(bool ascendingTrue)
         {
             ;
         }
@@ -2199,7 +2199,7 @@ namespace SoftwareEng
 
         private void clearThemecheckboxes()
         {
-            bureauBlackThemeMenuItem.IsChecked=false;
+            bureauBlackThemeMenuItem.IsChecked = false;
             bureauBlueThemeMenuItem.IsChecked = false;
             expressionDarkThemeMenuItem.IsChecked = false;
             expressionLightThemeMenuItem.IsChecked = false;
@@ -2212,86 +2212,86 @@ namespace SoftwareEng
 
         private void bureauBlackThemeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-                clearThemecheckboxes();
-                bureauBlackThemeMenuItem.IsChecked = true;
+            clearThemecheckboxes();
+            bureauBlackThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative));
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative));
 
-                var program = App.Current as App;
+            var program = App.Current as App;
 
-                program.setTheme("/Themes/BureauBlack.xaml");
+            program.setTheme("/Themes/BureauBlack.xaml");
         }
 
         private void bureauBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-                clearThemecheckboxes();
-                bureauBlueThemeMenuItem.IsChecked = true;
+            clearThemecheckboxes();
+            bureauBlueThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlue.xaml", UriKind.Relative)); 
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlue.xaml", UriKind.Relative)); 
 
-                var program = App.Current as App;
+            var program = App.Current as App;
 
-                program.setTheme("/Themes/BureauBlue.xaml");
+            program.setTheme("/Themes/BureauBlue.xaml");
         }
 
         private void expressionDarkThemeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-                clearThemecheckboxes();
-                expressionDarkThemeMenuItem.IsChecked = true;
+            clearThemecheckboxes();
+            expressionDarkThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionDark.xaml", UriKind.Relative));  
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionDark.xaml", UriKind.Relative));  
 
-                var program = App.Current as App;
+            var program = App.Current as App;
 
-                program.setTheme("/Themes/ExpressionDark.xaml");
+            program.setTheme("/Themes/ExpressionDark.xaml");
         }
 
         private void expressionLightThemeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-                clearThemecheckboxes();
-                expressionLightThemeMenuItem.IsChecked = true;
+            clearThemecheckboxes();
+            expressionLightThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionLight.xaml", UriKind.Relative));  
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionLight.xaml", UriKind.Relative));  
 
-                var program = App.Current as App;
+            var program = App.Current as App;
 
-                program.setTheme("/Themes/ExpressionLight.xaml");
+            program.setTheme("/Themes/ExpressionLight.xaml");
         }
 
         private void shinyBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-                clearThemecheckboxes();
-                shinyBlueThemeMenuItem.IsChecked = true;
+            clearThemecheckboxes();
+            shinyBlueThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyBlue.xaml", UriKind.Relative)); 
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyBlue.xaml", UriKind.Relative)); 
 
-                var program = App.Current as App;
+            var program = App.Current as App;
 
-                program.setTheme("/Themes/ShinyBlue.xaml");
+            program.setTheme("/Themes/ShinyBlue.xaml");
         }
 
         private void shinyRedThemeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-                clearThemecheckboxes();
-                shinyRedThemeMenuItem.IsChecked = true;
+            clearThemecheckboxes();
+            shinyRedThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
 
-                var program = App.Current as App;
+            var program = App.Current as App;
 
-                program.setTheme("/Themes/ShinyRed.xaml");
+            program.setTheme("/Themes/ShinyRed.xaml");
         }
 
         private void whistlerBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-                clearThemecheckboxes();
-                whistlerBlueThemeMenuItem.IsChecked = true;
+            clearThemecheckboxes();
+            whistlerBlueThemeMenuItem.IsChecked = true;
 
-                //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
 
-                var program = App.Current as App;
+            var program = App.Current as App;
 
-                program.setTheme("/Themes/WhistlerBlue.xaml");
+            program.setTheme("/Themes/WhistlerBlue.xaml");
         }
 
         private void dockSizeChanged_EventHandler(object sender, SizeChangedEventArgs e)
@@ -2316,7 +2316,7 @@ namespace SoftwareEng
             debugWindow.ShowDialog();
         }
 
-        
+
     }
 
     /*
