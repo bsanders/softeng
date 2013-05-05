@@ -34,6 +34,14 @@
         <GradientStop Color="#C7A7A7A7" Offset="0.372" />
     </LinearGradientBrush>
 
+
+    <LinearGradientBrush x:Key="PhotoBomberDialogBrush" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+        <GradientStop Color="#FF979797" Offset="0.871"/>
+        <GradientStop Color="#FF979797" Offset="0.081"/>
+        <GradientStop Color="#FF343434"/>
+        <GradientStop Color="Black" Offset="1"/>
+    </LinearGradientBrush>
+
     <LinearGradientBrush x:Key="PhotoBomberProgressBarBrush" EndPoint="1,0" StartPoint="0,0">
         <GradientStop Color="#CC706767" Offset="0"/>
         <GradientStop Color="#CCA2A2A2" Offset="0.5"/>

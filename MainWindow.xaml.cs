@@ -2232,7 +2232,7 @@ namespace SoftwareEng
             expressionDarkThemeMenuItem.IsChecked = false;
             expressionLightThemeMenuItem.IsChecked = false;
             shinyBlueThemeMenuItem.IsChecked = false;
-            shinyRedThemeMenuItem.IsChecked = false;
+            //shinyRedThemeMenuItem.IsChecked = false;
             whistlerBlueThemeMenuItem.IsChecked = false;
         }
 
@@ -2298,17 +2298,17 @@ namespace SoftwareEng
             program.setTheme("/Themes/ShinyBlue.xaml");
         }
 
-        private void shinyRedThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
-        {
-            clearThemecheckboxes();
-            shinyRedThemeMenuItem.IsChecked = true;
+        //private void shinyRedThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        //{
+        //    clearThemecheckboxes();
+        //    shinyRedThemeMenuItem.IsChecked = true;
 
-            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
+        //    //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
 
-            var program = App.Current as App;
+        //    var program = App.Current as App;
 
-            program.setTheme("/Themes/ShinyRed.xaml");
-        }
+        //    program.setTheme("/Themes/ShinyRed.xaml");
+        //}
 
         private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {

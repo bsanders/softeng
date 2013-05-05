@@ -666,7 +666,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="nameTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0" Visibility="Collapsed"/>
+                <TextBox x:Name="nameTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the new album" Width="200" Margin="0,0,3,0" Visibility="Collapsed" BorderBrush="#FF151010"/>
             </StackPanel>
 
             <StackPanel x:Name="photoNameBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right" ToolTip=" ">
@@ -675,7 +675,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="photoNameTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed" Background="#FF6F7F87" BorderBrush="#FFAA7878"/>
+                <TextBox x:Name="photoNameTextBox" Height="20" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="1" MaxLength="32" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a name for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed"/>
             </StackPanel>
 
             <StackPanel x:Name="commentBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -685,7 +685,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="commentTextBox" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="5" MaxLength="140" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a comment for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed" TextWrapping="Wrap" Background="#FF465157" BorderBrush="#FF3A3434"/>
+                <TextBox x:Name="commentTextBox" Padding="0" VerticalContentAlignment="Center" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="5" MaxLength="140" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a comment for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed" TextWrapping="Wrap"/>
 
             </StackPanel>
             <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,0,70,0" DockPanel.Dock="Right" ToolTip="Accept" >
@@ -815,8 +815,11 @@
                     <MenuItem x:Name="expressionDarkThemeMenuItem" Header="Expression Dark" IsCheckable="True" Click="expressionDarkThemeMenuItem_CheckToggle"/>
                     <MenuItem x:Name="expressionLightThemeMenuItem" Header="Expression Light" IsCheckable="True" Click="expressionLightThemeMenuItem_CheckToggle"/>
                     <MenuItem x:Name="shinyBlueThemeMenuItem" Header="Shiny Blue" IsCheckable="True" Click="shinyBlueThemeMenuItem_CheckToggle"/>
+                    <!--
                     <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_CheckToggle"/>
+                    
                     <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_CheckToggle"/>
+                    -->
                 </MenuItem>
                 <MenuItem Header="About" Click="aboutMenuItemPressed_eventHandler"/>
             </MenuItem>
