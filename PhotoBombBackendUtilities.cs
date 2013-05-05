@@ -730,67 +730,30 @@ namespace SoftwareEng
             return allAlbumDBPhotos;
         }
 
-        // Commenting this out, its functionality has been merged with util_getNextUID()
-        // to replicate: util_getNextUID(_albumsDatabase, "album", 1)
-        //------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //Returns a new VALID uid for a new album.
-        //NOTE: this is the slow way of doing it, but
-        //      it does not leave holes in the uids.
-        //      Ex: if an album is deleted, we reuse it's uid
-        //      when a new album is added.
-        //RETURNS -1 if there was a problem getting a new uid.
-        //private int util_getNewAlbumUID(ErrorReport error)
-        //{
-        //    int newUID = 1;
-        //    Boolean uidNotFound = true;
-        //    while (uidNotFound && newUID < UID_MAX_SIZE)
-        //    {
-        //        try
-        //        {
-        //            //if one or more (hope not more!) uid's are found
-        //            //to match our testing uid, then incriment the testing
-        //            //uid and try again.
-        //            (from c in _albumsDatabase.Elements("album")
-        //             where (int)c.Attribute("uid") == newUID
-        //             select c).First();
-        //            ++newUID;
-        //        }
-        //        //we found a unique one!
-        //        catch
-        //        {
-        //            uidNotFound = false;
-        //        }
-        //    }//while
 
-        //    if (newUID < UID_MAX_SIZE)
-        //        return newUID;
-        //    return -1;
-        //}
 
         //-------------------------------------------------------------------
         //By: Ryan Moe
         //Edited Last:
         //add an album to the database in memory ONLY.
-        private void util_addAlbumToAlbumDB(ErrorReport errorReport, SimpleAlbumData albumData)
+        private void addAlbumNodeToAlbumsXml__(SimpleAlbumData albumData)
         {
-            //make sure the album database is valid.
-            if (!util_checkAlbumDatabase(errorReport))
-            {
-                return;
-            }
 
             //construct the object we will be adding to the database.
             XElement newAlbum = new XElement("album",
-                                            new XAttribute("uid", albumData.UID),
-                                            new XElement("thumbnailPath", new XAttribute("thumbAlbumID", albumData.thumbAlbumID), albumData.thumbnailPath),
-                                            new XElement("albumName", albumData.albumName),
-                                            new XElement("albumPhotos"));
+                new XAttribute("uid", albumData.UID),
+                new XElement("thumbnailPath", new XAttribute("thumbAlbumID", albumData.thumbAlbumID), albumData.thumbnailPath),
+                new XElement("albumName", albumData.albumName),
+                new XElement("albumPhotos"));
 
             //add to the database in memory.
             _albumsRootXml.Add(newAlbum);
+
         }//method
+
+
+
+
 
         //-------------------------------------------------------------------
         /// By: Bill Sanders
