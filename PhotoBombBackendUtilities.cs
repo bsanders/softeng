@@ -803,14 +803,12 @@ namespace SoftwareEng
         /// <param name="albumImageNode">An XElement of a picture from the Album DB</param>
         /// <param name="albumUID">The unique ID number of the album the photo instance is in</param>
         /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
-        private ComplexPhotoData util_getComplexPhotoData(ErrorReport errorReport, XElement albumImageNode, Guid albumUID)
+        [Obsolete]
+        private ComplexPhotoData util_getComplexPhotoData(ErrorReport errorReport, XElement albumImageNode)
         {
             // We have all the data we need from the AlbumDB,
             // but the PhotoDB has important data as well.
             XElement imageNode = _photoBomb_xml.getImageNodeFromImageXml((string)albumImageNode.Attribute("sha1"), _imagesRootXml); 
-
-
-
 
             ComplexPhotoData imageData = new ComplexPhotoData();
 
@@ -845,7 +843,7 @@ namespace SoftwareEng
                 }
                 imageData.caption = albumImageNode.Element("caption").Value;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 setErrorReportToFAILURE("Error converting XElement to data object.", ref errorReport);
                 return null;
@@ -958,25 +956,25 @@ namespace SoftwareEng
         /// <summary>
         /// Check to see if a photo name is unique to an album.
         /// </summary>
-        /// <param name="photoName">The name to check</param>
+        /// <param name="imageName">The name to check</param>
         /// <param name="albumNode">The XElement albumDB node to check in</param>
         /// <returns>Returns true if the photo name is unique to that album</returns>
-        private Boolean util_isImageNameUniqueToAlbum(String photoName, XElement albumNode)
+        private Boolean util_isImageNameUniqueToAlbum(String imageName, XElement albumNode)
         {
             try
             {
                 //try and find a matching photo name.
                 //throws exception if we find NO matching names.
                 (from c in albumNode.Descendants("picture")
-                 where (String)c.Element("name") == photoName
+                 where (String)c.Element("name") == imageName
                  select c).First();
+                return false;
             }
             //we didn't find a matching name, success!
-            catch
+            catch(Exception)
             {
                 return true;
             }
-            return false;
         }
 
         /// By: Ryan Moe
@@ -1079,13 +1077,14 @@ namespace SoftwareEng
         /// Renames an album
         /// </summary>
         /// <param name="error"></param>
-        /// <param name="albumElem">An XElement representation of the album from the album DB</param>
-        /// <param name="newName">The new name for the album</param>
-        private void util_renameAlbum(ErrorReport error, XElement albumElem, String newName)
+        /// <param name="albumNode">An XElement representation of the album from the album DB</param>
+        /// <param name="newAlbumName">The new name for the album</param>
+        [Obsolete]
+        private void setAlbumName(ErrorReport error, XElement albumNode, String newAlbumName)
         {
             try
             {
-                albumElem.Element("albumName").Value = newName;
+                albumNode.Element("albumName").Value = newAlbumName;
             }
             catch
             {

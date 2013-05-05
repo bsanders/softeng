@@ -48,6 +48,25 @@ namespace SoftwareEng
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="albumUID"></param>
+        /// <param name="albumsRootXml"></param>
+        /// <param name="albumNode"></param>
+        /// <returns></returns>
+        public bool getAlbumNodeFromAlbumXml(Guid albumUID, XElement albumsRootXml, out XElement albumNode)
+        {
+            albumNode = getAlbumNodeFromAlbumXml(albumUID, albumsRootXml);
+            return albumNode != null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="albumUID"></param>
+        /// <param name="albumsRootXml"></param>
+        /// <returns></returns>
         public XElement getAlbumNodeFromAlbumXml(Guid albumUID, XElement albumsRootXml)
         {
             try
@@ -64,6 +83,26 @@ namespace SoftwareEng
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="albumNode"></param>
+        /// <param name="inAlbumId"></param>
+        /// <param name="albumImageNode"></param>
+        /// <returns></returns>
+        public bool getAlbumImageNodeFromAlbumNode(XElement albumNode, int inAlbumId, out XElement albumImageNode)
+        {
+            albumImageNode = getAlbumImageNodeFromAlbumNode(albumNode, inAlbumId);
+            return albumImageNode != null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="albumNode"></param>
+        /// <param name="inAlbumId"></param>
+        /// <returns></returns>
         public XElement getAlbumImageNodeFromAlbumNode(XElement albumNode, int inAlbumId)
         {
             try
@@ -81,6 +120,27 @@ namespace SoftwareEng
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="albumUID"></param>
+        /// <param name="inAlbumId"></param>
+        /// <param name="albumRootXml"></param>
+        /// <param name="albumImageNode"></param>
+        /// <returns></returns>
+        public bool getAlbumImageNodeFromAlbumXml(Guid albumUID, int inAlbumId, XElement albumRootXml, out XElement albumImageNode)
+        {
+            albumImageNode = getAlbumImageNodeFromAlbumXml(albumUID, inAlbumId, albumRootXml);
+            return albumImageNode != null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="albumUID"></param>
+        /// <param name="inAlbumId"></param>
+        /// <param name="albumsRootXml"></param>
+        /// <returns></returns>
         public XElement getAlbumImageNodeFromAlbumXml(Guid albumUID, int inAlbumId, XElement albumsRootXml)
         {
             XElement albumNode = getAlbumNodeFromAlbumXml(albumUID, albumsRootXml);
@@ -121,6 +181,21 @@ namespace SoftwareEng
 
         public void newImageNode()
         {
+        }
+
+
+
+        public bool setAlbumName(XElement albumNode, String newAlbumName)
+        {
+            try
+            {
+                albumNode.Element("albumName").Value = newAlbumName;
+                return true;             
+            }
+            catch
+            {
+                return false;
+            }
         }
 
     } // End of PhotoBomb_Xml.
