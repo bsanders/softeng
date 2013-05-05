@@ -1595,9 +1595,10 @@ namespace SoftwareEng
                 _photoBomberAboutWindow.Close();
             }
 
-            _photoBomberAboutWindow = new AboutWindow();
+            //photoBomberAboutWindow = new aboutWindow();
 
-            _photoBomberAboutWindow.Show();
+            //photoBomberAboutWindow.Show();
+            PhotoBomberMenu.IsSubmenuOpen = true;
         }
 
         private void aboutMenuItemPressed_eventHandler(object sender, RoutedEventArgs e)
@@ -2087,90 +2088,6 @@ namespace SoftwareEng
             }
         }
 
-        private void commonSortMenu_EventHandler(bool ascendingTrue)
-        {
-            ;
-        }
-
-
-        //orderSelector{ 0=(name, extension) 1=(extension, name) }
-        //ascendingTrue{ 0=(descending) 1=(ascending) }
-        private void SortImageList(int orderSelector, int ascendingTrue)
-        {
-            if (_ImageListCollectionView.SortDescriptions == null)
-            {
-                return;
-            }
-            _ImageListCollectionView.SortDescriptions.Clear();
-
-
-            //shifting by 3 means x8
-            orderSelector += (ascendingTrue << 3);
-
-            switch (orderSelector)
-            {
-                case 1:
-                    //descending extension
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
-                    break;
-
-                case 8:
-                    //ascending name
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
-                    break;
-
-                case 9:
-                    //ascending extension
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Ascending));
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Ascending));
-                    break;
-
-                default:
-                    //descending name
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
-                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription("extension", ListSortDirection.Descending));
-                    break;
-            }
-        }
-
-        private void sortingDockMenu_Click(object sender, RoutedEventArgs e)
-        {
-            //if (imageSortingMenuPopup.IsOpen == false)
-            //{
-            //    imageSortingMenuPopup.IsOpen = true;
-            //}
-            //else
-            //{
-            //    imageSortingMenuPopup.IsOpen = false;
-            //}
-        }
-
-        private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (ascendingMenuItem.IsChecked == true)
-            {
-                SortImageList(1, 1);
-            }
-            else
-            {
-                SortImageList(1, 0);
-            }
-        }
-
-        private void nameMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (ascendingMenuItem.IsChecked == true)
-            {
-                SortImageList(0, 1);
-            }
-            else
-            {
-                SortImageList(0, 0);
-            }
-        }
-
         private void mainWindowAlbumList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             mainWindowListItemActivation();
@@ -2197,6 +2114,112 @@ namespace SoftwareEng
         }
 
 
+        /**************************************************************************************************************************
+        **************************************************************************************************************************/
+
+
+
+
+        private void closePopupsAndMenus()
+        {
+            libraryContextMenu.IsOpen = false;
+            AlbumContextMenu.IsOpen = false;
+            imageSortingMenu.IsSubmenuOpen = false;
+        }
+
+
+        //this Function region deals with image sorting
+        #region sortingFunctionRegion
+
+        private void clearSortingCheckBoxes()
+        {
+            extensionMenuItem.IsChecked = false;
+            nameMenuItem.IsChecked = false;
+        }
+
+        private void SortImageList()
+        {
+            if (_ImageListCollectionView.SortDescriptions == null)
+            {
+                return;
+            }
+            _ImageListCollectionView.SortDescriptions.Clear();
+
+            String sortByThis;
+
+            if (nameMenuItem.IsChecked == true)
+            {
+                sortByThis = "name";
+            }
+            else if (extensionMenuItem.IsChecked == true)
+            {
+                sortByThis = "extension";
+            }
+            else
+            {
+                return;
+            }
+
+
+            switch (ascendingMenuItem.IsChecked)
+            {
+                case true:
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription(sortByThis, ListSortDirection.Ascending));
+                    break;
+                case false:
+                    _ImageListCollectionView.SortDescriptions.Add(new SortDescription(sortByThis, ListSortDirection.Descending));
+                    break;
+            }
+        }
+
+        private void sortingDockMenu_Click(object sender, RoutedEventArgs e)
+        {
+            imageSortingMenu.IsSubmenuOpen = true;
+        }
+
+        private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (extensionMenuItem.IsChecked == false)
+            {
+                clearSortingCheckBoxes();
+                extensionMenuItem.IsChecked = true;
+                SortImageList();
+            }
+        }
+
+        private void nameMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (nameMenuItem.IsChecked == false)
+            {
+                clearSortingCheckBoxes();
+                nameMenuItem.IsChecked = true;
+                SortImageList();
+            }
+        }
+
+        private void ascendingMenuItem_CheckToggled(object sender, RoutedEventArgs e)
+        {
+            SortImageList();
+        }
+
+        #endregion
+
+
+        //This function region deals with choosing themes
+        #region ThemeRelatedFunctions
+
+        //getCurrentPhotoBomberTheme
+        private void getCurrentThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var programInstance = App.Current as App;
+
+
+
+            ErrorWindow debugWindow = new ErrorWindow(programInstance.ThemeDictionary.Keys.ToString());
+
+            debugWindow.ShowDialog();
+        }
+
         private void clearThemecheckboxes()
         {
             bureauBlackThemeMenuItem.IsChecked = false;
@@ -2210,7 +2233,7 @@ namespace SoftwareEng
 
 
 
-        private void bureauBlackThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        private void bureauBlackThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             clearThemecheckboxes();
             bureauBlackThemeMenuItem.IsChecked = true;
@@ -2222,7 +2245,7 @@ namespace SoftwareEng
             program.setTheme("/Themes/BureauBlack.xaml");
         }
 
-        private void bureauBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        private void bureauBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             clearThemecheckboxes();
             bureauBlueThemeMenuItem.IsChecked = true;
@@ -2234,7 +2257,7 @@ namespace SoftwareEng
             program.setTheme("/Themes/BureauBlue.xaml");
         }
 
-        private void expressionDarkThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        private void expressionDarkThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             clearThemecheckboxes();
             expressionDarkThemeMenuItem.IsChecked = true;
@@ -2246,7 +2269,7 @@ namespace SoftwareEng
             program.setTheme("/Themes/ExpressionDark.xaml");
         }
 
-        private void expressionLightThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        private void expressionLightThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             clearThemecheckboxes();
             expressionLightThemeMenuItem.IsChecked = true;
@@ -2258,7 +2281,7 @@ namespace SoftwareEng
             program.setTheme("/Themes/ExpressionLight.xaml");
         }
 
-        private void shinyBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        private void shinyBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             clearThemecheckboxes();
             shinyBlueThemeMenuItem.IsChecked = true;
@@ -2270,7 +2293,7 @@ namespace SoftwareEng
             program.setTheme("/Themes/ShinyBlue.xaml");
         }
 
-        private void shinyRedThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        private void shinyRedThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             clearThemecheckboxes();
             shinyRedThemeMenuItem.IsChecked = true;
@@ -2282,7 +2305,7 @@ namespace SoftwareEng
             program.setTheme("/Themes/ShinyRed.xaml");
         }
 
-        private void whistlerBlueThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             clearThemecheckboxes();
             whistlerBlueThemeMenuItem.IsChecked = true;
@@ -2294,27 +2317,15 @@ namespace SoftwareEng
             program.setTheme("/Themes/WhistlerBlue.xaml");
         }
 
-        private void dockSizeChanged_EventHandler(object sender, SizeChangedEventArgs e)
-        {
-            if (mainWindowDock.Height != 48)
-            {
-                return;
-            }
-            //CODE HERE TO USE TIMER
-        }
-
-
-        //getCurrentPhotoBomberTheme
-        private void getCurrentThemeMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var programInstance = App.Current as App;
+        #endregion
 
 
 
-            ErrorWindow debugWindow = new ErrorWindow(programInstance.ThemeDictionary.Keys.ToString());
 
-            debugWindow.ShowDialog();
-        }
+
+
+
+
 
 
     }
