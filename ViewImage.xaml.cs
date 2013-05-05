@@ -263,10 +263,9 @@ namespace SoftwareEng
             slideShowTimer.Interval = new TimeSpan(0, 0, (int)this.slideshowSpeedSlider.Value);
         }
 
+        //thumbar functions for resizing the window
+        #region thumbarResizefunctions
 
-        /**************************************************************************************************
-         * start region of thumb bar resize events
-        **************************************************************************************************/
         /*
          *Created By: Alejandro Sosa
          *Last Edited By: Ryan Causey
@@ -495,6 +494,10 @@ namespace SoftwareEng
                 this.Width = this.ViewImageWindowGrid.MinWidth + 1;
             }
         }
+
+        #endregion
+
+
 
         /*
          * Created By: Ryan Causey

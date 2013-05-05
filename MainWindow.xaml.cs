@@ -1349,11 +1349,8 @@ namespace SoftwareEng
 
 
 
-        /*****************************************
-         * start region of thumb bar resize events
-        *****************************************/
-
-
+        //thumbar functions for resizing the window
+        #region thumbarResizefunctions
 
         /**************************************************************************************************************************
          *Created By: Alejandro Sosa
@@ -1583,25 +1580,22 @@ namespace SoftwareEng
                 this.Width = MinWidth + 1;
             }
         }
-        /***************************************
-         * end region of thumb bar resize events
-        ***************************************/
+
+        #endregion
 
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
         private void aboutButtonPressed_eventHandler(object sender, RoutedEventArgs e)
         {
-            //if this window is already open, close it.
-            if (_photoBomberAboutWindow != null)
+            if (PhotoBomberMenu.IsSubmenuOpen == true)
             {
-                _photoBomberAboutWindow.Close();
+                PhotoBomberMenu.IsSubmenuOpen = false;
             }
-
-            //photoBomberAboutWindow = new aboutWindow();
-
-            //photoBomberAboutWindow.Show();
-            PhotoBomberMenu.IsSubmenuOpen = true;
+            else
+            {
+                PhotoBomberMenu.IsSubmenuOpen = true;
+            }
         }
 
         private void aboutMenuItemPressed_eventHandler(object sender, RoutedEventArgs e)

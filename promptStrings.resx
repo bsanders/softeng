@@ -136,13 +136,13 @@
     <value>Images added to this album.</value>
   </data>
   <data name="newAlbumNameLabel" xml:space="preserve">
-    <value>Choose name:</value>
+    <value>Album Name:</value>
   </data>
   <data name="newImageCommentLabel" xml:space="preserve">
-    <value>Choose caption:</value>
+    <value>Comment:</value>
   </data>
   <data name="newImageNameLabel" xml:space="preserve">
-    <value>Choose name:</value>
+    <value>Image Name:</value>
   </data>
   <data name="photoValidationRegex" xml:space="preserve">
     <value>^[\w\d][\w\d ]{0,31}$</value>
