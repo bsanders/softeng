@@ -499,7 +499,7 @@ namespace SoftwareEng
                 {
                     // if the thumbnail doesn't exist... does the image itself?
                     XElement thumbnailPhoto = getAlbumImageNodeFromAlbumXml(userAlbum.UID, userAlbum.thumbAlbumID);
-                    ComplexPhotoData photoObj = util_getComplexPhotoData(error, thumbnailPhoto, userAlbum.UID);
+                    ComplexPhotoData photoObj = util_getComplexPhotoData(error, thumbnailPhoto);
 
                     if (!File.Exists(photoObj.fullPath))
                     {
@@ -508,12 +508,12 @@ namespace SoftwareEng
                     }
 
                     // get the first photo in the album and set it as the thumbnail
-                    XElement firstPhoto = (from c in thisAlbum.Descendants("picture") select c).FirstOrDefault();
+                    XElement firstAlbumImageNode = (from c in thisAlbum.Descendants("picture") select c).FirstOrDefault();
 
-                    if (firstPhoto != null)
+                    if (firstAlbumImageNode != null)
                     {
                         // ... and set it to be the thumbnail (generating it, if necessary)
-                        util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(error, firstPhoto, userAlbum.UID));
+                        util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(error, firstAlbumImageNode));
                     }
                 }
 
@@ -566,15 +566,21 @@ namespace SoftwareEng
             }
 
             //Try searching for the album with the uid specified.
-            XElement specificAlbum = util_getAlbum(error, AlbumUID);
+            XElement albumNode = _photoBomb_xml.getAlbumNodeFromAlbumXml(AlbumUID, _albumsRootXml);
 
-            foreach (XElement subElement in specificAlbum.Element("albumPhotos").Elements("picture"))
+            if (albumNode == null)
             {
-                ComplexPhotoData pic = new ComplexPhotoData();
+                // TODO
+                return error;
+            }
+
+            foreach (XElement albumImageNode in albumNode.Element("albumPhotos").Elements("picture"))
+            {
+                //ComplexPhotoData pic = new ComplexPhotoData();
                 try
                 {
                     //bills new swanky function here
-                    _imagesClipboard.Add(util_getComplexPhotoData(error, subElement, AlbumUID));
+                    _imagesClipboard.Add(util_getComplexPhotoData(error, albumImageNode));
                 }
                 catch
                 {
@@ -609,25 +615,24 @@ namespace SoftwareEng
                 return error;
             }
 
-
-
-
-
             //Try searching for the album with the uid specified.
-            XElement specificAlbum = util_getAlbum(error, AlbumUID);
-            // TODO: JN: Add a check here??
-
+            XElement albumNode = null;
+            if (!_photoBomb_xml.getAlbumNodeFromAlbumXml(AlbumUID, _albumsRootXml, out albumNode))
+            {
+                imagesOfAnAlbum = null;
+                setErrorReportToFAILURE("Failed to get the album node.", ref error);
+                return error;
+            }
 
 
             //Now lets get all the picture data from
             //the album and fill out the picture object list.
-            foreach (XElement subElement in specificAlbum.Element("albumPhotos").Elements("picture"))
+            foreach (XElement subElement in albumNode.Element("albumPhotos").Elements("picture"))
             {
-                ComplexPhotoData pic = new ComplexPhotoData();
                 try
                 {
                     //bills new swanky function here
-                    ComplexPhotoData imageData = util_getComplexPhotoData(error, subElement, AlbumUID);
+                    ComplexPhotoData imageData = util_getComplexPhotoData(error, subElement);
 
 
                     try
@@ -656,12 +661,10 @@ namespace SoftwareEng
                                 break;
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         // TODO : Do something. 
                     }
-
-
 
                     _imagesCollection.Add(imageData);
                 }
@@ -672,11 +675,9 @@ namespace SoftwareEng
                 }
             }//foreach
 
-
-
-
             imagesOfAnAlbum = new ReadOnlyObservableCollection<ComplexPhotoData>(_imagesCollection);
             return error;
+
         }//method
 
 
@@ -908,7 +909,7 @@ namespace SoftwareEng
                         // Get the second element (soon to be first) and set it to be the thumbnail
                         secondPhotoInAlbum = albumNode.Descendants("picture").ElementAt(1); // (0-indexed)
                         // Set the thumbnail.
-                        util_setAlbumThumbnail(albumNode, util_getComplexPhotoData(errorReport, secondPhotoInAlbum, albumUID));
+                        util_setAlbumThumbnail(albumNode, util_getComplexPhotoData(errorReport, secondPhotoInAlbum));
                     }
                     catch (Exception ex)
                     {
@@ -1101,34 +1102,36 @@ namespace SoftwareEng
         /// Renames the specified album.
         /// </summary>
         /// <param name="albumUID">The album's UID</param>
-        /// <param name="newName">The new name of the album</param>
+        /// <param name="newAlbumName">The new name of the album</param>
         /// <return>The error report of this action.</return>
-        public ErrorReport setAlbumName_backend(Guid albumUID, string newName)
+        public ErrorReport setAlbumName_backend(Guid albumUID, string newAlbumName)
         {
             ErrorReport errorReport = new ErrorReport();
 
             // get the album that we are changing.
-            XElement albumElem = util_getAlbum(errorReport, albumUID);
 
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
+            XElement albumNode = null;
+            if (!_photoBomb_xml.getAlbumNodeFromAlbumXml(albumUID, _albumsRootXml, out albumNode))
             {
+                setErrorReportToFAILURE("Failed to get the albumNode.", ref errorReport);
                 return errorReport;
             }
 
-            // change the album's name.
-            util_renameAlbum(errorReport, albumElem, newName);
 
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
+            // change the album's name.
+
+            if (!_photoBomb_xml.setAlbumName(albumNode, newAlbumName))
             {
+                setErrorReportToFAILURE("Failed to set the album name.", ref errorReport);
                 return errorReport;
             }
 
             saveAlbumsXML_backend();
 
             // Searches through the albumsCollection and finds the first album with a matching UID
-            var albumToRename = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
+            var albumDataToRename = _albumsCollection.FirstOrDefault(album => album.UID == albumUID);
             // ... and then renames it.
-            albumToRename.albumName = newName;
+            albumDataToRename.albumName = newAlbumName;
 
             return errorReport;
         }
@@ -1342,21 +1345,22 @@ namespace SoftwareEng
         {
             ErrorReport errorReport = new ErrorReport();
 
+            XElement albumNode = null;
+            if (!_photoBomb_xml.getAlbumNodeFromAlbumXml(albumUID, _albumsRootXml, out albumNode))
+            {
+                isUnique = false;
+                setErrorReportToFAILURE("Failed to find the album node.", ref errorReport);
+                return errorReport;
+            }
+
             // Test uniqueness!
-            Boolean nameUnique = util_isImageNameUniqueToAlbum(photoName, util_getAlbum(errorReport, albumUID));
-            // TODO: JN: Is testing the errorRoport??
-
-            isUnique = nameUnique;
-
-            if (!nameUnique)
-            {
-                setErrorReportToFAILURE("Album name is not unique.", ref errorReport);
-                return errorReport;
-            }
-            else
+            if (isUnique = util_isImageNameUniqueToAlbum(photoName, albumNode))
             {
                 return errorReport;
             }
+
+            setErrorReportToFAILURE("Album name is not unique.", ref errorReport);
+            return errorReport;
         }
 
 
