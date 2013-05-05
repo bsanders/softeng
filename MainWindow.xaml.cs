@@ -1958,6 +1958,8 @@ namespace SoftwareEng
         {
             libraryContextMenu.IsOpen = false;
             AlbumContextMenu.IsOpen = false;
+            imageSortingMenu.IsSubmenuOpen = false;
+
         }
 
         /*
@@ -1974,6 +1976,7 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void albumItemFrontGrid_PreviewRightMouseUp(object sender, MouseButtonEventArgs e)
         {
+            closePopups();
             AlbumContextMenu.IsOpen = true;
         }
 
@@ -1991,6 +1994,7 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void ItemBackSideContainer_PreviewRightMouseUp(object sender, MouseButtonEventArgs e)
         {
+            closePopups();
             AlbumContextMenu.IsOpen = true;
         }
 
@@ -2148,6 +2152,8 @@ namespace SoftwareEng
             equipmentModelMenuItem.IsChecked = false;
         }
 
+        
+
         private void SortImageList()
         {
             if (_ImageListCollectionView.SortDescriptions == null)
@@ -2197,7 +2203,15 @@ namespace SoftwareEng
 
         private void sortingDockMenu_Click(object sender, RoutedEventArgs e)
         {
-            imageSortingMenu.IsSubmenuOpen = true;
+            if (imageSortingMenu.IsSubmenuOpen == false)
+            {
+                imageSortingMenu.IsSubmenuOpen = true;
+            }
+            else
+            {
+                imageSortingMenu.IsSubmenuOpen = false;
+            }
+
         }
 
         //private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2353,6 +2367,18 @@ namespace SoftwareEng
             program.setTheme("/Themes/ExpressionLight.xaml");
         }
 
+        private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            whistlerBlueThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/WhistlerBlue.xaml");
+        }
+
         //private void shinyBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         //{
         //    clearThemecheckboxes();
@@ -2377,17 +2403,7 @@ namespace SoftwareEng
         //    program.setTheme("/Themes/ShinyRed.xaml");
         //}
 
-        private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
-        {
-            clearThemecheckboxes();
-            whistlerBlueThemeMenuItem.IsChecked = true;
 
-            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
-
-            var program = App.Current as App;
-
-            program.setTheme("/Themes/WhistlerBlue.xaml");
-        }
 
         #endregion
 

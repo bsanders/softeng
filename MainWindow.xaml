@@ -593,7 +593,7 @@
                             <MenuItem.Icon>
                                 <Image x:Name="cancelPhotoImportDockMenuImage" Source="ImagesResources2012/action_cancel.png" Width="32" Height="32"/>
                             </MenuItem.Icon>
-                            <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalAlignment="Right"  HorizontalContentAlignment="Right" Click="ascendingMenuItem_CheckToggled"/>
+                            <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalContentAlignment="Right" Click="ascendingMenuItem_CheckToggled"/>
                             <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click" IsCheckable="True" IsChecked="True"/>
                             <!--
                             <MenuItem x:Name="extensionMenuItem" Header="Extension" IsCheckable="True" Click="extensionMenuItem_Click"/>
@@ -810,7 +810,7 @@
 
         </DockPanel>
 
-        <Menu BorderBrush="#00333333" Foreground="#00000000" Width="25" Height="25" Margin="8,8,664,373">
+        <Menu BorderBrush="#00333333" Foreground="#00000000" Width="25" Height="25" Margin="8,8,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
             <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.IsSharedSizeScope="False" Margin="-7,0,0,0" Width="35" IsHitTestVisible="True" Height="30" Background="#00000000">
                 <MenuItem.Icon>
                     <Image x:Name="aboutToolbarButtonImage" Source="ImagesResources2012/logoSmall.png" Width="30"/>
@@ -826,7 +826,7 @@
                     <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_CheckToggle"/>
                     -->
                     <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_CheckToggle"/>
-                    
+
                 </MenuItem>
                 <MenuItem Header="About" Click="aboutMenuItemPressed_eventHandler"/>
             </MenuItem>
