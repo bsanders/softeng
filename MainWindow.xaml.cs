@@ -298,8 +298,8 @@ namespace SoftwareEng
                 // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
-                nameTextBoxErrorAnimation.Begin();
+                //Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+                //nameTextBoxErrorAnimation.Begin();
 
                 handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -379,8 +379,8 @@ namespace SoftwareEng
                 // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
-                nameTextBoxErrorAnimation.Begin();
+                //Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
+                //nameTextBoxErrorAnimation.Begin();
 
                 handlePhotoNameErrorPopup(true, errorStrings.invalidImageNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -485,8 +485,8 @@ namespace SoftwareEng
             //if it is not a valid string
             if (!validateTheString(_captionValidationRegex, commentTextBox.Text))
             {
-                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
-                commentTextBoxAnimation.Begin();
+                //Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                //commentTextBoxAnimation.Begin();
 
                 handleCommentErrorPopup(true, errorStrings.invalidComment);
                 commentTextBox.Focus();
@@ -2124,9 +2124,6 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
-
-
-
 
         private void closePopupsAndMenus()
         {
