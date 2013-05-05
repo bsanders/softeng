@@ -21,14 +21,10 @@ namespace SoftwareEng
     {
         private Timer EventTimer;
         private bool isFrontFace;
-        const double mouseEnterTimer = 1000.0;
-        const double mouseLeaveTimer = 3000.0;
 
-        public static readonly RoutedEvent PhotoBomberTileTriggerEvent = EventManager.RegisterRoutedEvent("PhotoBomberTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
         public static readonly RoutedEvent TypeOneTileTriggerEvent = EventManager.RegisterRoutedEvent("TypeOneTileEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(customLabel));
 
         
-        public customLabel(): base()
         public customLabel(): base()
         {
             EventTimer = new Timer();
@@ -48,22 +44,6 @@ namespace SoftwareEng
             }
         }
 
-        void EventTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            EventTimer.Stop();
-            this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTriggerEvent), DispatcherPriority.Input, null); 
-        }
-            EventTimer.Stop();
-            this.Dispatcher.BeginInvoke(new customEvent_callback(RaisePhotoBomberTileTypeOneEvent), DispatcherPriority.Input, null); 
-        }
-
-
-
-
-        public event RoutedEventHandler OnPhotoBomberTileEvent
-        {
-            add { AddHandler(PhotoBomberTileTriggerEvent, value); }
-            remove { RemoveHandler(PhotoBomberTileTriggerEvent, value); }
         public event RoutedEventHandler OnPhotoBomberTileEvent
         {
             add { AddHandler(TypeOneTileTriggerEvent, value); }
