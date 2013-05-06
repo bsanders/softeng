@@ -2425,7 +2425,14 @@ namespace SoftwareEng
 
         public void temp_guiGrayscaleCallback(ErrorReport isUseless, Guid albumGuid)
         {
-            showErrorMessage("BAAAAAAAAAAAAAAAAAAAALLS!!!!!!!!!!!!!!");
+            if (isUseless.reportStatus == ReportStatus.SUCCESS)
+            {
+
+            }
+            else
+            {
+                showErrorMessage("BAAAAAAAAAAAAAAAAAAAALLS!!!!!!!!!!!!!!: error "+ (isUseless.reportStatus.ToString()));
+            }
         }
 
         public void temp_guiGrayscaleUpdate_Callback(object sender, ProgressChangedEventArgs e)
