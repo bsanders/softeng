@@ -231,7 +231,7 @@ namespace SoftwareEng
         }
 
 
-        private bool setAlbumImageNodeName(XElement imageNode, String newImageName)
+        public bool setAlbumImageNodeName(XElement imageNode, String newImageName)
         {
             try
             {
@@ -241,6 +241,33 @@ namespace SoftwareEng
             catch
             {
                 return false;
+            }
+        }
+
+
+        /// By: Bill Sanders
+        /// Edited Julian Nguyen(4/1/13)
+        /// <summary>
+        /// Check to see if a photo name is unique to an album.
+        /// </summary>
+        /// <param name="imageName">The name to check</param>
+        /// <param name="albumNode">The XElement albumDB node to check in</param>
+        /// <returns>Returns true if the photo name is unique to that album</returns>
+        public Boolean isImageNameUniqueToAlbum(String imageName, XElement albumNode)
+        {
+            try
+            {
+                //try and find a matching photo name.
+                //throws exception if we find NO matching names.
+                (from c in albumNode.Descendants("picture")
+                 where (String)c.Element("name") == imageName
+                 select c).First();
+                return false;
+            }
+            //we didn't find a matching name, success!
+            catch (Exception)
+            {
+                return true;
             }
         }
 

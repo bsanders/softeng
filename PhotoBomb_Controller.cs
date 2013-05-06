@@ -373,6 +373,14 @@ namespace SoftwareEng
         }
 
 
+
+        public void addImageAsGrayscale(generic_callback guiCallback, Guid albumUID, String imagePath)
+        {
+            ErrorReport errReport = null;
+            guiCallback(errReport);
+        }
+
+
         /// By: Ryan Moe
         /// Edited Julian Nguyen
         /// <summary>

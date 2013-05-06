@@ -274,7 +274,7 @@ namespace SoftwareEng
 
             // Note as per requirements, the default photo name is the name of the album, plus its id number
             string nameInAlbum = specificAlbum.Element("albumName").Value + " Image " + newImage.idInAlbum;
-            while (!isImageNameUniqueToAlbum(nameInAlbum, specificAlbum))
+            while (!_photoBomb_xml.isImageNameUniqueToAlbum(nameInAlbum, specificAlbum))
             {
                 newImage.idInAlbum = util_getNextUID(specificAlbum.Element("albumPhotos"), "picture", "idInAlbum", newImage.idInAlbum + 1);
                 nameInAlbum = specificAlbum.Element("albumName").Value + " Image " + newImage.idInAlbum;
@@ -860,31 +860,7 @@ namespace SoftwareEng
         }
 
         //-------------------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Julian Nguyen(4/1/13)
-        /// <summary>
-        /// Check to see if a photo name is unique to an album.
-        /// </summary>
-        /// <param name="imageName">The name to check</param>
-        /// <param name="albumNode">The XElement albumDB node to check in</param>
-        /// <returns>Returns true if the photo name is unique to that album</returns>
-        private Boolean isImageNameUniqueToAlbum(String imageName, XElement albumNode)
-        {
-            try
-            {
-                //try and find a matching photo name.
-                //throws exception if we find NO matching names.
-                (from c in albumNode.Descendants("picture")
-                 where (String)c.Element("name") == imageName
-                 select c).First();
-                return false;
-            }
-            //we didn't find a matching name, success!
-            catch(Exception)
-            {
-                return true;
-            }
-        }
+        
 
         /// By: Ryan Moe
         /// Edited Julian Nguyen(5/1/13)
