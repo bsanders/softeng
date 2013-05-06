@@ -14,6 +14,18 @@ namespace SoftwareEng
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="imageHash"></param>
+        /// <param name="imagesRootXml"></param>
+        /// <param name="imageNode"></param>
+        /// <returns></returns>
+        public bool getImageNodeFromImageXml(string imageHash, XElement imagesRootXml, out XElement imageNode)
+        {
+            imageNode = getImageNodeFromImageXml(imageHash, imagesRootXml);
+            return imageNode != null;
+        }
 
         /// By: Bill Sanders
         /// Edited Julian Nguyen(5/1/13)
@@ -148,7 +160,17 @@ namespace SoftwareEng
                 return null;
             return getAlbumImageNodeFromAlbumNode(albumNode, inAlbumId);
         }
-        
+
+
+        public void addAlbumNodeToAlbumsXml(Guid albumUID, int inAlbumThumbID, String thumbnailPath, String albumName, XElement albumsRootXml)
+        {
+
+            //construct the object we will be adding to the database.
+            XElement newAlbum = newAlbumNode(albumUID, inAlbumThumbID, thumbnailPath, albumName);
+            //add to the database in memory.
+            albumsRootXml.Add(newAlbum);
+
+        }//method
 
 
 
@@ -168,6 +190,16 @@ namespace SoftwareEng
 
         public void newAlbumNode()
         {
+        }
+
+
+        public XElement newAlbumNode(Guid albumUID, int inAlbumThumbID, String thumbnailPath, String albumName)
+        {
+            return new XElement("album",
+                new XAttribute("uid", albumUID),
+                new XElement("thumbnailPath", new XAttribute("thumbAlbumID", inAlbumThumbID), thumbnailPath),
+                new XElement("albumName", albumName),
+                new XElement("albumPhotos"));
         }
 
         public XElement newAlbumImageNode(int inAlbumID, String imageHash, String inAlbumImageName, String imageCaption)
