@@ -856,14 +856,7 @@ namespace SoftwareEng
 
                 //pass all the files names to a backend function call to start adding the files.
                 //fix the function parameters before releasing.
-                _bombaDeFotos.addNewImages(
-                    new addNewPictures_callback(guiImportPhotos_Callback),
-                    new List<string>(photoDialogue.FileNames),
-                    extensions,
-                    _currentAlbumUID,
-                    null,
-                    new ProgressChangedEventHandler(guiUpdateProgressBar_Callback),
-                    1);
+                _bombaDeFotos.addNewImages(new addNewPictures_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, _currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1);
             }
         }
 
@@ -1145,15 +1138,7 @@ namespace SoftwareEng
             }
         }
 
-        public void guiConvertToGreyscale(ComplexPhotoData desiredImage, Guid albumGuid)
-        {
-            _bombaDeFotos.addImageAsGrayscale(new generic_callback(guiMainCallback), albumGuid, desiredImage.fullPath);
-        }
 
-        public void guiMainCallback(ErrorReport isUseless)
-        {
-            showErrorMessage("BAAAAAAAAAAAAAAAAAAAALLS!!!!!!!!!!!!!!");
-        }
 
 
         /**************************************************************************************************************************
@@ -2431,9 +2416,27 @@ namespace SoftwareEng
 
 
 
+        #region GrayscaleRElatedFunctions
+
+        public void guiConvertToGreyscale(ComplexPhotoData desiredImage, Guid albumGuid)
+        {
+            _bombaDeFotos.addImageAsGrayscale(new addNewPictures_callback(temp_guiGrayscaleCallback), albumGuid, desiredImage.fullPath, temp_guiGrayscaleUpdate_Callback);
+        }
+
+        public void temp_guiGrayscaleCallback(ErrorReport isUseless, Guid albumGuid)
+        {
+            showErrorMessage("BAAAAAAAAAAAAAAAAAAAALLS!!!!!!!!!!!!!!");
+        }
+
+        public void temp_guiGrayscaleUpdate_Callback(object sender, ProgressChangedEventArgs e)
+        {
+            
+        }
 
 
 
+
+        #endregion
 
 
 
