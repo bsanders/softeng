@@ -661,7 +661,7 @@
         <Thumb x:Name="bottomLeftThumb" Background="#A81C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeNESW" DragDelta="bottomLeftThumb_DragDeltaHandler" VerticalAlignment="Bottom" Height="6" Opacity="0.3"/>
         <DockPanel x:Name="ItemAddOrEditDialogBar" LastChildFill="False" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,36,0,0" Background="{DynamicResource PhotoBomberDialogBrush}" Visibility="Collapsed">
             <StackPanel x:Name="nameBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right" ToolTip=" ">
-                <TextBlock x:Name="NameTextBlock" Text="Choose Name:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
+                <TextBlock x:Name="NameTextBlock" Text="Album Name:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
@@ -670,7 +670,7 @@
             </StackPanel>
 
             <StackPanel x:Name="photoNameBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right" ToolTip=" ">
-                <TextBlock x:Name="photoNameTextBlock" Text="Choose Name:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
+                <TextBlock x:Name="photoNameTextBlock" Text="Photo Name:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
@@ -680,7 +680,7 @@
 
             <StackPanel x:Name="commentBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                <TextBlock x:Name="commentTextBlock" Text="Choose Comment:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
+                <TextBlock x:Name="commentTextBlock" Text="Comment:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
