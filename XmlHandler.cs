@@ -33,7 +33,7 @@ namespace SoftwareEng
                 xmlRootElement = XDocument.Load(pathToXml).Element(Settings.XMLRootElement);
                 return true;
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 xmlRootElement = null;
                 return false;

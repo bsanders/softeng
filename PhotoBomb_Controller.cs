@@ -388,27 +388,19 @@ namespace SoftwareEng
 
             Bitmap image = _imageManipulation.LoadImageNoLock(imagePath);
 
-            Bitmap newGray = _imageManipulation.makeGrayscale(new Bitmap(image));
+            Bitmap newGray = _imageManipulation.makeGrayscale(image);
 
             String pathOfnewGray = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".jpg");
 
             newGray.Save(pathOfnewGray);
 
-            List<String> imageUserPath = new List<string>();
-            imageUserPath.Add(pathOfnewGray);
-
-            List<String> imageExtension = new List<string>();
-            imageExtension.Add(".jpg");
-
-            List<String> inAlbumImageName = new List<string>();
-            inAlbumImageName.Add(String.Empty);
-
-            _photoBombDatabase.addNewImages_backend(guiCallback, imageUserPath, imageExtension, albumUID, inAlbumImageName, updateCallback, 1);
-
+            ErrorReport errReport = _photoBombDatabase.addNewImage(pathOfnewGray, ".jpg", albumUID);
             try
             {
                 File.Delete(pathOfnewGray);
             } catch { }
+
+            guiCallback(errReport, albumUID);
 
         }
 

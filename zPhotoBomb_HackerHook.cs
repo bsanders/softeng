@@ -34,7 +34,7 @@ namespace SoftwareEng
                 // Load the xml files into memory(the XmlDataBase)
                 _xmlDataBase = new XmlDataBase(albumXmlPathIn, imageXmlPathIn);
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 _xmlDataBase = null;
                 return ReportStatus.CANNNOT_LOAD_XML;
