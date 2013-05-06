@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace SoftwareEng
 {
@@ -58,6 +59,20 @@ namespace SoftwareEng
             return newBitmap;
         }
 
+
+
+        /// By: http://stackoverflow.com/questions/3386749/loading-a-file-to-a-bitmap-but-leaving-the-original-file-intact
+        /// 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public Bitmap LoadImageNoLock(String path)
+        {
+            var ms = new MemoryStream(File.ReadAllBytes(path)); // Don't use using!!
+            return new Bitmap(Image.FromStream(ms));
+        }
 
 
     } // End of ImageManipulation.

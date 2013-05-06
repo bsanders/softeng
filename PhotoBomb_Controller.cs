@@ -32,6 +32,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.ComponentModel;
 using System.IO;
+using System.Drawing;
 
 /*
  * PhotoBomb TODO:
@@ -52,7 +53,8 @@ namespace SoftwareEng
     /// </summary>
     public class PhotoBomb_Controller
     {
-        private PhotoBomb photoBombDatabase;
+        private PhotoBomb _photoBombDatabase;
+        private ImageManipulation _imageManipulation; 
 
 
         /// By Julian Nguyen
@@ -62,7 +64,8 @@ namespace SoftwareEng
         /// </summary>
         public PhotoBomb_Controller()
         {
-            photoBombDatabase = new PhotoBomb();
+            _imageManipulation = new ImageManipulation();
+            _photoBombDatabase = new PhotoBomb();
         }
 
 
@@ -79,7 +82,7 @@ namespace SoftwareEng
         public void init(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPath)
         {
             ErrorReport errReport = null; 
-            errReport =  photoBombDatabase.init_backend( albumDatabasePathIn, pictureDatabasePathIn, libraryPath);
+            errReport =  _photoBombDatabase.init_backend( albumDatabasePathIn, pictureDatabasePathIn, libraryPath);
 
 
             guiCallback(errReport);
@@ -100,7 +103,7 @@ namespace SoftwareEng
         public void rebuildBackendOnFilesystem(generic_callback guiCallback)
         {
             ErrorReport errReport = null;
-            errReport =  photoBombDatabase.rebuildBackendOnFilesystem_backend();
+            errReport =  _photoBombDatabase.rebuildBackendOnFilesystem_backend();
             guiCallback(errReport);
         }
 
@@ -115,7 +118,7 @@ namespace SoftwareEng
         public void saveAlbumsXML(generic_callback guiCallback)
         {
             ErrorReport errReport = null;
-            errReport =  photoBombDatabase.saveAlbumsXML_backend();
+            errReport =  _photoBombDatabase.saveAlbumsXML_backend();
             if(guiCallback != null)
                 guiCallback(errReport);
         }
@@ -131,7 +134,7 @@ namespace SoftwareEng
         public void saveImagesXML(generic_callback guiCallback)
         {
             ErrorReport errReport = null;
-            errReport = photoBombDatabase.saveImagesXML_backend();
+            errReport = _photoBombDatabase.saveImagesXML_backend();
             if(guiCallback != null)
                 guiCallback(errReport);
 
@@ -148,7 +151,7 @@ namespace SoftwareEng
         {
             ErrorReport errReport = null;
             ReadOnlyObservableCollection<SimpleAlbumData> readOnlyAlbumList = null;
-            errReport = photoBombDatabase.getAllAlbums_backend(out readOnlyAlbumList);
+            errReport = _photoBombDatabase.getAllAlbums_backend(out readOnlyAlbumList);
             guiCallback(errReport, readOnlyAlbumList);
         }
 
@@ -166,7 +169,7 @@ namespace SoftwareEng
         {
             ErrorReport errReport = null;
             ReadOnlyObservableCollection<ComplexPhotoData> imagesOfAnAlbum = null;
-            errReport = photoBombDatabase.getAllImagesInAlbum_backend(albumUID, out imagesOfAnAlbum);
+            errReport = _photoBombDatabase.getAllImagesInAlbum_backend(albumUID, out imagesOfAnAlbum);
             guiCallback(errReport, imagesOfAnAlbum);
         }
 
@@ -181,7 +184,7 @@ namespace SoftwareEng
         {
             ErrorReport errReport = null;
             List<ComplexPhotoData> images = null;
-            errReport = photoBombDatabase.sendSelectedImagesToClipboard_backend(albumUID, out images);
+            errReport = _photoBombDatabase.sendSelectedImagesToClipboard_backend(albumUID, out images);
             guiCallback(errReport, images);
         }
 
@@ -200,7 +203,7 @@ namespace SoftwareEng
         {
             ErrorReport errReport = null;
             ComplexPhotoData imageData = null;
-            errReport = photoBombDatabase.getImage_backend(photoUID, albumUID, out imageData);
+            errReport = _photoBombDatabase.getImage_backend(photoUID, albumUID, out imageData);
             guiCallback(errReport, imageData);
         }
 
@@ -216,7 +219,7 @@ namespace SoftwareEng
         public void removeImageFromAlbum(generic_callback guiCallback, int idInAlbum, Guid albumUID)
         {
             ErrorReport errReport = null;
-            errReport = photoBombDatabase.removeImageFromAlbum_backend(idInAlbum, albumUID);
+            errReport = _photoBombDatabase.removeImageFromAlbum_backend(idInAlbum, albumUID);
             guiCallback(errReport);
         }
 
@@ -230,7 +233,7 @@ namespace SoftwareEng
         public void removeAlbum(generic_callback guiCallback, Guid albumUID)
         {
             ErrorReport errReport = null;
-            errReport =  photoBombDatabase.removeAlbum_backend(albumUID);
+            errReport =  _photoBombDatabase.removeAlbum_backend(albumUID);
             guiCallback(errReport);
         }
 
@@ -245,7 +248,7 @@ namespace SoftwareEng
         public void setAlbumName(generic_callback guiCallback, Guid albumUID, string newName)
         {
             ErrorReport errReport = null;
-            errReport = photoBombDatabase.setAlbumName_backend(albumUID, newName);
+            errReport = _photoBombDatabase.setAlbumName_backend(albumUID, newName);
             guiCallback(errReport);
         }
 
@@ -261,7 +264,7 @@ namespace SoftwareEng
         public void setImageName(generic_callback guiCallback, Guid albumUID, int idInAlbum, string newName)
         {
             ErrorReport errReport = null; 
-            errReport = photoBombDatabase.setImageName_backend(albumUID, idInAlbum, newName);
+            errReport = _photoBombDatabase.setImageName_backend(albumUID, idInAlbum, newName);
             guiCallback(errReport);
         }
 
@@ -279,7 +282,7 @@ namespace SoftwareEng
         {
 
             ErrorReport errReport = null;
-            errReport = photoBombDatabase.setImageCaption_backend(albumUID, idInAlbum, newCaption);
+            errReport = _photoBombDatabase.setImageCaption_backend(albumUID, idInAlbum, newCaption);
             guiCallback(errReport);
         }
 
@@ -295,7 +298,7 @@ namespace SoftwareEng
         public void addNewAlbum(generic_callback guiCallback, SimpleAlbumData albumData)
         {
             ErrorReport errReport = null;
-            errReport = photoBombDatabase.addNewAlbum_backend(albumData);
+            errReport = _photoBombDatabase.addNewAlbum_backend(albumData);
             guiCallback(errReport);
         }
 
@@ -311,7 +314,7 @@ namespace SoftwareEng
         public void addExistingImagesToAlbum(addNewPictures_callback guiCallback, List<ComplexPhotoData> photoList, Guid albumUID)
         {
             ErrorReport errReport = null;
-             errReport = photoBombDatabase.addExistingImagesToAlbum_backend(photoList, albumUID);
+             errReport = _photoBombDatabase.addExistingImagesToAlbum_backend(photoList, albumUID);
              guiCallback(errReport, albumUID);
         }
 
@@ -328,7 +331,7 @@ namespace SoftwareEng
         {
             ErrorReport errReport = null;
             bool isUnique = false;
-            errReport = photoBombDatabase.isAlbumNameUnique_backend(albumName, out isUnique);
+            errReport = _photoBombDatabase.isAlbumNameUnique_backend(albumName, out isUnique);
             guiCallback(errReport);
         }
 
@@ -347,7 +350,7 @@ namespace SoftwareEng
         {
             ErrorReport errReport = null;
             bool isUnique = false;
-            errReport = photoBombDatabase.isImageNameUnique_backend(photoName, albumUID, out isUnique);
+            errReport = _photoBombDatabase.isImageNameUnique_backend(photoName, albumUID, out isUnique);
             guiCallback(errReport);
         }
 
@@ -367,18 +370,52 @@ namespace SoftwareEng
         public void setImageNameByUID(generic_callback guiCallback, Guid albumUID, int photoUID, String newName)
         {
             ErrorReport errReport = null;
-            errReport =  photoBombDatabase.setImageNameByUID_backend( albumUID, photoUID, newName);
+            errReport =  _photoBombDatabase.setImageNameByUID_backend( albumUID, photoUID, newName);
             guiCallback(errReport);
 
         }
 
 
-
-        public void addImageAsGrayscale(generic_callback guiCallback, Guid albumUID, String imagePath)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guiCallback"></param>
+        /// <param name="albumUID"></param>
+        /// <param name="imagePath"></param>
+        /// <param name="updateCallback"></param>
+        public void addImageAsGrayscale(addNewPictures_callback guiCallback, Guid albumUID, String imagePath, ProgressChangedEventHandler updateCallback)
         {
-            ErrorReport errReport = null;
-            guiCallback(errReport);
+
+            Bitmap image = _imageManipulation.LoadImageNoLock(imagePath);
+
+            Bitmap newGray = _imageManipulation.makeGrayscale(new Bitmap(image));
+
+            String pathOfnewGray = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".jpg");
+
+            newGray.Save(pathOfnewGray);
+
+            List<String> imageUserPath = new List<string>();
+            imageUserPath.Add(pathOfnewGray);
+
+            List<String> imageExtension = new List<string>();
+            imageExtension.Add(".jpg");
+
+            List<String> inAlbumImageName = new List<string>();
+            inAlbumImageName.Add(String.Empty);
+
+            _photoBombDatabase.addNewImages_backend(guiCallback, imageUserPath, imageExtension, albumUID, inAlbumImageName, updateCallback, 1);
+
+            try
+            {
+                File.Delete(pathOfnewGray);
+            } catch { }
+
         }
+
+
+
+ 
+
 
 
         /// By: Ryan Moe
@@ -389,16 +426,16 @@ namespace SoftwareEng
         /// a copy of the picture to the library. Also writes all these changes to the disk 
         /// </summary>
         /// <param name="guiCallback"></param>
-        /// <param name="photoUserPath">List of photo paths on the disk</param>
-        /// <param name="photoExtension">List of photo extensions</param>
+        /// <param name="imageUserPath">List of photo paths on the disk</param>
+        /// <param name="imageExtension">List of photo extensions</param>
         /// <param name="albumUID">The Album UID.</param>
-        /// <param name="pictureNameInAlbum">NOTE: you can pass in NULL for the list for all default names, or you can have "" for a single element for a single default name.</param>
+        /// <param name="inAlbumImageName">NOTE: you can pass in NULL for the list for all default names, or you can have "" for a single element for a single default name.</param>
         /// <param name="updateCallback">The callback for the thread to send progress updates to.</param>
         /// <param name="updateAmount">The number of pictures to add BEFORE sending a progress update</param>
-        public void addNewImages(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, Guid albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
+        public void addNewImages(addNewPictures_callback guiCallback, List<String> imageUserPath, List<String> imageExtension, Guid albumUID, List<String> inAlbumImageName, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
             //TODO: JN: passing in a data class?
-            photoBombDatabase.addNewImages_backend(guiCallback, photoUserPath, photoExtension, albumUID, pictureNameInAlbum, updateCallback, updateAmount);
+            _photoBombDatabase.addNewImages_backend(guiCallback, imageUserPath, imageExtension, albumUID, inAlbumImageName, updateCallback, updateAmount);
         }
 
 
@@ -409,7 +446,7 @@ namespace SoftwareEng
         //Returns the error report directly.
         public ErrorReport cancelAddNewImagesThread()
         {
-            return photoBombDatabase.cancelAddNewImagesThread_backend();
+            return _photoBombDatabase.cancelAddNewImagesThread_backend();
         }
 
     } // End of PhotoBomb_Controller.
