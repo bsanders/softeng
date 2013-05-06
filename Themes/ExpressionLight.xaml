@@ -59,7 +59,7 @@
     <Color x:Key="PhotoBomberAlbumTileColor">#A81C2327</Color>
     <Color x:Key="PhotoBomberErrorBorderColor">Red</Color>
     <Color x:Key="PhotoBomberErrorBackground">#FFFBC5C5</Color>
-    <Color x:Key="PhotoBomberLightFontColor">#FFE8E8E8</Color>
+    <Color x:Key="PhotoBomberLightFontColor">#FF000000</Color>
     <Color x:Key="PhotoBomberDarkFontColor">#FF1C2327</Color>
     <Color x:Key="PhotoBomberSemiTransparentBackground">#A81C2327</Color>
 
