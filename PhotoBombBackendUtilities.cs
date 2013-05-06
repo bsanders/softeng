@@ -274,7 +274,7 @@ namespace SoftwareEng
 
             // Note as per requirements, the default photo name is the name of the album, plus its id number
             string nameInAlbum = specificAlbum.Element("albumName").Value + " Image " + newImage.idInAlbum;
-            while (!util_isImageNameUniqueToAlbum(nameInAlbum, specificAlbum))
+            while (!_photoBomb_xml.isImageNameUniqueToAlbum(nameInAlbum, specificAlbum))
             {
                 newImage.idInAlbum = util_getNextUID(specificAlbum.Element("albumPhotos"), "picture", "idInAlbum", newImage.idInAlbum + 1);
                 nameInAlbum = specificAlbum.Element("albumName").Value + " Image " + newImage.idInAlbum;
@@ -766,12 +766,16 @@ namespace SoftwareEng
         /// <param name="albumImageNode">An XElement of a picture from the Album DB</param>
         /// <param name="albumUID">The unique ID number of the album the photo instance is in</param>
         /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
-        [Obsolete]
-        private ComplexPhotoData util_getComplexPhotoData(ErrorReport errorReport, XElement albumImageNode)
+        private ComplexPhotoData getComplexPhotoDataFromAlbumImageNode(ErrorReport errorReport, XElement albumImageNode)
         {
             // We have all the data we need from the AlbumDB,
             // but the PhotoDB has important data as well.
-            XElement imageNode = _photoBomb_xml.getImageNodeFromImageXml((string)albumImageNode.Attribute("sha1"), _imagesRootXml); 
+            XElement imageNode = null;
+            if (!_photoBomb_xml.getImageNodeFromImageXml((string)albumImageNode.Attribute("sha1"), _imagesRootXml, out imageNode))
+            {
+                setErrorReportToFAILURE("Failed to get the imageNode.", ref errorReport);
+                return null;
+            }
 
             ComplexPhotoData imageData = new ComplexPhotoData();
 
@@ -785,9 +789,6 @@ namespace SoftwareEng
                 imageData.fullPath = imageNode.Element("filePath").Value;
                 imageData.lgThumbPath = imageNode.Element("lgThumbPath").Value;
                 imageData.addedDate = stringToDateTime(imageNode.Element("dateAdded").Value);
-
-                
-                
 
                 imageData.extension = (String)imageNode.Element("filePath").Attribute("extension");
 
@@ -816,6 +817,11 @@ namespace SoftwareEng
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sDate"></param>
+        /// <returns></returns>
         private DateTime stringToDateTime(String sDate)
         {
 
@@ -829,67 +835,7 @@ namespace SoftwareEng
             return date;
         }
 
-        // BS: (4/5/13) Commenting this function out, as util_getComplexPhotoData() now suits the programs needs better.
-        //-------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //use this to convert a photo element into a complexPhotoData data class.
-        //Try and keep this updated if new fields are added to complexPhotoData.
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="errorReport"></param>
-        /// <param name="elem"></param>
-        /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
-        //private ComplexPhotoData util_convertPhotoNodeToComplexPhotoData(ErrorReport errorReport, XElement elem)
-        //{
-        //    ComplexPhotoData photoObj = new ComplexPhotoData();
-        //
-        //    //TRANSFER ALL DATA TO THE DATA CLASS HERE.
-        //    try
-        //    {
-        //        photoObj.UID = (int)elem.Attribute("UID");
-        //        photoObj.hash = StringToByteArray((string)elem.Attribute("SHA1"));
-        //        photoObj.refCount = (int)elem.Attribute("refCount");
-        //        photoObj.path = elem.Element("filePath").Value;
-        //        photoObj.extension = (String)elem.Element("filePath").Attribute("extension");
-        //    }
-        //    catch
-        //    {
-        //        errorReport.reportID = ReportStatus.FAILURE;
-        //        errorReport.description = "Error converting XElement to data object.";
-        //        return null;
-        //    }
-        //
-        //    return photoObj;
-        //}
 
-        // Bill: (4/5/13) Function is unused, commenting out for now
-        //----------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //use this to convert a photo element into a simplePhotoData data class.
-        //Try and keep this updated if new fields are added to simplePhotoData.
-        //private SimplePhotoData util_convertPhotoElemToSimplePhotoData(ErrorReport errorReport, XElement elem)
-        //{
-        //    SimplePhotoData photoObj = new SimplePhotoData();
-        //
-        //    //TRANSFER ALL DATA TO THE DATA CLASS HERE.
-        //    try
-        //    {
-        //        photoObj.idInAlbum = (int)elem.Attribute("idInAlbum");
-        //        photoObj.Name = elem.Element("name").Value;
-        //
-        //    }
-        //    catch
-        //    {
-        //        errorReport.reportID = ReportStatus.FAILURE;
-        //        errorReport.description = "Error getting required data from photo element.";
-        //        return null;
-        //    }
-        //
-        //    return photoObj;
-        //}
 
         //-------------------------------------------------------------------------
         //By: Ryan Moe
@@ -914,31 +860,7 @@ namespace SoftwareEng
         }
 
         //-------------------------------------------------------------------------
-        //By: Bill Sanders
-        //Edited Julian Nguyen(4/1/13)
-        /// <summary>
-        /// Check to see if a photo name is unique to an album.
-        /// </summary>
-        /// <param name="imageName">The name to check</param>
-        /// <param name="albumNode">The XElement albumDB node to check in</param>
-        /// <returns>Returns true if the photo name is unique to that album</returns>
-        private Boolean util_isImageNameUniqueToAlbum(String imageName, XElement albumNode)
-        {
-            try
-            {
-                //try and find a matching photo name.
-                //throws exception if we find NO matching names.
-                (from c in albumNode.Descendants("picture")
-                 where (String)c.Element("name") == imageName
-                 select c).First();
-                return false;
-            }
-            //we didn't find a matching name, success!
-            catch(Exception)
-            {
-                return true;
-            }
-        }
+        
 
         /// By: Ryan Moe
         /// Edited Julian Nguyen(5/1/13)
@@ -1021,6 +943,7 @@ namespace SoftwareEng
         /// <param name="error"></param>
         /// <param name="imageNode">An XElement representation of the photo from the album DB</param>
         /// <param name="newImageName">The new name for the photo</param>
+        [Obsolete]
         private bool setAlbumImageNodeName(XElement imageNode, String newImageName)
         {
             try
@@ -1034,26 +957,7 @@ namespace SoftwareEng
             }
         }
 
-        /// By: Bill Sanders 4/6/13
-        /// Edited Julian Nguyen(5/1/13)
-        /// <summary>
-        /// Renames an album
-        /// </summary>
-        /// <param name="error"></param>
-        /// <param name="albumNode">An XElement representation of the album from the album DB</param>
-        /// <param name="newAlbumName">The new name for the album</param>
-        [Obsolete]
-        private void setAlbumName(ErrorReport error, XElement albumNode, String newAlbumName)
-        {
-            try
-            {
-                albumNode.Element("albumName").Value = newAlbumName;
-            }
-            catch
-            {
-                setErrorReportToFAILURE("Failed to change the name of an album.", ref error);
-            }
-        }
+
 
         //--------------------------------------------------------------------------
         //By: Ryan Moe

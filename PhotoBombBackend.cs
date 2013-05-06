@@ -505,7 +505,7 @@ namespace SoftwareEng
                 {
                     // if the thumbnail doesn't exist... does the image itself?
                     XElement thumbnailPhoto = getAlbumImageNodeFromAlbumXml(userAlbum.UID, userAlbum.thumbAlbumID);
-                    ComplexPhotoData photoObj = util_getComplexPhotoData(error, thumbnailPhoto);
+                    ComplexPhotoData photoObj = getComplexPhotoDataFromAlbumImageNode(error, thumbnailPhoto);
 
                     if (!File.Exists(photoObj.fullPath))
                     {
@@ -519,7 +519,7 @@ namespace SoftwareEng
                     if (firstAlbumImageNode != null)
                     {
                         // ... and set it to be the thumbnail (generating it, if necessary)
-                        util_setAlbumThumbnail(thisAlbum, util_getComplexPhotoData(error, firstAlbumImageNode));
+                        util_setAlbumThumbnail(thisAlbum, getComplexPhotoDataFromAlbumImageNode(error, firstAlbumImageNode));
                     }
                 }
 
@@ -585,7 +585,7 @@ namespace SoftwareEng
                 try
                 {
                     //bills new swanky function here
-                    _imagesClipboard.Add(util_getComplexPhotoData(error, albumImageNode));
+                    _imagesClipboard.Add(getComplexPhotoDataFromAlbumImageNode(error, albumImageNode));
                 }
                 catch
                 {
@@ -637,7 +637,7 @@ namespace SoftwareEng
                 try
                 {
                     //bills new swanky function here
-                    ComplexPhotoData imageData = util_getComplexPhotoData(error, subElement);
+                    ComplexPhotoData imageData = getComplexPhotoDataFromAlbumImageNode(error, subElement);
 
 
                     try
@@ -919,7 +919,7 @@ namespace SoftwareEng
                         // Get the second element (soon to be first) and set it to be the thumbnail
                         secondPhotoInAlbum = albumNode.Descendants("picture").ElementAt(1); // (0-indexed)
                         // Set the thumbnail.
-                        util_setAlbumThumbnail(albumNode, util_getComplexPhotoData(errorReport, secondPhotoInAlbum));
+                        util_setAlbumThumbnail(albumNode, getComplexPhotoDataFromAlbumImageNode(errorReport, secondPhotoInAlbum));
                     }
                     catch (Exception ex)
                     {
@@ -1127,7 +1127,7 @@ namespace SoftwareEng
 
             // change the album's name.
 
-            if (!_photoBomb_xml.setAlbumName(albumNode, newAlbumName))
+            if (!_photoBomb_xml.setAlbumNodeName(albumNode, newAlbumName))
             {
                 setErrorReportToFAILURE("Failed to set the album name.", ref errorReport);
                 return errorReport;
@@ -1151,23 +1151,23 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="albumUID">The UID of the album the photo is in</param>
         /// <param name="idInAlbum">The id of the photo in this album</param>
-        /// <param name="newName">The new name of the photo</param>
+        /// <param name="newImageName">The new name of the photo</param>
         /// <returns></returns>
-        public ErrorReport setImageName_backend(Guid albumUID, int idInAlbum, string newName)
+        public ErrorReport setImageName_backend(Guid albumUID, int idInAlbum, string newImageName)
         {
             ErrorReport errorReport = new ErrorReport();
 
             // get the photo node that we are working on.
-            XElement photoElem = getAlbumImageNodeFromAlbumXml(albumUID, idInAlbum);
+            XElement albumImageNode = getAlbumImageNodeFromAlbumXml(albumUID, idInAlbum);
             if (errorReport.reportStatus == ReportStatus.FAILURE)
             {
                 return errorReport;
             }
 
             // change the photo's name.
-            if (!setAlbumImageNodeName(photoElem, newName))
+            if (!_photoBomb_xml.setAlbumImageNodeName(albumImageNode, newImageName))
             {
-                
+                setErrorReportToFAILURE("File to set image name.", ref errorReport);
                 return errorReport;
             }
 
@@ -1176,7 +1176,7 @@ namespace SoftwareEng
             // Searches through the photosCollection and finds the first photo with a matching id
             var photoToRename = _imagesCollection.FirstOrDefault(picture => picture.idInAlbum == idInAlbum);
             // ... and then renames it.
-            photoToRename.name = newName;
+            photoToRename.name = newImageName;
 
             return errorReport;
         }
@@ -1343,10 +1343,10 @@ namespace SoftwareEng
         /// Will test if am Image name is unique.
         /// The answer is in the ErrorReport. (Why not??) 
         /// </summary>
-        /// <param name="photoName">The Image name to test.</param>
+        /// <param name="imageName">The Image name to test.</param>
         /// <param name="albumUID">The UID of the album.</param>
         /// <returns>The error Report of this action. </returns>
-        public ErrorReport isImageNameUnique_backend(String photoName, Guid albumUID, out bool isUnique)
+        public ErrorReport isImageNameUnique_backend(String imageName, Guid albumUID, out bool isUnique)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1359,7 +1359,7 @@ namespace SoftwareEng
             }
 
             // Test uniqueness!
-            if (isUnique = util_isImageNameUniqueToAlbum(photoName, albumNode))
+            if (isUnique = _photoBomb_xml.isImageNameUniqueToAlbum(imageName, albumNode))
             {
                 return errorReport;
             }
@@ -1376,8 +1376,8 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="albumUID">The album's UID</param>
         /// <param name="idInAlbum">The in Album UID.</param>
-        /// <param name="newName">The new mame of the Image.</param>
-        public ErrorReport setImageNameByUID_backend(Guid albumUID, int idInAlbum, String newName)
+        /// <param name="newImageName">The new mame of the Image.</param>
+        public ErrorReport setImageNameByUID_backend(Guid albumUID, int idInAlbum, String newImageName)
         {
             ErrorReport errorReport = new ErrorReport();
 
@@ -1391,7 +1391,7 @@ namespace SoftwareEng
             }
 
             //change the photo's name.
-            if (!setAlbumImageNodeName(albumImageNode, newName))
+            if (!_photoBomb_xml.setAlbumImageNodeName(albumImageNode, newImageName))
             {
                 setErrorReportToFAILURE("failed to set the image name.", ref errorReport);
                 return errorReport;
