@@ -751,7 +751,15 @@ namespace SoftwareEng
         public ErrorReport addNewImage(String imageUserPath, String imageExtension, Guid albumUID)
         {
             ErrorReport errReport = new ErrorReport();
-            addNewImage_backend(errReport, imageUserPath, imageExtension, albumUID);
+            ComplexPhotoData imageData = addNewImage_backend(errReport, imageUserPath, imageExtension, albumUID);
+
+            saveImagesXML_backend();
+            saveAlbumsXML_backend();
+
+        
+
+            _imagesCollection.Add(imageData);
+
             return errReport;
         }
 
@@ -771,98 +779,100 @@ namespace SoftwareEng
         /// <param name="pictureNameInAlbum">The name the picture will have in the album</param>
         /// <param name="searchStartingPoint">Where to start looking for a new UID; defaults to 1</param>
         /// <returns></returns>
-        private ErrorReport addNewImage_backend(ErrorReport errorReport,
+        private ComplexPhotoData addNewImage_backend(ErrorReport errorReport,
             String photoUserPath,
             String photoExtension,
             Guid albumUID,
             int searchStartingPoint = 1)
         {
-            ComplexPhotoData newPicture = new ComplexPhotoData();
+            ComplexPhotoData imageData = new ComplexPhotoData();
 
             // Compute the hash for this picture, and then check to make sure it is unique
-            newPicture.hash = util_getHashOfFile(photoUserPath);
-            if (!util_isImageUniqueToAlbum(albumUID, ByteArrayToString(newPicture.hash)))
+            imageData.hash = util_getHashOfFile(photoUserPath);
+            if (!util_isImageUniqueToAlbum(albumUID, ByteArrayToString(imageData.hash)))
             {
                 errorReport.reportStatus = ReportStatus.SUCCESS_WITH_WARNINGS;
                 errorReport.description = "Picture is not unique.";
                 errorReport.warnings.Add("Picture is not unique: " + photoUserPath);
-                return errorReport;
+                return null;
             }
 
             // Get the refcount (will get zero if the pic is brand new) and increment it.
-            newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
-            newPicture.refCount++;
+            imageData.refCount = util_getPhotoRefCount(ByteArrayToString(imageData.hash));
+            imageData.refCount++;
 
 
-            newPicture.extension = photoExtension;
+            imageData.extension = photoExtension;
 
             // if this is a new picture, we add it to the db
-            if (newPicture.refCount == 1)
+            if (imageData.refCount == 1)
             {
                 //get a unique ID for this photo and update its 
                 //data object to reflect this new UID.
-                newPicture.UID = util_getNextUID(_imagesRootXml, "picture", "uid", searchStartingPoint);
+                imageData.UID = util_getNextUID(_imagesRootXml, "picture", "uid", searchStartingPoint);
                 // error checking the call
-                if (!util_checkIDIsValid(newPicture.UID))
+                if (!util_checkIDIsValid(imageData.UID))
                 {
                     setErrorReportToFAILURE("Failed to get a UID for a new picture.", ref errorReport);
-                    return errorReport;
+                    return null;
                 }
 
                 //Change me if you want to start naming the pictures differently in the library.
-                String picNameInLibrary = newPicture.UID.ToString() + photoExtension;
+                String picNameInLibrary = imageData.UID.ToString() + photoExtension;
 
-                newPicture.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
+                imageData.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
                 //error checking
                 if (errorReport.reportStatus == ReportStatus.FAILURE)
                 {
-                    return errorReport;
+                    return null;
                 }
-                util_addImageToImageDB(errorReport, newPicture);
+                util_addImageToImageDB(errorReport, imageData);
                 //Move picture and get a new path for the picture in our storage.
                 //generate the thumbnails and get their path.
-                newPicture.lgThumbPath = util_generateThumbnail(errorReport, newPicture.fullPath, picNameInLibrary, Settings.lrgThumbSize);
+                imageData.lgThumbPath = util_generateThumbnail(errorReport, imageData.fullPath, picNameInLibrary, Settings.lrgThumbSize);
             }
             else
             {
                 // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly.
-                XElement imageNode =_photoBomb_xml.getImageNodeFromImageXml(ByteArrayToString(newPicture.hash), _imagesRootXml);
+                XElement imageNode =_photoBomb_xml.getImageNodeFromImageXml(ByteArrayToString(imageData.hash), _imagesRootXml);
 
 
                 // Assign this new refcount
-                imageNode.Attribute("refCount").Value = newPicture.refCount.ToString();
+                imageNode.Attribute("refCount").Value = imageData.refCount.ToString();
 
                 // fetch the uid and put it in the complex photo data, we'll need it later too
-                newPicture.UID = (int)imageNode.Attribute("uid");
+                imageData.UID = (int)imageNode.Attribute("uid");
 
                 // make sure the photo still exists on the filesystem
                 if (!File.Exists(imageNode.Element("filePath").Value))
                 {
                     // good thing we checked!  Copy it to the filesystem again.
-                    newPicture.fullPath = util_copyPhotoToLibrary(
+                    imageData.fullPath = util_copyPhotoToLibrary(
                         errorReport,
                         imageNode.Element("filePath").Value,
-                        newPicture.UID.ToString() + photoExtension);
+                        imageData.UID.ToString() + photoExtension);
                 }
                 else
                 {
-                    newPicture.fullPath = imageNode.Element("filePath").Value;
+                    imageData.fullPath = imageNode.Element("filePath").Value;
                 }
             }
 
             //if adding to the picture database failed
             if (errorReport.reportStatus == ReportStatus.FAILURE)
             {
-                return errorReport;
+                return null;
             }
 
             // Now add it to the albums database
-            util_addImageToAlbumDB(errorReport, newPicture, albumUID);
+            //_photoBomb_xml.a
+
+            util_addImageToAlbumDB(errorReport, imageData, albumUID);
 
             //if adding to the album database failed
             if (errorReport.reportStatus == ReportStatus.FAILURE)
             {
-                return errorReport;
+                return null;
             }
 
             //save to disk.
@@ -870,9 +880,9 @@ namespace SoftwareEng
             saveAlbumsXML_backend();
 
             //update the photosCollection
-            //_photosCollection.Add(newPicture);
+            //_imagesCollection.Add(imageData);
 
-            return errorReport;
+            return imageData;
         }
 
 

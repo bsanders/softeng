@@ -2432,7 +2432,7 @@ namespace SoftwareEng
 
         public void guiConvertToGreyscale(ComplexPhotoData desiredImage, Guid albumGuid)
         {
-            _bombaDeFotos.addImageAsGrayscale(new addNewPictures_callback(temp_guiGrayscaleCallback), albumGuid, desiredImage.fullPath, temp_guiGrayscaleUpdate_Callback);
+            _bombaDeFotos.addImageAsGrayscale(new addNewPictures_callback(temp_guiGrayscaleCallback), albumGuid, desiredImage.fullPath);
         }
 
         public void temp_guiGrayscaleCallback(ErrorReport isUseless, Guid albumGuid)
@@ -2440,11 +2440,7 @@ namespace SoftwareEng
             showErrorMessage("BAAAAAAAAAAAAAAAAAAAALLS!!!!!!!!!!!!!!");
         }
 
-        public void temp_guiGrayscaleUpdate_Callback(object sender, ProgressChangedEventArgs e)
-        {
-            
-        }
-
+ 
 
 
 
