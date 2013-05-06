@@ -346,118 +346,118 @@
     <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
         <Setter Property="FocusVisualStyle" Value="{DynamicResource NuclearButtonFocusVisual}" />
         <Setter Property="Foreground" Value="#FF042271" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="3" />
 
-<Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
+        <Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
     </Style>
-    
+
     <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">
-                    <ControlTemplate.Resources>
-                        <Storyboard x:Key="HoverOn">
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundOver" Storyboard.TargetProperty="Opacity" To="1" />
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundOver_Highlight" Storyboard.TargetProperty="Opacity" To="0.65" />
-                        </Storyboard>
-                        <Storyboard x:Key="HoverOff">
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundOver" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundOver_Highlight" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                        <Storyboard x:Key="PressedOn">
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundPressed" Storyboard.TargetProperty="Opacity" To="0.84" />
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgoundPressed_Highlight" Storyboard.TargetProperty="Opacity" To="0.65" />
-                        </Storyboard>
-                        <Storyboard x:Key="PressedOff">
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundPressed" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgoundPressed_Highlight" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                        <Storyboard x:Key="DisabledOn">
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
-                            </ObjectAnimationUsingKeyFrames>
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledOverlay" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="FocusedOn">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
-                            </DoubleAnimationUsingKeyFrames>
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="HoverOn">
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundOver" Storyboard.TargetProperty="Opacity" To="1" />
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundOver_Highlight" Storyboard.TargetProperty="Opacity" To="0.65" />
+            </Storyboard>
+            <Storyboard x:Key="HoverOff">
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundOver" Storyboard.TargetProperty="Opacity" To="0" />
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundOver_Highlight" Storyboard.TargetProperty="Opacity" To="0" />
+            </Storyboard>
+            <Storyboard x:Key="PressedOn">
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundPressed" Storyboard.TargetProperty="Opacity" To="0.84" />
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgoundPressed_Highlight" Storyboard.TargetProperty="Opacity" To="0.65" />
+            </Storyboard>
+            <Storyboard x:Key="PressedOff">
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundPressed" Storyboard.TargetProperty="Opacity" To="0" />
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgoundPressed_Highlight" Storyboard.TargetProperty="Opacity" To="0" />
+            </Storyboard>
+            <Storyboard x:Key="DisabledOn">
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledOverlay" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="FocusedOn">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                </DoubleAnimationUsingKeyFrames>
 
-                        </Storyboard>
-                        <Storyboard x:Key="FocusedOff">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
-                            </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="FocusedOff">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
+                </DoubleAnimationUsingKeyFrames>
 
-                        </Storyboard>
-                    </ControlTemplate.Resources>
-                    <Grid x:Name="Grid">
-                        <Border x:Name="BackgroundNorm" BorderThickness="1" CornerRadius="1.75" Background="{DynamicResource NormalBrush}" BorderBrush="{DynamicResource NormalBorderBrush}"/>
-                        <Border x:Name="BackgroundNorm_highlight" Margin="1" BorderBrush="{DynamicResource NormalHighlightBrush}" BorderThickness="1,0,1,1" CornerRadius="1" Opacity="0.65" />
-                        <Border x:Name="BackgroundOver" BorderThickness="1" CornerRadius="1.75" Opacity="0" Background="{DynamicResource MouseOverBrush}" BorderBrush="{DynamicResource MouseOverBorderBrush}"/>
-                        <Border x:Name="BackgroundOver_Highlight" Margin="1" BorderThickness="1,0,1,1" CornerRadius="1" Opacity="0" BorderBrush="{DynamicResource MouseOverHighlightBrush}"/>
-                        <Border x:Name="BackgroundPressed" BorderThickness="1" CornerRadius="1.75" Opacity="0" Background="{DynamicResource PressedBrush}" BorderBrush="{DynamicResource PressedBorderBrush}"/>
-                        <Border x:Name="BackgoundPressed_Highlight" Margin="1" BorderThickness="1,0,1,1" CornerRadius="1" Opacity="0" BorderBrush="{DynamicResource PressedHighlightBrush}"/>
-                        <Border x:Name="DisabledVisualElement" IsHitTestVisible="false" Background="{DynamicResource DisabledBackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" Opacity="0" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="Grid">
+            <Border x:Name="BackgroundNorm" BorderThickness="1" CornerRadius="1.75" Background="{DynamicResource NormalBrush}" BorderBrush="{DynamicResource NormalBorderBrush}"/>
+            <Border x:Name="BackgroundNorm_highlight" Margin="1" BorderBrush="{DynamicResource NormalHighlightBrush}" BorderThickness="1,0,1,1" CornerRadius="1" Opacity="0.65" />
+            <Border x:Name="BackgroundOver" BorderThickness="1" CornerRadius="1.75" Opacity="0" Background="{DynamicResource MouseOverBrush}" BorderBrush="{DynamicResource MouseOverBorderBrush}"/>
+            <Border x:Name="BackgroundOver_Highlight" Margin="1" BorderThickness="1,0,1,1" CornerRadius="1" Opacity="0" BorderBrush="{DynamicResource MouseOverHighlightBrush}"/>
+            <Border x:Name="BackgroundPressed" BorderThickness="1" CornerRadius="1.75" Opacity="0" Background="{DynamicResource PressedBrush}" BorderBrush="{DynamicResource PressedBorderBrush}"/>
+            <Border x:Name="BackgoundPressed_Highlight" Margin="1" BorderThickness="1,0,1,1" CornerRadius="1" Opacity="0" BorderBrush="{DynamicResource PressedHighlightBrush}"/>
+            <Border x:Name="DisabledVisualElement" IsHitTestVisible="false" Background="{DynamicResource DisabledBackgroundBrush}" BorderBrush="{DynamicResource DisabledBorderBrush}" BorderThickness="1" Opacity="0" />
 
-                        <ContentPresenter x:Name="contentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" />
-                        <TextBlock Panel.ZIndex="1" x:Name="DisabledOverlay" Text="{TemplateBinding Content}" Foreground="#FF8E96A2" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Visibility="Collapsed" />
-                        <Border x:Name="FocusVisualElement" Margin="-1" BorderBrush="{DynamicResource FocusBrush}" BorderThickness="1" CornerRadius="2.75" IsHitTestVisible="false" Opacity="0" />
-                        <Border x:Name="DefaultBorder" Margin="-1" BorderBrush="{DynamicResource FocusBrush}" BorderThickness="1" CornerRadius="2.75" IsHitTestVisible="false" Opacity="0" />
-                    </Grid>
+            <ContentPresenter x:Name="contentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" />
+            <TextBlock Panel.ZIndex="1" x:Name="DisabledOverlay" Text="{TemplateBinding Content}" Foreground="#FF8E96A2" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Visibility="Collapsed" />
+            <Border x:Name="FocusVisualElement" Margin="-1" BorderBrush="{DynamicResource FocusBrush}" BorderThickness="1" CornerRadius="2.75" IsHitTestVisible="false" Opacity="0" />
+            <Border x:Name="DefaultBorder" Margin="-1" BorderBrush="{DynamicResource FocusBrush}" BorderThickness="1" CornerRadius="2.75" IsHitTestVisible="false" Opacity="0" />
+        </Grid>
 
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsDefault" Value="True">
-                            <Setter Property="Opacity" TargetName="DefaultBorder" Value="1" />
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard x:Name="FocusedOn_BeginStoryboard" Storyboard="{StaticResource FocusedOn}" />
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard x:Name="FocusedOff_BeginStoryboard" Storyboard="{StaticResource FocusedOff}" />
-                            </Trigger.ExitActions>
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="true">
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsDefault" Value="True">
+                <Setter Property="Opacity" TargetName="DefaultBorder" Value="1" />
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard x:Name="FocusedOn_BeginStoryboard" Storyboard="{StaticResource FocusedOn}" />
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard x:Name="FocusedOff_BeginStoryboard" Storyboard="{StaticResource FocusedOff}" />
+                </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="true">
 
-                            <Trigger.ExitActions>
-                                <BeginStoryboard x:Name="FocusedOff_BeginStoryboard1" Storyboard="{StaticResource FocusedOff}" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard x:Name="FocusedOn_BeginStoryboard1" Storyboard="{StaticResource FocusedOn}" />
-                            </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard x:Name="FocusedOff_BeginStoryboard1" Storyboard="{StaticResource FocusedOff}" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard x:Name="FocusedOn_BeginStoryboard1" Storyboard="{StaticResource FocusedOn}" />
+                </Trigger.EnterActions>
 
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource HoverOff}" x:Name="HoverOff_BeginStoryboard" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
-                            </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource HoverOff}" x:Name="HoverOff_BeginStoryboard" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
+                </Trigger.EnterActions>
 
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource PressedOff}" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource PressedOn}" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="true" />
-                        <Trigger Property="IsEnabled" Value="false">
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource PressedOff}" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource PressedOn}" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="true" />
+            <Trigger Property="IsEnabled" Value="false">
 
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource DisabledOn}" />
-                            </Trigger.EnterActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource DisabledOn}" />
+                </Trigger.EnterActions>
 
-                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
-                            <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="1" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+                <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+                <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="1" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <Style x:Key="RadioButtonFocusVisual">
         <Setter Property="Control.Template">
@@ -489,283 +489,283 @@
         <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
         <Setter Property="Foreground" Value="{StaticResource OutsideFontColor}" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="Padding" Value="4,1,0,0" />
-<Setter Property="Template" Value="{DynamicResource CheckBoxTemplate}" />
+        <Setter Property="Template" Value="{DynamicResource CheckBoxTemplate}" />
     </Style>
-        
-<ControlTemplate x:Key="CheckBoxTemplate" TargetType="{x:Type CheckBox}">
-                    <ControlTemplate.Resources>
-                        <Storyboard x:Key="HoverOn">
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="Opacity" To="1" />
-                        </Storyboard>
-                        <Storyboard x:Key="HoverOff">
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                        <Storyboard x:Key="PressedOn">
-                            <ColorAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[1].(GradientStop.Color)" To="#FFF28A27" />
-                            <ColorAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)" To="#FFF4D9BE" />
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="Opacity" To="1" />
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundFill" Storyboard.TargetProperty="Opacity" To="1" />
-                        </Storyboard>
-                        <Storyboard x:Key="PressedOff">
-                            <ColorAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[1].(GradientStop.Color)" To="#FFFDDA81" />
-                            <ColorAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)" To="#FFFCE7AF" />
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundFill" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                        <Storyboard x:Key="DisabledOn">
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
-                            </ObjectAnimationUsingKeyFrames>
 
-                        </Storyboard>
-                        <Storyboard x:Key="CheckedOn">
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxPress" Storyboard.TargetProperty="Opacity" To="1" />
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CheckIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="CheckedOff">
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxPress" Storyboard.TargetProperty="Opacity" To="0" />
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CheckIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static Visibility.Collapsed}" />
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="IndeterminateOn">
+    <ControlTemplate x:Key="CheckBoxTemplate" TargetType="{x:Type CheckBox}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="HoverOn">
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="Opacity" To="1" />
+            </Storyboard>
+            <Storyboard x:Key="HoverOff">
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="Opacity" To="0" />
+            </Storyboard>
+            <Storyboard x:Key="PressedOn">
+                <ColorAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[1].(GradientStop.Color)" To="#FFF28A27" />
+                <ColorAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)" To="#FFF4D9BE" />
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="Opacity" To="1" />
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BackgroundFill" Storyboard.TargetProperty="Opacity" To="1" />
+            </Storyboard>
+            <Storyboard x:Key="PressedOff">
+                <ColorAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[1].(GradientStop.Color)" To="#FFFDDA81" />
+                <ColorAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)" To="#FFFCE7AF" />
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxOver" Storyboard.TargetProperty="Opacity" To="0" />
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BackgroundFill" Storyboard.TargetProperty="Opacity" To="0" />
+            </Storyboard>
+            <Storyboard x:Key="DisabledOn">
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
+                </ObjectAnimationUsingKeyFrames>
 
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="IndeterminateIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="IndeterminateOff">
+            </Storyboard>
+            <Storyboard x:Key="CheckedOn">
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="BoxPress" Storyboard.TargetProperty="Opacity" To="1" />
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CheckIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="CheckedOff">
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="BoxPress" Storyboard.TargetProperty="Opacity" To="0" />
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CheckIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static Visibility.Collapsed}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="IndeterminateOn">
 
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="IndeterminateIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Collapsed}" />
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="FocusedOn">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="FocusedOff">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </ControlTemplate.Resources>
-                    <BulletDecorator Background="Transparent">
-                        <BulletDecorator.Bullet>
-                            <Grid>
-                                <Rectangle x:Name="Background" Margin="1" Width="13" Height="13" RadiusX="0" RadiusY="0" Fill="{DynamicResource CheckBoxBackgroundBrush}" Stroke="{DynamicResource CheckBoxBorderBrush}" StrokeThickness="1" />
-                                <Rectangle x:Name="BoxFill" Width="9" Height="9" RadiusX="0" RadiusY="0" Fill="{DynamicResource CheckBoxInnerBoxBackgroundBrush}" StrokeThickness="1" Stroke="{DynamicResource CheckBoxInnerBoxBorderBrush}"/>
-                                <Rectangle x:Name="BackgroundFill" Margin="1" Width="13" Height="13" RadiusX="0" RadiusY="0" Fill="{DynamicResource CheckBoxBackgroundFillBrush}" Stroke="#FF5577A3" StrokeThickness="1" Opacity="0" />
-                                <Rectangle x:Name="BoxOver" Margin="3" Width="9" Height="9" RadiusX="0" RadiusY="0" Fill="{DynamicResource CheckBoxMouseOverBrush}" StrokeThickness="1" Opacity="0">
-                                    <Rectangle.Stroke>
-                                        <LinearGradientBrush EndPoint="0.055,0.119" StartPoint="0.886,0.808">
-                                            <GradientStop Color="#FFFCE7AF" />
-                                            <GradientStop Color="#FFFDDA81" Offset="1" />
-                                        </LinearGradientBrush>
-                                    </Rectangle.Stroke>
-                                </Rectangle>
-                                <Rectangle x:Name="BoxPress" Margin="3" Width="9" Height="9" RadiusX="0" RadiusY="0" StrokeThickness="1" Opacity="0" Stroke="{DynamicResource CheckBoxPressBorderBrush}"/>
-                                <Rectangle x:Name="BoxGradient" Width="7" Height="7" RadiusX="0" RadiusY="0" StrokeThickness="1" Fill="{DynamicResource CheckBoxInnerBoxGradientBrush}"/>
-                                <Rectangle x:Name="IndeterminateIcon" Width="5" Height="2" Fill="{DynamicResource GlyphBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" />
-                                <Path x:Name="CheckIcon" Margin="0,3.333,3.833,0" Width="7" Height="9" Fill="{DynamicResource GlyphBrush}" Stretch="Fill" VerticalAlignment="Top" HorizontalAlignment="Right" Data="M103.78572,598.96112 L105.09846,597.5661 L107.00806,600.16229 C107.00806,600.16229 109.91004,592.74463 109.91004,592.74463 C109.91004,592.74463 111.74678,593.79761 111.74678,593.79761 C111.74678,593.79761 107.88566,602.75848 107.88566,602.75848 L106.60118,602.75848 z" Visibility="Collapsed" />
-                                <Rectangle x:Name="FocusedVisualElement" RadiusX="0" RadiusY="0" Stroke="{DynamicResource FocusBrush}" StrokeThickness="1" Opacity="0" />
-                                <Rectangle x:Name="DisabledVisualElement" Margin="1" RadiusX="0" RadiusY="0" Fill="{DynamicResource DisabledBackgroundBrush}" Visibility="Collapsed" />
-                            </Grid>
-                        </BulletDecorator.Bullet>
-                        <ContentPresenter Grid.Column="1" x:Name="contentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" />
-                    </BulletDecorator>
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="IndeterminateIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="IndeterminateOff">
 
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource FocusedOff}" x:Name="FocusedOff_BeginStoryboard" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource FocusedOn}" x:Name="FocusedOn_BeginStoryboard" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="True" />
-                                <Condition Property="IsThreeState" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.EnterActions>
-                                <BeginStoryboard x:Name="CheckedOff_BeginStoryboard" Storyboard="{StaticResource CheckedOff}" />
-                            </MultiTrigger.EnterActions>
-                            <MultiTrigger.ExitActions>
-                                <BeginStoryboard x:Name="CheckedOn_BeginStoryboard" Storyboard="{StaticResource CheckedOn}" />
-                            </MultiTrigger.ExitActions>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="{x:Null}" />
-                                <Condition Property="IsThreeState" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource IndeterminateOn}" />
-                            </MultiTrigger.EnterActions>
-                            <MultiTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource IndeterminateOff}" />
-                            </MultiTrigger.ExitActions>
-                            <Setter Property="Opacity" TargetName="CheckIcon" Value="0" />
-                        </MultiTrigger>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard x:Name="CheckedOn_BeginStoryboard2" Storyboard="{StaticResource CheckedOff}" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard x:Name="CheckedOn_BeginStoryboard1" Storyboard="{StaticResource CheckedOn}" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource HoverOff}" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource PressedOff}" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource PressedOn}" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource DisabledOn}" />
-                            </Trigger.EnterActions>
-                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="IndeterminateIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Collapsed}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="FocusedOn">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="FocusedOff">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <BulletDecorator Background="Transparent">
+            <BulletDecorator.Bullet>
+                <Grid>
+                    <Rectangle x:Name="Background" Margin="1" Width="13" Height="13" RadiusX="0" RadiusY="0" Fill="{DynamicResource CheckBoxBackgroundBrush}" Stroke="{DynamicResource CheckBoxBorderBrush}" StrokeThickness="1" />
+                    <Rectangle x:Name="BoxFill" Width="9" Height="9" RadiusX="0" RadiusY="0" Fill="{DynamicResource CheckBoxInnerBoxBackgroundBrush}" StrokeThickness="1" Stroke="{DynamicResource CheckBoxInnerBoxBorderBrush}"/>
+                    <Rectangle x:Name="BackgroundFill" Margin="1" Width="13" Height="13" RadiusX="0" RadiusY="0" Fill="{DynamicResource CheckBoxBackgroundFillBrush}" Stroke="#FF5577A3" StrokeThickness="1" Opacity="0" />
+                    <Rectangle x:Name="BoxOver" Margin="3" Width="9" Height="9" RadiusX="0" RadiusY="0" Fill="{DynamicResource CheckBoxMouseOverBrush}" StrokeThickness="1" Opacity="0">
+                        <Rectangle.Stroke>
+                            <LinearGradientBrush EndPoint="0.055,0.119" StartPoint="0.886,0.808">
+                                <GradientStop Color="#FFFCE7AF" />
+                                <GradientStop Color="#FFFDDA81" Offset="1" />
+                            </LinearGradientBrush>
+                        </Rectangle.Stroke>
+                    </Rectangle>
+                    <Rectangle x:Name="BoxPress" Margin="3" Width="9" Height="9" RadiusX="0" RadiusY="0" StrokeThickness="1" Opacity="0" Stroke="{DynamicResource CheckBoxPressBorderBrush}"/>
+                    <Rectangle x:Name="BoxGradient" Width="7" Height="7" RadiusX="0" RadiusY="0" StrokeThickness="1" Fill="{DynamicResource CheckBoxInnerBoxGradientBrush}"/>
+                    <Rectangle x:Name="IndeterminateIcon" Width="5" Height="2" Fill="{DynamicResource GlyphBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" />
+                    <Path x:Name="CheckIcon" Margin="0,3.333,3.833,0" Width="7" Height="9" Fill="{DynamicResource GlyphBrush}" Stretch="Fill" VerticalAlignment="Top" HorizontalAlignment="Right" Data="M103.78572,598.96112 L105.09846,597.5661 L107.00806,600.16229 C107.00806,600.16229 109.91004,592.74463 109.91004,592.74463 C109.91004,592.74463 111.74678,593.79761 111.74678,593.79761 C111.74678,593.79761 107.88566,602.75848 107.88566,602.75848 L106.60118,602.75848 z" Visibility="Collapsed" />
+                    <Rectangle x:Name="FocusedVisualElement" RadiusX="0" RadiusY="0" Stroke="{DynamicResource FocusBrush}" StrokeThickness="1" Opacity="0" />
+                    <Rectangle x:Name="DisabledVisualElement" Margin="1" RadiusX="0" RadiusY="0" Fill="{DynamicResource DisabledBackgroundBrush}" Visibility="Collapsed" />
+                </Grid>
+            </BulletDecorator.Bullet>
+            <ContentPresenter Grid.Column="1" x:Name="contentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" />
+        </BulletDecorator>
 
-                </ControlTemplate>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource FocusedOff}" x:Name="FocusedOff_BeginStoryboard" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource FocusedOn}" x:Name="FocusedOn_BeginStoryboard" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="True" />
+                    <Condition Property="IsThreeState" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.EnterActions>
+                    <BeginStoryboard x:Name="CheckedOff_BeginStoryboard" Storyboard="{StaticResource CheckedOff}" />
+                </MultiTrigger.EnterActions>
+                <MultiTrigger.ExitActions>
+                    <BeginStoryboard x:Name="CheckedOn_BeginStoryboard" Storyboard="{StaticResource CheckedOn}" />
+                </MultiTrigger.ExitActions>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="{x:Null}" />
+                    <Condition Property="IsThreeState" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource IndeterminateOn}" />
+                </MultiTrigger.EnterActions>
+                <MultiTrigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource IndeterminateOff}" />
+                </MultiTrigger.ExitActions>
+                <Setter Property="Opacity" TargetName="CheckIcon" Value="0" />
+            </MultiTrigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Trigger.ExitActions>
+                    <BeginStoryboard x:Name="CheckedOn_BeginStoryboard2" Storyboard="{StaticResource CheckedOff}" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard x:Name="CheckedOn_BeginStoryboard1" Storyboard="{StaticResource CheckedOn}" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource HoverOff}" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource PressedOff}" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource PressedOn}" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource DisabledOn}" />
+                </Trigger.EnterActions>
+                <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+
+    </ControlTemplate>
 
     <Style TargetType="{x:Type RadioButton}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
         <Setter Property="Foreground" Value="{StaticResource OutsideFontColor}" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="Padding" Value="4,1,0,0" />
 
-<Setter Property="Template" Value="{DynamicResource RadioButtonTemplate}" />
+        <Setter Property="Template" Value="{DynamicResource RadioButtonTemplate}" />
     </Style>
-        
-<ControlTemplate x:Key="RadioButtonTemplate" TargetType="{x:Type RadioButton}">
-                    <ControlTemplate.Resources>
-                        <Storyboard x:Key="HoverOn">
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="CircleOver" Storyboard.TargetProperty="Opacity" To="1" />
-                        </Storyboard>
-                        <Storyboard x:Key="HoverOff">
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="CircleOver" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                        <Storyboard x:Key="PressedOn">
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="CirclePress" Storyboard.TargetProperty="Opacity" To="1" />
-                        </Storyboard>
-                        <Storyboard x:Key="PressedOff">
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="CirclePress" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                        <Storyboard x:Key="DisabledOn" />
-                        <Storyboard x:Key="CheckedOn">
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CheckIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="CheckedOff">
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CheckIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static Visibility.Collapsed}" />
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="FocusedOn">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="FocusedOff">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </ControlTemplate.Resources>
-                    <BulletDecorator Background="Transparent">
-                        <BulletDecorator.Bullet>
-                            <Grid>
-                                <Ellipse x:Name="Background" Margin="1" Width="14" Height="14" Fill="{DynamicResource RadioButtonBackgroundBrush}" Stroke="{DynamicResource RadioButtonBorderBrush}" StrokeThickness="1" />
-                                <Ellipse x:Name="CircleFill" Margin="3.045,3.157,2.955,2.843" StrokeThickness="1" Fill="{DynamicResource RadioButtonInnerCircleBrush}" Stroke="{DynamicResource RadioButtonInnerCircleBorderBrush}"/>
-                                <Ellipse x:Name="CircleOver" Margin="2.847,2.847,3.153,3.153" StrokeThickness="1" Opacity="0" Fill="{DynamicResource RadioButtonMouseOverBrush}" Stroke="{DynamicResource RadioButtonMouseOverBorderBrush}">
-                                </Ellipse>
-                                <Ellipse x:Name="CirclePress" Margin="2.73,2.73,3.27,3.27" StrokeThickness="1" Opacity="0" Fill="{DynamicResource RadioButtonPressBrush}" Stroke="{DynamicResource RadioButtonPressBorderBrush}"/>
-                                <Ellipse x:Name="CheckIcon" Margin="4.47,4.498,3.53,3.502" StrokeThickness="1" Visibility="Collapsed" Stroke="{DynamicResource RadioButtonCheckIconBorderBrush}" Fill="{DynamicResource RadioButtonCheckIconBrush}">
-                                </Ellipse>
-                                <Ellipse x:Name="DisabledVisualElement" Width="14" Height="14" Opacity="0.35" Visibility="Visible" >
-                                    <Ellipse.Stroke>
-                                        <SolidColorBrush Color="{DynamicResource WhiteColor}"/>
-                                    </Ellipse.Stroke>
-                                    <Ellipse.Fill>
-                                        <SolidColorBrush Color="{DynamicResource WhiteColor}"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                                <Ellipse x:Name="FocusedVisualElement" Width="16" Height="16" Stroke="{DynamicResource FocusBrush}" StrokeThickness="1" IsHitTestVisible="false" Opacity="0" />
-                            </Grid>
-                        </BulletDecorator.Bullet>
-                        <ContentPresenter Grid.Column="1" x:Name="contentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" />
-                    </BulletDecorator>
 
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource FocusedOff}" x:Name="FocusedOff_BeginStoryboard" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource FocusedOn}" x:Name="FocusedOn_BeginStoryboard" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="false">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource CheckedOn}" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
+    <ControlTemplate x:Key="RadioButtonTemplate" TargetType="{x:Type RadioButton}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="HoverOn">
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="CircleOver" Storyboard.TargetProperty="Opacity" To="1" />
+            </Storyboard>
+            <Storyboard x:Key="HoverOff">
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="CircleOver" Storyboard.TargetProperty="Opacity" To="0" />
+            </Storyboard>
+            <Storyboard x:Key="PressedOn">
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="CirclePress" Storyboard.TargetProperty="Opacity" To="1" />
+            </Storyboard>
+            <Storyboard x:Key="PressedOff">
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="CirclePress" Storyboard.TargetProperty="Opacity" To="0" />
+            </Storyboard>
+            <Storyboard x:Key="DisabledOn" />
+            <Storyboard x:Key="CheckedOn">
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CheckIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="CheckedOff">
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CheckIcon" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static Visibility.Collapsed}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="FocusedOn">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="FocusedOff">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <BulletDecorator Background="Transparent">
+            <BulletDecorator.Bullet>
+                <Grid>
+                    <Ellipse x:Name="Background" Margin="1" Width="14" Height="14" Fill="{DynamicResource RadioButtonBackgroundBrush}" Stroke="{DynamicResource RadioButtonBorderBrush}" StrokeThickness="1" />
+                    <Ellipse x:Name="CircleFill" Margin="3.045,3.157,2.955,2.843" StrokeThickness="1" Fill="{DynamicResource RadioButtonInnerCircleBrush}" Stroke="{DynamicResource RadioButtonInnerCircleBorderBrush}"/>
+                    <Ellipse x:Name="CircleOver" Margin="2.847,2.847,3.153,3.153" StrokeThickness="1" Opacity="0" Fill="{DynamicResource RadioButtonMouseOverBrush}" Stroke="{DynamicResource RadioButtonMouseOverBorderBrush}">
+                    </Ellipse>
+                    <Ellipse x:Name="CirclePress" Margin="2.73,2.73,3.27,3.27" StrokeThickness="1" Opacity="0" Fill="{DynamicResource RadioButtonPressBrush}" Stroke="{DynamicResource RadioButtonPressBorderBrush}"/>
+                    <Ellipse x:Name="CheckIcon" Margin="4.47,4.498,3.53,3.502" StrokeThickness="1" Visibility="Collapsed" Stroke="{DynamicResource RadioButtonCheckIconBorderBrush}" Fill="{DynamicResource RadioButtonCheckIconBrush}">
+                    </Ellipse>
+                    <Ellipse x:Name="DisabledVisualElement" Width="14" Height="14" Opacity="0.35" Visibility="Visible" >
+                        <Ellipse.Stroke>
+                            <SolidColorBrush Color="{DynamicResource WhiteColor}"/>
+                        </Ellipse.Stroke>
+                        <Ellipse.Fill>
+                            <SolidColorBrush Color="{DynamicResource WhiteColor}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <Ellipse x:Name="FocusedVisualElement" Width="16" Height="16" Stroke="{DynamicResource FocusBrush}" StrokeThickness="1" IsHitTestVisible="false" Opacity="0" />
+                </Grid>
+            </BulletDecorator.Bullet>
+            <ContentPresenter Grid.Column="1" x:Name="contentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" />
+        </BulletDecorator>
 
-                                <BeginStoryboard Storyboard="{StaticResource CheckedOff}" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource HoverOff}" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource PressedOff}" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource PressedOn}" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource DisabledOn}" />
-                            </Trigger.EnterActions>
-                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
-                        </Trigger>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource FocusedOff}" x:Name="FocusedOff_BeginStoryboard" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource FocusedOn}" x:Name="FocusedOn_BeginStoryboard" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="false">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource CheckedOn}" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
 
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+                    <BeginStoryboard Storyboard="{StaticResource CheckedOff}" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource HoverOff}" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource PressedOff}" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource PressedOn}" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource DisabledOn}" />
+                </Trigger.EnterActions>
+                <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+            </Trigger>
+
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <Style x:Key="NuclearRepeatButton" d:IsControlPart="True" TargetType="{x:Type RepeatButton}" BasedOn="{x:Null}">
         <Setter Property="Template">
@@ -1041,7 +1041,7 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
@@ -1150,7 +1150,7 @@
 
     <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Foreground" Value="#FF15428B" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Padding" Value="6,0,4,0" />
@@ -1270,7 +1270,7 @@
     </Style>
     <Style x:Key="ExpanderRightHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Foreground" Value="#FF15428B" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Padding" Value="6,0,4,0" />
@@ -1411,7 +1411,7 @@
     </Style>
     <Style x:Key="ExpanderUpHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Foreground" Value="#FF15428B" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Padding" Value="6,0,4,0" />
@@ -1548,7 +1548,7 @@
     </Style>
     <Style x:Key="ExpanderLeftHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Foreground" Value="#FF15428B" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Padding" Value="6,0,4,0" />
@@ -1695,7 +1695,7 @@
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="#FF15428B" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Padding" Value="6,0,4,0" />
@@ -1829,75 +1829,76 @@
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="6,2,25,2" />
 
-<Setter Property="Template" Value="{DynamicResource ComboBoxTemplate}" />
+        <Setter Property="Template" Value="{DynamicResource ComboBoxTemplate}" />
     </Style>
-        
-        <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
-                    <ControlTemplate.Resources>
-                        <Storyboard x:Key="FocusedOn">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="FocusedOff">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </ControlTemplate.Resources>
-                    <Grid>
-                        <ToggleButton Grid.Column="2" Template="{DynamicResource ComboBoxToggleButton}" x:Name="ToggleButton" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" />
-                        <ContentPresenter HorizontalAlignment="Left" Margin="3,3,23,3" x:Name="ContentSite" VerticalAlignment="Center" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" IsHitTestVisible="False" />
 
-                        <TextBox Visibility="Hidden" Template="{DynamicResource ComboBoxTextBox}" HorizontalAlignment="Left" Margin="3,3,23,3" x:Name="PART_EditableTextBox" Style="{x:Null}" VerticalAlignment="Center" Focusable="True" Background="Transparent" IsReadOnly="{TemplateBinding IsReadOnly}" />
-                        <Rectangle x:Name="DisabledVisualElement" Fill="{DynamicResource DisabledBackgroundBrush}" Stroke="{DynamicResource DisabledBorderBrush}" RadiusX="0" RadiusY="0" IsHitTestVisible="false" Opacity="0" />
-                        <Rectangle x:Name="FocusVisualElement" Margin="-1" Stroke="{DynamicResource FocusBrush}" StrokeThickness="1" IsHitTestVisible="false" Opacity="0" />
-                        <Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" x:Name="Popup" Focusable="False" AllowsTransparency="True" PopupAnimation="Slide" Margin="0,1,0,0">
-                            <Grid MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="DropDown" SnapsToDevicePixels="True">
-                                <Border x:Name="DropDownBorder" Margin="0,-1,0,0" BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1" CornerRadius="0,0,3,3" Background="{DynamicResource ControlBackgroundBrush}">
-                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+    <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="FocusedOn">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="FocusedOff">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid>
+            <ToggleButton Focusable="false" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" Style="{x:Null}" />
+            <ToggleButton Grid.Column="2" Template="{DynamicResource ComboBoxToggleButton}" x:Name="ToggleButton" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" />
+            <ContentPresenter HorizontalAlignment="Left" Margin="3,3,23,3" x:Name="ContentSite" VerticalAlignment="Center" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" IsHitTestVisible="False" />
 
-                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+            <TextBox Visibility="Hidden" Template="{DynamicResource ComboBoxTextBox}" HorizontalAlignment="Left" Margin="3,3,23,3" x:Name="PART_EditableTextBox" Style="{x:Null}" VerticalAlignment="Center" Focusable="True" Background="Transparent" IsReadOnly="{TemplateBinding IsReadOnly}" />
+            <Rectangle x:Name="DisabledVisualElement" Fill="{DynamicResource DisabledBackgroundBrush}" Stroke="{DynamicResource DisabledBorderBrush}" RadiusX="0" RadiusY="0" IsHitTestVisible="false" Opacity="0" />
+            <Rectangle x:Name="FocusVisualElement" Margin="-1" Stroke="{DynamicResource FocusBrush}" StrokeThickness="1" IsHitTestVisible="false" Opacity="0" />
+            <Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" x:Name="Popup" Focusable="False" AllowsTransparency="True" PopupAnimation="Slide" Margin="0,1,0,0">
+                <Grid MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="DropDown" SnapsToDevicePixels="True">
+                    <Border x:Name="DropDownBorder" Margin="0,-1,0,0" BorderBrush="{DynamicResource ControlBorderBrush}" BorderThickness="1" CornerRadius="0,0,3,3" Background="{DynamicResource ControlBackgroundBrush}">
+                        <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
 
-                                    </ScrollViewer>
-                                </Border>
-                            </Grid>
-                        </Popup>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource FocusedOff}" x:Name="FocusedOff_BeginStoryboard" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource FocusedOn}" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <Trigger Property="HasItems" Value="false">
-                            <Setter Property="MinHeight" Value="95" TargetName="DropDownBorder" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
-                            <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="1" />
-                        </Trigger>
-                        <Trigger Property="IsGrouping" Value="true">
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
-                        </Trigger>
-                        <Trigger Property="AllowsTransparency" SourceName="Popup" Value="true">
-                            <Setter Property="CornerRadius" Value="4" TargetName="DropDownBorder" />
-                            <Setter Property="Margin" Value="0,2,0,0" TargetName="DropDownBorder" />
-                        </Trigger>
-                        <Trigger Property="IsEditable" Value="true">
-                            <Setter Property="IsTabStop" Value="false" />
-                            <Setter Property="Visibility" Value="Visible" TargetName="PART_EditableTextBox" />
-                            <Setter Property="Visibility" Value="Hidden" TargetName="ContentSite" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource FocusedOff}" x:Name="FocusedOff_BeginStoryboard" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource FocusedOn}" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="HasItems" Value="false">
+                <Setter Property="MinHeight" Value="95" TargetName="DropDownBorder" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+                <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="1" />
+            </Trigger>
+            <Trigger Property="IsGrouping" Value="true">
+                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+            </Trigger>
+            <Trigger Property="AllowsTransparency" SourceName="Popup" Value="true">
+                <Setter Property="CornerRadius" Value="4" TargetName="DropDownBorder" />
+                <Setter Property="Margin" Value="0,2,0,0" TargetName="DropDownBorder" />
+            </Trigger>
+            <Trigger Property="IsEditable" Value="true">
+                <Setter Property="IsTabStop" Value="false" />
+                <Setter Property="Visibility" Value="Visible" TargetName="PART_EditableTextBox" />
+                <Setter Property="Visibility" Value="Hidden" TargetName="ContentSite" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <Style d:IsControlPart="True" TargetType="{x:Type ComboBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
@@ -2026,9 +2027,9 @@
                             <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="1" />
                         </Trigger>
                         <Trigger Property="IsIndeterminate" Value="True">
-                        	<Trigger.ExitActions>
-                        		<StopStoryboard BeginStoryboardName="IndeterminateOn_BeginStoryboard"/>
-                        	</Trigger.ExitActions>
+                            <Trigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="IndeterminateOn_BeginStoryboard"/>
+                            </Trigger.ExitActions>
                             <Trigger.EnterActions>
                                 <BeginStoryboard x:Name="IndeterminateOn_BeginStoryboard" Storyboard="{StaticResource IndeterminateOn}" />
                             </Trigger.EnterActions>
@@ -2052,91 +2053,91 @@
         </Setter>
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{StaticResource TextControlBorderBrush}" />
-<Setter Property="Template" Value="{DynamicResource TextBoxTemplate}" />
+        <Setter Property="Template" Value="{DynamicResource TextBoxTemplate}" />
     </Style>
-        
-        <ControlTemplate x:Key="TextBoxTemplate" TargetType="{x:Type TextBox}">
-                    <ControlTemplate.Resources>
-                        <Storyboard x:Key="HoverOn">
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="Over" Storyboard.TargetProperty="Opacity" To="1" />
-                            <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="Over_Border" Storyboard.TargetProperty="Opacity" To="1" />
-                        </Storyboard>
-                        <Storyboard x:Key="HoverOff">
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="Over" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="Over_Border" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                        <Storyboard x:Key="FocusedOn">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="FocusedOff">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                        <Storyboard x:Key="DisabledOn">
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-						<Storyboard x:Key="DisabledOff">
-                            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Collapsed}" />
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </ControlTemplate.Resources>
-                    <Grid>
-                        <Border x:Name="BorderBase" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.75" />
-                        <Border x:Name="Over" BorderBrush="{DynamicResource FocusBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.75" Opacity="0" />
-                        <Border x:Name="Over_Border" Margin="-1" BorderBrush="{DynamicResource MouseOverHighlightBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3.75" IsHitTestVisible="False" Opacity="0" />
-                        <ScrollViewer Margin="0" x:Name="PART_ContentHost" Foreground="{DynamicResource OutsideFontColor}" />
-                        <Border x:Name="DisabledVisualElement" Background="#A5FFFFFF" BorderBrush="#59C0C0C0" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.75" IsHitTestVisible="False" Visibility="Collapsed" />
-                        <Border x:Name="ReadOnlyVisualElement" Background="#66FFFFFF" CornerRadius="2.75" Visibility="Collapsed" />
-                        <Border x:Name="FocusVisualElement" BorderBrush="#FFB1703C" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.75" IsHitTestVisible="False" Opacity="0" />
 
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource FocusedOff}" x:Name="FocusedOff_BeginStoryboard" />
-                            </Trigger.ExitActions>
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource FocusedOn}" x:Name="FocusedOn_BeginStoryboard" />
-                            </Trigger.EnterActions>
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsFocused" Value="False" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.ExitActions>
-                                <BeginStoryboard x:Name="HoverOff_BeginStoryboard" Storyboard="{StaticResource HoverOff}" />
-                            </MultiTrigger.ExitActions>
-                            <MultiTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
-                            </MultiTrigger.EnterActions>
-                        </MultiTrigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource DisabledOn}" x:Name="DisabledOn_BeginStoryboard" />
-                            </Trigger.EnterActions>
+    <ControlTemplate x:Key="TextBoxTemplate" TargetType="{x:Type TextBox}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="HoverOn">
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="Over" Storyboard.TargetProperty="Opacity" To="1" />
+                <DoubleAnimation Duration="00:00:00.1000000" Storyboard.TargetName="Over_Border" Storyboard.TargetProperty="Opacity" To="1" />
+            </Storyboard>
+            <Storyboard x:Key="HoverOff">
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="Over" Storyboard.TargetProperty="Opacity" To="0" />
+                <DoubleAnimation Duration="00:00:00.4000000" Storyboard.TargetName="Over_Border" Storyboard.TargetProperty="Opacity" To="0" />
+            </Storyboard>
+            <Storyboard x:Key="FocusedOn">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="FocusedOff">
+                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="DisabledOn">
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Visible}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="DisabledOff">
+                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                    <DiscreteObjectKeyFrame KeyTime="00:00:00.1000000" Value="{x:Static Visibility.Collapsed}" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid>
+            <Border x:Name="BorderBase" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.75" />
+            <Border x:Name="Over" BorderBrush="{DynamicResource FocusBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.75" Opacity="0" />
+            <Border x:Name="Over_Border" Margin="-1" BorderBrush="{DynamicResource MouseOverHighlightBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3.75" IsHitTestVisible="False" Opacity="0" />
+            <ScrollViewer Margin="0" x:Name="PART_ContentHost" Foreground="{DynamicResource OutsideFontColor}" />
+            <Border x:Name="DisabledVisualElement" Background="#A5FFFFFF" BorderBrush="#59C0C0C0" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.75" IsHitTestVisible="False" Visibility="Collapsed" />
+            <Border x:Name="ReadOnlyVisualElement" Background="#66FFFFFF" CornerRadius="2.75" Visibility="Collapsed" />
+            <Border x:Name="FocusVisualElement" BorderBrush="#FFB1703C" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2.75" IsHitTestVisible="False" Opacity="0" />
 
-                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
-                        </Trigger>
-						<Trigger Property="IsEnabled" Value="True">
-						<Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource DisabledOff}"  />
-                            </Trigger.EnterActions>
-							<Setter Property="Foreground" Value="#FF000000" />
-						</Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource FocusedOff}" x:Name="FocusedOff_BeginStoryboard" />
+                </Trigger.ExitActions>
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource FocusedOn}" x:Name="FocusedOn_BeginStoryboard" />
+                </Trigger.EnterActions>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsFocused" Value="False" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.ExitActions>
+                    <BeginStoryboard x:Name="HoverOff_BeginStoryboard" Storyboard="{StaticResource HoverOff}" />
+                </MultiTrigger.ExitActions>
+                <MultiTrigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
+                </MultiTrigger.EnterActions>
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource DisabledOn}" x:Name="DisabledOn_BeginStoryboard" />
+                </Trigger.EnterActions>
+
+                <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource DisabledOff}"  />
+                </Trigger.EnterActions>
+                <Setter Property="Foreground" Value="#FF000000" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <Style TargetType="{x:Type PasswordBox}">
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
@@ -2149,7 +2150,7 @@
         </Setter>
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="BorderThickness" Value="1" />
@@ -2237,7 +2238,7 @@
         </Setter>
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="BorderThickness" Value="1" />
@@ -2491,7 +2492,7 @@
     <Style TargetType="{x:Type TabControl}">
         <Setter Property="Background" Value="#FFFFFFFF" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -2917,7 +2918,7 @@
     <Style TargetType="{x:Type TreeView}">
         <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource OutsideFontColor}" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
@@ -3111,22 +3112,22 @@
     <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{x:Null}">
         <Setter Property="FocusVisualStyle" Value="{DynamicResource NuclearButtonFocusVisual}" />
         <Setter Property="Foreground" Value="#FF042271" />
-						<Setter Property="FontSize" Value="10"/>
-				<Setter Property="MinHeight" Value="18"/>
-				<Setter Property="MinWidth" Value="50"/>
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="MinHeight" Value="18"/>
+        <Setter Property="MinWidth" Value="50"/>
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="3" />
         <Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
     </Style>
 
     <Style x:Key="{x:Static ToolBar.CheckBoxStyleKey}" TargetType="{x:Type CheckBox}">
-			<Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
         <Setter Property="Foreground" Value="{StaticResource OutsideFontColor}" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="Padding" Value="4,1,0,0" />
@@ -3134,11 +3135,11 @@
     </Style>
 
     <Style x:Key="{x:Static ToolBar.RadioButtonStyleKey}" TargetType="{x:Type RadioButton}">
-			<Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
         <Setter Property="Foreground" Value="{StaticResource OutsideFontColor}" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
@@ -3147,19 +3148,19 @@
     </Style>
 
     <Style x:Key="{x:Static ToolBar.ComboBoxStyleKey}" TargetType="{x:Type ComboBox}">
-			<Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="6,2,25,2" />
-        
-<Setter Property="Template" Value="{DynamicResource ComboBoxTemplate}" />
+
+        <Setter Property="Template" Value="{DynamicResource ComboBoxTemplate}" />
     </Style>
 
     <Style x:Key="{x:Static ToolBar.TextBoxStyleKey}" TargetType="{x:Type TextBox}">
-			<Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="AllowDrop" Value="true" />
@@ -3170,7 +3171,7 @@
         </Setter>
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="BorderThickness" Value="1" />
@@ -3431,7 +3432,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource NuclearButtonFocusVisual}" />
         <Setter Property="Foreground" Value="#FF042271" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Template">
             <Setter.Value>
@@ -3530,7 +3531,7 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="BorderBrush" Value="#FFB1703C" />
         <Setter Property="BorderThickness" Value="1" />
@@ -3669,7 +3670,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="2,0,2,0" />
         <Setter Property="Foreground" Value="#FF042271" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="3" />
         <Setter Property="Template">
@@ -3862,7 +3863,7 @@
 
     <Style TargetType="ToolTip">
         <Setter Property="Background" Value="#33000000" />
-        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
+        <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Padding" Value="3,0,3,0" />
