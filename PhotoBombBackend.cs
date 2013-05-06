@@ -1277,6 +1277,14 @@ namespace SoftwareEng
                     continue;
                 }
 
+                if (!util_isImageUniqueToAlbum(albumUID, ByteArrayToString(imageData.hash)))
+                {
+                    errorReport.reportStatus = ReportStatus.SUCCESS_WITH_WARNINGS;
+                    errorReport.description = "Picture is not unique.";
+                    errorReport.warnings.Add("Picture is not unique: " + imageData.fullPath);
+                    continue;
+                }
+
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
                 imageData.refCount = util_getPhotoRefCount(ByteArrayToString(imageData.hash));
                 imageData.refCount++;
