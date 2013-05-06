@@ -13,9 +13,6 @@ using System.Collections.ObjectModel;
 
 namespace SoftwareEng
 {
-    // Sopurce Code from codeplex at 
-    // http://virtualwrappanel.codeplex.com/SourceControl/changeset/view/b63959517843#VirtualizingWrapPanel.cs
-
     public class VirtualizingWrapPanel : VirtualizingPanel, IScrollInfo
     {
 
@@ -27,7 +24,7 @@ namespace SoftwareEng
         private Point _offset = new Point(0, 0);
         private Size _extent = new Size(0, 0);
         private Size _viewport = new Size(0, 0);
-        private int firstIndex = 0;
+        private int firstIndex=0;
         private Size childSize;
         private Size _pixelMeasuredViewport = new Size(0, 0);
         Dictionary<UIElement, Rect> _realizedChildLayout = new Dictionary<UIElement, Rect>();
@@ -90,13 +87,13 @@ namespace SoftwareEng
 
         #region Methods
 
-        private void SetFirstRowViewItemIndex(int index)
+        public void SetFirstRowViewItemIndex(int index)
         {
             SetVerticalOffset((index) / Math.Floor((_viewport.Width) / childSize.Width));
             SetHorizontalOffset((index) / Math.Floor((_viewport.Height) / childSize.Height));
         }
 
-        public void Resizing(object sender, EventArgs e)
+        private void Resizing(object sender, EventArgs e)
         {
             if (_viewport.Width != 0)
             {
@@ -104,18 +101,14 @@ namespace SoftwareEng
                 _abstractPanel = null;
                 MeasureOverride(_viewport);
                 SetFirstRowViewItemIndex(firstIndex);
-                firstIndex = firstIndexCache;
+                firstIndex = firstIndexCache;               
             }
         }
 
         public int GetFirstVisibleSection()
         {
             int section;
-            var maxSection = 0;
-            if (_abstractPanel != null)
-            {
-                maxSection = _abstractPanel.Max(x => x.Section);
-            }
+            var maxSection = _abstractPanel.Max(x => x.Section);
             if (Orientation == Orientation.Horizontal)
             {
                 section = (int)_offset.Y;
@@ -132,17 +125,13 @@ namespace SoftwareEng
         public int GetFirstVisibleIndex()
         {
             int section = GetFirstVisibleSection();
-
-            if (_abstractPanel != null)
-            {
-                var item = _abstractPanel.Where(x => x.Section == section).FirstOrDefault();
-                if (item != null)
-                    return item._index;
-            }
+            var item = _abstractPanel.Where(x => x.Section == section).FirstOrDefault();
+            if (item != null)
+                return item._index;
             return 0;
         }
 
-        public void CleanUpItems(int minDesiredGenerated, int maxDesiredGenerated)
+        private void CleanUpItems(int minDesiredGenerated, int maxDesiredGenerated)
         {
             for (int i = _children.Count - 1; i >= 0; i--)
             {
@@ -150,8 +139,16 @@ namespace SoftwareEng
                 int itemIndex = _generator.IndexFromGeneratorPosition(childGeneratorPos);
                 if (itemIndex < minDesiredGenerated || itemIndex > maxDesiredGenerated)
                 {
-                    _generator.Remove(childGeneratorPos, 1);
-                    RemoveInternalChildRange(i, 1);
+                    try
+                    {
+                        _generator.Remove(childGeneratorPos, 1);
+                        RemoveInternalChildRange(i, 1);
+                    }
+                    catch (Exception e)
+                    {
+                        continue;
+                    }
+
                 }
             }
         }
@@ -435,11 +432,11 @@ namespace SoftwareEng
 
         protected override void OnInitialized(EventArgs e)
         {
+            this.SizeChanged += new SizeChangedEventHandler(this.Resizing);
             base.OnInitialized(e);
             _itemsControl = ItemsControl.GetItemsOwner(this);
             _children = InternalChildren;
             _generator = ItemContainerGenerator;
-            this.SizeChanged += new SizeChangedEventHandler(this.Resizing);
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -494,7 +491,7 @@ namespace SoftwareEng
                     else
                     {
                         // The child has already been created, let's be sure it's in the right spot
-                        Debug.Assert(child == _children[childIndex], "Wrong child was generated");
+                        //Debug.Assert(child == _children[childIndex], "Wrong child was generated");
                     }
                     childSize = child.DesiredSize;
                     Rect childRect = new Rect(new Point(currentX, currentY), childSize);

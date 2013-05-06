@@ -1062,7 +1062,7 @@
                         <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1" Background="{DynamicResource ControlBackgroundBrush}">
                             <ScrollViewer Margin="1" Focusable="false" Foreground="{TemplateBinding Foreground}">
 
-                                <SoftwareEngControls:VirtualizingWrapPanel IsItemsHost="true" />
+                                <WrapPanel IsItemsHost="true" />
 
                             </ScrollViewer>
                         </Border>

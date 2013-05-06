@@ -1206,7 +1206,7 @@
                             <Border BorderThickness="{TemplateBinding BorderThickness}" Background="#FFFFFFFF" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2">
                                 <ScrollViewer Margin="1"   Focusable="false" Background="{TemplateBinding Background}">
 
-                                <SoftwareEngControls:VirtualizingWrapPanel IsItemsHost="true"/>
+                                <WrapPanel IsItemsHost="true"/>
 
                                 </ScrollViewer>
                             </Border>

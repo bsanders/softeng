@@ -762,7 +762,7 @@
                     <Grid>
                         <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2" Background="{DynamicResource ControlBackgroundBrush}" />
                         <ScrollViewer Margin="1" Style="{DynamicResource NuclearScrollViewer}" Focusable="false" Background="{x:Null}">
-                            <SoftwareEngControls:VirtualizingWrapPanel IsItemsHost="true" />
+                            <WrapPanel IsItemsHost="true" />
                         </ScrollViewer>
                     </Grid>
                     <ControlTemplate.Triggers>
