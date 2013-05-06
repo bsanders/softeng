@@ -217,12 +217,26 @@ namespace SoftwareEng
 
 
 
-        public bool setAlbumName(XElement albumNode, String newAlbumName)
+        public bool setAlbumNodeName(XElement albumNode, String newAlbumName)
         {
             try
             {
                 albumNode.Element("albumName").Value = newAlbumName;
                 return true;             
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        private bool setAlbumImageNodeName(XElement imageNode, String newImageName)
+        {
+            try
+            {
+                imageNode.Element("name").Value = newImageName;
+                return true;
             }
             catch
             {
