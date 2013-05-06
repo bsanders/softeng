@@ -37,7 +37,7 @@ namespace SoftwareEng
     /// </summary>
     /// <param name="error">Error reports from the back end.</param>
     /// <param name="UIDofAlbum">UID of the album the pictures are being added too.</param>
-    public delegate void addNewPictures_callback(ErrorReport error, Guid UIDofAlbum);
+    public delegate void addNewPictures_callback(ErrorReport error, Guid albumUID);
 
     //callback used with the getAllUserAlbumNames method.
     public delegate void getAllAlbumNames_callback(ErrorReport error, ReadOnlyObservableCollection<SimpleAlbumData> _albums);
