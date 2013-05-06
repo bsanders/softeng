@@ -748,17 +748,24 @@ namespace SoftwareEng
         }//method
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="imageUserPath"></param>
+        /// <param name="imageExtension"></param>
+        /// <param name="albumUID"></param>
+        /// <returns></returns>
         public ErrorReport addNewImage(String imageUserPath, String imageExtension, Guid albumUID)
         {
             ErrorReport errReport = new ErrorReport();
-            ComplexPhotoData imageData = addNewImage_backend(errReport, imageUserPath, imageExtension, albumUID);
+            addNewImage_backend(errReport, imageUserPath, imageExtension, albumUID);
 
             saveImagesXML_backend();
             saveAlbumsXML_backend();
 
-        
-
-            _imagesCollection.Add(imageData);
+            // This is not real!!
+            ReadOnlyObservableCollection<ComplexPhotoData> imagesOfAnAlbum = null;
+            getAllImagesInAlbum_backend(albumUID, out imagesOfAnAlbum);
 
             return errReport;
         }
