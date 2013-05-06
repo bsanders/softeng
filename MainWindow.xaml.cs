@@ -747,7 +747,9 @@ namespace SoftwareEng
                     mainWindowAlbumList.Focus();
                 }
 
-                imageSortingButtonPlaceholder.Visibility = Visibility.Visible;
+                imageSortingButton.Visibility = Visibility.Visible;
+
+                ItemAddOrEditDialogBar.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -785,8 +787,9 @@ namespace SoftwareEng
             deleteMenuItemPhotoButton.Visibility = Visibility.Collapsed;
              */
             //hise the sorting button
-            imageSortingButtonPlaceholder.Visibility = Visibility.Collapsed;
+            imageSortingButton.Visibility = Visibility.Collapsed;
 
+            ItemAddOrEditDialogBar.Visibility = Visibility.Collapsed;
 
             //close any open viewImage windows
             if (_view != null)
@@ -1301,8 +1304,15 @@ namespace SoftwareEng
 
             if (_currentAlbumUID != Guid.Empty)
             {
-                photoNameTextBox.Visibility = Visibility.Visible;
+                // Hide the album stuff, if its displayed.
+                NameTextBlock.Visibility = Visibility.Collapsed;
+                nameTextBox.Visibility = Visibility.Collapsed;
+                nameTextBox.Text = string.Empty;
+
+                // Now show the photo stuff.
                 photoNameTextBlock.Visibility = Visibility.Visible;
+                photoNameTextBox.Visibility = Visibility.Visible;
+                photoNameTextBox.Text = string.Empty;
                 commentTextBlock.Visibility = Visibility.Visible;
                 commentTextBox.Visibility = Visibility.Visible;
                 commentTextBox.Text = ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).caption;
@@ -1310,6 +1320,16 @@ namespace SoftwareEng
             }
             else
             {
+                // Hide the photo details, if displayed
+                photoNameTextBlock.Visibility = Visibility.Collapsed;
+                photoNameTextBox.Visibility = Visibility.Collapsed;
+                photoNameTextBox.Text = string.Empty;
+                commentTextBlock.Visibility = Visibility.Collapsed;
+                commentTextBox.Visibility = Visibility.Collapsed;
+                commentTextBox.Text = string.Empty;
+
+
+                // Now show the album stuff.
                 NameTextBlock.Visibility = Visibility.Visible;
                 nameTextBox.Visibility = Visibility.Visible;
                 Keyboard.Focus(nameTextBox);
