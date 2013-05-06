@@ -969,7 +969,19 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                _bombaDeFotos.removeImageFromAlbum(new generic_callback(guiDeleteSelectedPhoto_Callback), ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, _currentAlbumUID);
+                // Grab the photo obj from the selected gui item.
+                ComplexPhotoData photo = (ComplexPhotoData)mainWindowAlbumList.SelectedItem;
+                
+                // If this is a photo currently in the clipboard, remove it from the clipboard
+                // This predicate compares the hash of the photo to the ones in the list
+                // Since the clipboard is immutable,
+                // we know that there can only be a single photo instance in the clipboard at anytime
+                _clipboardOfPhotos.RemoveAll(p => p.hash == photo.hash);
+
+                _bombaDeFotos.removeImageFromAlbum(
+                    new generic_callback(guiDeleteSelectedPhoto_Callback),
+                    photo.idInAlbum,
+                    _currentAlbumUID);
             }
         }
 
