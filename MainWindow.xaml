@@ -515,7 +515,7 @@
                 <Popup x:Name="libraryContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60" >
                     <SoftwareEngControls:customRadialPanel x:Name="libraryRadialPanelElement" Angle="270" BackgroundOpacity="1" BorderColor="GhostWhite" BackgroundColor="#99DDDDDD" InnerRadius="35" OuterRadius="60" StartAngle="30" ShowBorder="True">
                         <Button x:Name="addMenuItemLibraryButton" Click="addMenuItemLibraryButton_Click" ToolTip="Add Photos">
-                            <Image x:Name="addButtonLibraryImage" Width="25" Height="25" Source="ImagesResources2012/action_add.png" Stretch="Fill"/>
+                            <Image x:Name="addButtonLibraryImage" Width="25" Height="25" Source="ImagesResources2012/action_add_image.png" Stretch="Fill"/>
                         </Button>
                         <!-- this is actually paste? -->
                         <Button x:Name="pasteMenuItemLibraryButton"  Click="copyMenuItemLibraryButton_Click" ToolTip="Paste Photos">
@@ -541,7 +541,7 @@
                 <Popup x:Name="AlbumContextMenu" Placement="MousePoint" AllowsTransparency="True" PopupAnimation="Fade" VerticalOffset="-60" HorizontalOffset="-60">
                     <SoftwareEngControls:customRadialPanel x:Name="menuRadialPanelElement" InnerRadius="30" OuterRadius="60" BackgroundColor="#99DDDDDD" StartAngle="30" Angle="270" BorderColor="GhostWhite" BackgroundOpacity="1" ShowPieLines="False" ShowBorder="True">
                         <Button x:Name="addMenuItemAlbumButton" Width="25" Height="25" Click="addMenuItemAlbumButton_Click" ToolTip="Add Photos">
-                            <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add.png" Stretch="Fill"/>
+                            <Image x:Name="addButtonAlbumImage" Source="ImagesResources2012/action_add_album.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="copyMenuItemAlbumButton" Width="25" Height="25" Click="copyMenuItemAlbumButton_Click" ToolTip="Copy Photos">
                             <Image x:Name="copyButtonAlbumImage" Source="ImagesResources2012/action_copy.png" Stretch="Fill"/>
@@ -577,10 +577,10 @@
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="48" Margin="0" Stroke="#00000000" VerticalAlignment="Bottom" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}" HorizontalAlignment="Center"/>
                 <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{DynamicResource PhotoBomberDockBrush}" SizeChanged="dockSizeChanged_EventHandler">
                     <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" ToolTip="Create An Album">
-                        <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add.png" Width="32" Height="32"/>
+                        <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_album.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="addPhotosDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Visibility="Collapsed" Click="addPhotosDockButton_Click" ToolTip="Add Photos">
-                        <Image x:Name="addPhotosDockButtonImage" Source="ImagesResources2012/action_add.png" Width="32" Height="32"/>
+                        <Image x:Name="addPhotosDockButtonImage" Source="ImagesResources2012/action_add_image.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="libraryDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Visibility="Collapsed" Width="48" Height="48" Click="libraryDockButton_Click" ToolTip="Go To My Albums">
                         <Image x:Name="libraryDockButtonImage" Source="ImagesResources2012/action_go_back.png" Width="32" Height="32"/>
@@ -588,10 +588,10 @@
                     <Button x:Name="cancelPhotoImportDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Visibility="Collapsed" Click="cancelPhotoImportDockButton_Click" ToolTip="Cancel Import">
                         <Image x:Name="cancelPhotoImportDockButtonImage" Source="ImagesResources2012/action_cancel.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="imageSortingButtonPlaceholder" IsHitTestVisible="True" Click="sortingDockMenu_Click" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Visibility="Collapsed">
-                        <MenuItem x:Name="imageSortingMenu" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ToolTip="CLICK ME TO SORT!!!" Padding="0" Width="55" IsHitTestVisible="False">
+                    <Button x:Name="imageSortingButton" IsHitTestVisible="True" Click="sortingDockMenu_Click" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Visibility="Collapsed">
+                        <MenuItem x:Name="imageSortingMenu" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ToolTip="Sort Photos" Padding="0" Width="55" IsHitTestVisible="False">
                             <MenuItem.Icon>
-                                <Image x:Name="cancelPhotoImportDockMenuImage" Source="ImagesResources2012/action_cancel.png" Width="32" Height="32"/>
+                                <Image x:Name="cancelPhotoImportDockMenuImage" Source="ImagesResources2012/action_sort.png" Width="32" Height="32"/>
                             </MenuItem.Icon>
                             <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalContentAlignment="Right" Click="ascendingMenuItem_CheckToggled"/>
                             <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click" IsCheckable="True" IsChecked="True"/>

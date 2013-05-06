@@ -750,7 +750,7 @@ namespace SoftwareEng
                     mainWindowAlbumList.Focus();
                 }
 
-                imageSortingButtonPlaceholder.Visibility = Visibility.Visible;
+                imageSortingButton.Visibility = Visibility.Visible;
             }
         }
 
@@ -788,7 +788,7 @@ namespace SoftwareEng
             deleteMenuItemPhotoButton.Visibility = Visibility.Collapsed;
              */
             //hise the sorting button
-            imageSortingButtonPlaceholder.Visibility = Visibility.Collapsed;
+            imageSortingButton.Visibility = Visibility.Collapsed;
 
 
             //close any open viewImage windows
