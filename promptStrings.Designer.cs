@@ -106,7 +106,7 @@ namespace SoftwareEng {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose name:.
+        ///   Looks up a localized string similar to Album Name:.
         /// </summary>
         public static string newAlbumNameLabel {
             get {
@@ -115,7 +115,7 @@ namespace SoftwareEng {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose caption:.
+        ///   Looks up a localized string similar to Comment:.
         /// </summary>
         public static string newImageCommentLabel {
             get {
@@ -124,7 +124,7 @@ namespace SoftwareEng {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose name:.
+        ///   Looks up a localized string similar to Image Name:.
         /// </summary>
         public static string newImageNameLabel {
             get {

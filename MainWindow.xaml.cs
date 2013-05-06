@@ -1123,7 +1123,7 @@ namespace SoftwareEng
                 if (_listOfPhotos.Count > 0)
                 {
                     // start the slideshow at picture[0]
-                    _view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, slideShowStart);
+                    _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, slideShowStart);
                 }
                 else
                 {
@@ -1135,7 +1135,7 @@ namespace SoftwareEng
             else
             {
                 // start the slideshow at the selected photo.
-                _view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, slideShowStart);
+                _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, slideShowStart);
             }
 
             // finally, show the form, if there's anything to show.
@@ -1349,11 +1349,8 @@ namespace SoftwareEng
 
 
 
-        /*****************************************
-         * start region of thumb bar resize events
-        *****************************************/
-
-
+        //thumbar functions for resizing the window
+        #region thumbarResizefunctions
 
         /**************************************************************************************************************************
          *Created By: Alejandro Sosa
@@ -1583,25 +1580,22 @@ namespace SoftwareEng
                 this.Width = MinWidth + 1;
             }
         }
-        /***************************************
-         * end region of thumb bar resize events
-        ***************************************/
+
+        #endregion
 
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
         private void aboutButtonPressed_eventHandler(object sender, RoutedEventArgs e)
         {
-            //if this window is already open, close it.
-            if (_photoBomberAboutWindow != null)
+            if (PhotoBomberMenu.IsSubmenuOpen == true)
             {
-                _photoBomberAboutWindow.Close();
+                PhotoBomberMenu.IsSubmenuOpen = false;
             }
-
-            //photoBomberAboutWindow = new aboutWindow();
-
-            //photoBomberAboutWindow.Show();
-            PhotoBomberMenu.IsSubmenuOpen = true;
+            else
+            {
+                PhotoBomberMenu.IsSubmenuOpen = true;
+            }
         }
 
         private void aboutMenuItemPressed_eventHandler(object sender, RoutedEventArgs e)
@@ -1958,6 +1952,8 @@ namespace SoftwareEng
         {
             libraryContextMenu.IsOpen = false;
             AlbumContextMenu.IsOpen = false;
+            imageSortingMenu.IsSubmenuOpen = false;
+
         }
 
         /*
@@ -1974,6 +1970,7 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void albumItemFrontGrid_PreviewRightMouseUp(object sender, MouseButtonEventArgs e)
         {
+            closePopups();
             AlbumContextMenu.IsOpen = true;
         }
 
@@ -1991,6 +1988,7 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void ItemBackSideContainer_PreviewRightMouseUp(object sender, MouseButtonEventArgs e)
         {
+            closePopups();
             AlbumContextMenu.IsOpen = true;
         }
 
@@ -2144,9 +2142,11 @@ namespace SoftwareEng
             dateTakenMenuItem.IsChecked = false;
             nameMenuItem.IsChecked = false;
             dateAddedMenuItem.IsChecked = false;
-            equipmentManufacturerMenuItem.IsChecked = false;
+            //equipmentManufacturerMenuItem.IsChecked = false;
             equipmentModelMenuItem.IsChecked = false;
         }
+
+        
 
         private void SortImageList()
         {
@@ -2170,10 +2170,10 @@ namespace SoftwareEng
             {
                 sortByThis = "addedDate";
             }
-            else if (equipmentManufacturerMenuItem.IsChecked == true)
-            {
-                sortByThis = "equipmentManufacturer";
-            }
+            //else if (equipmentManufacturerMenuItem.IsChecked == true)
+            //{
+            //    sortByThis = "equipmentManufacturer";
+            //}
             else if (equipmentModelMenuItem.IsChecked == true)
             {
                 sortByThis = "equipmentModel";
@@ -2197,7 +2197,15 @@ namespace SoftwareEng
 
         private void sortingDockMenu_Click(object sender, RoutedEventArgs e)
         {
-            imageSortingMenu.IsSubmenuOpen = true;
+            if (imageSortingMenu.IsSubmenuOpen == false)
+            {
+                imageSortingMenu.IsSubmenuOpen = true;
+            }
+            else
+            {
+                imageSortingMenu.IsSubmenuOpen = false;
+            }
+
         }
 
         //private void extensionMenuItem_Click(object sender, RoutedEventArgs e)
@@ -2245,16 +2253,16 @@ namespace SoftwareEng
             dateTakenMenuItem.IsChecked = true;
         }
 
-        private void equipmentManufacturerMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (equipmentManufacturerMenuItem.IsChecked == true)
-            {
-                clearSortingCheckBoxes();
+        //private void equipmentManufacturerMenuItem_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (equipmentManufacturerMenuItem.IsChecked == true)
+        //    {
+        //        clearSortingCheckBoxes();
                 
-                SortImageList();
-            }
-            equipmentManufacturerMenuItem.IsChecked = true;
-        }
+        //        SortImageList();
+        //    }
+        //    equipmentManufacturerMenuItem.IsChecked = true;
+        //}
 
         private void equipmentModelMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -2353,6 +2361,18 @@ namespace SoftwareEng
             program.setTheme("/Themes/ExpressionLight.xaml");
         }
 
+        private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
+        {
+            clearThemecheckboxes();
+            whistlerBlueThemeMenuItem.IsChecked = true;
+
+            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
+
+            var program = App.Current as App;
+
+            program.setTheme("/Themes/WhistlerBlue.xaml");
+        }
+
         //private void shinyBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         //{
         //    clearThemecheckboxes();
@@ -2377,17 +2397,7 @@ namespace SoftwareEng
         //    program.setTheme("/Themes/ShinyRed.xaml");
         //}
 
-        private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
-        {
-            clearThemecheckboxes();
-            whistlerBlueThemeMenuItem.IsChecked = true;
 
-            //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
-
-            var program = App.Current as App;
-
-            program.setTheme("/Themes/WhistlerBlue.xaml");
-        }
 
         #endregion
 

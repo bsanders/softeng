@@ -40,6 +40,7 @@ namespace SoftwareEng
     public partial class ViewImage : Window, INotifyPropertyChanged
     {
         private ReadOnlyObservableCollection<ComplexPhotoData> _picturesCollection;
+        private CollectionView _imageCollection;
         private ComplexPhotoData _currentPicture;
         //event for changing a property
         public event PropertyChangedEventHandler PropertyChanged;
@@ -108,6 +109,27 @@ namespace SoftwareEng
             }
         }
 
+
+
+        public ViewImage(CollectionView bindToThisView, int imageUID, Boolean slideShowStart = false)
+        {
+            _imageCollection = bindToThisView;
+            currentPicture = _imageCollection.CurrentItem as ComplexPhotoData;
+            //currentPicture = _picturesCollection.FirstOrDefault(photo => photo.UID == imageUID);
+            InitializeComponent();
+            //set the timer's default values.
+            slideShowTimer.Interval = new TimeSpan(0, 0, 5);
+            slideShowTimer.Tick += new EventHandler(slideShowTimer_Tick);
+
+            this.Height = 500.0;
+            this.Width = 600.0;
+
+            if (slideShowStart)
+            {
+                enterSlideShowState();
+            }
+        }
+
         /*
          * Created By: Ryan Causey
          * Created Date: 4/7/13
@@ -119,18 +141,28 @@ namespace SoftwareEng
         /// </summary>
         private void getNextImage()
         {
-            //get the current index
-            int index = _picturesCollection.IndexOf(currentPicture);
-            //set the current picture to the next one
-            if (!(index < _picturesCollection.Count - 1))
+            _imageCollection.MoveCurrentToNext();
+
+            if (_imageCollection.IsCurrentAfterLast == true)
             {
-                index = 0;
-                currentPicture = _picturesCollection.ElementAt(index);
+                _imageCollection.MoveCurrentToFirst();
             }
-            else
-            {
-                currentPicture = _picturesCollection.ElementAt(++index);
-            }
+            currentPicture = _imageCollection.CurrentItem as ComplexPhotoData;
+
+            ////get the current index
+            //int index = _picturesCollection.IndexOf(currentPicture);
+            ////set the current picture to the next one
+            //if (!(index < _picturesCollection.Count - 1))
+            //{
+            //    index = 0;
+            //    currentPicture = _picturesCollection.ElementAt(index);
+            //}
+            //else
+            //{
+            //    currentPicture = _picturesCollection.ElementAt(++index);
+            //}
+
+            
         }
 
         /*
@@ -144,18 +176,25 @@ namespace SoftwareEng
         /// </summary>
         private void getPreviousImage()
         {
+            _imageCollection.MoveCurrentToPrevious();
+            if (_imageCollection.IsCurrentBeforeFirst == true)
+            {
+                _imageCollection.MoveCurrentToLast();
+            }
+            currentPicture = _imageCollection.CurrentItem as ComplexPhotoData;
             //get the current index
-            int index = _picturesCollection.IndexOf(currentPicture);
-            //set the current picture to the next one
-            if (index == 0)
-            {
-                index = _picturesCollection.Count - 1;
-                currentPicture = _picturesCollection.ElementAt(index);
-            }
-            else
-            {
-                currentPicture = _picturesCollection.ElementAt(--index);
-            }
+            //int index = _picturesCollection.IndexOf(currentPicture);
+            ////set the current picture to the next one
+            //if (index == 0)
+            //{
+            //    index = _picturesCollection.Count - 1;
+            //    currentPicture = _picturesCollection.ElementAt(index);
+            //}
+            //else
+            //{
+            //    currentPicture = _picturesCollection.ElementAt(--index);
+            //}
+            
         }
 
         /**************************************************************************************************************************
@@ -234,6 +273,8 @@ namespace SoftwareEng
             this.exitSlideShowDockButton.Visibility = Visibility.Visible;
             this.WindowState = WindowState.Maximized;
             this.applicationDockBar.Visibility = Visibility.Collapsed;
+            this.emptyDockButton.Visibility = Visibility.Hidden;
+            this.slideShowSpeedStackPanel.Visibility = Visibility.Visible;
             slideShowTimer.Start();
         }
 
@@ -254,6 +295,8 @@ namespace SoftwareEng
             this.exitSlideShowDockButton.Visibility = Visibility.Collapsed;
             this.WindowState = WindowState.Normal;
             this.applicationDockBar.Visibility = Visibility.Visible;
+            this.emptyDockButton.Visibility = Visibility.Collapsed;
+            this.slideShowSpeedStackPanel.Visibility = Visibility.Collapsed;
             slideShowTimer.Stop();
         }
 
@@ -263,10 +306,9 @@ namespace SoftwareEng
             slideShowTimer.Interval = new TimeSpan(0, 0, (int)this.slideshowSpeedSlider.Value);
         }
 
+        //thumbar functions for resizing the window
+        #region thumbarResizefunctions
 
-        /**************************************************************************************************
-         * start region of thumb bar resize events
-        **************************************************************************************************/
         /*
          *Created By: Alejandro Sosa
          *Last Edited By: Ryan Causey
@@ -496,6 +538,10 @@ namespace SoftwareEng
             }
         }
 
+        #endregion
+
+
+
         /*
          * Created By: Ryan Causey
          * Created Date: 4/7/13
@@ -509,6 +555,7 @@ namespace SoftwareEng
         /// <param name="e">Event args</param>
         private void nextDockButton_Click(object sender, RoutedEventArgs e)
         {
+            //setSlideShowSpeed();
             //need to call the next function here.
             getNextImage();
         }
@@ -526,6 +573,7 @@ namespace SoftwareEng
         /// <param name="e">Event args</param>
         private void prevDockButton_Click(object sender, RoutedEventArgs e)
         {
+            //setSlideShowSpeed();
             getPreviousImage();
         }
 
@@ -601,6 +649,11 @@ namespace SoftwareEng
         private void slideshowSpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             setSlideShowSpeed();
+
+            if (slideShowSpeedStackPanel.Visibility == Visibility.Visible)
+            {
+                slideShowTimer.Start();
+            }
         }
 
         /*
@@ -616,5 +669,38 @@ namespace SoftwareEng
                 changedHandler(this, new PropertyChangedEventArgs(name));
             }
         }
+    }
+
+    public class GreyScaleConverter
+    {
+        private BitmapImage _sourceImage;
+        private FormatConvertedBitmap _greyScaleImage;
+
+        public GreyScaleConverter() { }
+
+        public void toGrayScale(String sourcePath)
+        {
+            _sourceImage = new BitmapImage();
+            _sourceImage.BeginInit();
+
+            _sourceImage.UriSource = new Uri(@sourcePath, UriKind.Absolute);
+
+            _sourceImage.EndInit();
+
+
+            _greyScaleImage = new FormatConvertedBitmap();
+
+            _greyScaleImage.BeginInit();
+
+            _greyScaleImage.Source = _sourceImage;
+
+            _greyScaleImage.DestinationFormat = PixelFormats.Gray32Float;
+        
+        }
+
+
+
+
+
     }
 }
