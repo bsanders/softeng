@@ -65,11 +65,11 @@ namespace SoftwareEng
                     String pictureName;
                     if (data.pictureNameInAlbum == null)
                     {
-                        pictureName = "";
+                        pictureName = String.Empty;
                     }
-                    else if (data.pictureNameInAlbum.ElementAt(i) == "")
+                    else if (data.pictureNameInAlbum.ElementAt(i) == String.Empty)
                     {
-                        pictureName = "";
+                        pictureName = String.Empty;
                     }
                     else
                     {

@@ -394,7 +394,7 @@ namespace SoftwareEng
 
             newGray.Save(pathOfnewGray);
 
-            ErrorReport errReport =  _photoBombDatabase.addNewImage(pathOfnewGray, ".jpg", albumUID);
+            ErrorReport errReport = _photoBombDatabase.addNewImage(pathOfnewGray, ".jpg", albumUID);
             try
             {
                 File.Delete(pathOfnewGray);

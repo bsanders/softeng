@@ -282,6 +282,7 @@ namespace SoftwareEng
             this.applicationDockBar.Visibility = Visibility.Collapsed;
             this.emptyDockButton.Visibility = Visibility.Hidden;
             this.slideShowSpeedStackPanel.Visibility = Visibility.Visible;
+            this.greyscaleDockButton.Visibility = Visibility.Collapsed;
             slideShowTimer.Start();
         }
 
@@ -302,6 +303,7 @@ namespace SoftwareEng
             this.exitSlideShowDockButton.Visibility = Visibility.Collapsed;
             this.WindowState = WindowState.Normal;
             this.applicationDockBar.Visibility = Visibility.Visible;
+            this.greyscaleDockButton.Visibility = Visibility.Visible;
             this.emptyDockButton.Visibility = Visibility.Collapsed;
             this.slideShowSpeedStackPanel.Visibility = Visibility.Collapsed;
             slideShowTimer.Stop();

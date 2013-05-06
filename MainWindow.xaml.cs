@@ -392,7 +392,10 @@ namespace SoftwareEng
             }
             // Otherwise the text was good, but still might not be unique.
             //check to see if the photo name is unique in the program
-            _bombaDeFotos.isImageNameUnique(new generic_callback(guiValidatePhotoName_Callback), photoNameTextBox.Text, _currentAlbumUID);
+            _bombaDeFotos.isImageNameUnique(
+                new generic_callback(guiValidatePhotoName_Callback),
+                photoNameTextBox.Text,
+                _currentAlbumUID);
         }
 
         /**************************************************************************************************************************
