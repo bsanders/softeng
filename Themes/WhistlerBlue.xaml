@@ -31,8 +31,8 @@
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="PhotoBomberDialogBrush" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-        <GradientStop Color="#FF979797" Offset="0.871"/>
-        <GradientStop Color="#FF979797" Offset="0.081"/>
+        <GradientStop Color="#FFB2DBED" Offset="0.871"/>
+        <GradientStop Color="#FFB2DBED" Offset="0.081"/>
         <GradientStop Color="#FF1D415C"/>
         <GradientStop Color="#FF1D415C" Offset="1"/>
     </LinearGradientBrush>

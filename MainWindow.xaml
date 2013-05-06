@@ -561,7 +561,7 @@
                     </SoftwareEngControls:customRadialPanel>
                 </Popup>
 
-                <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay, NotifyOnSourceUpdated=True}" Margin="0,25,0,0" SelectionChanged="mainWindowAlbumList_SelectionChanged" MouseDoubleClick="mainWindowAlbumList_MouseDoubleClick" KeyDown="mainWindowAlbumList_KeyDown">
+                <ListBox x:Name="mainWindowAlbumList" ItemTemplate="{StaticResource LibraryListItemFrontTemplate}" BorderThickness="0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="{Binding ActualHeight, ElementName=mainWindowListVirtualWrapper, Mode=OneWay, NotifyOnSourceUpdated=True}" Margin="0,25,0,0" SelectionChanged="mainWindowAlbumList_SelectionChanged" MouseDoubleClick="mainWindowAlbumList_MouseDoubleClick" KeyDown="mainWindowAlbumList_KeyDown" IsSynchronizedWithCurrentItem="True">
                     <!--
                     <ListBox.Background>
                         <SolidColorBrush Color="{DynamicResource PhotobomberListBackgroundColor}"/>
@@ -600,7 +600,9 @@
                             -->
                             <MenuItem x:Name="dateAddedMenuItem" Header="Date Added" IsCheckable="True" Click="dateAddedMenuItem_Click"/>
                             <MenuItem x:Name="dateTakenMenuItem" Header="Date Taken" IsCheckable="True" Click="dateTakenMenuItem_Click"/>
+                            <!--
                             <MenuItem x:Name="equipmentManufacturerMenuItem" Header="Camera Make" IsCheckable="True" Click="equipmentManufacturerMenuItem_Click"/>
+                            -->
                             <MenuItem x:Name="equipmentModelMenuItem" Header="Camera Model" IsCheckable="True" Click="equipmentModelMenuItem_Click"/>
                         </MenuItem>
 
@@ -657,7 +659,7 @@
         <Thumb x:Name="bottomRightThumb" Background="#A81C2327" Cursor="SizeNWSE" HorizontalAlignment="Right" Width="6" DragDelta="bottomRightThumb_DragDeltaHandler" Height="6" VerticalAlignment="Bottom" Opacity="0.3"/>
         <Thumb x:Name="topRightThumb" Background="#A81C2327" HorizontalAlignment="Right" Width="6" VerticalAlignment="Top" Height="6" Cursor="SizeNESW" DragDelta="topRightThumb_DragDeltaHandler" Opacity="0.3"/>
         <Thumb x:Name="bottomLeftThumb" Background="#A81C2327" HorizontalAlignment="Left" Width="6" Cursor="SizeNESW" DragDelta="bottomLeftThumb_DragDeltaHandler" VerticalAlignment="Bottom" Height="6" Opacity="0.3"/>
-        <DockPanel x:Name="ItemAddOrEditDialogBar" LastChildFill="False" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,36,0,0" Visibility="Collapsed" Background="{DynamicResource PhotoBomberDialogBrush}">
+        <DockPanel x:Name="ItemAddOrEditDialogBar" LastChildFill="False" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,36,0,0" Background="{DynamicResource PhotoBomberDialogBrush}" Visibility="Collapsed">
             <StackPanel x:Name="nameBar" Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top" HorizontalAlignment="Right" ToolTip=" ">
                 <TextBlock x:Name="NameTextBlock" Text="Choose Name:" HorizontalAlignment="Left" FontSize="13" FontWeight="Normal" TextOptions.TextFormattingMode="Display" Padding="5,8,5,5" VerticalAlignment="Center" Visibility="Collapsed">
                     <TextBlock.Foreground>

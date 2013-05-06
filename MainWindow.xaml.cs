@@ -1123,7 +1123,7 @@ namespace SoftwareEng
                 if (_listOfPhotos.Count > 0)
                 {
                     // start the slideshow at picture[0]
-                    _view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, slideShowStart);
+                    _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, slideShowStart);
                 }
                 else
                 {
@@ -1135,7 +1135,7 @@ namespace SoftwareEng
             else
             {
                 // start the slideshow at the selected photo.
-                _view = new ViewImage(_listOfPhotos, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, slideShowStart);
+                _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, slideShowStart);
             }
 
             // finally, show the form, if there's anything to show.
@@ -2142,7 +2142,7 @@ namespace SoftwareEng
             dateTakenMenuItem.IsChecked = false;
             nameMenuItem.IsChecked = false;
             dateAddedMenuItem.IsChecked = false;
-            equipmentManufacturerMenuItem.IsChecked = false;
+            //equipmentManufacturerMenuItem.IsChecked = false;
             equipmentModelMenuItem.IsChecked = false;
         }
 
@@ -2170,10 +2170,10 @@ namespace SoftwareEng
             {
                 sortByThis = "addedDate";
             }
-            else if (equipmentManufacturerMenuItem.IsChecked == true)
-            {
-                sortByThis = "equipmentManufacturer";
-            }
+            //else if (equipmentManufacturerMenuItem.IsChecked == true)
+            //{
+            //    sortByThis = "equipmentManufacturer";
+            //}
             else if (equipmentModelMenuItem.IsChecked == true)
             {
                 sortByThis = "equipmentModel";
@@ -2253,16 +2253,16 @@ namespace SoftwareEng
             dateTakenMenuItem.IsChecked = true;
         }
 
-        private void equipmentManufacturerMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (equipmentManufacturerMenuItem.IsChecked == true)
-            {
-                clearSortingCheckBoxes();
+        //private void equipmentManufacturerMenuItem_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (equipmentManufacturerMenuItem.IsChecked == true)
+        //    {
+        //        clearSortingCheckBoxes();
                 
-                SortImageList();
-            }
-            equipmentManufacturerMenuItem.IsChecked = true;
-        }
+        //        SortImageList();
+        //    }
+        //    equipmentManufacturerMenuItem.IsChecked = true;
+        //}
 
         private void equipmentModelMenuItem_Click(object sender, RoutedEventArgs e)
         {
