@@ -1271,6 +1271,12 @@ namespace SoftwareEng
 
             foreach (ComplexPhotoData imageData in imageList)
             {
+                if (!File.Exists(imageData.fullPath))
+                {
+                    // File doesn't exist.
+                    continue;
+                }
+
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
                 imageData.refCount = util_getPhotoRefCount(ByteArrayToString(imageData.hash));
                 imageData.refCount++;
