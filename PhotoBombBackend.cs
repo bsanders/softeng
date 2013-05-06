@@ -748,6 +748,13 @@ namespace SoftwareEng
         }//method
 
 
+        public ErrorReport addNewImage(String imageUserPath, String imageExtension, Guid albumUID)
+        {
+            ErrorReport errReport = new ErrorReport();
+            addNewImage_backend(errReport, imageUserPath, imageExtension, albumUID);
+            return errReport;
+        }
+
 
         /// By: Ryan Moe
         /// Edited Julian Nguyen(5/1/13)
@@ -1430,7 +1437,7 @@ namespace SoftwareEng
         /// <param name="updateAmount"></param>
         public void addNewImages_backend(addNewPictures_callback guiCallback, List<String> photoUserPath, List<String> photoExtension, Guid albumUID, List<String> pictureNameInAlbum, ProgressChangedEventHandler updateCallback, int updateAmount)
         {
-            addPhotosThread = new BackgroundWorker();
+            _addPhotosThread = new BackgroundWorker();
 
             //transfer parameters into a data class to pass
             //into the photo thread.
@@ -1445,12 +1452,12 @@ namespace SoftwareEng
             //data.photoCollection = _photosCollection;
 
             //setup the worker.
-            addPhotosThread.WorkerReportsProgress = true;
-            addPhotosThread.WorkerSupportsCancellation = true;
-            addPhotosThread.DoWork += new DoWorkEventHandler(addPhotosThread_DoWork);
-            addPhotosThread.ProgressChanged += updateCallback;
-            addPhotosThread.RunWorkerCompleted += new RunWorkerCompletedEventHandler(addPhotosThread_RunWorkerCompleted);
-            addPhotosThread.RunWorkerAsync(data);
+            _addPhotosThread.WorkerReportsProgress = true;
+            _addPhotosThread.WorkerSupportsCancellation = true;
+            _addPhotosThread.DoWork += new DoWorkEventHandler(addPhotosThread_DoWork);
+            _addPhotosThread.ProgressChanged += updateCallback;
+            _addPhotosThread.RunWorkerCompleted += new RunWorkerCompletedEventHandler(addPhotosThread_RunWorkerCompleted);
+            _addPhotosThread.RunWorkerAsync(data);
         }
 
 
@@ -1465,7 +1472,7 @@ namespace SoftwareEng
             ErrorReport error = new ErrorReport();
             try
             {
-                addPhotosThread.CancelAsync();
+                _addPhotosThread.CancelAsync();
             }
             catch
             {

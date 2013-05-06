@@ -31,7 +31,7 @@ namespace SoftwareEng
     {
 
         //---------------VARIABLES------------------
-        private BackgroundWorker addPhotosThread;
+        private BackgroundWorker _addPhotosThread;
 
 
 
