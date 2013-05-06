@@ -126,7 +126,7 @@ namespace SoftwareEng
         private const short _defaultAlbumImageListIndex = 0;
 
         //--used to specify the UID of the "add new album" icon
-        private const int addAlbumID = 0;
+        //private const int addAlbumID = 0;
 
         //The regex for validation of album names
         private String _albumValidationRegex = @promptStrings.albumValidationRegex; //must be at least 1 character, max 32 in length
@@ -206,7 +206,8 @@ namespace SoftwareEng
         {
             if (status.reportStatus != ReportStatus.SUCCESS)
             {
-                showErrorMessage(errorStrings.rebuildBackendFailure); //super temporary
+                //showErrorMessage(errorStrings.rebuildBackendFailure); //super temporary
+                _bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
@@ -220,14 +221,10 @@ namespace SoftwareEng
         *********************************************************************************************/
         private void populateAlbumView(bool refreshView)
         {
-
             if (refreshView == true)
             {
                 _bombaDeFotos.getAllAlbums(new getAllAlbumNames_callback(guiAlbumsRetrieved));
             }
-
-
-
         }
 
         /*********************************************************************************************
@@ -750,7 +747,9 @@ namespace SoftwareEng
                     mainWindowAlbumList.Focus();
                 }
 
-                imageSortingButtonPlaceholder.Visibility = Visibility.Visible;
+                imageSortingButton.Visibility = Visibility.Visible;
+
+                ItemAddOrEditDialogBar.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -788,8 +787,9 @@ namespace SoftwareEng
             deleteMenuItemPhotoButton.Visibility = Visibility.Collapsed;
              */
             //hise the sorting button
-            imageSortingButtonPlaceholder.Visibility = Visibility.Collapsed;
+            imageSortingButton.Visibility = Visibility.Collapsed;
 
+            ItemAddOrEditDialogBar.Visibility = Visibility.Collapsed;
 
             //close any open viewImage windows
             if (_view != null)
@@ -1123,7 +1123,7 @@ namespace SoftwareEng
                 if (_listOfPhotos.Count > 0)
                 {
                     // start the slideshow at picture[0]
-                    _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, slideShowStart);
+                    _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.Items[0]).UID, _currentAlbumUID, new greyScaleConverterDelegate(guiConvertToGreyscale), slideShowStart);
                 }
                 else
                 {
@@ -1135,7 +1135,7 @@ namespace SoftwareEng
             else
             {
                 // start the slideshow at the selected photo.
-                _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, slideShowStart);
+                _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, _currentAlbumUID, new greyScaleConverterDelegate(guiConvertToGreyscale), slideShowStart);
             }
 
             // finally, show the form, if there's anything to show.
@@ -1144,6 +1144,17 @@ namespace SoftwareEng
                 _view.Show();
             }
         }
+
+        public void guiConvertToGreyscale(ComplexPhotoData desiredImage, Guid albumGuid)
+        {
+            _bombaDeFotos.addImageAsGrayscale(new generic_callback(guiMainCallback), albumGuid, desiredImage.fullPath);
+        }
+
+        public void guiMainCallback(ErrorReport isUseless)
+        {
+            showErrorMessage("BAAAAAAAAAAAAAAAAAAAALLS!!!!!!!!!!!!!!");
+        }
+
 
         /**************************************************************************************************************************
          * Created By: Ryan Causey
@@ -1293,8 +1304,15 @@ namespace SoftwareEng
 
             if (_currentAlbumUID != Guid.Empty)
             {
-                photoNameTextBox.Visibility = Visibility.Visible;
+                // Hide the album stuff, if its displayed.
+                NameTextBlock.Visibility = Visibility.Collapsed;
+                nameTextBox.Visibility = Visibility.Collapsed;
+                nameTextBox.Text = string.Empty;
+
+                // Now show the photo stuff.
                 photoNameTextBlock.Visibility = Visibility.Visible;
+                photoNameTextBox.Visibility = Visibility.Visible;
+                photoNameTextBox.Text = string.Empty;
                 commentTextBlock.Visibility = Visibility.Visible;
                 commentTextBox.Visibility = Visibility.Visible;
                 commentTextBox.Text = ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).caption;
@@ -1302,6 +1320,16 @@ namespace SoftwareEng
             }
             else
             {
+                // Hide the photo details, if displayed
+                photoNameTextBlock.Visibility = Visibility.Collapsed;
+                photoNameTextBox.Visibility = Visibility.Collapsed;
+                photoNameTextBox.Text = string.Empty;
+                commentTextBlock.Visibility = Visibility.Collapsed;
+                commentTextBox.Visibility = Visibility.Collapsed;
+                commentTextBox.Text = string.Empty;
+
+
+                // Now show the album stuff.
                 NameTextBlock.Visibility = Visibility.Visible;
                 nameTextBox.Visibility = Visibility.Visible;
                 Keyboard.Focus(nameTextBox);

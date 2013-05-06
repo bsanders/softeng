@@ -209,6 +209,12 @@ namespace SoftwareEng
             {
                 addPhotoBackup(errorReport, buildBackupAlbum(errorReport));
             }
+            else
+            {
+                SimpleAlbumData firstAlbum = new SimpleAlbumData();
+                firstAlbum.albumName = "My First Album";
+                addNewAlbum_backend(firstAlbum);
+            }
             return errorReport;
         }
 

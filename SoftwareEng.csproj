@@ -116,6 +116,7 @@
     <Compile Include="FileDataBase.cs" />
     <Compile Include="ImageManipulation.cs" />
     <Compile Include="PhotoBomb_Xml.cs" />
+    <Compile Include="VirtualizingWrapPanel.cs" />
     <Compile Include="zPhotoBomb_HackerHook.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -314,6 +315,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ImagesResources2012\Copy of logoSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\action_add_album.png" />
+    <Resource Include="ImagesResources2012\action_add_image.png" />
+    <Resource Include="ImagesResources2012\action_sort.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
