@@ -21,7 +21,7 @@
             <SolidColorBrush Color="{DynamicResource PhotoBomberAlbumTileColor}"/>
         </Grid.Background>
         <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" Height="27" Background="{DynamicResource PhotoBomberTitleBarBrush}" Grid.ColumnSpan="2">
-            <Button x:Name="exitToolbarButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Width="25" Height="25">
+            <Button x:Name="exitToolbarButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" DockPanel.Dock="Right" Click="exitButtonClick" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Width="25" Height="25" MinWidth="25">
                 <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_close.png"/>
             </Button>
             <Label Content="Error!" Height="27" VerticalAlignment="Top" Padding="5" VerticalContentAlignment="Center" Margin="0" Foreground="#FFE2E2E2" FontWeight="Bold" TextOptions.TextFormattingMode="Display"/>
