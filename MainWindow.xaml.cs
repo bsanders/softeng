@@ -1154,8 +1154,15 @@ namespace SoftwareEng
             // ... or the album view
             else
             {
-                // start the slideshow at the selected photo.
-                _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, _currentAlbumUID, new greyScaleConverterDelegate(guiConvertToGreyscale), slideShowStart);
+                try
+                {
+                    // start the slideshow at the selected photo.
+                    _view = new ViewImage(_ImageListCollectionView, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).UID, _currentAlbumUID, new greyScaleConverterDelegate(guiConvertToGreyscale), slideShowStart);
+                }
+                catch (NullReferenceException)
+                {
+                    return;
+                }
             }
 
             // finally, show the form, if there's anything to show.
