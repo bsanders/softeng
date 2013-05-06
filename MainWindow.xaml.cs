@@ -102,6 +102,7 @@ namespace SoftwareEng
         private ReadOnlyObservableCollection<SimpleAlbumData> _listOfAlbums;
         private ReadOnlyObservableCollection<ComplexPhotoData> _listOfPhotos;
         private List<ComplexPhotoData> _clipboardOfPhotos = new List<ComplexPhotoData>();
+        private Guid _clipboardAlbumSrcID = Guid.Empty;
 
         public ReadOnlyObservableCollection<SimpleAlbumData> listOfAlbums
         {
@@ -561,6 +562,7 @@ namespace SoftwareEng
                 ComplexPhotoData[] clipArray = new ComplexPhotoData[mainWindowAlbumList.SelectedItems.Count];
                 mainWindowAlbumList.SelectedItems.CopyTo(clipArray, 0);
                 _clipboardOfPhotos = clipArray.ToList();
+                _clipboardAlbumSrcID = _currentAlbumUID;
             }
         }
 
@@ -619,6 +621,7 @@ namespace SoftwareEng
 
             // empty the clipbaord.
             _clipboardOfPhotos.Clear();
+            _clipboardAlbumSrcID = Guid.Empty;
         }
 
         /**************************************************************************************************************************
@@ -635,7 +638,16 @@ namespace SoftwareEng
             //make sure an item is selected
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                _bombaDeFotos.removeAlbum(new generic_callback(guiDeleteSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID);
+                SimpleAlbumData albumToDelete = (SimpleAlbumData)mainWindowAlbumList.SelectedItem;
+
+                // If we're deleting the album that has the clipboard images on it, clear the clipboard.
+                if ((_clipboardOfPhotos.Count > 0) && (albumToDelete.UID == _clipboardAlbumSrcID))
+                {
+                    _clipboardOfPhotos.Clear();
+                    _clipboardAlbumSrcID = Guid.Empty;
+                }
+
+                _bombaDeFotos.removeAlbum(new generic_callback(guiDeleteSelectedAlbum_Callback), albumToDelete.UID);
             }
         }
 
@@ -976,7 +988,10 @@ namespace SoftwareEng
                 // This predicate compares the hash of the photo to the ones in the list
                 // Since the clipboard is immutable,
                 // we know that there can only be a single photo instance in the clipboard at anytime
-                _clipboardOfPhotos.RemoveAll(p => p.hash == photo.hash);
+                if (_clipboardOfPhotos.Count > 0)
+                {
+                    _clipboardOfPhotos.RemoveAll(p => p.hash == photo.hash);
+                }
 
                 _bombaDeFotos.removeImageFromAlbum(
                     new generic_callback(guiDeleteSelectedPhoto_Callback),
