@@ -10,7 +10,8 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:SoftwareEngControls="clr-namespace:SoftwareEng">
 
 
 
@@ -1205,7 +1206,7 @@
                             <Border BorderThickness="{TemplateBinding BorderThickness}" Background="#FFFFFFFF" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2">
                                 <ScrollViewer Margin="1"   Focusable="false" Background="{TemplateBinding Background}">
 
-                                    <WrapPanel Margin="2" IsItemsHost="true"/>
+                                <SoftwareEngControls:VirtualizingWrapPanel IsItemsHost="true"/>
 
                                 </ScrollViewer>
                             </Border>

@@ -102,7 +102,7 @@
                     <Button x:Name="nextDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" ToolTip="Next Image" Click="nextDockButton_Click">
                         <Image x:Name="nextDockButtonImage" Source="ImagesResources2012/action_next_large.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="greyscaleDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" ToolTip="Convert to Grayscale">
+                    <Button x:Name="greyscaleDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" ToolTip="Convert to Grayscale" Click="greyscaleDockButton_Click">
                         <Image x:Name="greyscaleDockButtonImage" Source="ImagesResources2012/action_convert_grayscale.png" Width="32" Height="32"/>
                     </Button>
                     <Button x:Name="emptyDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" IsEnabled="False" Visibility="Collapsed"/>

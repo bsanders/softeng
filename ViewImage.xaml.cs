@@ -42,10 +42,13 @@ namespace SoftwareEng
         private ReadOnlyObservableCollection<ComplexPhotoData> _picturesCollection;
         private CollectionView _imageCollection;
         private ComplexPhotoData _currentPicture;
+        private Guid _currentAlbum;
         //event for changing a property
         public event PropertyChangedEventHandler PropertyChanged;
         //timer for slideshow
         DispatcherTimer slideShowTimer = new DispatcherTimer();
+        private greyScaleConverterDelegate MainWindowScaleFunction;
+
 
         //property for data binding
         public ComplexPhotoData currentPicture
@@ -111,10 +114,12 @@ namespace SoftwareEng
 
 
 
-        public ViewImage(CollectionView bindToThisView, int imageUID, Boolean slideShowStart = false)
+        public ViewImage(CollectionView bindToThisView, int imageUID, Guid albumID, greyScaleConverterDelegate greyscaleFunction, Boolean slideShowStart = false)
         {
             _imageCollection = bindToThisView;
             currentPicture = _imageCollection.CurrentItem as ComplexPhotoData;
+            _currentAlbum = albumID;
+            MainWindowScaleFunction = greyscaleFunction;
             //currentPicture = _picturesCollection.FirstOrDefault(photo => photo.UID == imageUID);
             InitializeComponent();
             //set the timer's default values.
@@ -123,6 +128,8 @@ namespace SoftwareEng
 
             this.Height = 500.0;
             this.Width = 600.0;
+
+            MainWindowScaleFunction = greyscaleFunction;
 
             if (slideShowStart)
             {
@@ -668,6 +675,17 @@ namespace SoftwareEng
             {
                 changedHandler(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+        private void greyscaleDockButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        private void convertImageToGreyScale()
+        {
+            ;
         }
     }
 
