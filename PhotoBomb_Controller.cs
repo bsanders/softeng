@@ -383,7 +383,7 @@ namespace SoftwareEng
         /// <param name="albumUID"></param>
         /// <param name="imagePath"></param>
         /// <param name="updateCallback"></param>
-        public void addImageAsGrayscale(addNewPictures_callback guiCallback, Guid albumUID, String imagePath, ProgressChangedEventHandler updateCallback)
+        public void addImageAsGrayscale(addNewPictures_callback guiCallback, Guid albumUID, String imagePath)
         {
 
             Bitmap image = _imageManipulation.LoadImageNoLock(imagePath);
@@ -394,14 +394,13 @@ namespace SoftwareEng
 
             newGray.Save(pathOfnewGray);
 
-            ErrorReport errReport = _photoBombDatabase.addNewImage(pathOfnewGray, ".jpg", albumUID);
+            ErrorReport errReport =  _photoBombDatabase.addNewImage(pathOfnewGray, ".jpg", albumUID);
             try
             {
                 File.Delete(pathOfnewGray);
             } catch { }
 
             guiCallback(errReport, albumUID);
-
         }
 
 
