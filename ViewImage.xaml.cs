@@ -679,7 +679,7 @@ namespace SoftwareEng
 
         private void greyscaleDockButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MainWindowScaleFunction(_currentPicture, _currentAlbum);
         }
 
 
