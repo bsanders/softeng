@@ -604,7 +604,7 @@
                 </ListBox>
 
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="50" Margin="0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" MouseLeave="dockHitBox_MouseLeave"/>
-                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{DynamicResource PhotoBomberDockBrush}" SizeChanged="dockSizeChanged_EventHandler" MouseEnter="DockMouseEnter_Handler">
+                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{DynamicResource PhotoBomberDockBrush}" SizeChanged="dockSizeChanged_EventHandler" MouseEnter="DockMouseEnter_Handler" MouseLeave="DockMouseLeave_Handler">
                     <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" ToolTip="Create An Album">
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_album.png" Width="32" Height="32"/>
                     </Button>

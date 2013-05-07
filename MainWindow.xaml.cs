@@ -93,8 +93,8 @@ namespace SoftwareEng
         Properties.Settings Settings = Properties.Settings.Default;
 
         //ugly hacks needed for proper hit testing for Dock animations
-        private bool wasMouseWithinDockHitTest;
-        private bool wasMouseWithinDock;
+        private bool isMouseInDockHitBox = false;
+        private bool isMouseInDock = false;
 
         //the view image window
         ViewImage _view = new ViewImage();
@@ -171,8 +171,8 @@ namespace SoftwareEng
                 System.IO.Path.Combine(basePath, Settings.PhotoXMLFile),
                 System.IO.Path.Combine(basePath, Settings.PhotoLibraryName));
 
-            wasMouseWithinDockHitTest = false;
-            wasMouseWithinDock = false;
+            isMouseInDockHitBox = false;
+            isMouseInDock = false;
 
             hideAddAlbumBox();
 
@@ -1290,16 +1290,8 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         private void dockHitBox_MouseLeave(object sender, MouseEventArgs e)
         {
-            try
-            {
-                Storyboard dockDisappearAnimation = this.FindResource("DockDisappear") as Storyboard;
-                dockDisappearAnimation.Begin();
-            }
-            catch (Exception)
-            {
-                ;
-            }
-            
+            isMouseInDockHitBox = false;
+            playDockDisappearAnimation();
         }
 
 
@@ -1309,30 +1301,13 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
         {
-            wasMouseWithinDockHitTest = true;
+            isMouseInDockHitBox = true;
 
-            if (wasMouseWithinDock == true)
-            {
-                wasMouseWithinDock = false;
+            if (mainWindowDock.Visibility == System.Windows.Visibility.Visible)
                 return;
-            }
-            try
-            {
-
-                Storyboard dockAppearAnimation = this.FindResource("DockAppear") as Storyboard;
-
-                dockAppearAnimation.Begin();
-            }
-            catch (Exception)
-            {
-                ;
-            }
-
-            wasMouseWithinDock = false;
-
-
+            
+            playDockAppearAnimation();
         }
-
 
         /**************************************************************************************************************************
          * Created By: Alejandro Sosa
@@ -1340,25 +1315,49 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         private void DockMouseEnter_Handler(object sender, MouseEventArgs e)
         {
-            wasMouseWithinDock = true;
+            isMouseInDock = true;
 
+            if (mainWindowDock.Visibility == System.Windows.Visibility.Visible)
+                return;
+            
+            playDockAppearAnimation();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DockMouseLeave_Handler(object sender, MouseEventArgs e)
+        {
+            isMouseInDock = false;
+            playDockDisappearAnimation();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void playDockAppearAnimation()
+        {
             try
             {
-                if (wasMouseWithinDockHitTest == true)
-                {
-                    Storyboard dockDisappearAnimation = this.FindResource("DockDisappear") as Storyboard;
-                    dockDisappearAnimation.Stop();
-                }
                 Storyboard dockAppearAnimation = this.FindResource("DockAppear") as Storyboard;
-
                 dockAppearAnimation.Begin();
             }
-            catch (Exception)
-            {
-                ;
-            }
+            catch (Exception) { }
+        }
 
-            wasMouseWithinDockHitTest = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        private void playDockDisappearAnimation()
+        {
+            try
+            {
+                Storyboard dockDisappearAnimation = this.FindResource("DockDisappear") as Storyboard;
+                dockDisappearAnimation.Begin();
+            }
+            catch (Exception) { }
         }
 
 
@@ -2637,6 +2636,8 @@ namespace SoftwareEng
 
 
         #endregion
+
+
 
 
 
