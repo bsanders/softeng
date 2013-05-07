@@ -581,8 +581,8 @@ namespace SoftwareEng
             //if it is not a valid string
             if (!validateTheString(_captionValidationRegex, commentTextBox.Text))
             {
-                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
-                commentTextBoxAnimation.Begin();
+                //Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                //commentTextBoxAnimation.Begin();
 
                 handleCommentErrorPopup(true, errorStrings.invalidComment);
                 commentTextBox.Focus();
