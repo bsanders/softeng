@@ -158,7 +158,7 @@ namespace SoftwareEng
                 new XAttribute("refCount", newPictureData.refCount),
                 new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.fullPath),
                 new XElement("lgThumbPath", newPictureData.lgThumbPath),
-                new XElement("dateAdded", DateTime.Today.ToString())
+                new XElement("dateAdded", DateTime.Today.ToString("yyyy-MM-dd HH:mm tt"))
                 );
 
             //add to the database (in memory, not on disk).
@@ -632,15 +632,15 @@ namespace SoftwareEng
         /// <returns></returns>
         public DateTime stringToDateTime(String sDate)
         {
-
-            DateTime date = DateTime.MinValue;
-
-            if (!DateTime.TryParse(sDate, out date))
+            try
+            {
+                return DateTime.ParseExact(sDate, "yyyy-MM-dd HH:mm tt", null);
+            }
+            catch
             {
                 return DateTime.MinValue;
             }
 
-            return date;
         }
 
 
