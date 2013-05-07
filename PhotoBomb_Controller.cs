@@ -53,9 +53,21 @@ namespace SoftwareEng
     /// </summary>
     public class PhotoBomb_Controller
     {
-        private PhotoBomb _photoBombDatabase;
-        private ImageManipulation _imageManipulation; 
+        // A handy shortcut to the settings class...
+        static Properties.Settings Settings = Properties.Settings.Default;
 
+        private PhotoBomb _photoBombDatabase;
+        private KeyValuePairDataBase _settingsDatabase;
+        private ImageManipulation _imageManipulation;
+
+
+
+        static readonly private String _basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Settings.OrgName);
+
+        static readonly private String _albumDatabasePath = Path.Combine(_basePath, Settings.AlbumXMLFile);
+        static readonly private String _imageDatabasePath = Path.Combine(_basePath, Settings.PhotoXMLFile);
+        static readonly private String _libraryPath = Path.Combine(_basePath, Settings.PhotoLibraryName);
+        static readonly private String _settingPath = Path.Combine(_basePath, Settings.SettingPath); 
 
         /// By Julian Nguyen
         /// Edited: Julian Ngugen(4/28/13)
@@ -77,18 +89,38 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="guiCallback">The callback to the GUI.</param>
         /// <param name="albumDatabasePathIn">The path to the album XML file.</param>
-        /// <param name="pictureDatabasePathIn">The path to the image XML file.</param>
+        /// <param name="imageDatabasePathIn">The path to the image XML file.</param>
         /// <param name="libraryPath">The path to the folder where all the images are stored.</param>
-        public void init(generic_callback guiCallback, string albumDatabasePathIn, string pictureDatabasePathIn, string libraryPath)
+        public void init(generic_callback guiCallback, string albumDatabasePathIn, string imageDatabasePathIn, string libraryPath)
         {
-            ErrorReport errReport = null; 
-            errReport =  _photoBombDatabase.init_backend( albumDatabasePathIn, pictureDatabasePathIn, libraryPath);
+            ErrorReport errReport = null;
+            errReport = _photoBombDatabase.init_backend(_albumDatabasePath, _imageDatabasePath, _libraryPath);
 
+            loadsettingsDatabase(_settingPath);
 
             guiCallback(errReport);
+
+
         }
 
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pathToKeyValue"></param>
+        private ReportStatus loadsettingsDatabase(String pathToKeyValue)
+        {
+            try
+            {
+                _settingsDatabase = new KeyValuePairDataBase(pathToKeyValue);
+                return ReportStatus.SUCCESS;
+            }
+            catch
+            {
+                _settingsDatabase = new KeyValuePairDataBase();
+                return ReportStatus.CANNNOT_LOAD_SETTINGS;
+            }
+        }
 
         /// By Ryan Moe
         /// Edited: Julian Nguyen(4/28/13)
@@ -439,6 +471,31 @@ namespace SoftwareEng
         {
             return _photoBombDatabase.cancelAddNewImagesThread_backend();
         }
+
+
+        public ReportStatus getCurrentTheme(out String currentTheme)
+        {
+            currentTheme = _settingsDatabase.getValue(Settings.CurrentThemeKey);
+            if (currentTheme == null)
+                return ReportStatus.FAILURE;
+            return ReportStatus.SUCCESS;
+        }
+
+        public ReportStatus setCurrentTheme(String currentTheme)
+        {
+            _settingsDatabase.setKeyValuePair(Settings.CurrentThemeKey, currentTheme);
+
+            try
+            {
+                _settingsDatabase.saveToFile(_settingPath);
+                return ReportStatus.SUCCESS;
+            }
+            catch(Exception) {
+                return ReportStatus.CANNNOT_SAVE_SETTINGS;
+            }
+
+        }
+
 
     } // End of PhotoBomb_Controller.
 

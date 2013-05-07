@@ -211,5 +211,29 @@ namespace SoftwareEng.Properties {
                 return ((string)(this["AppTitleBarText"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("currentTheme")]
+        public string CurrentThemeKey {
+            get {
+                return ((string)(this["CurrentThemeKey"]));
+            }
+            set {
+                this["CurrentThemeKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("setting.xml")]
+        public string SettingPath {
+            get {
+                return ((string)(this["SettingPath"]));
+            }
+            set {
+                this["SettingPath"] = value;
+            }
+        }
     }
 }
