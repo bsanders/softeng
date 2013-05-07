@@ -152,10 +152,6 @@ namespace SoftwareEng
 
         public int UID
         {
-            get
-            {
-                return _UID;
-            }
             set
             {
                 if (value != _UID)
@@ -165,14 +161,11 @@ namespace SoftwareEng
                     OnPropertyChanged("UID");
                 }
             }
+            get { return _UID; }
         }
 
         public int idInAlbum
         {
-            get
-            {
-                return _idInAlbum;
-            }
             set
             {
                 if (value != _idInAlbum)
@@ -182,14 +175,11 @@ namespace SoftwareEng
                     OnPropertyChanged("idInAlbum");
                 }
             }
+            get { return _idInAlbum; }
         }
 
         public byte[] hash
         {
-            get
-            {
-                return _hash;
-            }
             set
             {
                 if (value != _hash)
@@ -199,14 +189,11 @@ namespace SoftwareEng
                     OnPropertyChanged("hash");
                 }
             }
+            get { return _hash; }
         }
 
         public String fullPath
         {
-            get
-            {
-                return _fullPath;
-            }
             set
             {
                 if (value != _fullPath)
@@ -216,18 +203,11 @@ namespace SoftwareEng
                     OnPropertyChanged("fullPath");
                 }
             }
+            get { return _fullPath; }
         }
 
         public String lgThumbPath
         {
-            get
-            {
-                if (!File.Exists(_lgThumbPath))
-                {
-                    _lgThumbPath = regenerateThumbnail(fullPath, Path.GetFileName(fullPath), Settings.lrgThumbSize);
-                }
-                return _lgThumbPath;
-            }
             set
             {
                 if (value != _lgThumbPath)
@@ -237,14 +217,18 @@ namespace SoftwareEng
                     OnPropertyChanged("lgThumbPath");
                 }
             }
+            get
+            {
+                if (!File.Exists(_lgThumbPath))
+                {
+                    _lgThumbPath = regenerateThumbnail(fullPath, Path.GetFileName(fullPath), Settings.lrgThumbSize);
+                }
+                return _lgThumbPath;
+            }
         }
 
         public String extension
         {
-            get
-            {
-                return _extension;
-            }
             set
             {
                 if (value != _extension)
@@ -254,14 +238,11 @@ namespace SoftwareEng
                     OnPropertyChanged("extension");
                 }
             }
+            get { return _extension; }
         }
 
         public string caption
         {
-            get
-            {
-                return _caption;
-            }
             set
             {
                 if (value != _caption)
@@ -271,14 +252,11 @@ namespace SoftwareEng
                     OnPropertyChanged("caption");
                 }
             }
+            get { return _caption; }
         }
 
         public string name
         {
-            get
-            {
-                return _name;
-            }
             set
             {
                 if (value != _name)
@@ -288,14 +266,11 @@ namespace SoftwareEng
                     OnPropertyChanged("name");
                 }
             }
+            get { return _name; }
         }
 
         public int refCount
         {
-            get
-            {
-                return _refCount;
-            }
             set
             {
                 if (value != _refCount)
@@ -303,12 +278,12 @@ namespace SoftwareEng
                     _refCount = value;
                 }
             }
+            get { return _refCount; }
         }
 
 
         public DateTime takenDate
         {
-            get { return _takenDate; }
             set
             {
                 if (!_takenDate.Equals(value))
@@ -317,11 +292,11 @@ namespace SoftwareEng
                     OnPropertyChanged("takenDate");
                 }
             }
+            get { return _takenDate; }
         }
 
         public String equipmentManufacturer
         {
-            get { return _equipmentManufacturer; }
             set
             {
                 if (!_equipmentManufacturer.Equals(value))
@@ -330,11 +305,11 @@ namespace SoftwareEng
                     OnPropertyChanged("equipmentManufacturer");
                 }
             }
+            get { return _equipmentManufacturer; }
         }
 
         public String equipmentModel
         {
-            get { return _equipmentModel; }
             set
             {
                 if (_equipmentModel.Equals(value))
@@ -343,12 +318,12 @@ namespace SoftwareEng
                     OnPropertyChanged("equipmentModel");
                 }
             }
+            get { return _equipmentModel; }
         }
 
 
         public DateTime addedDate
         {
-            get { return _addedDate; }
             set
             {
                 if (_addedDate.Equals(value))
@@ -357,11 +332,8 @@ namespace SoftwareEng
                     OnPropertyChanged("addedDate");
                 }
             }
+            get { return _addedDate; }
         }
-            
-
-
-        // Add a toXML function here?
 
     } // End of ComplexPhotoData. 
 }

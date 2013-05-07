@@ -118,7 +118,6 @@
     <Compile Include="KeyValuePairDataBase.cs" />
     <Compile Include="PhotoBomb_Xml.cs" />
     <Compile Include="VirtualizingWrapPanel.cs" />
-    <Compile Include="zPhotoBomb_HackerHook.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -151,10 +150,6 @@
     <Compile Include="ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XmlData.cs" />
-    <Compile Include="XmlDataBase.cs" />
-    <Compile Include="XmlDataReadOnly.cs" />
-    <Compile Include="XmlHandler.cs" />
     <Compile Include="XmlLoader.cs" />
     <Compile Include="XmlParser.cs" />
     <Page Include="aboutWindow.xaml">
