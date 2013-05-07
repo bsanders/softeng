@@ -44,6 +44,11 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
+                <TextBlock Text="Date Added:" Height="Auto" HorizontalAlignment="Left" Margin="3,0,0,0" x:Name="DateAddedLine" VerticalAlignment="Top" Grid.Row="1" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Normal" >
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <TextBlock Height="Auto" HorizontalAlignment="Stretch" Margin="3,15,0,0" x:Name="commentLabel" VerticalAlignment="Top" Grid.Row="1" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" FontWeight="Normal">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
@@ -533,6 +538,16 @@
 
 
     </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="dockHitBox">
+            <ResumeStoryboard BeginStoryboardName="DockAppear_BeginStoryboard"/>
+            <BeginStoryboard x:Name="DockAppear_BeginStoryboard" Storyboard="{StaticResource DockAppear}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="mainWindowDock">
+            <ResumeStoryboard BeginStoryboardName="DockDisappear_BeginStoryboard"/>
+            <BeginStoryboard x:Name="DockDisappear_BeginStoryboard" Storyboard="{StaticResource DockDisappear}"/>
+        </EventTrigger>
+    </Window.Triggers>
 
 
     <Grid>
@@ -603,8 +618,8 @@
                     -->
                 </ListBox>
 
-                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="50" Margin="0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" MouseLeave="dockHitBox_MouseLeave"/>
-                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{DynamicResource PhotoBomberDockBrush}" MouseEnter="DockMouseEnter_Handler" MouseLeave="DockMouseLeave_Handler">
+                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="47" Margin="0" Stroke="#00000000" VerticalAlignment="Bottom" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}"/>
+                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{DynamicResource PhotoBomberDockBrush}">
                     <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" ToolTip="Create An Album">
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_album.png" Width="32" Height="32"/>
                     </Button>

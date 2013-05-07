@@ -593,15 +593,15 @@ namespace SoftwareEng
             getPreviousImage();
         }
 
-        private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
-        {
-            mainWindowDock.Height = Double.NaN;
-        }
+        //private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    viewImageWindowDock.Height = Double.NaN;
+        //}
 
-        private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
-        {
-            mainWindowDock.Height = 1;
-        }
+        //private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    viewImageWindowDock.Height = 1;
+        //}
 
         /*
          * Created By: Ryan Causey
