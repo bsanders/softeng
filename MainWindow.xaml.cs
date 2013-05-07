@@ -1317,6 +1317,8 @@ namespace SoftwareEng
         {
             isMouseInDockHitBox = false;
             playDockDisappearAnimation();
+
+
         }
 
 
