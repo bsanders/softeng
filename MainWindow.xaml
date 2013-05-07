@@ -608,7 +608,7 @@
                     <Button x:Name="cancelPhotoImportDockButton"  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Visibility="Collapsed" Click="cancelPhotoImportDockButton_Click" ToolTip="Cancel Import">
                         <Image x:Name="cancelPhotoImportDockButtonImage" Source="ImagesResources2012/action_cancel.png" Width="32" Height="32"/>
                     </Button>
-                    <Button x:Name="imageSortingButton" IsHitTestVisible="True" Click="sortingDockMenu_Click" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Visibility="Collapsed">
+                    <Button x:Name="imageSortingButton" IsHitTestVisible="True" Click="sortingDockMenu_Click" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Visibility="Collapsed" ToolTip="Sort Images">
                         <MenuItem x:Name="imageSortingMenu" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ToolTip="Sort Photos" Padding="0" Width="55" IsHitTestVisible="False">
                             <MenuItem.Icon>
                                 <Image x:Name="cancelPhotoImportDockMenuImage" Source="ImagesResources2012/action_sort.png" Width="32" Height="32"/>
