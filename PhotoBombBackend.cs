@@ -951,8 +951,6 @@ namespace SoftwareEng
                         // Set the thumbnail.
                         util_setAlbumThumbnail(albumNode, _photoBomb_xml.getComplexPhotoDataFromAlbumImageNode(secondPhotoInAlbum, _imagesRootXml));
 
-                        ErrorWindow err = new ErrorWindow("Love");
-                        err.Show();
                     }
                     catch (Exception ex)
                     {

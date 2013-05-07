@@ -305,7 +305,7 @@ namespace SoftwareEng
         {
             // Trim the whitespace of this input, SRS Requires no leading/trailing whitespace
             nameTextBox.Text = nameTextBox.Text.Trim();
-            Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+            Storyboard nameTextBoxErrorAnimation = this.TryFindResource("InvalidNameFlash") as Storyboard;
             try
             {
                 nameTextBoxErrorAnimation.Stop();
@@ -358,7 +358,7 @@ namespace SoftwareEng
         public void guiValidateAlbumName_Callback(ErrorReport error)
         {
             //if the album name was not unique
-            Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+            Storyboard nameTextBoxErrorAnimation = this.TryFindResource("InvalidNameFlash") as Storyboard;
             try
             {
                 nameTextBoxErrorAnimation.Stop();
@@ -406,7 +406,11 @@ namespace SoftwareEng
                 invalidInputPopup.IsOpen = false;
 
                 //stop any error animations
-                nameTextBoxErrorAnimation.Stop();
+                try
+                {
+                    nameTextBoxErrorAnimation.Stop();
+                }
+                catch (Exception) { ;}
             }
         }
 
@@ -581,8 +585,12 @@ namespace SoftwareEng
             //if it is not a valid string
             if (!validateTheString(_captionValidationRegex, commentTextBox.Text))
             {
-                //Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
-                //commentTextBoxAnimation.Begin();
+                try
+                {
+                    Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                    commentTextBoxAnimation.Begin();
+                }
+                catch (Exception) { ;}
 
                 handleCommentErrorPopup(true, errorStrings.invalidComment);
                 commentTextBox.Focus();
@@ -596,8 +604,12 @@ namespace SoftwareEng
                     guiRenameSelectedPhoto(photoNameTextBox.Text);
                 }
                 //clean up the comment box error dialogues and also clear the text boxes
-                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
-                commentTextBoxAnimation.Stop();
+                try
+                {
+                    Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                    commentTextBoxAnimation.Stop();
+                }
+                catch (Exception) { ;}
                 handleCommentErrorPopup(false, "");
                 commentTextBox.Clear();
                 photoNameTextBox.Clear();
@@ -1582,18 +1594,22 @@ namespace SoftwareEng
             Storyboard deletedErrorAnimation;
             try
             {
+                invalidInputPopup.IsOpen = false;
                 deletedErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 deletedErrorAnimation.Stop();
             }
             catch (Exception) { ;}
             try
             {
+                invalidPhotoNamePopup.IsOpen= false;
+                
                 deletedErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
                 deletedErrorAnimation.Stop();
             }
             catch (Exception) { ;}
             try
             {
+                invalidCommentPopup.IsOpen = false;
                 deletedErrorAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
                 deletedErrorAnimation.Stop();
             }
