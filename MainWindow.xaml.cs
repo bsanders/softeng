@@ -92,6 +92,10 @@ namespace SoftwareEng
         // A handy shortcut to the settings class...
         Properties.Settings Settings = Properties.Settings.Default;
 
+        //ugly hacks needed for proper hit testing for Dock animations
+        private bool wasMouseWithinDockHitTest;
+        private bool wasMouseWithinDock;
+
         //the view image window
         ViewImage _view = new ViewImage();
 
@@ -166,6 +170,9 @@ namespace SoftwareEng
                 System.IO.Path.Combine(basePath, Settings.AlbumXMLFile),
                 System.IO.Path.Combine(basePath, Settings.PhotoXMLFile),
                 System.IO.Path.Combine(basePath, Settings.PhotoLibraryName));
+
+            wasMouseWithinDockHitTest = false;
+            wasMouseWithinDock = false;
 
             hideAddAlbumBox();
 
@@ -1278,25 +1285,92 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
+         * Created By: Alejandro Sosa
+         * Created Date:
         **************************************************************************************************************************/
-        private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
+        private void dockHitBox_MouseLeave(object sender, MouseEventArgs e)
         {
-            mainWindowDock.Height = 1;
+            try
+            {
+                Storyboard dockDisappearAnimation = this.FindResource("DockDisappear") as Storyboard;
+                dockDisappearAnimation.Begin();
+            }
+            catch (Exception)
+            {
+                ;
+            }
+            
         }
 
+
         /**************************************************************************************************************************
+         * Created By: Alejandro Sosa
+         * Created Date:
+        **************************************************************************************************************************/
+        private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            wasMouseWithinDockHitTest = true;
+
+            if (wasMouseWithinDock == true)
+            {
+                wasMouseWithinDock = false;
+                return;
+            }
+            try
+            {
+
+                Storyboard dockAppearAnimation = this.FindResource("DockAppear") as Storyboard;
+
+                dockAppearAnimation.Begin();
+            }
+            catch (Exception)
+            {
+                ;
+            }
+
+            wasMouseWithinDock = false;
+
+
+        }
+
+
+        /**************************************************************************************************************************
+         * Created By: Alejandro Sosa
+         * Created Date:
+        **************************************************************************************************************************/
+        private void DockMouseEnter_Handler(object sender, MouseEventArgs e)
+        {
+            wasMouseWithinDock = true;
+
+            try
+            {
+                if (wasMouseWithinDockHitTest == true)
+                {
+                    Storyboard dockDisappearAnimation = this.FindResource("DockDisappear") as Storyboard;
+                    dockDisappearAnimation.Stop();
+                }
+                Storyboard dockAppearAnimation = this.FindResource("DockAppear") as Storyboard;
+
+                dockAppearAnimation.Begin();
+            }
+            catch (Exception)
+            {
+                ;
+            }
+
+            wasMouseWithinDockHitTest = false;
+        }
+
+
+        /**************************************************************************************************************************
+         * Created By: Alejandro Sosa
+         * Created Date:
         **************************************************************************************************************************/
         private void mainWindowContextMenu_LostMouseCapture(object sender, MouseEventArgs e)
         {
             libraryContextMenu.IsOpen = false;
         }
 
-        /**************************************************************************************************************************
-        **************************************************************************************************************************/
-        private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
-        {
-            mainWindowDock.Height = Double.NaN;
-        }
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
@@ -2563,6 +2637,8 @@ namespace SoftwareEng
 
 
         #endregion
+
+
 
     }
 
