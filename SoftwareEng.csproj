@@ -311,6 +311,9 @@
     <Resource Include="ImagesResources2012\action_add_image.png" />
     <Resource Include="ImagesResources2012\action_sort.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\StatusAnnotations_Critical_32xLG.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
     <ItemGroup>
