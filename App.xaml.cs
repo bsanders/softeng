@@ -40,13 +40,15 @@ namespace SoftwareEng
             }
         }
 
-
+        //Created by Alejandro Sosa
         public ResourceDictionary ThemeDictionary
         {
-            // You could probably get it via its name with some query logic as well.
-            get { return Resources.MergedDictionaries[0]; }
+            get 
+            { 
+                return Resources.MergedDictionaries[0]; 
+            }
         }
-
+        //Created by Alejandro Sosa
         public void setTheme(string desiredTheme)
         {
             Uri themeURI = new Uri(desiredTheme, UriKind.Relative);
