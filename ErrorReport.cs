@@ -33,6 +33,8 @@ namespace SoftwareEng
         FAILURE,
 
         CANNNOT_LOAD_XML,
+        CANNNOT_LOAD_SETTINGS,
+        CANNNOT_SAVE_SETTINGS,
         
         INVALID_IMAGE_DIR,
         INVALID_THUMB_DIR,
@@ -41,6 +43,8 @@ namespace SoftwareEng
 
         BAD_ALBUM_UID,
         BAD_IMAGE_UID
+
+
 
 
 

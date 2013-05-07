@@ -50,5 +50,11 @@
     <Setting Name="AppTitleBarText" Type="System.String" Scope="Application">
       <Value Profile="(Default)">PhotoBomber - My Photo Library!</Value>
     </Setting>
+    <Setting Name="CurrentThemeKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">currentTheme</Value>
+    </Setting>
+    <Setting Name="SettingPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">setting.xml</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

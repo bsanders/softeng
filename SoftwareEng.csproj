@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="FileDataBase.cs" />
     <Compile Include="ImageManipulation.cs" />
+    <Compile Include="KeyValuePairDataBase.cs" />
     <Compile Include="PhotoBomb_Xml.cs" />
     <Compile Include="VirtualizingWrapPanel.cs" />
     <Compile Include="zPhotoBomb_HackerHook.cs" />
