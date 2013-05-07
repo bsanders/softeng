@@ -2353,8 +2353,10 @@
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="AllowDrop" Value="False"/>
+            <!--
             <Setter Property="Background" Value="#FFFFFFFF"/>
+            -->
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             <Setter Property="Padding" Value="4"/>

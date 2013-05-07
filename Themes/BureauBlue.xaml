@@ -2046,18 +2046,23 @@
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="AllowDrop" Value="true" />
+        <!--
         <Setter Property="Background" >
+            
             <Setter.Value>
                 <SolidColorBrush Color="{DynamicResource WhiteColor}"/>
             </Setter.Value>
         </Setter>
+        -->
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="FontFamily" Value="Trebuchet MS" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="BorderThickness" Value="1" />
+        <!--
         <Setter Property="BorderBrush" Value="{StaticResource TextControlBorderBrush}" />
+        -->
         <Setter Property="Template" Value="{DynamicResource TextBoxTemplate}" />
     </Style>
 

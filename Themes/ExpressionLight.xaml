@@ -1557,9 +1557,12 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="AllowDrop" Value="true" />
 <Setter Property="Template" Value="{DynamicResource TextBoxTemplate}" />
+        <!--
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
         <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+        
         <Setter Property="BorderBrush" Value="#FF000000"/>
+        -->
     </Style>
     
     <ControlTemplate x:Key="TextBoxTemplate" TargetType="{x:Type TextBox}">

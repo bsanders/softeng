@@ -177,6 +177,8 @@ namespace SoftwareEng
                 mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
                 mainWindowAlbumList.Focus();
             }
+
+            gui_getCurrentTheme();
         }
 
 
@@ -294,13 +296,24 @@ namespace SoftwareEng
         {
             // Trim the whitespace of this input, SRS Requires no leading/trailing whitespace
             nameTextBox.Text = nameTextBox.Text.Trim();
+            Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+            try
+            {
+                nameTextBoxErrorAnimation.Stop();
+                handleNameErrorPopup(false, "");
+            }
+            catch (Exception)
+            {
+                showErrorMessage("We're going to DIIEEEEEE-bleh");
+            }
+
             if (!validateTheString(promptStrings.albumValidationRegex, nameTextBox.Text))
             {
                 // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                //Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
-                //nameTextBoxErrorAnimation.Begin();
+                
+                nameTextBoxErrorAnimation.Begin();
 
                 handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -380,8 +393,8 @@ namespace SoftwareEng
                 // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                //Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
-                //nameTextBoxErrorAnimation.Begin();
+                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
+                nameTextBoxErrorAnimation.Begin();
 
                 handlePhotoNameErrorPopup(true, errorStrings.invalidImageNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -489,8 +502,8 @@ namespace SoftwareEng
             //if it is not a valid string
             if (!validateTheString(_captionValidationRegex, commentTextBox.Text))
             {
-                //Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
-                //commentTextBoxAnimation.Begin();
+                Storyboard commentTextBoxAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                commentTextBoxAnimation.Begin();
 
                 handleCommentErrorPopup(true, errorStrings.invalidComment);
                 commentTextBox.Focus();
@@ -2339,15 +2352,28 @@ namespace SoftwareEng
         #region ThemeRelatedFunctions
 
         //getCurrentPhotoBomberTheme
-        private void getCurrentThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        private void gui_getCurrentTheme()
         {
-            var programInstance = App.Current as App;
+            String currentheme = null;
+            clearThemecheckboxes();
+            var program = App.Current as App;
 
+            try
+            {
+                program.setTheme(currentheme);
+            }
+            catch (Exception)
+            {
+                program.setTheme("/Themes/ExpressionDark.xaml");
+            }
+            
+        }
 
+        private void gui_setTheme(String appliedTheme)
+        {
+            var program = App.Current as App;
 
-            ErrorWindow debugWindow = new ErrorWindow(programInstance.ThemeDictionary.Keys.ToString());
-
-            debugWindow.ShowDialog();
+            program.setTheme(appliedTheme);
         }
 
         private void clearThemecheckboxes()
@@ -2365,62 +2391,58 @@ namespace SoftwareEng
 
         private void bureauBlackThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
+            String currentheme = "/Themes/BureauBlack.xaml";
             clearThemecheckboxes();
             bureauBlackThemeMenuItem.IsChecked = true;
 
             //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative));
 
-            var program = App.Current as App;
 
-            program.setTheme("/Themes/BureauBlack.xaml");
+            gui_setTheme(currentheme);
         }
 
         private void bureauBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
+            String currentheme = "/Themes/BureauBlue.xaml";
             clearThemecheckboxes();
             bureauBlueThemeMenuItem.IsChecked = true;
 
             //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlue.xaml", UriKind.Relative)); 
 
-            var program = App.Current as App;
-
-            program.setTheme("/Themes/BureauBlue.xaml");
+            gui_setTheme(currentheme);
         }
 
         private void expressionDarkThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
+            String currentheme = "/Themes/ExpressionDark.xaml";
             clearThemecheckboxes();
             expressionDarkThemeMenuItem.IsChecked = true;
 
             //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionDark.xaml", UriKind.Relative));  
 
-            var program = App.Current as App;
-
-            program.setTheme("/Themes/ExpressionDark.xaml");
+            gui_setTheme(currentheme);
         }
 
         private void expressionLightThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
+            String currentheme = "/Themes/ExpressionLight.xaml";
             clearThemecheckboxes();
             expressionLightThemeMenuItem.IsChecked = true;
 
             //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ExpressionLight.xaml", UriKind.Relative));  
 
-            var program = App.Current as App;
-
-            program.setTheme("/Themes/ExpressionLight.xaml");
+            gui_setTheme(currentheme);
         }
 
         private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
+            String currentheme = "/Themes/WhistlerBlue.xaml";
             clearThemecheckboxes();
             whistlerBlueThemeMenuItem.IsChecked = true;
 
             //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/WhistlerBlue.xaml", UriKind.Relative)); 
 
-            var program = App.Current as App;
-
-            program.setTheme("/Themes/WhistlerBlue.xaml");
+            gui_setTheme(currentheme);
         }
 
         //private void shinyBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
