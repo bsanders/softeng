@@ -149,7 +149,7 @@
     <comment>used when removePictureFromAlbum returns a failure status</comment>
   </data>
   <data name="failedToPasteImages" xml:space="preserve">
-    <value>PhotoBomber failed to import the Image(s).</value>
+    <value>PhotoBomber failed to copythe Image(s). AHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!!!!!!!!</value>
   </data>
   <data name="getPhotosFailure" xml:space="preserve">
     <value>Failed to retrieve pictures in the album.</value>
@@ -168,7 +168,7 @@
     <comment>used when album name is not unique</comment>
   </data>
   <data name="invalidComment" xml:space="preserve">
-    <value>Comments can only contain letters, numbers, spaces, and must have at least one letter or number.</value>
+    <value>Comments can only contain letters, numbers, spaces, and must be no longer than 140 characters.</value>
     <comment>used when the comment does not validate.</comment>
   </data>
   <data name="invalidImageNameCharacter" xml:space="preserve">
