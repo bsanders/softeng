@@ -1,17 +1,23 @@
-﻿using System;
+﻿/*
+ * Change Log:
+ * Julian Nguyen(5/2/13)
+ * This class was made.
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace SoftwareEng
 {
     /// By Julian Nguyen
     /// Edited: Julian Nguyen(5/2/13)
     /// <summary>
-    /// 
+    /// This call is from image manipulation.
     /// </summary>
     class ImageManipulation
     {
@@ -20,10 +26,10 @@ namespace SoftwareEng
         /// By: http://tech.pro/tutorial/660/csharp-tutorial-convert-a-color-image-to-grayscale
         /// Edited: Julian Nguyen(5/2/13)
         /// <summary>
-        /// 
+        /// This is will grauscale a bitmap.
         /// </summary>
         /// <param name="original"></param>
-        /// <returns></returns>
+        /// <returns>A grauscale bitmap.</returns>
         public Bitmap makeGrayscale(Bitmap original)
         {
             //create a blank bitmap the same size as original
@@ -62,17 +68,40 @@ namespace SoftwareEng
 
 
         /// By: http://stackoverflow.com/questions/3386749/loading-a-file-to-a-bitmap-but-leaving-the-original-file-intact
-        /// 
+        /// Edited: Julian Nguyen(5/6/13)
         /// <summary>
-        /// 
+        /// This will load an image into memory and it will not lock the file.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">The path to the image.</param>
+        /// <returns>The loaded bitmap in memory.</returns>
         public Bitmap LoadImageNoLock(String path)
         {
             var ms = new MemoryStream(File.ReadAllBytes(path)); // Don't use using!!
             return new Bitmap(Image.FromStream(ms));
         }
+
+
+        //we init this once so that if the function is repeatedly called
+        //it isn't stressing the garbage man
+        private static Regex r = new Regex(":");
+
+        /// By: http://stackoverflow.com/questions/180030/how-can-i-find-out-when-a-picture-was-actually-taken-in-c-sharp-running-on-vista
+        /// Edited Julian Nguyen(5/4/13)
+        /// <summary>
+        /// retrieves the datetime WITHOUT loading the whole image
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public PropertyItem[] getImageProperty(string path)
+        {
+            FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+            Image myImage = Bitmap.FromStream(fs, false, false);
+
+            return myImage.PropertyItems;
+
+        }
+
+       
 
 
     } // End of ImageManipulation.

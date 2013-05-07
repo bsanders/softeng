@@ -55,8 +55,7 @@ namespace SoftwareEng
         // Xml parsing utils.
         private PhotoBomb_Xml _photoBomb_xml;
 
-        private FileDataBase _fileDataBase;
-
+        private ImageManipulation _imageManipulation;
        
         //path to the images folder we put all the images.
         //tracked by the database.
@@ -92,9 +91,10 @@ namespace SoftwareEng
         /// </summary>
         public PhotoBomb()
         {
-            _fileDataBase = new FileDataBase();
+ 
 
             _photoBomb_xml = new PhotoBomb_Xml();
+            _imageManipulation = new ImageManipulation();
 
 
             //the list of all albums to return to the gui.
@@ -332,7 +332,7 @@ namespace SoftwareEng
                 String picNameInLibrary = newPicture.UID.ToString() + fi.Extension;
 
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
-                newPicture.refCount = util_getPhotoRefCount(ByteArrayToString(newPicture.hash));
+                newPicture.refCount = _photoBomb_xml.getPhotoRefCount(ByteArrayToString(newPicture.hash), _imagesRootXml);
                 newPicture.refCount++;
                 // if this is a new picture, we add it to the db
                 if (newPicture.refCount == 1)
@@ -500,13 +500,20 @@ namespace SoftwareEng
                 if ((userAlbum.thumbnailPath != string.Empty) && (!File.Exists(userAlbum.thumbnailPath)))
                 {
                     // if the thumbnail doesn't exist... does the image itself?
-                    XElement thumbnailPhoto = getAlbumImageNodeFromAlbumXml(userAlbum.UID, userAlbum.thumbAlbumID);
-                    ComplexPhotoData photoObj = getComplexPhotoDataFromAlbumImageNode(error, thumbnailPhoto);
 
-                    if (!File.Exists(photoObj.fullPath))
+                    XElement thumbnailPhoto = _photoBomb_xml.getAlbumImageNodeFromAlbumXml(userAlbum.UID, userAlbum.thumbAlbumID, _albumsRootXml);
+                    ComplexPhotoData albumImageNodej = _photoBomb_xml.getComplexPhotoDataFromAlbumImageNode(thumbnailPhoto, _imagesRootXml);
+
+                    if (albumImageNodej == null)
+                    {
+                        setErrorReportToFAILURE("Cannot get complexPhotoData", ref error);
+                        return error;
+                    }
+
+                    if (!File.Exists(albumImageNodej.fullPath))
                     {
                         // if the image does not exist, remove all references of it from the whole DB
-                        util_purgePhotoFromDB(error, ByteArrayToString(photoObj.hash));
+                        util_purgePhotoFromDB(error, ByteArrayToString(albumImageNodej.hash));
                     }
 
                     // get the first photo in the album and set it as the thumbnail
@@ -515,7 +522,7 @@ namespace SoftwareEng
                     if (firstAlbumImageNode != null)
                     {
                         // ... and set it to be the thumbnail (generating it, if necessary)
-                        util_setAlbumThumbnail(thisAlbum, getComplexPhotoDataFromAlbumImageNode(error, firstAlbumImageNode));
+                        util_setAlbumThumbnail(thisAlbum, _photoBomb_xml.getComplexPhotoDataFromAlbumImageNode(firstAlbumImageNode, _imagesRootXml));
                     }
                 }
 
@@ -581,7 +588,7 @@ namespace SoftwareEng
                 try
                 {
                     //bills new swanky function here
-                    _imagesClipboard.Add(getComplexPhotoDataFromAlbumImageNode(error, albumImageNode));
+                    _imagesClipboard.Add(_photoBomb_xml.getComplexPhotoDataFromAlbumImageNode(albumImageNode, _imagesRootXml));
                 }
                 catch
                 {
@@ -628,19 +635,19 @@ namespace SoftwareEng
 
             //Now lets get all the picture data from
             //the album and fill out the picture object list.
-            foreach (XElement subElement in albumNode.Element("albumPhotos").Elements("picture"))
+            foreach (XElement albumImageNode in albumNode.Element("albumPhotos").Elements("picture"))
             {
                 try
                 {
                     //bills new swanky function here
-                    ComplexPhotoData imageData = getComplexPhotoDataFromAlbumImageNode(error, subElement);
+                    ComplexPhotoData imageData = _photoBomb_xml.getComplexPhotoDataFromAlbumImageNode(albumImageNode, _imagesRootXml);
 
-
+         
                     try
                     {
                         System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
 
-                        PropertyItem[] pList = _fileDataBase.getImageProperty(imageData.fullPath);
+                        PropertyItem[] pList = _imageManipulation.getImageProperty(imageData.fullPath);
 
 
                         int countToBreak = 2;
@@ -729,7 +736,7 @@ namespace SoftwareEng
                 // TODO: fun!
 
                 imageData = new ComplexPhotoData();
-                imageData.hash = StringToByteArray((string)imageNode.Attribute("sha1"));
+                imageData.hash = stringToByteArray((string)imageNode.Attribute("sha1"));
                 imageData.UID = (int)imageNode.Attribute("uid");
                 imageData.refCount = (int)imageNode.Attribute("refCount");
                 imageData.fullPath = (string)imageNode.Element("filePath").Value;
@@ -801,7 +808,7 @@ namespace SoftwareEng
             }
 
             // Get the refcount (will get zero if the pic is brand new) and increment it.
-            imageData.refCount = util_getPhotoRefCount(ByteArrayToString(imageData.hash));
+            imageData.refCount = _photoBomb_xml.getPhotoRefCount(ByteArrayToString(imageData.hash), _imagesRootXml);
             imageData.refCount++;
 
 
@@ -823,7 +830,7 @@ namespace SoftwareEng
                 //Change me if you want to start naming the pictures differently in the library.
                 String picNameInLibrary = imageData.UID.ToString() + photoExtension;
 
-                imageData.fullPath = util_copyPhotoToLibrary(errorReport, photoUserPath, picNameInLibrary);
+                imageData.fullPath = util_copyImageToLibrary(errorReport, photoUserPath, picNameInLibrary);
                 //error checking
                 if (errorReport.reportStatus == ReportStatus.FAILURE)
                 {
@@ -850,7 +857,7 @@ namespace SoftwareEng
                 if (!File.Exists(imageNode.Element("filePath").Value))
                 {
                     // good thing we checked!  Copy it to the filesystem again.
-                    imageData.fullPath = util_copyPhotoToLibrary(
+                    imageData.fullPath = util_copyImageToLibrary(
                         errorReport,
                         imageNode.Element("filePath").Value,
                         imageData.UID.ToString() + photoExtension);
@@ -939,12 +946,13 @@ namespace SoftwareEng
                         // Get the second element (soon to be first) and set it to be the thumbnail
                         secondPhotoInAlbum = albumNode.Descendants("picture").ElementAt(1); // (0-indexed)
                         // Set the thumbnail.
-                        util_setAlbumThumbnail(albumNode, getComplexPhotoDataFromAlbumImageNode(errorReport, secondPhotoInAlbum));
+                        util_setAlbumThumbnail(albumNode, _photoBomb_xml.getComplexPhotoDataFromAlbumImageNode(secondPhotoInAlbum, _imagesRootXml));
                     }
                     catch (Exception ex)
                     {
                         if (ex is ArgumentNullException ||
-                            ex is ArgumentOutOfRangeException)
+                            ex is ArgumentOutOfRangeException ||
+                        ex is NullReferenceException)
                         {
                             // Don't stop removing this photo though...
                             setErrorReportToFAILURE("Failed to get second photo in the album, though count() returned >1.", ref errorReport);
@@ -1178,9 +1186,10 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             // get the photo node that we are working on.
-            XElement albumImageNode = getAlbumImageNodeFromAlbumXml(albumUID, idInAlbum);
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
+            XElement albumImageNode = _photoBomb_xml.getAlbumImageNodeFromAlbumXml(albumUID, idInAlbum, _albumsRootXml);
+            if (albumImageNode == null)
             {
+                setErrorReportToFAILURE("Failed to get AlbumImageNode", ref errorReport);
                 return errorReport;
             }
 
@@ -1216,14 +1225,15 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             // get the photo node that we are working on.
-            XElement photoElem = getAlbumImageNodeFromAlbumXml(albumUID, idInAlbum);
-            if (errorReport.reportStatus == ReportStatus.FAILURE)
+            XElement albumImageNode = _photoBomb_xml.getAlbumImageNodeFromAlbumXml(albumUID, idInAlbum, _albumsRootXml);
+            if (albumImageNode == null)
             {
+                setErrorReportToFAILURE("Failed to get albumImageNode", ref errorReport);
                 return errorReport;
             }
 
             // change the photo's caption.
-            util_setPhotoCaption(errorReport, photoElem, newCaption);
+            util_setPhotoCaption(errorReport, albumImageNode, newCaption);
             if (errorReport.reportStatus == ReportStatus.FAILURE)
             {
                 // TODO:
@@ -1306,7 +1316,7 @@ namespace SoftwareEng
                 }
 
                 // Get the refcount (will get zero if the pic is brand new) and increment it.
-                imageData.refCount = util_getPhotoRefCount(ByteArrayToString(imageData.hash));
+                imageData.refCount =  _photoBomb_xml.getPhotoRefCount(ByteArrayToString(imageData.hash), _imagesRootXml);
                 imageData.refCount++;
 
                 // Otherwise, incremented the refcount, change the xml object in memory and it'll be saved shortly'
@@ -1359,11 +1369,9 @@ namespace SoftwareEng
             ErrorReport errorReport = new ErrorReport();
 
             //Test for uniqueness.
-            Boolean nameUnique = util_isAlbumNameUnique(albumName);
+            isUnique = _photoBomb_xml.isAlbumNameUnique(albumName, _albumsRootXml);
             
-            isUnique = nameUnique;
-
-            if (!nameUnique)
+            if (!isUnique)
             {
                 setErrorReportToFAILURE("Album name is not unique.", ref errorReport);
             }

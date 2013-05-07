@@ -109,6 +109,7 @@ namespace SoftwareEng
         /// <param name="albumUID">The unique ID of the album</param>
         /// <param name="inAlbumID">The ID number of the image in that album</param>
         /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
+        [Obsolete]
         private XElement getAlbumImageNodeFromAlbumXml(Guid albumUID, int inAlbumID)
         {
             // first get the album by albumID
@@ -122,76 +123,7 @@ namespace SoftwareEng
                 return null;
             }
         }
-
-
-        //--------------------------------------------------------
-        // By: Bill Sanders
-        // Edited Last: 3/28/13
-        // 
-        // TODO: Examine possible speed up by using a byte-array instead of string comparison in LINQ?
-        // TODO2: Add errorreport
-        /// <summary>
-        /// Retrieves a specific photo instance from a combination of the AlbumID and its hash
-        /// </summary>
-        /// <param name="albumID">The unique ID of the album</param>
-        /// <param name="hash">A hex string representation of the hash of the photo</param>
-        /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
-        private XElement util_getAlbumDBPhotoNode(Guid albumID, string hash)
-        {
-            XElement photoInstance = null;
-            try
-            {
-                // Try to find a photo hash in this album by hash.
-                // Note: this may be working inefficiently.
-                // Join every picture element from both databases, where the pictures have the same sha1
-                // Of those, we only care about the ones where the picture has the sha1 we're looking for
-                // finally, of those, we only care about the cases where the that match exists in the album we're interested in.
-                // This query then returns a single xml instance matching these criteria,
-                // OR returns null if 0 are found
-                // OR throws an exception if more than 1 are found
-                photoInstance = (from picDB in _imagesRootXml.Elements("picture")
-                                 join picAlbDB in _albumsRootXml.Descendants("picture")
-                                 on (string)picDB.Attribute("sha1") equals (string)picAlbDB.Attribute("sha1")
-                                 where (string)picDB.Attribute("sha1") == hash
-                                      && (Guid)picAlbDB.Ancestors("album").Single().Attribute("uid") == albumID
-                                 select picAlbDB).SingleOrDefault();
-            }
-            catch // We only get here if the database is already messed up (two of the same photo in an album)
-            {
-                throw;
-            }
-            // If the query returned a single node
-            return photoInstance;
-        }
-
         
-        /// By: Ryan Moe, comments by Bill Sanders
-        /// Edited Julian Nguyen(5/1/13)
-        /// <summary>
-        /// Searches for a photo by UID in the specified album.
-        /// </summary>
-        /// <param name="error"></param>
-        /// <param name="albumNode"></param>
-        /// <param name="idInAlbum"></param>
-        /// <returns>Returns an xml node of the photo from the AlbumDB, or null.</returns>
-        private XElement getAlbumImageNodeFromAlbumXml___(ErrorReport error, XElement albumNode, int idInAlbum)
-        {
-            try
-            {
-                // Search through a specific album for a specific photo by ID
-                // Return an (XElement) picture with the matching uid if it exists
-                // Throws exception if it doesn't find exactly 1 match <--- this is not true!!!
-                return (from c in albumNode.Element("albumPhotos").Elements("picture")
-                        where (int)c.Attribute("idInAlbum") == idInAlbum
-                        select c).SingleOrDefault();
-            }
-            catch
-            {
-                setErrorReportToFAILURE("Failed to find a single picture by UID.", ref error);
-                return null;
-            }
-        }
-
 
         /// By Ryan Moe
         /// Edited: Julan nguyen(5/1/13)
@@ -415,13 +347,13 @@ namespace SoftwareEng
         /// Checks to see if the photo is unique (using a SHA1 hash) to a given album
         /// </summary>
         /// <param name="albumID">The unique ID of the album</param>
-        /// <param name="hash">A hex string representation of the hash of the image</param>
+        /// <param name="imageHash">A hex string representation of the hash of the image</param>
         /// <returns>If the image name is unique or not.</returns>
-        private Boolean util_isImageUniqueToAlbum(Guid albumID, string hash)
+        private Boolean util_isImageUniqueToAlbum(Guid albumID, string imageHash)
         {
             // start by assuming the photo does not exist in this album
             //Boolean photoExistsInAlbum = false;
-            XElement image = util_getAlbumDBPhotoNode(albumID, hash);
+            XElement image = _photoBomb_xml.getImageNode(albumID, imageHash, _albumsRootXml, _imagesRootXml);
 
             // If the photo lookup returns null, the photo is not in this album, so the photo woudl be unique to this album
             return (image == null);
@@ -465,26 +397,7 @@ namespace SoftwareEng
             return false;
         }
 
-        /// <summary>
-        /// Looks up the photo by hash in the Photos XML database, returns the number of appearances in the Album database.
-        /// </summary>
-        /// <param name="hash">A string representing the hash value of the file.</param>
-        /// <returns>An integer representing the number of times this photo appears in the the Album database</returns>
-        private int util_getPhotoRefCount(string hash)
-        {
-            ErrorReport errorReport = new ErrorReport();
 
-            XElement imageNode = _photoBomb_xml.getImageNodeFromImageXml(hash, _imagesRootXml); 
-
-            if (imageNode == null)
-            {
-                return 0;
-            }
-            else
-            {
-                return (int)imageNode.Attribute("refCount");
-            }
-        }
 
         //--------------------------------------------------------
         // By: Bill Sanders
@@ -522,9 +435,9 @@ namespace SoftwareEng
             return fileHash;
         }
 
-        //--------------------------------------------------------
-        // By: Bill Sanders
-        // Edited Last: 3/23/13
+        
+        /// By: Bill Sanders
+        /// Edited Last: 3/23/13
         /// <summary>
         /// Convert an array of bytes to a HexString
         /// </summary>
@@ -540,7 +453,7 @@ namespace SoftwareEng
             return hexStr.ToString();
         }
 
-        //--------------------------------------------------------
+        
         // By: Bill Sanders
         // Edited Last: 3/23/13
         // Should be parallelizeable 
@@ -549,7 +462,7 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="hexStr"></param>
         /// <returns>a byte array</returns>
-        private static byte[] StringToByteArray(String hexStr)
+        public static byte[] stringToByteArray(String hexStr)
         {
             int NumberChars = hexStr.Length / 2;
             byte[] bytes = new byte[NumberChars];
@@ -576,8 +489,6 @@ namespace SoftwareEng
         /// <returns>A valid UID to use, or -1 if there was a problem</returns>
         private int util_getNextUID(XElement searchNode, string nodeType, string attributeName, int potentialID = 1)
         {
-
-            
             int newID;//the UID we will search against and return eventually.
 
             //error checking the starting point.
@@ -622,50 +533,9 @@ namespace SoftwareEng
             }
         }
 
-        // By: Ryan Moe
-        // Edited Julian Nguyen(5/1/13)
-        // load the database from disk into memory.
-        // BS: This function is being slated for merging with util_openPicturesXML
-        // Note that this does not set the in-memory DB to an XDocument, but rather the first element in it
-        [Obsolete]
-        private void util_openAlbumsXML(ErrorReport error)
-        {
-            try
-            {
-                _albumsRootXml = XDocument.Load(_albumsXmlPath).Element(Settings.XMLRootElement);
-            }
-            catch
-            {
-                setErrorReportToFAILURE("PhotoBomb.openAlbumsXML():failed to load the albums xml file: ", ref error);
-                return;
-            }
 
-            //The loading of the xml was nominal.
-            error.description = "great success!";
-        }
 
-        
-        /// By: Ryan Moe
-        /// Edited Julian Nguyen(5/1/13)
-        /// load the database from disk into memory.
-        /// BS: This function is being slated for merging with util_openAlbumXML
-        /// Note that this does not set the in-memory DB to an XDocument, but rather the first element in it
-        [Obsolete]
-        private void util_openImagesXML(ErrorReport error)
-        {
-            try
-            {
-                _imagesRootXml = XDocument.Load(_imageXmlPath).Element(Settings.XMLRootElement);
-            }
-            catch
-            {
-                setErrorReportToFAILURE("PhotoBomb.openPicturesXML():failed to load the pictures xml file: " + _imageXmlPath, ref error);
-                return;
-            }
-            //The loading of the xml was nominal.
-            //error.description = "great success!"; // No!
-        }
-
+  
 
         //-------------------------------------------------------
         //By: Bill Sanders
@@ -753,76 +623,14 @@ namespace SoftwareEng
 
 
 
-
-
-        //-------------------------------------------------------------------
-        /// By: Bill Sanders
-        /// Edited Ryan Causey(4/5/13)
-        /// This function replaces the function util_convertPhotoNodeToComplexPhotoData() below.
+        /// By: Julian Nguyen
+        /// Edited Julian Nguyen(5/7/13)
         /// <summary>
-        /// Combines the data from both databases for a specific photo instance.
-        /// </summary>
-        /// <param name="errorReport"></param>
-        /// <param name="albumImageNode">An XElement of a picture from the Album DB</param>
-        /// <param name="albumUID">The unique ID number of the album the photo instance is in</param>
-        /// <returns>Returns a ComplexPhotoData object, or null if the object could not be created.</returns>
-        private ComplexPhotoData getComplexPhotoDataFromAlbumImageNode(ErrorReport errorReport, XElement albumImageNode)
-        {
-            // We have all the data we need from the AlbumDB,
-            // but the PhotoDB has important data as well.
-            XElement imageNode = null;
-            if (!_photoBomb_xml.getImageNodeFromImageXml((string)albumImageNode.Attribute("sha1"), _imagesRootXml, out imageNode))
-            {
-                setErrorReportToFAILURE("Failed to get the imageNode.", ref errorReport);
-                return null;
-            }
-
-            ComplexPhotoData imageData = new ComplexPhotoData();
-
-            //TRANSFER ALL DATA TO THE DATA CLASS HERE.
-            try
-            {
-                // PhotoDB data
-                imageData.UID = (int)imageNode.Attribute("uid");
-                imageData.hash = StringToByteArray((string)imageNode.Attribute("sha1"));
-                imageData.refCount = (int)imageNode.Attribute("refCount");
-                imageData.fullPath = imageNode.Element("filePath").Value;
-                imageData.lgThumbPath = imageNode.Element("lgThumbPath").Value;
-                imageData.addedDate = stringToDateTime(imageNode.Element("dateAdded").Value);
-
-                imageData.extension = (String)imageNode.Element("filePath").Attribute("extension");
-
-                // AlbumDB data
-                imageData.idInAlbum = (int)albumImageNode.Attribute("idInAlbum");
-                imageData.name = albumImageNode.Element("name").Value;
-                if (imageData.name == string.Empty)
-                {
-                    string defaultPhotoName = albumImageNode.Parent.Parent.Element("albumName").Value
-                        + " "
-                        + Settings.DefaultImageName
-                        + " "
-                        + imageData.idInAlbum;
-                    imageData.name = defaultPhotoName;
-                    albumImageNode.Element("name").Value = defaultPhotoName;
-                }
-                imageData.caption = albumImageNode.Element("caption").Value;
-            }
-            catch(Exception)
-            {
-                setErrorReportToFAILURE("Error converting XElement to data object.", ref errorReport);
-                return null;
-            }
-
-            return imageData;
-        }
-
-
-        /// <summary>
-        /// 
+        /// Will take a time in String form and return a datetime.
         /// </summary>
         /// <param name="sDate"></param>
         /// <returns></returns>
-        private DateTime stringToDateTime(String sDate)
+        public DateTime stringToDateTime(String sDate)
         {
 
             DateTime date = DateTime.MinValue;
@@ -837,29 +645,6 @@ namespace SoftwareEng
 
 
 
-        //-------------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last:
-        //returns true if the album name is unique.
-        private Boolean util_isAlbumNameUnique(String albumName)
-        {
-            try
-            {
-                //try and find a matching album name.
-                //throws exception if we find NO matching names.
-                (from c in _albumsRootXml.Elements("album")
-                 where (String)c.Element("albumName") == albumName
-                 select c).First();
-            }
-            //we didn't find a matching name, success!
-            catch
-            {
-                return true;
-            }
-            return false;
-        }
-
-        //-------------------------------------------------------------------------
         
 
         /// By: Ryan Moe
@@ -869,14 +654,14 @@ namespace SoftwareEng
         /// Copies a picture from a source to the library on the filesystem.
         /// </summary>
         /// <param name="errorReport"></param>
-        /// <param name="srcPicFullFilepath"></param>
-        /// <param name="picNameInLibrary"></param>
+        /// <param name="srcImageFullFilepath"></param>
+        /// <param name="imageNameInLibrary"></param>
         /// <returns>A string representing the path of the new file.</returns>
-        private String util_copyPhotoToLibrary(ErrorReport errorReport, String srcPicFullFilepath, String picNameInLibrary)
+        private String util_copyImageToLibrary(ErrorReport errorReport, String srcImageFullFilepath, String imageNameInLibrary)
         {
             //check if file exists first!!!
             //if the picture does NOT exist.
-            if (!File.Exists(srcPicFullFilepath))
+            if (!File.Exists(srcImageFullFilepath))
             {
                 setErrorReportToFAILURE("Can't find the new picture to import to the library", ref errorReport);
                 return String.Empty;
@@ -890,13 +675,13 @@ namespace SoftwareEng
             }
 
             // Create the full path where the picture will go
-            String newPath = System.IO.Path.Combine(_imagelibraryDirPath, picNameInLibrary);
+            String newPath = System.IO.Path.Combine(_imagelibraryDirPath, imageNameInLibrary);
 
             // Wrapped in a try primarily in case of IO errors
             try
             {
                 //copy the photo to the library.
-                System.IO.File.Copy(srcPicFullFilepath, newPath, true);
+                System.IO.File.Copy(srcImageFullFilepath, newPath, true);
             }
             catch
             {
@@ -933,59 +718,6 @@ namespace SoftwareEng
                 setErrorReportToFAILURE("Library folder not found.", ref error);
             }
         }
-
-        //--------------------------------------------------------------------------
-        /// By: Bill Sanders
-        /// Edited Julian Nguyen(5/1/13)
-        /// <summary>
-        /// Renames an instance of a photo in an album
-        /// </summary>
-        /// <param name="error"></param>
-        /// <param name="imageNode">An XElement representation of the photo from the album DB</param>
-        /// <param name="newImageName">The new name for the photo</param>
-        [Obsolete]
-        private bool setAlbumImageNodeName(XElement imageNode, String newImageName)
-        {
-            try
-            {
-                imageNode.Element("name").Value = newImageName;
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-
-
-        //--------------------------------------------------------------------------
-        //By: Ryan Moe
-        //Edited Last: Bill Sanders, 3/29/13
-        /// <summary>
-        /// Queries the Album database for the specified album.
-        /// </summary>
-        /// <param name="error"></param>
-        /// <param name="albumUID">The Unique ID of the album</param>
-        /// <returns>An XElement object referring to the specified album, or null if not found.</returns>
-        [Obsolete]
-        private XElement util_getAlbum(ErrorReport error, Guid albumUID)
-        {
-            try
-            {
-                //find and return an album whos uid is the one we are looking for.
-                //Throws exception if none or more than one match is found.
-                return (from c in _albumsRootXml.Elements("album")
-                        where (Guid)c.Attribute("uid") == albumUID
-                        select c).Single();
-            }
-            catch
-            {
-                setErrorReportToFAILURE("Failed to find a single album by UID.", ref error);
-                return null;
-            }
-        }
-
         
 
         /// By Ryan Moe
