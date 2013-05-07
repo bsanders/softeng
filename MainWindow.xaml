@@ -29,22 +29,22 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="36*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Name:" Height="Auto" HorizontalAlignment="Left" Margin="3,3,0,0" x:Name="nameLine" VerticalAlignment="Top" FontFamily="/PhotoBomber;component/Fonts/#monofur" > <!--="pack://application:,,,/Fonts/#monofur" -->
+                <TextBlock Text="Name:" Height="Auto" HorizontalAlignment="Left" Margin="3,3,0,0" x:Name="nameLine" VerticalAlignment="Top" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Normal" > <!--="pack://application:,,,/Fonts/#monofur" -->
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock Text="{Binding name}" Height="Auto" HorizontalAlignment="Stretch" Margin="44.154,3,3,0" x:Name="nameLabelBack" VerticalAlignment="Top" TextWrapping="Wrap" FontFamily="/PhotoBomber;component/Fonts/#monofur" >
+                <TextBlock Text="{Binding name}" Height="Auto" HorizontalAlignment="Stretch" Margin="44.154,3,3,0" x:Name="nameLabelBack" VerticalAlignment="Top" TextWrapping="Wrap" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Normal" >
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock Text="Caption:" Height="Auto" HorizontalAlignment="Left" Margin="3,0,0,0" x:Name="commentLine" VerticalAlignment="Top" Grid.Row="1" FontFamily="/PhotoBomber;component/Fonts/#monofur" >
+                <TextBlock Text="Caption:" Height="Auto" HorizontalAlignment="Left" Margin="3,0,0,0" x:Name="commentLine" VerticalAlignment="Top" Grid.Row="1" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Normal" >
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock Height="Auto" HorizontalAlignment="Stretch" Margin="3,15,0,0" x:Name="commentLabel" VerticalAlignment="Top" Grid.Row="1" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap">
+                <TextBlock Height="Auto" HorizontalAlignment="Stretch" Margin="3,15,0,0" x:Name="commentLabel" VerticalAlignment="Top" Grid.Row="1" FontFamily="/PhotoBomber;component/Fonts/#monofur" TextWrapping="Wrap" FontWeight="Normal">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
@@ -604,7 +604,7 @@
                 </ListBox>
 
                 <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="50" Margin="0" Stroke="#00000000" VerticalAlignment="Bottom" MouseEnter="dockHitBox_MouseEnter" MouseLeave="dockHitBox_MouseLeave"/>
-                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{DynamicResource PhotoBomberDockBrush}" SizeChanged="dockSizeChanged_EventHandler" MouseEnter="DockMouseEnter_Handler" MouseLeave="DockMouseLeave_Handler">
+                <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{DynamicResource PhotoBomberDockBrush}" MouseEnter="DockMouseEnter_Handler" MouseLeave="DockMouseLeave_Handler">
                     <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" ToolTip="Create An Album">
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_album.png" Width="32" Height="32"/>
                     </Button>
@@ -624,22 +624,13 @@
                             </MenuItem.Icon>
                             <MenuItem x:Name="ascendingMenuItem" Header="Ascending" IsCheckable="True" IsChecked="True"  HorizontalContentAlignment="Right" Click="ascendingMenuItem_CheckToggled"/>
                             <MenuItem x:Name="nameMenuItem" Header="Name" Click="nameMenuItem_Click" IsCheckable="True" IsChecked="True"/>
-                            <!--
-                            <MenuItem x:Name="extensionMenuItem" Header="Extension" IsCheckable="True" Click="extensionMenuItem_Click"/>
-                            -->
                             <MenuItem x:Name="dateAddedMenuItem" Header="Date Added" IsCheckable="True" Click="dateAddedMenuItem_Click"/>
                             <MenuItem x:Name="dateTakenMenuItem" Header="Date Taken" IsCheckable="True" Click="dateTakenMenuItem_Click"/>
-                            <!--
-                            <MenuItem x:Name="equipmentManufacturerMenuItem" Header="Camera Make" IsCheckable="True" Click="equipmentManufacturerMenuItem_Click"/>
-                            -->
                             <MenuItem x:Name="equipmentModelMenuItem" Header="Camera Model" IsCheckable="True" Click="equipmentModelMenuItem_Click"/>
                         </MenuItem>
 
                     </Button>
-                    <!-- This button is only used to preserve spacing between the buttons
-                                            <Menu x:Name="imageSortingButtonPlaceholder" IsMainMenu="True" Background="{DynamicResource PhotoBomberDockButtonBrush}" Width="48" Height="48" Visibility="Collapsed">
-                    </Menu>
-                    -->
+                    <!-- This button is only used to preserve spacing between the buttons-->
                     <Button x:Name="blankDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">
                     </Button>
                     <StackPanel x:Name="ThumbnailControlStackPanel" Width="107" ToolTip="Adjust Thumbnail Size">
@@ -675,8 +666,6 @@
                         <TextBlock x:Name="numPicturesSkippedCountBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Margin="0" Grid.Row="1"/>
                     </Grid>
                 </ed:Callout>
-
-
             </Grid>
         </Border>
 
@@ -713,13 +702,12 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="commentTextBox" Padding="0" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="5" MaxLength="140" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a comment for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed" TextWrapping="Wrap" Height="100"/>
-
+                <TextBox x:Name="commentTextBox" Padding="0" FontWeight="Normal" TextDecorations="{x:Null}" TextOptions.TextFormattingMode="Display" MaxLines="5" MaxLength="140" IsUndoEnabled="False" VerticalAlignment="Center" AllowDrop="False" ToolTip="Enter a comment for the photo" Width="200" Margin="0,0,3,0" Visibility="Collapsed" TextWrapping="Wrap" Height="65" UndoLimit="20"/>
             </StackPanel>
-            <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,0,70,0" DockPanel.Dock="Right" ToolTip="Accept" >
+            <Button x:Name="acceptAddToolbarButton" Width="25" Height="25" Click="acceptAddToolBarButton_Click" IsDefault="True" Margin="0,10,70,0" DockPanel.Dock="Right" ToolTip="Accept" >
                 <Image x:Name="acceptAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/checkbox.png"/>
             </Button>
-            <Button x:Name="cancelAddToolbarButton" Width="25" Height="25" Click="cancelAddToolbarButton_Click" IsCancel="True" Margin="70,0,0,0" ToolTip="Cancel" >
+            <Button x:Name="cancelAddToolbarButton" Width="25" Height="25" Click="cancelAddToolbarButton_Click" IsCancel="True" Margin="70,10,0,0" ToolTip="Cancel" >
                 <Image x:Name="cancelAddToolbarButtonImage1" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_cancel.png"/>
             </Button>
         </DockPanel>
@@ -761,69 +749,16 @@
                 </ed:Callout>
             </Grid>
         </Popup>
-        <!--
-        <SoftwareEngControls:customRadialPanel HorizontalAlignment="Left" Height="122" Margin="226,308,0,-44" VerticalAlignment="Top" Width="149" ShowPieLines="True" InnerRadius="40" OuterRadius="71" BackgroundOpacity="1" StartAngle="300" Angle="180" Visibility="Collapsed">
-            <Button  Width="30" >
-                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
-            </Button>
-            <Button  Width="30" >
-                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
-            </Button>
-            <Button  Width="30" >
-                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
-            </Button>
-        </SoftwareEngControls:customRadialPanel>
-        <SoftwareEngControls:customRadialPanel HorizontalAlignment="Left" Height="135" Margin="-41,-41,0,0" VerticalAlignment="Top" Width="150" InnerRadius="30" OuterRadius="60" BackgroundOpacity="1" StartAngle="90" Angle="135" Visibility="Collapsed">
-            <Button  Width="30" >
-                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
-            </Button>
-            <Button  Width="30" >
-                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
-            </Button>
-            <Button  Width="30" >
-                <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
-            </Button>
-            
-        </SoftwareEngControls:customRadialPanel>
-        -->
+
         <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="Titlebar_DoubleClick" Background="{DynamicResource PhotoBomberTitleBarBrush}" Height="36">
 
-            <!--
-            <Menu x:Name="PhotoBomberMenuButtonPlaceholder" IsMainMenu="True" IsTabStop="False" Focusable="False" Margin="2,2,0,0" BorderBrush="#FFE0E0E0" BorderThickness="1">
-                <Menu.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="#AAFFFFFF" Offset="0.95" />
-                        <GradientStop Color="#00000000" Offset="0.95" />
-                    </RadialGradientBrush>
-                </Menu.Background>
-
-            </Menu>
-
-            
-            <Button x:Name="aboutToolbarButton" Width="30" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="6,6,0,0" Click="aboutButtonPressed_eventHandler" ToolTip="About PhotoBomber" IsTabStop="False" Focusable="False">
-                <Button.Background>
-                    <RadialGradientBrush>
-                        <GradientStop Color="#AAFFFFFF" Offset="1" />
-                        <GradientStop Color="#00000000" Offset="1" />
-                    </RadialGradientBrush>
-                </Button.Background>
-                <Image x:Name="aboutToolbarButtonImage2" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/logoSmall.png"/>
-            </Button>
-            -->
-
-
-            
-            
-
-
-            <!-- Not sure how to set the content of this label dynamically from settings file -->
+            <!-- Not sure how to set the content of this label dynamically from settings file. Niether does Dro-->
             <Label x:Name="appTitleBarLabel" Content="PhotoBomber - My Photo Library!"  Height="27" FontSize="15" TextOptions.TextFormattingMode="Display" FontWeight="Normal" VerticalContentAlignment="Center" Margin="40,0,0,0">
                 <Label.Foreground>
                     <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                 </Label.Foreground>
             </Label>
-
-            <!--Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"-->
+            
             <Button x:Name="exitToolbarButton" Width="25" Height="25" DockPanel.Dock="Right" Click="exitDockButton_Click" ToolTip="Exit" IsTabStop="False" Focusable="False">
                 <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_close.png"/>
             </Button>
@@ -834,28 +769,19 @@
                 <Image x:Name="minimizeToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_minimize.png"/>
             </Button>
 
-
         </DockPanel>
-
-
-
-
-
+        
         <Menu BorderBrush="#00333333" Foreground="#00000000" Width="25" Height="25" Margin="8,8,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
             <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.IsSharedSizeScope="False" Margin="-7,0,0,0" Width="35" IsHitTestVisible="True" Height="30" Background="#00000000">
                 <MenuItem.Icon>
                     <Image x:Name="aboutToolbarButtonImage" Source="ImagesResources2012/logoSmall.png" Width="30"/>
                 </MenuItem.Icon>
                 <MenuItem x:Name="themeParentMenu" Header="Themes" IsHitTestVisible="True">
-                    <MenuItem x:Name="bureauBlackThemeMenuItem" Header="Bureau Black" IsCheckable="True" Click="bureauBlackThemeMenuItem_CheckToggle"/>
+                    
                     <MenuItem x:Name="bureauBlueThemeMenuItem" Header="Bureau Blue" IsCheckable="True" Click="bureauBlueThemeMenuItem_CheckToggle"/>
                     <MenuItem x:Name="expressionDarkThemeMenuItem" Header="Expression Dark" IsCheckable="True" Click="expressionDarkThemeMenuItem_CheckToggle"/>
                     <MenuItem x:Name="expressionLightThemeMenuItem" Header="Expression Light" IsCheckable="True" Click="expressionLightThemeMenuItem_CheckToggle"/>
-                    <!--
-                    <MenuItem x:Name="shinyBlueThemeMenuItem" Header="Shiny Blue" IsCheckable="True" Click="shinyBlueThemeMenuItem_CheckToggle"/>
-                    
-                    <MenuItem x:Name="shinyRedThemeMenuItem" Header="Shiny Red" IsCheckable="True" Click="shinyRedThemeMenuItem_CheckToggle"/>
-                    -->
+
                     <MenuItem x:Name="whistlerBlueThemeMenuItem" Header="Whistler Blue" Click="whistlerBlueThemeMenuItem_CheckToggle"/>
 
                 </MenuItem>

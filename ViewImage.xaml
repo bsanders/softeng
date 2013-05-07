@@ -124,7 +124,10 @@
             <Button x:Name="exitToolbarButton" Width="25" Height="25" DockPanel.Dock="Right" Click="exitButtonClick" ToolTip="Close" IsTabStop="False" Focusable="False">
                 <Image x:Name="exitToolbarButtonImage" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Source="ImagesResources2012/action_close.png"/>
             </Button>
-            <Label Height="27" VerticalAlignment="Top" Padding="5" VerticalContentAlignment="Center" Margin="0" Foreground="#FFE2E2E2" FontWeight="Bold" TextOptions.TextFormattingMode="Display">
+            <Label Height="27" VerticalAlignment="Top" Padding="5" VerticalContentAlignment="Center" Margin="6,0,0,0" FontWeight="Bold" TextOptions.TextFormattingMode="Display">
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
+                </Label.Foreground>
                 <Label.Content>
                     <Binding ElementName="viewImageWindow" Path="currentPicture.name">
                         <Binding.FallbackValue>

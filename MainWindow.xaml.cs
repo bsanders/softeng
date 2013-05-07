@@ -83,6 +83,8 @@ namespace SoftwareEng
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// Any functions that have no author listed are
+    /// created by Alejandro Sosa 
     /// </summary> 
     public partial class MainWindow : Window
     {
@@ -311,7 +313,7 @@ namespace SoftwareEng
             }
             catch (Exception)
             {
-                showErrorMessage("We're going to DIIEEEEEE-bleh");
+                ;
             }
 
             if (!validateTheString(promptStrings.albumValidationRegex, nameTextBox.Text))
@@ -327,7 +329,7 @@ namespace SoftwareEng
                 }
                 catch (Exception)
                 {
-                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                    ;
                 }
                 
 
@@ -364,7 +366,7 @@ namespace SoftwareEng
             }
             catch (Exception)
             {
-                showErrorMessage("We're going to DIIEEEEEE-bleh");
+                //showErrorMessage("We're going to DIIEEEEEE-bleh");
             }
             if (error.reportStatus == ReportStatus.FAILURE || error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
             {
@@ -377,7 +379,7 @@ namespace SoftwareEng
                 }
                 catch (Exception)
                 {
-                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                    //showErrorMessage("We're going to DIIEEEEEE-bleh");
                 }
                 
 
@@ -422,15 +424,15 @@ namespace SoftwareEng
             // Trim the whitespace of this input, SRS Requires no leading/trailing whitespace
             photoNameTextBox.Text = photoNameTextBox.Text.Trim();
 
-            Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+            Storyboard photoNameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
             try
             {
-                nameTextBoxErrorAnimation.Stop();
+                photoNameTextBoxErrorAnimation.Stop();
                 handleNameErrorPopup(false, "");
             }
             catch (Exception)
             {
-                showErrorMessage("We're going to DIIEEEEEE-bleh");
+                //showError("We're going to DIIEEEEEE-bleh");
             }
 
             if (!validateTheString(promptStrings.albumValidationRegex, photoNameTextBox.Text))
@@ -440,12 +442,12 @@ namespace SoftwareEng
                 //this storyboard is for the name box
                 try
                 {
-                    nameTextBoxErrorAnimation.Begin();
+                    photoNameTextBoxErrorAnimation.Begin();
 
                 }
                 catch (Exception)
                 {
-                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                    //showError("We're going to DIIEEEEEE-bleh");
                 }
 
                 handlePhotoNameErrorPopup(true, errorStrings.invalidImageNameCharacter);
@@ -481,7 +483,7 @@ namespace SoftwareEng
             }
             catch (Exception)
             {
-                showErrorMessage("We're going to DIIEEEEEE-bleh");
+                //showErrorMessage("We're going to DIIEEEEEE-bleh");
             }
 
 
@@ -497,7 +499,7 @@ namespace SoftwareEng
                 }
                 catch (Exception)
                 {
-                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                    //showError("We're going to DIIEEEEEE-bleh");
                 }
 
                 handlePhotoNameErrorPopup(true, errorStrings.invalidImageNameUnique);
@@ -516,7 +518,7 @@ namespace SoftwareEng
                 }
                 catch (Exception)
                 {
-                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                    //showError("We're going to DIIEEEEEE-bleh");
                 }
                 //now need to validate the caption with the photo, if there is one.
                 guiValidateCaptionContent();
@@ -1577,8 +1579,26 @@ namespace SoftwareEng
             invalidInputPopup.IsOpen = false;
 
             //stop any error animations
-            Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
-            nameTextBoxErrorAnimation.Stop();
+            Storyboard deletedErrorAnimation;
+            try
+            {
+                deletedErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+                deletedErrorAnimation.Stop();
+            }
+            catch (Exception) { ;}
+            try
+            {
+                deletedErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
+                deletedErrorAnimation.Stop();
+            }
+            catch (Exception) { ;}
+            try
+            {
+                deletedErrorAnimation = this.FindResource("InvalidCommentFlash") as Storyboard;
+                deletedErrorAnimation.Stop();
+            }
+            catch (Exception) { ;}
+            
         }
 
 
@@ -1819,6 +1839,7 @@ namespace SoftwareEng
 
 
         /**************************************************************************************************************************
+         * Created Alejandro Sosa
         **************************************************************************************************************************/
         private void aboutButtonPressed_eventHandler(object sender, RoutedEventArgs e)
         {
@@ -1842,6 +1863,7 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
+         * Created Alejandro Sosa
         **************************************************************************************************************************/
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -2007,6 +2029,7 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
+         * Created Alejandro Sosa
         **************************************************************************************************************************/
         private void showErrorMessage(String messageOfDoom)
         {
@@ -2319,11 +2342,17 @@ namespace SoftwareEng
             }
         }
 
+        /**************************************************************************************************************************
+         * Created Alejandro Sosa
+        **************************************************************************************************************************/
         private void mainWindowAlbumList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             mainWindowListItemActivation();
         }
 
+        /**************************************************************************************************************************
+         * Created Alejandro Sosa
+        **************************************************************************************************************************/
         private void mainWindowAlbumList_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -2332,6 +2361,9 @@ namespace SoftwareEng
             }
         }
 
+        /**************************************************************************************************************************
+         * Created Alejandro Sosa
+        **************************************************************************************************************************/
         private void mainWindowListItemActivation()
         {
             if (_isInsideAlbum == false)
@@ -2344,18 +2376,10 @@ namespace SoftwareEng
             }
         }
 
-        private void dockSizeChanged_EventHandler(object sender, SizeChangedEventArgs e)
-        {
-            //if (mainWindowDock.Height != 48)
-            //{
-            //    return;
-            //}
-        }
-
 
         /**************************************************************************************************************************
+         * Created Alejandro Sosa
         **************************************************************************************************************************/
-
         private void closePopupsAndMenus()
         {
             libraryContextMenu.IsOpen = false;
@@ -2365,6 +2389,7 @@ namespace SoftwareEng
 
 
         //this Function region deals with image sorting
+        //region and functions inside created Alejandro Sosa
         #region sortingFunctionRegion
 
         private void clearSortingCheckBoxes()
@@ -2516,8 +2541,12 @@ namespace SoftwareEng
 
 
         //This function region deals with choosing themes
+        //region and functions inside created Alejandro Sosa
         #region ThemeRelatedFunctions
 
+        /**************************************************************************************************************************
+         * Author: Alejandro Sosa
+         **************************************************************************************************************************/
         //getCurrentPhotoBomberTheme
         private void gui_getCurrentTheme()
         {
@@ -2537,6 +2566,9 @@ namespace SoftwareEng
             }
         }
 
+        /**************************************************************************************************************************
+         * Author: Alejandro Sosa
+         **************************************************************************************************************************/
         private void gui_setTheme(String appliedTheme)
         {
             var program = App.Current as App;
@@ -2551,9 +2583,12 @@ namespace SoftwareEng
             }
         }
 
+        /**************************************************************************************************************************
+         * Author: Alejandro Sosa
+         **************************************************************************************************************************/
         private void clearThemecheckboxes()
         {
-            bureauBlackThemeMenuItem.IsChecked = false;
+            //bureauBlackThemeMenuItem.IsChecked = false;
             bureauBlueThemeMenuItem.IsChecked = false;
             expressionDarkThemeMenuItem.IsChecked = false;
             expressionLightThemeMenuItem.IsChecked = false;
@@ -2563,12 +2598,14 @@ namespace SoftwareEng
         }
 
 
-
+        /**************************************************************************************************************************
+         * Author: Alejandro Sosa
+         **************************************************************************************************************************/
         private void bureauBlackThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             String currentheme = "/Themes/BureauBlack.xaml";
             clearThemecheckboxes();
-            bureauBlackThemeMenuItem.IsChecked = true;
+            //bureauBlackThemeMenuItem.IsChecked = true;
 
             //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/BureauBlack.xaml", UriKind.Relative));
 
@@ -2576,6 +2613,9 @@ namespace SoftwareEng
             gui_setTheme(currentheme);
         }
 
+        /**************************************************************************************************************************
+         * Author: Alejandro Sosa
+         **************************************************************************************************************************/
         private void bureauBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             String currentheme = "/Themes/BureauBlue.xaml";
@@ -2587,6 +2627,9 @@ namespace SoftwareEng
             gui_setTheme(currentheme);
         }
 
+        /**************************************************************************************************************************
+         * Author: Alejandro Sosa
+         **************************************************************************************************************************/
         private void expressionDarkThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             String currentheme = "/Themes/ExpressionDark.xaml";
@@ -2598,6 +2641,9 @@ namespace SoftwareEng
             gui_setTheme(currentheme);
         }
 
+        /**************************************************************************************************************************
+         * Author: Alejandro Sosa
+         **************************************************************************************************************************/
         private void expressionLightThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             String currentheme = "/Themes/ExpressionLight.xaml";
@@ -2609,6 +2655,9 @@ namespace SoftwareEng
             gui_setTheme(currentheme);
         }
 
+        /**************************************************************************************************************************
+         * Author: Alejandro Sosa
+         **************************************************************************************************************************/
         private void whistlerBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
         {
             String currentheme = "/Themes/WhistlerBlue.xaml";
@@ -2620,38 +2669,15 @@ namespace SoftwareEng
             gui_setTheme(currentheme);
         }
 
-        //private void shinyBlueThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
-        //{
-        //    clearThemecheckboxes();
-        //    shinyBlueThemeMenuItem.IsChecked = true;
-
-        //    //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyBlue.xaml", UriKind.Relative)); 
-
-        //    var program = App.Current as App;
-
-        //    program.setTheme("/Themes/ShinyBlue.xaml");
-        //}
-
-        //private void shinyRedThemeMenuItem_CheckToggle(object sender, RoutedEventArgs e)
-        //{
-        //    clearThemecheckboxes();
-        //    shinyRedThemeMenuItem.IsChecked = true;
-
-        //    //ThemeSelector.SetCurrentThemeDictionary(this, new Uri("/Themes/ShinyRed.xaml", UriKind.Relative));     
-
-        //    var program = App.Current as App;
-
-        //    program.setTheme("/Themes/ShinyRed.xaml");
-        //}
-
-
-
         #endregion
 
 
-
+        //region and functions inside created Alejandro Sosa
         #region GrayscaleRElatedFunctions
 
+        /**************************************************************************************************************************
+         * Author: Alejandro Sosa
+         **************************************************************************************************************************/
         public void guiConvertToGreyscale(addNewPictures_callback guiGrayscaleCallback, ComplexPhotoData desiredImage, Guid albumGuid)
         {
             _bombaDeFotos.addImageAsGrayscale(guiGrayscaleCallback, albumGuid, desiredImage.fullPath);

@@ -113,7 +113,9 @@ namespace SoftwareEng
         }
 
 
-
+        /**************************************************************************************************************************
+        * Author: Alejandro Sosa
+        **************************************************************************************************************************/
         public ViewImage(CollectionView bindToThisView, int imageUID, Guid albumID, greyScaleConverterDelegate greyscaleFunction, Boolean slideShowStart = false)
         {
             _imageCollection = bindToThisView;
@@ -205,6 +207,7 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
+        * Author: Alejandro Sosa
         **************************************************************************************************************************/
         private void exitButtonClick(object sender, RoutedEventArgs e)
         {
@@ -212,6 +215,7 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
+        * Author: Alejandro Sosa
         **************************************************************************************************************************/
         private void DockPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
@@ -229,6 +233,7 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
+        * Author: Alejandro Sosa
         **************************************************************************************************************************/
         private void maximizeToolbarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -236,6 +241,7 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
+        * Author: Alejandro Sosa
         **************************************************************************************************************************/
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -250,6 +256,7 @@ namespace SoftwareEng
         }
 
         /**************************************************************************************************************************
+        * Author: Alejandro Sosa
         **************************************************************************************************************************/
         private void toggleWindowState()
         {
@@ -679,13 +686,18 @@ namespace SoftwareEng
             }
         }
 
+        /**************************************************************************************************************************
+        * Author: Alejandro Sosa
+        **************************************************************************************************************************/
         private void greyscaleDockButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindowScaleFunction(new addNewPictures_callback(temp_guiGrayscaleCallback), _currentPicture, _currentAlbum);
 
         }
 
-
+        /**************************************************************************************************************************
+        * Author: Alejandro Sosa
+        **************************************************************************************************************************/
         public void temp_guiGrayscaleCallback(ErrorReport isUseless, Guid albumGuid)
         {
             if (isUseless.reportStatus == ReportStatus.SUCCESS)
@@ -694,42 +706,7 @@ namespace SoftwareEng
 
                 currentPicture = _imageCollection.CurrentItem as ComplexPhotoData;
             }
-            else
-            {
-                ErrorWindow somethingWentWrong = new ErrorWindow("BAAAAAAAAAAAAAAAAAAAALLS!!!!!!!!!!!!!!: error " + (isUseless.reportStatus.ToString()));
-
-                somethingWentWrong.ShowDialog();
-            }
         }
     }
-
-    //public class GreyScaleConverter
-    //{
-    //    private BitmapImage _sourceImage;
-    //    private FormatConvertedBitmap _greyScaleImage;
-
-    //    public GreyScaleConverter() { }
-
-    //    public void toGrayScale(String sourcePath)
-    //    {
-    //        _sourceImage = new BitmapImage();
-    //        _sourceImage.BeginInit();
-
-    //        _sourceImage.UriSource = new Uri(@sourcePath, UriKind.Absolute);
-
-    //        _sourceImage.EndInit();
-
-
-    //        _greyScaleImage = new FormatConvertedBitmap();
-
-    //        _greyScaleImage.BeginInit();
-
-    //        _greyScaleImage.Source = _sourceImage;
-
-    //        _greyScaleImage.DestinationFormat = PixelFormats.Gray32Float;
-        
-    //    }
-    //}
-
-
+    
 }
