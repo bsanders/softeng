@@ -37,13 +37,30 @@ namespace SoftwareEng
         **************************************************************************************************************************/
         private void exitButtonClick(object sender, RoutedEventArgs e)
         {
+            //try
+            //{
+            //    this.Close();
+            //}
+            //catch (InvalidOperationException)
+            //{
+            //    ;
+            //}
             this.Close();
+            
         }
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
         private void okButton_click(object sender, RoutedEventArgs e)
         {
+            //try
+            //{
+            //    this.Close();
+            //}
+            //catch (InvalidOperationException)
+            //{
+            //    ;
+            //}
             this.Close();
         }
 
@@ -84,16 +101,79 @@ namespace SoftwareEng
         /// <param name="e"></param>
         private void PhotoBomberAboutWindow_Deactivated(object sender, EventArgs e)
         {
-
-            this.Close();
+            //try
+            //{
+            //    this.Close();
+            //}
+            //catch (InvalidOperationException)
+            //{
+            //    ;
+            //}
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Visible;
         }
 
         private void closingWindow(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (windowOpen == false)
-            {
-                e.Cancel=true;
-            }
+            //throw new Exception();
         }
 
     }

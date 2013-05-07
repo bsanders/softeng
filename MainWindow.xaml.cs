@@ -313,18 +313,16 @@ namespace SoftwareEng
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
 
-                for (int i = 0; i < 10; i++)
+
+                try
                 {
-                    try
-                    {
-                        nameTextBoxErrorAnimation.Begin();
-                        break;
-                    }
-                    catch (Exception)
-                    {
-                        ;
-                    }
+                    nameTextBoxErrorAnimation.Begin();
                 }
+                catch (Exception)
+                {
+                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                }
+                
 
                 handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -351,23 +349,30 @@ namespace SoftwareEng
         public void guiValidateAlbumName_Callback(ErrorReport error)
         {
             //if the album name was not unique
+            Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+            try
+            {
+                nameTextBoxErrorAnimation.Stop();
+                handleNameErrorPopup(false, "");
+            }
+            catch (Exception)
+            {
+                showErrorMessage("We're going to DIIEEEEEE-bleh");
+            }
             if (error.reportStatus == ReportStatus.FAILURE || error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
             {
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
-                for (int i = 0; i < 10; i++)
+
+                try
                 {
-                    try
-                    {
-                        nameTextBoxErrorAnimation.Begin();
-                        break;
-                    }
-                    catch (Exception)
-                    {
-                        ;
-                    }
+                    nameTextBoxErrorAnimation.Begin();
                 }
+                catch (Exception)
+                {
+                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                }
+                
 
                 handleNameErrorPopup(true, errorStrings.invalidAlbumNameUnique);
                 //apply error template to the text box
@@ -392,7 +397,6 @@ namespace SoftwareEng
                 invalidInputPopup.IsOpen = false;
 
                 //stop any error animations
-                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
                 nameTextBoxErrorAnimation.Stop();
             }
         }
@@ -410,13 +414,32 @@ namespace SoftwareEng
         {
             // Trim the whitespace of this input, SRS Requires no leading/trailing whitespace
             photoNameTextBox.Text = photoNameTextBox.Text.Trim();
+
+            Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
+            try
+            {
+                nameTextBoxErrorAnimation.Stop();
+                handleNameErrorPopup(false, "");
+            }
+            catch (Exception)
+            {
+                showErrorMessage("We're going to DIIEEEEEE-bleh");
+            }
+
             if (!validateTheString(promptStrings.albumValidationRegex, photoNameTextBox.Text))
             {
                 // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
-                nameTextBoxErrorAnimation.Begin();
+                try
+                {
+                    nameTextBoxErrorAnimation.Begin();
+
+                }
+                catch (Exception)
+                {
+                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                }
 
                 handlePhotoNameErrorPopup(true, errorStrings.invalidImageNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -443,13 +466,32 @@ namespace SoftwareEng
          **************************************************************************************************************************/
         public void guiValidatePhotoName_Callback(ErrorReport error)
         {
+            Storyboard photoNameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
+            try
+            {
+                photoNameTextBoxErrorAnimation.Stop();
+                handleNameErrorPopup(false, "");
+            }
+            catch (Exception)
+            {
+                showErrorMessage("We're going to DIIEEEEEE-bleh");
+            }
+
+
             //if the photo name was not unique
             if (error.reportStatus == ReportStatus.FAILURE || error.reportStatus == ReportStatus.SUCCESS_WITH_WARNINGS)
             {
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                Storyboard photoNameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
-                photoNameTextBoxErrorAnimation.Begin();
+
+                try
+                {
+                    photoNameTextBoxErrorAnimation.Begin();
+                }
+                catch (Exception)
+                {
+                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                }
 
                 handlePhotoNameErrorPopup(true, errorStrings.invalidImageNameUnique);
                 //apply error template to the text box
@@ -460,9 +502,15 @@ namespace SoftwareEng
             //it was unique, great success!
             else
             {
-                Storyboard photoNameTextBoxErrorAnimation = this.FindResource("InvalidPhotoNameFlash") as Storyboard;
-                photoNameTextBoxErrorAnimation.Stop();
-                handlePhotoNameErrorPopup(false, "");
+                try
+                {
+                    photoNameTextBoxErrorAnimation.Stop();
+                    handleNameErrorPopup(false, "");
+                }
+                catch (Exception)
+                {
+                    showErrorMessage("We're going to DIIEEEEEE-bleh");
+                }
                 //now need to validate the caption with the photo, if there is one.
                 guiValidateCaptionContent();
             }
@@ -1686,10 +1734,6 @@ namespace SoftwareEng
         private void aboutMenuItemPressed_eventHandler(object sender, RoutedEventArgs e)
         {
             //if this window is already open, close it.
-            if (_photoBomberAboutWindow != null)
-            {
-                _photoBomberAboutWindow.Close();
-            }
 
             _photoBomberAboutWindow = new AboutWindow();
 
