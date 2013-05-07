@@ -927,13 +927,16 @@ namespace SoftwareEng
             // check to see if we're removing the first photo in the album.
             XElement firstPhotoInAlbum = (from c in albumNode.Descendants("picture") select c).FirstOrDefault();
 
+            
+
+
             // if we are deleting the first...
             if ((int)firstPhotoInAlbum.Attribute("idInAlbum") == inAlbumID)
             {
                 // if this is the first *and* last photo, set the thumbnailpath to empty string
                 if (albumNode.Descendants("picture").Count() == 1)
                 {
-                    albumNode.Element("thumbnailPath").Value = "";
+                    albumNode.Element("thumbnailPath").Value = String.Empty;
                     albumNode.Element("thumbnailPath").Attribute("thumbAlbumID").Value = "-1";
                 }
                 else
@@ -947,6 +950,9 @@ namespace SoftwareEng
                         secondPhotoInAlbum = albumNode.Descendants("picture").ElementAt(1); // (0-indexed)
                         // Set the thumbnail.
                         util_setAlbumThumbnail(albumNode, _photoBomb_xml.getComplexPhotoDataFromAlbumImageNode(secondPhotoInAlbum, _imagesRootXml));
+
+                        ErrorWindow err = new ErrorWindow("Love");
+                        err.Show();
                     }
                     catch (Exception ex)
                     {
@@ -967,13 +973,16 @@ namespace SoftwareEng
             }
 
             // Now delete that node
-            errorReport = removeImageFromImageXml(albumImageNode, true);
+            errorReport = removeImageFromImageXml(albumImageNode, false);
 
             //copying bills swanky code
             //get the photo to remove
             var photoToRemove = _imagesCollection.FirstOrDefault(photo => photo.idInAlbum == inAlbumID);
             //and remove it
             _imagesCollection.Remove(photoToRemove);
+
+            saveAlbumsXML_backend();
+            saveImagesXML_backend();
 
             return errorReport;
         }
@@ -1014,6 +1023,7 @@ namespace SoftwareEng
                 {
                     // This was the last reference to the picture, delete it from the photoDB and the filesystem
                     removeImageFromImageDB_backend(imageNode);
+
                 }
                 else
                 {
@@ -1054,19 +1064,33 @@ namespace SoftwareEng
             // First try to delete it from the filesystem
             try
             {
+                // TODO JN: cannot delete. 
+
                 File.Delete(imageNode.Element("filePath").Value);
+
+                try
+                {
+                    File.Delete(imageNode.Element("filePath").Value);
+                }
+                catch { }
+
                 //since we are using this large thumbnail in the program as the image for the picture tile
                 //(tested and it is NOT because the album is using the first photo's large thumbnail as its thumb)
                 //this throws a System.IO.IOException because it cannot access the file to delete it as it is in use.
                 //then the function skips over the rest of the delete, which can lead to dangling items in the xml
                 //causing a unhandled exception later on if more deletes are tried.
-                File.Delete(imageNode.Element("lgThumbPath").Value);
+                try
+                {
+                    File.Delete(imageNode.Element("lgThumbPath").Value);
+                }
+                catch { }
+
             }
             catch
             {
                 // the path was probably wrong...
                 setErrorReportToFAILURE("Failed to delete the photo file or a thumbnail from the filesystem", ref errorReport);
-                return errorReport;
+                //return errorReport;
             }
             // Now delete this instance of the photo from the in-memory photo database
             // If we've gotten here, we've already deleted it from the albums database
