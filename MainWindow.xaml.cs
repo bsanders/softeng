@@ -2420,16 +2420,18 @@ namespace SoftwareEng
         //getCurrentPhotoBomberTheme
         private void gui_getCurrentTheme()
         {
-            String currentheme = null;
+            String storedTheme;
+            _bombaDeFotos.getCurrentTheme(out storedTheme);
             clearThemecheckboxes();
             var program = App.Current as App;
 
             try
             {
-                program.setTheme(currentheme);
+                program.setTheme(storedTheme);
             }
             catch (Exception)
             {
+                showErrorMessage("BAAAAAAAAAAAAAAAAAAAAAAAAAAAAALLLLS!!!!");
                 program.setTheme("/Themes/ExpressionDark.xaml");
             }
         }
@@ -2439,6 +2441,13 @@ namespace SoftwareEng
             var program = App.Current as App;
 
             program.setTheme(appliedTheme);
+
+            ReportStatus success = _bombaDeFotos.setCurrentTheme(appliedTheme);
+
+            if (success != ReportStatus.SUCCESS)
+            {
+                showErrorMessage("BAAAAAAAAAAAAAAAAAAAAAAAAAAAAALLLLS!!!!");
+            }
         }
 
         private void clearThemecheckboxes()
