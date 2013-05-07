@@ -441,7 +441,19 @@ namespace SoftwareEng
                 guiCallback(err, albumUID);
             }
 
-            ErrorReport errReport = _photoBombDatabase.addNewImage(pathOfnewGray, ".jpg", albumUID);
+            
+            ErrorReport errReport = null; 
+            try
+            {
+                errReport = _photoBombDatabase.addNewImage(pathOfnewGray, ".jpg", albumUID);
+            }
+            catch
+            {
+                errReport =  new ErrorReport();
+                errReport.reportStatus = ReportStatus.FAILURE;
+                guiCallback(errReport, albumUID);
+            }
+
             try
             {
                 File.Delete(pathOfnewGray);
