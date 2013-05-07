@@ -569,7 +569,7 @@
                         <Button x:Name="deleteMenuItemAlbumButton" Width="25" Height="25" Click="deleteMenuItemAlbumButton_Click" ToolTip="Delete Photo">
                             <Image x:Name="deleteButtonAlbumImage" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
                         </Button>
-                        <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Click="renameMenuItemAlbumButton_Click" ToolTip="Annotate Photo">
+                        <Button x:Name="renameMenuItemAlbumButton" Width="25" Height="25" Click="renameMenuItemAlbumButton_Click" ToolTip="Edit Photo Details">
                             <Image x:Name="renameButtonAlbumImage" Source="ImagesResources2012/action_annotate.png" Stretch="Fill"/>
                         </Button>
                         <Button x:Name="slideshowMenuItemAlbumButton" Width="25" Height="25" Click="slideshowMenuItemAlbumButton_Click" ToolTip="Start Slideshow">
@@ -752,6 +752,7 @@
                 </ed:Callout>
             </Grid>
         </Popup>
+        <!--
         <SoftwareEngControls:customRadialPanel HorizontalAlignment="Left" Height="122" Margin="226,308,0,-44" VerticalAlignment="Top" Width="149" ShowPieLines="True" InnerRadius="40" OuterRadius="71" BackgroundOpacity="1" StartAngle="300" Angle="180" Visibility="Collapsed">
             <Button  Width="30" >
                 <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
@@ -773,7 +774,9 @@
             <Button  Width="30" >
                 <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
             </Button>
+            
         </SoftwareEngControls:customRadialPanel>
+        -->
         <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="Titlebar_DoubleClick" Background="{DynamicResource PhotoBomberTitleBarBrush}" Height="36">
 
             <!--
