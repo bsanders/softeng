@@ -113,7 +113,6 @@
     <Reference Include="Xceed.Wpf.Toolkit, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileDataBase.cs" />
     <Compile Include="ImageManipulation.cs" />
     <Compile Include="KeyValuePairDataBase.cs" />
     <Compile Include="PhotoBomb_Xml.cs" />

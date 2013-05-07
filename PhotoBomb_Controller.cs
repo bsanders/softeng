@@ -21,7 +21,8 @@
  * Julian Nguyen(2/30/13)
  * Some the error Reports were not being set in some of the functions. (null exception) 
  * Fun() with "Picture" in the name were changed to "Image"
- * 
+ * Julian Nguyen(5/6/13)
+ * Set and get CurrentTheme and Image Grayscale was added.
  * 
  ***************************************************************************************************************/
 using System;
@@ -410,7 +411,7 @@ namespace SoftwareEng
             guiCallback(errReport);
 
         }
-
+        
 
         /// By Julian Nguyen
         /// Edited: Julian Nguyen(5/7/13)
@@ -451,7 +452,6 @@ namespace SoftwareEng
             {
                 errReport =  new ErrorReport();
                 errReport.reportStatus = ReportStatus.FAILURE;
-                guiCallback(errReport, albumUID);
             }
 
             try
@@ -461,10 +461,6 @@ namespace SoftwareEng
 
             guiCallback(errReport, albumUID);
         }
-
-
-
- 
 
 
 
@@ -489,17 +485,26 @@ namespace SoftwareEng
         }
 
 
-        //By: Ryan Moe
-        //Edited Last:
-        //
-        //This will cancel the thread from addNewPictures() if it exists.
-        //Returns the error report directly.
+        
+        /// By Ryan Moe
+        /// Edited Julian Nguyen(5/7/13)
+        /// <summary>
+        /// This will cancel the thread from addNewPictures() if it exists.
+        /// </summary>
+        /// <returns>The error report  of this action. </returns>
         public ErrorReport cancelAddNewImagesThread()
         {
             return _photoBombDatabase.cancelAddNewImagesThread_backend();
         }
 
 
+        /// By Julian Nguyen
+        /// Edited: Julian Nguyen(5/7/13)
+        /// <summary>
+        /// This will get the current theme from the setting file. 
+        /// </summary>
+        /// <param name="currentTheme">The passback of the current theme</param>
+        /// <returns>The error report  of this action.</returns>
         public ReportStatus getCurrentTheme(out String currentTheme)
         {
             currentTheme = _settingsDatabase.getValue(Settings.CurrentThemeKey);
@@ -508,6 +513,13 @@ namespace SoftwareEng
             return ReportStatus.SUCCESS;
         }
 
+        /// By Julian Nguyen
+        /// Edited: Julian Nguyen(5/7/13)
+        /// <summary>
+        /// This will set the current theme from the gui to file.
+        /// </summary>
+        /// <param name="currentTheme">The current theme from the gui </param>
+        /// <returns>The error report  of this action.</returns>
         public ReportStatus setCurrentTheme(String currentTheme)
         {
             _settingsDatabase.setKeyValuePair(Settings.CurrentThemeKey, currentTheme);
@@ -517,10 +529,10 @@ namespace SoftwareEng
                 _settingsDatabase.saveToFile(_settingPath);
                 return ReportStatus.SUCCESS;
             }
-            catch(Exception) {
+            catch (Exception)
+            {
                 return ReportStatus.CANNNOT_SAVE_SETTINGS;
             }
-
         }
 
 
