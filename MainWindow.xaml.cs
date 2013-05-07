@@ -1196,10 +1196,10 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
-        private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
-        {
-            mainWindowDock.Height = 1;
-        }
+        //private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    mainWindowDock.Height = 1;
+        //}
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
@@ -1210,10 +1210,10 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
-        private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
-        {
-            mainWindowDock.Height = Double.NaN;
-        }
+        //private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    mainWindowDock.Height = Double.NaN;
+        //}
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
@@ -2166,10 +2166,10 @@ namespace SoftwareEng
 
         private void dockSizeChanged_EventHandler(object sender, SizeChangedEventArgs e)
         {
-            if (mainWindowDock.Height != 48)
-            {
-                return;
-            }
+            //if (mainWindowDock.Height != 48)
+            //{
+            //    return;
+            //}
         }
 
 
@@ -2455,22 +2455,12 @@ namespace SoftwareEng
 
         #region GrayscaleRElatedFunctions
 
-        public void guiConvertToGreyscale(ComplexPhotoData desiredImage, Guid albumGuid)
+        public void guiConvertToGreyscale(addNewPictures_callback guiGrayscaleCallback, ComplexPhotoData desiredImage, Guid albumGuid)
         {
-            _bombaDeFotos.addImageAsGrayscale(new addNewPictures_callback(temp_guiGrayscaleCallback), albumGuid, desiredImage.fullPath);
+            _bombaDeFotos.addImageAsGrayscale(guiGrayscaleCallback, albumGuid, desiredImage.fullPath);
         }
 
-        public void temp_guiGrayscaleCallback(ErrorReport isUseless, Guid albumGuid)
-        {
-            if (isUseless.reportStatus == ReportStatus.SUCCESS)
-            {
 
-            }
-            else
-            {
-                showErrorMessage("BAAAAAAAAAAAAAAAAAAAALLS!!!!!!!!!!!!!!: error "+ (isUseless.reportStatus.ToString()));
-            }
-        }
 
  
 

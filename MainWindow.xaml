@@ -574,7 +574,7 @@
                     -->
                 </ListBox>
 
-                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="48" Margin="0" Stroke="#00000000" VerticalAlignment="Bottom" Width="{Binding ActualWidth, ElementName=mainWindowDock, Mode=OneWay}" HorizontalAlignment="Center"/>
+                <Rectangle x:Name="dockHitBox" Fill="#00F4F4F5" Height="48" Margin="0" Stroke="#00000000" VerticalAlignment="Bottom"/>
                 <DockPanel x:Name="mainWindowDock" LastChildFill="False" Margin="0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{DynamicResource PhotoBomberDockBrush}" SizeChanged="dockSizeChanged_EventHandler">
                     <Button x:Name="addDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" Click="addAlbumDockButton_Click" ToolTip="Create An Album">
                         <Image x:Name="addDockButtonImage" Source="ImagesResources2012/action_add_album.png" Width="32" Height="32"/>

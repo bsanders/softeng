@@ -56,6 +56,6 @@ namespace SoftwareEng
     //
     public delegate void threadUpdateDelegate(int processed);
 
-    public delegate void greyScaleConverterDelegate(ComplexPhotoData imageToBeConverted, Guid inThisAlbum);
+    public delegate void greyScaleConverterDelegate(addNewPictures_callback returnAddress, ComplexPhotoData imageToBeConverted, Guid inThisAlbum);
     
 }

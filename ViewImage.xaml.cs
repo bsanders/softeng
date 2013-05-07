@@ -681,46 +681,55 @@ namespace SoftwareEng
 
         private void greyscaleDockButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindowScaleFunction(_currentPicture, _currentAlbum);
+            MainWindowScaleFunction(new addNewPictures_callback(temp_guiGrayscaleCallback), _currentPicture, _currentAlbum);
+
         }
 
 
-        private void convertImageToGreyScale()
+        public void temp_guiGrayscaleCallback(ErrorReport isUseless, Guid albumGuid)
         {
-            ;
+            if (isUseless.reportStatus == ReportStatus.SUCCESS)
+            {
+                _imageCollection.MoveCurrentToLast();
+
+                currentPicture = _imageCollection.CurrentItem as ComplexPhotoData;
+            }
+            else
+            {
+                ErrorWindow somethingWentWrong = new ErrorWindow("BAAAAAAAAAAAAAAAAAAAALLS!!!!!!!!!!!!!!: error " + (isUseless.reportStatus.ToString()));
+
+                somethingWentWrong.ShowDialog();
+            }
         }
     }
 
-    public class GreyScaleConverter
-    {
-        private BitmapImage _sourceImage;
-        private FormatConvertedBitmap _greyScaleImage;
+    //public class GreyScaleConverter
+    //{
+    //    private BitmapImage _sourceImage;
+    //    private FormatConvertedBitmap _greyScaleImage;
 
-        public GreyScaleConverter() { }
+    //    public GreyScaleConverter() { }
 
-        public void toGrayScale(String sourcePath)
-        {
-            _sourceImage = new BitmapImage();
-            _sourceImage.BeginInit();
+    //    public void toGrayScale(String sourcePath)
+    //    {
+    //        _sourceImage = new BitmapImage();
+    //        _sourceImage.BeginInit();
 
-            _sourceImage.UriSource = new Uri(@sourcePath, UriKind.Absolute);
+    //        _sourceImage.UriSource = new Uri(@sourcePath, UriKind.Absolute);
 
-            _sourceImage.EndInit();
+    //        _sourceImage.EndInit();
 
 
-            _greyScaleImage = new FormatConvertedBitmap();
+    //        _greyScaleImage = new FormatConvertedBitmap();
 
-            _greyScaleImage.BeginInit();
+    //        _greyScaleImage.BeginInit();
 
-            _greyScaleImage.Source = _sourceImage;
+    //        _greyScaleImage.Source = _sourceImage;
 
-            _greyScaleImage.DestinationFormat = PixelFormats.Gray32Float;
+    //        _greyScaleImage.DestinationFormat = PixelFormats.Gray32Float;
         
-        }
+    //    }
+    //}
 
 
-
-
-
-    }
 }
