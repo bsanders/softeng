@@ -56,12 +56,12 @@ namespace SoftwareEng
         // A handy shortcut to the settings class...
         static Properties.Settings Settings = Properties.Settings.Default;
 
+        // Tools of this class.
         private PhotoBomb _photoBombDatabase;
         private KeyValuePairDataBase _settingsDatabase;
         private ImageManipulation _imageManipulation;
 
-
-
+        // The path of the files of the database.
         static readonly private String _basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Settings.OrgName);
 
         static readonly private String _albumDatabasePath = Path.Combine(_basePath, Settings.AlbumXMLFile);
@@ -104,19 +104,23 @@ namespace SoftwareEng
         }
 
 
+        /// By: Julian Nguyen
+        /// Edited : Julian Nguyen(5/7/13)
         /// <summary>
-        /// 
+        /// This will load the settings from file.
         /// </summary>
         /// <param name="pathToKeyValue"></param>
         private ReportStatus loadsettingsDatabase(String pathToKeyValue)
         {
             try
             {
+                // Try to load the setting.
                 _settingsDatabase = new KeyValuePairDataBase(pathToKeyValue);
                 return ReportStatus.SUCCESS;
             }
             catch
             {
+                // Oh well, here's a new one.
                 _settingsDatabase = new KeyValuePairDataBase();
                 return ReportStatus.CANNNOT_LOAD_SETTINGS;
             }
@@ -408,23 +412,34 @@ namespace SoftwareEng
         }
 
 
+        /// By Julian Nguyen
+        /// Edited: Julian Nguyen(5/7/13)
         /// <summary>
-        /// 
+        /// This will take an image and grayscale it and then add it to the Database.
         /// </summary>
-        /// <param name="guiCallback"></param>
-        /// <param name="albumUID"></param>
-        /// <param name="imagePath"></param>
-        /// <param name="updateCallback"></param>
+        /// <param name="guiCallback">The call back to the gui.</param>
+        /// <param name="albumUID">The uid of the album.</param>
+        /// <param name="imagePath">The path to the image.</param>
         public void addImageAsGrayscale(addNewPictures_callback guiCallback, Guid albumUID, String imagePath)
         {
-
-            Bitmap image = _imageManipulation.LoadImageNoLock(imagePath);
-
-            Bitmap newGray = _imageManipulation.makeGrayscale(image);
-
-            String pathOfnewGray = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".jpg");
-
-            newGray.Save(pathOfnewGray);
+            String pathOfnewGray = String.Empty;
+            try
+            {
+                // Load the image into memory.
+                Bitmap image = _imageManipulation.LoadImageNoLock(imagePath);
+                // Grayscale the image in memory.
+                Bitmap newGray = _imageManipulation.makeGrayscale(image);
+                // Get a path for the image.
+                pathOfnewGray = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".jpg");
+                // Save the image.
+                newGray.Save(pathOfnewGray);
+            }
+            catch (Exception)
+            {
+                ErrorReport err = new ErrorReport();
+                err.reportStatus = ReportStatus.FAILURE;
+                guiCallback(err, albumUID);
+            }
 
             ErrorReport errReport = _photoBombDatabase.addNewImage(pathOfnewGray, ".jpg", albumUID);
             try

@@ -44,10 +44,6 @@ namespace SoftwareEng
         BAD_ALBUM_UID,
         BAD_IMAGE_UID
 
-
-
-
-
     } // End of ReportStatus.
 
     public class ErrorReport
