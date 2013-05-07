@@ -475,6 +475,7 @@
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="InvalidCommentFlash" x:Name="commentTextBoxErrorAnimation">
+            
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="commentTextBox">
                 <EasingColorKeyFrame KeyTime="0" Value="{StaticResource PhotoBomberErrorBorderColor}"/>
             </ColorAnimationUsingKeyFrames>
@@ -492,21 +493,26 @@
                     </EasingColorKeyFrame.EasingFunction>
                 </EasingColorKeyFrame>
             </ColorAnimationUsingKeyFrames>
+            
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderThickness)" Storyboard.TargetName="commentTextBox">
                 <EasingThicknessKeyFrame KeyTime="0" Value="3,2"/>
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="InvalidNameFlash">
-            <!---->
+
+            <!--
         	<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
         		<EasingColorKeyFrame KeyTime="0" Value="{StaticResource PhotoBomberErrorBorderColor}"/>
         	</ColorAnimationUsingKeyFrames>
+            
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
         		<EasingColorKeyFrame KeyTime="0" Value="Red"/>
         	</ColorAnimationUsingKeyFrames>
+            
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="nameTextBox">
         		<EasingColorKeyFrame KeyTime="0" Value="Red"/>
         	</ColorAnimationUsingKeyFrames>
+            -->
             <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="nameTextBox">
         		<EasingColorKeyFrame KeyTime="0" Value="White"/>
         		<EasingColorKeyFrame KeyTime="0:0:1" Value="{StaticResource PhotoBomberErrorBackground}">
@@ -515,6 +521,7 @@
         			</EasingColorKeyFrame.EasingFunction>
         		</EasingColorKeyFrame>
         	</ColorAnimationUsingKeyFrames>
+            
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderThickness)" Storyboard.TargetName="nameTextBox">
         		<EasingThicknessKeyFrame KeyTime="0" Value="3,2"/>
         	</ThicknessAnimationUsingKeyFrames>
@@ -627,7 +634,6 @@
                     </Button>
                     <!-- This button is only used to preserve spacing between the buttons
                                             <Menu x:Name="imageSortingButtonPlaceholder" IsMainMenu="True" Background="{DynamicResource PhotoBomberDockButtonBrush}" Width="48" Height="48" Visibility="Collapsed">
-
                     </Menu>
                     -->
                     <Button x:Name="blankDockButton" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="6,1" Width="48" Height="48" DockPanel.Dock="Left" IsEnabled="False" Visibility="Hidden" Background="{DynamicResource PhotoBomberDockButtonBrush}">

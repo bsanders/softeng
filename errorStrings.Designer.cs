@@ -133,7 +133,7 @@ namespace SoftwareEng {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PhotoBomber failed to import the Image(s)..
+        ///   Looks up a localized string similar to PhotoBomber failed to copythe Image(s). AHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!!!!!!!!.
         /// </summary>
         internal static string failedToPasteImages {
             get {

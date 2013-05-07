@@ -149,7 +149,7 @@
     <comment>used when removePictureFromAlbum returns a failure status</comment>
   </data>
   <data name="failedToPasteImages" xml:space="preserve">
-    <value>PhotoBomber failed to import the Image(s).</value>
+    <value>PhotoBomber failed to copythe Image(s). AHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!!!!!!!!</value>
   </data>
   <data name="getPhotosFailure" xml:space="preserve">
     <value>Failed to retrieve pictures in the album.</value>
