@@ -797,6 +797,8 @@ namespace SoftwareEng
         {
             ComplexPhotoData imageData = new ComplexPhotoData();
 
+            imageData.addedDate = DateTime.Now;
+
             // Compute the hash for this picture, and then check to make sure it is unique
             imageData.hash = util_getHashOfFile(photoUserPath);
             if (!util_isImageUniqueToAlbum(albumUID, ByteArrayToString(imageData.hash)))

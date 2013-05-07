@@ -259,10 +259,6 @@ namespace SoftwareEng
         }
 
 
-        public void newAlbumNode()
-        {
-        }
-
 
         public XElement newAlbumNode(Guid albumUID, int inAlbumThumbID, String thumbnailPath, String albumName)
         {
@@ -282,9 +278,7 @@ namespace SoftwareEng
                 new XElement("caption", imageCaption));
         }
 
-        public void newImageNode()
-        {
-        }
+ 
 
 
 
@@ -390,6 +384,8 @@ namespace SoftwareEng
                     albumImageNode.Element("name").Value = defaultPhotoName;
                 }
                 imageData.caption = albumImageNode.Element("caption").Value;
+
+                
             }
             catch (Exception)
             {
@@ -410,14 +406,16 @@ namespace SoftwareEng
         /// <returns></returns>
         private DateTime stringToDateTime(String sDate)
         {
-            DateTime date = DateTime.MinValue;
 
-            if (!DateTime.TryParse(sDate, out date))
+            try
+            {
+               return DateTime.ParseExact(sDate, "yyyy-MM-dd HH:mm tt", null);
+            } catch
             {
                 return DateTime.MinValue;
             }
 
-            return date;
+  
         }
 
         /// By: Bill Sanders
