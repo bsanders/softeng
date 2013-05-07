@@ -144,7 +144,7 @@ namespace SoftwareEng
                         _generator.Remove(childGeneratorPos, 1);
                         RemoveInternalChildRange(i, 1);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         continue;
                     }

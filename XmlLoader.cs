@@ -1,8 +1,8 @@
 ﻿/*
  * Change Log:
- * >>Julian Nguyen(4/29/13)
+ * Julian Nguyen(4/29/13)
  * This file was made with the class XmlLoader<T>
- * >>Julian Nguyen(4/23/13)
+ * Julian Nguyen(4/23/13)
  * A constructor was added.
  * All functions are now not static.
  * All functions are now generic and not the class.
@@ -33,6 +33,7 @@ namespace SoftwareEng
         /// </summary>
         public XmlLoader()
         {
+            // Do nothing.
         }
 
 
@@ -40,11 +41,11 @@ namespace SoftwareEng
         /// By Julian Nguyen
         /// Edited: Julian Nguyen(4/30/13)
         /// <summary>
-        /// 
+        /// Load a list from file.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="filePath"></param>
-        /// <param name="list"></param>
+        /// <typeparam name="T">The type to be loaded.</typeparam>
+        /// <param name="filePath">The path to file to loaded.</param>
+        /// <param name="list">The file will be loaded into this list.</param>
         public void loadToList<T>(String @filePath, out List<T> list)
         {
             list = null;
@@ -59,7 +60,7 @@ namespace SoftwareEng
             }
             catch
             {
-                throw;
+                throw; // Just pass it on.
             }
             finally
             {
@@ -73,15 +74,14 @@ namespace SoftwareEng
         /// By Julian Nguyen
         /// Edited: Julian Nguyen(4/23/13)
         /// <summary>
-        /// 
+        /// Will save the list to file.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="filePath"></param>
-        /// <param name="list"></param>
+        /// <typeparam name="T">The type that the list holds.</typeparam>
+        /// <param name="filePath">The path and name where the list will be saved.</param>
+        /// <param name="list">The list to be saved.</param>
         public void saveToFile<T>(String filePath, List<T> list)
         {
             TextWriter writeFileStream = null;
-
             try
             {
                 // Create a new file stream to write the serialized object to a file
@@ -91,7 +91,7 @@ namespace SoftwareEng
             }
             catch
             {
-                throw;
+                throw; // Just pass it on.
             }
             finally
             {

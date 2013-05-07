@@ -42,9 +42,6 @@ namespace SoftwareEng
             _UID = Guid.Empty;//-1;//indicates UID not set.
             _thumbnailPath = String.Empty;
             _thumbAlbumID = -1;
-
-            
-
         }
 
 
@@ -78,10 +75,7 @@ namespace SoftwareEng
                     OnPropertyChanged("albumName");
                 }
             }
-            get
-            {
-                return _albumName;
-            }
+            get { return _albumName; }
         }
 
         public Guid UID
@@ -95,18 +89,11 @@ namespace SoftwareEng
                     OnPropertyChanged("UID");
                 }
             }
-            get
-            {
-                return _UID;
-            }
+            get { return _UID; }
         }
 
         public string thumbnailPath
         {
-            get
-            {
-                return _thumbnailPath;
-            }
             set
             {
                 if (value != _thumbnailPath)
@@ -116,6 +103,7 @@ namespace SoftwareEng
                     OnPropertyChanged("thumbnailPath");
                 }
             }
+            get { return _thumbnailPath; }
         }
 
         public int thumbAlbumID
@@ -129,12 +117,8 @@ namespace SoftwareEng
                     OnPropertyChanged("thumbAlbumID");
                 }
             }
-            get
-            {
-                return _thumbAlbumID;
-            }
+            get { return _thumbAlbumID; }
         }
-
 
     } // End of SimpleAlbumData
 }

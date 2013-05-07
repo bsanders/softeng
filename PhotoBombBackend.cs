@@ -53,13 +53,11 @@ namespace SoftwareEng
         Properties.Settings Settings = Properties.Settings.Default;
 
         // Xml parsing utils.
-        private XmlHandler _xmlHandler;
-
-        private XmlDataBase _xmlDataBase;
-        private FileDataBase _fileDataBase;
-
         private PhotoBomb_Xml _photoBomb_xml;
 
+        private FileDataBase _fileDataBase;
+
+       
         //path to the images folder we put all the images.
         //tracked by the database.
         private string _imagelibraryDirPath;
@@ -94,8 +92,6 @@ namespace SoftwareEng
         /// </summary>
         public PhotoBomb()
         {
-            _xmlHandler = new XmlHandler();
-            _xmlDataBase = new XmlDataBase();
             _fileDataBase = new FileDataBase();
 
             _photoBomb_xml = new PhotoBomb_Xml();
@@ -137,8 +133,8 @@ namespace SoftwareEng
 
 
             // Try to open the databases. 
-            if (!_xmlHandler.loadXmlRootElement(_albumsXmlPath, out _albumsRootXml)
-                || !_xmlHandler.loadXmlRootElement(_imageXmlPath, out _imagesRootXml))
+            if (!_photoBomb_xml.loadXmlRootElement(_albumsXmlPath, out _albumsRootXml)
+                || !_photoBomb_xml.loadXmlRootElement(_imageXmlPath, out _imagesRootXml))
             {
                 setErrorReportToFAILURE("Failed to load the Album or Image xml.", ref errorReport);
             }
@@ -190,8 +186,8 @@ namespace SoftwareEng
 
             //Load the new databases into memory.
             // BS: These functions are being slated for merging together
-            _xmlHandler.loadXmlRootElement(_albumsXmlPath, out _albumsRootXml);
-            _xmlHandler.loadXmlRootElement(_albumsXmlPath, out _imagesRootXml);
+            _photoBomb_xml.loadXmlRootElement(_albumsXmlPath, out _albumsRootXml);
+            _photoBomb_xml.loadXmlRootElement(_albumsXmlPath, out _imagesRootXml);
             //util_openAlbumsXML(errorReport);
             //util_openImagesXML(errorReport);
 
