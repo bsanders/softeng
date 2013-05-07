@@ -27,17 +27,17 @@
 
     <LinearGradientBrush x:Key="PhotoBomberDockBrush" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="#C7000000" Offset="1"/>
-        <GradientStop Color="#C7383838"/>
-        <GradientStop Color="#C7A7A7A7" Offset="0.581" />
-        <GradientStop Color="#C7A7A7A7" Offset="0.372" />
+        <GradientStop Color="#C7000000"/>
+        <GradientStop Color="#C6363636" Offset="0.581" />
+        <GradientStop Color="#C60F0F0F" Offset="0.372" />
     </LinearGradientBrush>
 
 
     <LinearGradientBrush x:Key="PhotoBomberDialogBrush" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-        <GradientStop Color="#FF979797" Offset="0.871"/>
-        <GradientStop Color="#FF979797" Offset="0.081"/>
-        <GradientStop Color="#FF343434"/>
-        <GradientStop Color="Black" Offset="1"/>
+        <GradientStop Color="#FF363636" Offset="0.871"/>
+        <GradientStop Color="#FF363636" Offset="0.081"/>
+        <GradientStop Color="#FF0F0F0F"/>
+        <GradientStop Color="#FF0F0F0F" Offset="1"/>
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="PhotoBomberProgressBarBrush" EndPoint="1,0" StartPoint="0,0">
@@ -48,14 +48,14 @@
 
 
     <LinearGradientBrush x:Key="PhotoBomberTitleBarBrush" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-        <GradientStop Color="#FF979797" Offset="0.641"/>
-        <GradientStop Color="#FF979797" Offset="0.249"/>
-        <GradientStop Color="#FF343434"/>
+        <GradientStop Color="#FF363636" Offset="0.77"/>
+        <GradientStop Color="#FF363636" Offset="0.249"/>
+        <GradientStop Color="Black"/>
         <GradientStop Color="Black" Offset="1"/>
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="PhotoBomber_A_FontBrush" Color="#FF1C2327"></SolidColorBrush>
-    <Color x:Key="PhotoBomberLightFontColor">#FFE8E8E8</Color>
+    <Color x:Key="PhotoBomberLightFontColor">#FFE99862</Color>
 
 
     <Color x:Key="PhotobomberListBackgroundColor">#FF1C2327</Color>
@@ -294,6 +294,7 @@
 
     <Style TargetType="ToolTip">
         <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur"/>
+        <Setter Property="FontSize" Value="14" />
     </Style>
 
     <Style x:Key="NuclearButtonFocusVisual">
@@ -1975,6 +1976,7 @@
 
     <Style TargetType="{x:Type Menu}">
         <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur"/>
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />

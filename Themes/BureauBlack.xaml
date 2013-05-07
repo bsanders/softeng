@@ -60,7 +60,7 @@
     <Color x:Key="PhotoBomberAlbumTileColor">#A81C2327</Color>
     <Color x:Key="PhotoBomberErrorBorderColor">Red</Color>
     <Color x:Key="PhotoBomberErrorBackground">#FFFBC5C5</Color>
-    <Color x:Key="PhotoBomberLightFontColor">#FFE8E8E8</Color>
+    <Color x:Key="PhotoBomberLightFontColor">Black</Color>
     <Color x:Key="PhotoBomberDarkFontColor">#FF1C2327</Color>
     <Color x:Key="PhotoBomberSemiTransparentBackground">#A81C2327</Color>
 
@@ -2344,8 +2344,11 @@
     </Style>
 
     <Style TargetType="{x:Type Menu}">
+        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur"/>
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
+            
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Menu}">
                     <Grid>
@@ -3880,7 +3883,7 @@
     <Style TargetType="ToolTip">
         <Setter Property="Background" Value="#33000000" />
         <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Padding" Value="3,0,3,0" />
         <Setter Property="Template">

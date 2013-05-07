@@ -450,7 +450,8 @@
         </Style>
 
         <Style TargetType="{x:Type Button}" BasedOn="{x:Null}">
-            <Setter Property="Foreground" Value="{StaticResource ButtonFontColor}"/>
+        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur"/>
+        <Setter Property="Foreground" Value="{StaticResource ButtonFontColor}"/>
             <Setter Property="Padding" Value="3"/>
             <Setter Property="FocusVisualStyle" Value="{DynamicResource NuclearButtonFocusVisual}"/>
 <Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
@@ -2576,7 +2577,9 @@
         </Style>
 
         <Style TargetType="{x:Type Menu}">
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur"/>
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="Foreground" Value="{StaticResource OutsideFontColor}"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -4062,7 +4065,9 @@
         </Style>
 
         <Style TargetType="ToolTip">
-            <Setter Property="Foreground" Value="#FF525552"/>
+        <Setter Property="FontFamily" Value="/PhotoBomber;component/Fonts/#monofur"/>
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="#FF525552"/>
             <Setter Property="Padding" Value="3,0,3,0"/>
             <Setter Property="Template">
                 <Setter.Value>
