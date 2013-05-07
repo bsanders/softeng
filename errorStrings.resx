@@ -168,7 +168,7 @@
     <comment>used when album name is not unique</comment>
   </data>
   <data name="invalidComment" xml:space="preserve">
-    <value>Comments can only contain letters, numbers, spaces, and must have at least one letter or number.</value>
+    <value>Comments can only contain letters, numbers, spaces, and must be no longer than 140 characters.</value>
     <comment>used when the comment does not validate.</comment>
   </data>
   <data name="invalidImageNameCharacter" xml:space="preserve">
