@@ -2431,7 +2431,7 @@ namespace SoftwareEng
             }
             catch (Exception)
             {
-                showErrorMessage("BAAAAAAAAAAAAAAAAAAAAAAAAAAAAALLLLS!!!!");
+                showErrorMessage("We're going to DIIEEEEEE-bleh");
                 program.setTheme("/Themes/ExpressionDark.xaml");
             }
         }
@@ -2446,7 +2446,7 @@ namespace SoftwareEng
 
             if (success != ReportStatus.SUCCESS)
             {
-                showErrorMessage("BAAAAAAAAAAAAAAAAAAAAAAAAAAAAALLLLS!!!!");
+                showErrorMessage("We're going to DIIEEEEEE-bleh");
             }
         }
 
