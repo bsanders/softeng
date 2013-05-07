@@ -312,8 +312,19 @@ namespace SoftwareEng
                 // If the text doesn't validate, display an error...
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
-                
-                nameTextBoxErrorAnimation.Begin();
+
+                for (int i = 0; i < 10; i++)
+                {
+                    try
+                    {
+                        nameTextBoxErrorAnimation.Begin();
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        ;
+                    }
+                }
 
                 handleNameErrorPopup(true, errorStrings.invalidAlbumNameCharacter);
                 //showErrorMessage("This is a temporary error check message box failed at guiValidateAlbumName");//temporary as fuuu
@@ -345,7 +356,18 @@ namespace SoftwareEng
                 //this is how to call a storyboard defined in resources from the code
                 //this storyboard is for the name box
                 Storyboard nameTextBoxErrorAnimation = this.FindResource("InvalidNameFlash") as Storyboard;
-                nameTextBoxErrorAnimation.Begin();
+                for (int i = 0; i < 10; i++)
+                {
+                    try
+                    {
+                        nameTextBoxErrorAnimation.Begin();
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        ;
+                    }
+                }
 
                 handleNameErrorPopup(true, errorStrings.invalidAlbumNameUnique);
                 //apply error template to the text box
@@ -2366,7 +2388,6 @@ namespace SoftwareEng
             {
                 program.setTheme("/Themes/ExpressionDark.xaml");
             }
-            
         }
 
         private void gui_setTheme(String appliedTheme)
