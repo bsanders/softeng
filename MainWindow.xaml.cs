@@ -1284,6 +1284,29 @@ namespace SoftwareEng
             ++progressBar.Value;
         }
 
+
+
+        /**************************************************************************************************************************
+         * Created By: Alejandro Sosa
+         * Created Date:
+        **************************************************************************************************************************/
+        private void dockHitBox_MouseLeave(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (dockHitBox.IsMouseDirectlyOver == true && wasMouseWithinDock == false)
+            {
+                try
+                {
+                    Storyboard dockDisappearAnimation = this.FindResource("DockDisappear") as Storyboard;
+                    dockDisappearAnimation.Begin();
+                }
+                catch (Exception)
+                {
+                    ;
+                }
+            }
+        }
+
+
         /**************************************************************************************************************************
          * Created By: Alejandro Sosa
          * Created Date:
@@ -1344,14 +1367,16 @@ namespace SoftwareEng
 
             try
             {
+                Storyboard dockAnimation;
                 if (wasMouseWithinDockHitTest == true)
                 {
-                    Storyboard dockDisappearAnimation = this.FindResource("DockDisappear") as Storyboard;
-                    dockDisappearAnimation.Stop();
+                    dockAnimation = this.FindResource("DockDisappear") as Storyboard;
+                    dockAnimation.Stop();
+                    
                 }
-                Storyboard dockAppearAnimation = this.FindResource("DockAppear") as Storyboard;
+                dockAnimation = this.FindResource("DockAppear") as Storyboard;
 
-                dockAppearAnimation.Begin();
+                dockAnimation.Begin();
             }
             catch (Exception)
             {
@@ -2637,6 +2662,8 @@ namespace SoftwareEng
 
 
         #endregion
+
+
 
 
 
