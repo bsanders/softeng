@@ -584,7 +584,7 @@ namespace SoftwareEng
             if (_clipboardOfPhotos.Count == 0)
             {
                 // Nope, just ignore the action.
-                showErrorMessage(errorStrings.failedToPasteImages);
+                //showErrorMessage(errorStrings.failedToPasteImages);
                 return;
             }
 
@@ -596,7 +596,7 @@ namespace SoftwareEng
                 // library view
                 if (mainWindowAlbumList.SelectedItem == null)
                 {
-                    showErrorMessage(errorStrings.copyToClipboardWarning);
+                    //showErrorMessage(errorStrings.copyToClipboardWarning);
                     return;
                 }
 
@@ -671,7 +671,7 @@ namespace SoftwareEng
             {
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
-                showErrorMessage(errorStrings.deleteAlbumFailure); //super temporary
+                //showErrorMessage(errorStrings.deleteAlbumFailure); //super temporary
                 _bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
@@ -1196,10 +1196,10 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
-        //private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
-        //{
-        //    mainWindowDock.Height = 1;
-        //}
+        private void mainWindowDock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            mainWindowDock.Height = 1;
+        }
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
@@ -1210,10 +1210,10 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
-        //private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    mainWindowDock.Height = Double.NaN;
-        //}
+        private void dockHitBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            mainWindowDock.Height = Double.NaN;
+        }
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
@@ -1272,7 +1272,7 @@ namespace SoftwareEng
 
         /**************************************************************************************************************************
         **************************************************************************************************************************/
-        private void DockPanel_MouseDown_1(object sender, MouseButtonEventArgs e)
+        private void Titlebar_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {

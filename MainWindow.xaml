@@ -431,13 +431,26 @@
         </DataTemplate>
         <Storyboard x:Key="DockAppear">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
-                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                <DiscreteObjectKeyFrame KeyTime="0">
+                	<DiscreteObjectKeyFrame.Value>
+                		<Visibility>Visible</Visibility>
+                	</DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="mainWindowDock">
+            	<EasingDoubleKeyFrame KeyTime="0"/>
+            	<EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="DockDisappear">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="mainWindowDock">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Hidden}"/>
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+            	<DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Hidden}"/>
             </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="mainWindowDock">
+            	<EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="InvalidNameFlash">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderThickness)" Storyboard.TargetName="nameTextBox">
@@ -491,19 +504,6 @@
 
 
     </Window.Resources>
-    <Window.Triggers>
-        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="dockHitBox">
-            <BeginStoryboard x:Name="DockAppear_BeginStoryboard1" Storyboard="{StaticResource DockAppear}"/>
-
-        </EventTrigger>
-        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="mainWindowDock">
-            <BeginStoryboard x:Name="DockDisappear_BeginStoryboard" Storyboard="{StaticResource DockDisappear}"/>
-
-        </EventTrigger>
-        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="mainWindowDock">
-            <SkipStoryboardToFill BeginStoryboardName="DockAppear_BeginStoryboard1"/>
-        </EventTrigger>
-    </Window.Triggers>
 
 
     <Grid>
@@ -755,7 +755,7 @@
                 <Image Width="25" Height="25" Source="ImagesResources2012/action_cancel.png" Stretch="Fill"/>
             </Button>
         </SoftwareEngControls:customRadialPanel>
-        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="DockPanel_MouseDown_1" Background="{DynamicResource PhotoBomberTitleBarBrush}" Height="36">
+        <DockPanel x:Name="applicationDockBar" LastChildFill="False" VerticalAlignment="Top" MouseDown="Titlebar_DoubleClick" Background="{DynamicResource PhotoBomberTitleBarBrush}" Height="36">
 
             <!--
             <Menu x:Name="PhotoBomberMenuButtonPlaceholder" IsMainMenu="True" IsTabStop="False" Focusable="False" Margin="2,2,0,0" BorderBrush="#FFE0E0E0" BorderThickness="1">
@@ -781,6 +781,8 @@
             -->
 
 
+            
+            
 
 
             <!-- Not sure how to set the content of this label dynamically from settings file -->
@@ -803,6 +805,10 @@
 
 
         </DockPanel>
+
+
+
+
 
         <Menu BorderBrush="#00333333" Foreground="#00000000" Width="25" Height="25" Margin="8,8,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
             <MenuItem x:Name="PhotoBomberMenu" Padding="0" ToolTip="MAIN MENU!!!" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.IsSharedSizeScope="False" Margin="-7,0,0,0" Width="35" IsHitTestVisible="True" Height="30" Background="#00000000">
