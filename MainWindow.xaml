@@ -839,7 +839,7 @@
                 </MenuItem.Icon>
                 <MenuItem x:Name="themeParentMenu" Header="Themes" IsHitTestVisible="True">
                     <MenuItem x:Name="bureauBlackThemeMenuItem" Header="Bureau Black" IsCheckable="True" Click="bureauBlackThemeMenuItem_CheckToggle"/>
-                    <MenuItem x:Name="bureauBlueThemeMenuItem" Header="Beaureu Blue" IsCheckable="True" Click="bureauBlueThemeMenuItem_CheckToggle"/>
+                    <MenuItem x:Name="bureauBlueThemeMenuItem" Header="Bureau Blue" IsCheckable="True" Click="bureauBlueThemeMenuItem_CheckToggle"/>
                     <MenuItem x:Name="expressionDarkThemeMenuItem" Header="Expression Dark" IsCheckable="True" Click="expressionDarkThemeMenuItem_CheckToggle"/>
                     <MenuItem x:Name="expressionLightThemeMenuItem" Header="Expression Light" IsCheckable="True" Click="expressionLightThemeMenuItem_CheckToggle"/>
                     <!--
