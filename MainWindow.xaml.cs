@@ -1284,6 +1284,31 @@ namespace SoftwareEng
             ++progressBar.Value;
         }
 
+
+
+        /**************************************************************************************************************************
+         * Created By: Alejandro Sosa
+         * Created Date:
+        **************************************************************************************************************************/
+        /*
+        private void dockHitBox_MouseLeave(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (dockHitBox.IsMouseDirectlyOver == true && isMousenDock == false)
+            {
+                try
+                {
+                    Storyboard dockDisappearAnimation = this.FindResource("DockDisappear") as Storyboard;
+                    dockDisappearAnimation.Begin();
+                }
+                catch (Exception)
+                {
+                    ;
+                }
+            }
+        }
+         */
+
+
         /**************************************************************************************************************************
          * Created By: Alejandro Sosa
          * Created Date:
@@ -1343,6 +1368,7 @@ namespace SoftwareEng
             {
                 Storyboard dockAppearAnimation = this.FindResource("DockAppear") as Storyboard;
                 dockAppearAnimation.Begin();
+
             }
             catch (Exception) { }
         }
