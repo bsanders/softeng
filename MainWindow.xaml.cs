@@ -2425,13 +2425,9 @@ namespace SoftwareEng
             {
                 sortByThis = "addedDate";
             }
-            //else if (equipmentManufacturerMenuItem.IsChecked == true)
-            //{
-            //    sortByThis = "equipmentManufacturer";
-            //}
             else if (equipmentModelMenuItem.IsChecked == true)
             {
-                sortByThis = "equipmentModel";
+                sortByThis = "equipmentManufacturer";
             }
             else
             {
