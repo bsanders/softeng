@@ -4,11 +4,18 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace SoftwareEng
 {
     class PhotoBomb_Xml
     {
+
+        private static void foo()
+        {
+            
+        }
+
         // TODO: What are you doing? change this. 
         private Properties.Settings Settings = Properties.Settings.Default;
 
@@ -404,18 +411,17 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="sDate"></param>
         /// <returns></returns>
-        private DateTime stringToDateTime(String sDate)
+        public DateTime stringToDateTime(String sDate)
         {
-
             try
             {
-               return DateTime.ParseExact(sDate, "yyyy-MM-dd HH:mm tt", null);
+                var ci = new CultureInfo("en-US");
+
+                return DateTime.ParseExact(sDate, "yyyy-MM-dd", ci);
             } catch
             {
                 return DateTime.MinValue;
-            }
-
-  
+            }  
         }
 
         /// By: Bill Sanders

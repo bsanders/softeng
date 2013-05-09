@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace SoftwareEng
 {
@@ -33,7 +34,12 @@ namespace SoftwareEng
         private int _refCount;
 
         private DateTime _addedDate;
+        private String _addedDate_s;
+
         private DateTime _takenDate;
+        private String _takenDate_s;
+
+
         private String _equipmentManufacturer;
         private String _equipmentModel;
 
@@ -289,6 +295,7 @@ namespace SoftwareEng
                 if (!_takenDate.Equals(value))
                 {
                     _takenDate = value;
+                    _takenDate_s = value.ToString("MM/dd/yyyy");
                     OnPropertyChanged("takenDate");
                 }
             }
@@ -326,13 +333,24 @@ namespace SoftwareEng
         {
             set
             {
-                if (_addedDate.Equals(value))
+                if (!_addedDate.Equals(value))
                 {
                     _addedDate = value;
+                    _addedDate_s = value.ToString("MM/dd/yyyy");
                     OnPropertyChanged("addedDate");
                 }
             }
             get { return _addedDate; }
+        }
+
+        public String AddedDate_s
+        {
+            get { return _addedDate_s; }
+        }
+
+        public String TakenDate_s
+        {
+            get { return _takenDate_s; }
         }
 
     } // End of ComplexPhotoData. 

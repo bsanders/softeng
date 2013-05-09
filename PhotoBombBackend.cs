@@ -740,6 +740,7 @@ namespace SoftwareEng
                 imageData.UID = (int)imageNode.Attribute("uid");
                 imageData.refCount = (int)imageNode.Attribute("refCount");
                 imageData.fullPath = (string)imageNode.Element("filePath").Value;
+                imageData.addedDate = _photoBomb_xml.stringToDateTime(imageNode.Element("dateAdded").Value.ToString());
             }
             catch
             {

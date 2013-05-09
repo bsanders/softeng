@@ -57,7 +57,7 @@
                         <SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock Text="{Binding addedDate}" Height="12.02" HorizontalAlignment="Stretch" Margin="74,0,3,0" x:Name="dateAddedLabel" VerticalAlignment="Top" TextWrapping="Wrap" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Normal" Grid.Row="1" >
+                <TextBlock Text="{Binding AddedDate_s}" Height="12.02" HorizontalAlignment="Stretch" Margin="74,0,3,0" x:Name="dateAddedLabel" VerticalAlignment="Top" TextWrapping="Wrap" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Normal" Grid.Row="1" >
                 	<TextBlock.Foreground>
                 		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                 	</TextBlock.Foreground>
@@ -65,7 +65,7 @@
                 <TextBlock Height="12.02" HorizontalAlignment="Left" Margin="3,2.017,0,0" x:Name="DateTakenLine" VerticalAlignment="Top" Grid.Row="2" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Normal" Width="66" ><TextBlock.Foreground>
                 		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                 	</TextBlock.Foreground><Run Text="Date Taken:"/></TextBlock>
-                <TextBlock Text="{Binding takenDate}" Height="12.02" HorizontalAlignment="Stretch" Margin="74,2.018,3,0" x:Name="dateTakenLabel" VerticalAlignment="Top" TextWrapping="Wrap" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Normal" Grid.Row="2" >
+                <TextBlock Text="{Binding TakenDate_s}" Height="12.02" HorizontalAlignment="Stretch" Margin="74,2.018,3,0" x:Name="dateTakenLabel" VerticalAlignment="Top" TextWrapping="Wrap" FontFamily="/PhotoBomber;component/Fonts/#monofur" FontWeight="Normal" Grid.Row="2" >
                 	<TextBlock.Foreground>
                 		<SolidColorBrush Color="{DynamicResource PhotoBomberLightFontColor}"/>
                 	</TextBlock.Foreground>
