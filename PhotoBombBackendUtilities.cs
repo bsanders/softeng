@@ -158,7 +158,7 @@ namespace SoftwareEng
                 new XAttribute("refCount", newPictureData.refCount),
                 new XElement("filePath", new XAttribute("extension", newPictureData.extension), newPictureData.fullPath),
                 new XElement("lgThumbPath", newPictureData.lgThumbPath),
-                new XElement("dateAdded", DateTime.Today.ToString())
+                new XElement("dateAdded", newPictureData.addedDate.ToString("yyyy-MM-dd"))
                 );
 
             //add to the database (in memory, not on disk).
@@ -213,11 +213,11 @@ namespace SoftwareEng
             }
 
              //construct the object we will be adding to the album.
-            XElement newImageNode = _photoBomb_xml.newAlbumImageNode(newImage.idInAlbum, ByteArrayToString(newImage.hash), nameInAlbum, newImage.caption);
+            XElement newAlbumImageNode = _photoBomb_xml.newAlbumImageNode(newImage.idInAlbum, ByteArrayToString(newImage.hash), nameInAlbum, newImage.caption);
 
   
             // Now add it to the albums database in memory
-            specificAlbum.Element("albumPhotos").Add(newImageNode);
+            specificAlbum.Element("albumPhotos").Add(newAlbumImageNode);
         }
 
 
@@ -623,25 +623,8 @@ namespace SoftwareEng
 
 
 
-        /// By: Julian Nguyen
-        /// Edited Julian Nguyen(5/7/13)
-        /// <summary>
-        /// Will take a time in String form and return a datetime.
-        /// </summary>
-        /// <param name="sDate"></param>
-        /// <returns></returns>
-        public DateTime stringToDateTime(String sDate)
-        {
 
-            DateTime date = DateTime.MinValue;
-
-            if (!DateTime.TryParse(sDate, out date))
-            {
-                return DateTime.MinValue;
-            }
-
-            return date;
-        }
+       
 
 
 

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="addFileDialogueFilter" xml:space="preserve">
-    <value>Jpeg images|*.jpg;*.jpeg;*.jpe;*.jfif;</value>
+    <value>Images|*.jpg;*.jpeg;*.jpe;*.jfif;*.png;</value>
     <comment>filter expression for the file browser dialogue</comment>
   </data>
   <data name="albumValidationRegex" xml:space="preserve">

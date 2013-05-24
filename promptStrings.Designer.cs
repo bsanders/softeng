@@ -61,7 +61,7 @@ namespace SoftwareEng {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Jpeg images|*.jpg;*.jpeg;*.jpe;*.jfif;.
+        ///   Looks up a localized string similar to Images|*.jpg;*.jpeg;*.jpe;*.jfif;*.png;.
         /// </summary>
         public static string addFileDialogueFilter {
             get {

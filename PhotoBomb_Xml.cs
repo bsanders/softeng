@@ -4,11 +4,18 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace SoftwareEng
 {
     class PhotoBomb_Xml
     {
+
+        private static void foo()
+        {
+            
+        }
+
         // TODO: What are you doing? change this. 
         private Properties.Settings Settings = Properties.Settings.Default;
 
@@ -259,10 +266,6 @@ namespace SoftwareEng
         }
 
 
-        public void newAlbumNode()
-        {
-        }
-
 
         public XElement newAlbumNode(Guid albumUID, int inAlbumThumbID, String thumbnailPath, String albumName)
         {
@@ -282,9 +285,7 @@ namespace SoftwareEng
                 new XElement("caption", imageCaption));
         }
 
-        public void newImageNode()
-        {
-        }
+ 
 
 
 
@@ -390,6 +391,8 @@ namespace SoftwareEng
                     albumImageNode.Element("name").Value = defaultPhotoName;
                 }
                 imageData.caption = albumImageNode.Element("caption").Value;
+
+                
             }
             catch (Exception)
             {
@@ -408,16 +411,17 @@ namespace SoftwareEng
         /// </summary>
         /// <param name="sDate"></param>
         /// <returns></returns>
-        private DateTime stringToDateTime(String sDate)
+        public DateTime stringToDateTime(String sDate)
         {
-            DateTime date = DateTime.MinValue;
+            try
+            {
+                var ci = new CultureInfo("en-US");
 
-            if (!DateTime.TryParse(sDate, out date))
+                return DateTime.ParseExact(sDate, "yyyy-MM-dd", ci);
+            } catch
             {
                 return DateTime.MinValue;
-            }
-
-            return date;
+            }  
         }
 
         /// By: Bill Sanders

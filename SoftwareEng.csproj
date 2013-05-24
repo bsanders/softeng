@@ -113,6 +113,11 @@
     <Reference Include="Xceed.Wpf.Toolkit, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="database\AlbumsDatabase.cs" />
+    <Compile Include="database\data\AlbumData.cs" />
+    <Compile Include="database\data\AlbumImageData.cs" />
+    <Compile Include="database\data\ImageData.cs" />
+    <Compile Include="database\ImagesDatabase.cs" />
     <Compile Include="ImageManipulation.cs" />
     <Compile Include="KeyValuePairDataBase.cs" />
     <Compile Include="PhotoBomb_Xml.cs" />
@@ -310,6 +315,9 @@
     <Resource Include="ImagesResources2012\action_add_album.png" />
     <Resource Include="ImagesResources2012\action_add_image.png" />
     <Resource Include="ImagesResources2012\action_sort.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImagesResources2012\StatusAnnotations_Critical_32xLG.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
