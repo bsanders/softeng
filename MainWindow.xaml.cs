@@ -127,7 +127,7 @@ namespace SoftwareEng
         }
 
         //--didn't know what to call it, so I named it the literal spanish translation
-        public SoftwareEng.PhotoBomb_Controller _bombaDeFotos;
+        public SoftwareEng.PhotoBomberController masterAndCommander;
 
         //--stores the albumImageList index of the default image for albums
         private const short _defaultAlbumImageListIndex = 0;
@@ -167,8 +167,8 @@ namespace SoftwareEng
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Settings.OrgName);
 
-            _bombaDeFotos = new PhotoBomb_Controller();
-            _bombaDeFotos.init(guiConstructorCallback,
+            masterAndCommander = new PhotoBomberController();
+            masterAndCommander.init(guiConstructorCallback,
                 System.IO.Path.Combine(basePath, Settings.AlbumXMLFile),
                 System.IO.Path.Combine(basePath, Settings.PhotoXMLFile),
                 System.IO.Path.Combine(basePath, Settings.PhotoLibraryName));
@@ -202,7 +202,7 @@ namespace SoftwareEng
             if (status.reportStatus != ReportStatus.SUCCESS)
             {
                 //showErrorMessage("Failed at guiConstructorCallback"); //super temporary
-                _bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
+                masterAndCommander.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
@@ -219,7 +219,7 @@ namespace SoftwareEng
             if (status.reportStatus != ReportStatus.SUCCESS)
             {
                 //showErrorMessage(errorStrings.rebuildBackendFailure); //super temporary
-                _bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
+                masterAndCommander.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
@@ -235,7 +235,7 @@ namespace SoftwareEng
         {
             if (refreshView == true)
             {
-                _bombaDeFotos.getAllAlbums(new getAllAlbumNames_callback(guiAlbumsRetrieved));
+                masterAndCommander.getAllAlbums(new getAllAlbumNames_callback(guiAlbumsRetrieved));
             }
         }
 
@@ -344,7 +344,7 @@ namespace SoftwareEng
             // Otherwise the text was good, but still might not be unique.
             // Let's check Library vs Album check again...
             //check to see if the album name is unique in the program
-            _bombaDeFotos.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), nameTextBox.Text);
+            masterAndCommander.checkIfAlbumNameIsUnique(new generic_callback(guiValidateAlbumName_Callback), nameTextBox.Text);
         }
 
         /**************************************************************************************************************************
@@ -463,7 +463,7 @@ namespace SoftwareEng
             }
             // Otherwise the text was good, but still might not be unique.
             //check to see if the photo name is unique in the program
-            _bombaDeFotos.isImageNameUnique(
+            masterAndCommander.isImageNameUnique(
                 new generic_callback(guiValidatePhotoName_Callback),
                 photoNameTextBox.Text,
                 _currentAlbumUID);
@@ -543,7 +543,7 @@ namespace SoftwareEng
 
             newAlbum.albumName = albumName;
 
-            _bombaDeFotos.addNewAlbum(new generic_callback(guiCreateNewAlbum_Callback), newAlbum);
+            masterAndCommander.addNewAlbum(new generic_callback(guiCreateNewAlbum_Callback), newAlbum);
         }
 
         /**************************************************************************************************************************
@@ -564,7 +564,7 @@ namespace SoftwareEng
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
                 showErrorMessage(errorStrings.addAlbumFailure); //super temporary
-                _bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
+                masterAndCommander.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
@@ -631,7 +631,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                _bombaDeFotos.setImageCaption(new generic_callback(guiChangePhotoCaption_Callback), _currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
+                masterAndCommander.setImageCaption(new generic_callback(guiChangePhotoCaption_Callback), _currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, caption);
             }
         }
 
@@ -718,7 +718,7 @@ namespace SoftwareEng
 
             //pass all the files names to a backend function call to start adding the files.
             // sneakily reuse the guiImportPhotos_Callback....
-            _bombaDeFotos.addExistingImagesToAlbum(
+            masterAndCommander.addExistingImagesToAlbum(
                 new addNewPictures_callback(guiImportPhotos_Callback),
                 _clipboardOfPhotos,
                 albumUID);
@@ -754,7 +754,7 @@ namespace SoftwareEng
                     _clipboardAlbumSrcID = Guid.Empty;
                 }
 
-                _bombaDeFotos.removeAlbum(new generic_callback(guiDeleteSelectedAlbum_Callback), albumToDelete.UID);
+                masterAndCommander.removeAlbum(new generic_callback(guiDeleteSelectedAlbum_Callback), albumToDelete.UID);
             }
         }
 
@@ -776,7 +776,7 @@ namespace SoftwareEng
                 //something really bad happened
                 //notify the user, rebuild the database and consolidate all photographs into a single backup album
                 //showErrorMessage(errorStrings.deleteAlbumFailure); //super temporary
-                _bombaDeFotos.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
+                masterAndCommander.rebuildBackendOnFilesystem(new generic_callback(rebuildBackend_Callback));
             }
         }
 
@@ -801,7 +801,7 @@ namespace SoftwareEng
                 _currentAlbumUID = currentAlbumData.UID;
                 // Set the app's titlebar to display the app name and the album name
                 this.appTitleBarLabel.Content = "PhotoBomber - " + currentAlbumData.albumName;
-                _bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), _currentAlbumUID);
+                masterAndCommander.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiEnterAlbumView_Callback), _currentAlbumUID);
             }
         }
 
@@ -975,7 +975,7 @@ namespace SoftwareEng
 
                 //pass all the files names to a backend function call to start adding the files.
                 //fix the function parameters before releasing.
-                _bombaDeFotos.addNewImages(new addNewPictures_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, _currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1);
+                masterAndCommander.addNewImages(new addNewPictures_callback(guiImportPhotos_Callback), new List<string>(photoDialogue.FileNames), extensions, _currentAlbumUID, null, new ProgressChangedEventHandler(guiUpdateProgressBar_Callback), 1);
             }
         }
 
@@ -1015,7 +1015,7 @@ namespace SoftwareEng
                 //if we are in the album we are importing photos too then get all the photos and refresh the view
                 if (_currentAlbumUID == albumUID)
                 {
-                    _bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), _currentAlbumUID);
+                    masterAndCommander.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), _currentAlbumUID);
                 }
             }
             else
@@ -1044,7 +1044,7 @@ namespace SoftwareEng
                 //if we are in the album we are importing photos too then get all the photos and refresh the view
                 if (_currentAlbumUID == albumUID)
                 {
-                    _bombaDeFotos.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), _currentAlbumUID);
+                    masterAndCommander.getAllImagesInAlbum(new getAllPhotosInAlbum_callback(guiImportPhotosRefreshView_Callback), _currentAlbumUID);
                 }
             }
         }
@@ -1100,7 +1100,7 @@ namespace SoftwareEng
                     _clipboardOfPhotos.RemoveAll(p => p.hash == photo.hash);
                 }
 
-                _bombaDeFotos.removeImageFromAlbum(
+                masterAndCommander.removeImageFromAlbum(
                     new generic_callback(guiDeleteSelectedPhoto_Callback),
                     photo.idInAlbum,
                     _currentAlbumUID);
@@ -1120,7 +1120,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                _bombaDeFotos.setAlbumName(new generic_callback(guiRenameSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID, albumName);
+                masterAndCommander.setAlbumName(new generic_callback(guiRenameSelectedAlbum_Callback), ((SimpleAlbumData)mainWindowAlbumList.SelectedItem).UID, albumName);
             }
         }
 
@@ -1156,7 +1156,7 @@ namespace SoftwareEng
         {
             if (mainWindowAlbumList.SelectedItem != null)
             {
-                _bombaDeFotos.setImageName(new generic_callback(guiRenameSelectedPhoto_Callback), _currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, newName);
+                masterAndCommander.setImageName(new generic_callback(guiRenameSelectedPhoto_Callback), _currentAlbumUID, ((ComplexPhotoData)mainWindowAlbumList.SelectedItem).idInAlbum, newName);
             }
         }
 
@@ -1207,7 +1207,7 @@ namespace SoftwareEng
         /// </summary>
         private void guiCancelImport()
         {
-            ErrorReport error = _bombaDeFotos.cancelAddNewImagesThread();
+            ErrorReport error = masterAndCommander.cancelAddNewImagesThread();
 
             //if theres an error, show the error message, otherwise hide the cancel button.
             if (error.reportStatus == ReportStatus.FAILURE)
@@ -2328,7 +2328,7 @@ namespace SoftwareEng
             //if we are importing we need to handle stopping the thread.
             if (_isImporting)
             {
-                ErrorReport error = _bombaDeFotos.cancelAddNewImagesThread();
+                ErrorReport error = masterAndCommander.cancelAddNewImagesThread();
                 //if the thread failed to be stopped.
                 if (error.reportStatus == ReportStatus.FAILURE)
                 {
@@ -2338,8 +2338,8 @@ namespace SoftwareEng
                 else
                 {
                     // Make sure the backend saves cleanly
-                    _bombaDeFotos.saveAlbumsXML(null);
-                    _bombaDeFotos.saveImagesXML(null);
+                    masterAndCommander.saveAlbumsXML(null);
+                    masterAndCommander.saveImagesXML(null);
 
                     //add this line to make sure the app properly closes now that we've screwed with the
                     //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
@@ -2349,8 +2349,8 @@ namespace SoftwareEng
             else
             {
                 // Make sure the backend saves cleanly
-                _bombaDeFotos.saveAlbumsXML(null);
-                _bombaDeFotos.saveImagesXML(null);
+                masterAndCommander.saveAlbumsXML(null);
+                masterAndCommander.saveImagesXML(null);
 
                 //add this line to make sure the app properly closes now that we've screwed with the
                 //magic wizardry of App.xaml.cs to ensure only one instance of the application can launch.
@@ -2563,7 +2563,7 @@ namespace SoftwareEng
         private void gui_getCurrentTheme()
         {
             String storedTheme;
-            _bombaDeFotos.getCurrentTheme(out storedTheme);
+            masterAndCommander.getCurrentTheme(out storedTheme);
             clearThemecheckboxes();
             var program = App.Current as App;
 
@@ -2587,7 +2587,7 @@ namespace SoftwareEng
 
             program.setTheme(appliedTheme);
 
-            ReportStatus success = _bombaDeFotos.setCurrentTheme(appliedTheme);
+            ReportStatus success = masterAndCommander.setCurrentTheme(appliedTheme);
 
             if (success != ReportStatus.SUCCESS)
             {
@@ -2692,7 +2692,7 @@ namespace SoftwareEng
          **************************************************************************************************************************/
         public void guiConvertToGreyscale(addNewPictures_callback guiGrayscaleCallback, ComplexPhotoData desiredImage, Guid albumGuid)
         {
-            _bombaDeFotos.addImageAsGrayscale(guiGrayscaleCallback, albumGuid, desiredImage.fullPath);
+            masterAndCommander.addImageAsGrayscale(guiGrayscaleCallback, albumGuid, desiredImage.fullPath);
         }
 
 

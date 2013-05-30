@@ -120,6 +120,9 @@
     <Compile Include="database\ImagesDatabase.cs" />
     <Compile Include="ImageManipulation.cs" />
     <Compile Include="KeyValuePairDataBase.cs" />
+    <Compile Include="PhotoBomberController.xaml.cs">
+      <DependentUpon>PhotoBomberController.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PhotoBomb_Xml.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -160,6 +163,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ErrorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PhotoBomberController.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
