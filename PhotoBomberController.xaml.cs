@@ -31,6 +31,7 @@ namespace SoftwareEng
         private KeyValuePairDataBase _settingsDatabase;
         private ImageManipulation _imageManipulation;
 
+        private MainWindow mainGuiWindow;
         
 
         // The path of the files of the database.
@@ -51,6 +52,9 @@ namespace SoftwareEng
             InitializeComponent();
             _imageManipulation = new ImageManipulation();
             _photoBombDatabase = new PhotoBomb();
+            mainGuiWindow = new MainWindow(this);
+
+            mainGuiWindow.Show();
         }
 
 

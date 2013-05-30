@@ -52,7 +52,7 @@ namespace SoftwareEng
     /// <summary>
     /// 
     /// </summary>
-    public class PhotoBomb_Controller
+    public class zzobsoletezzPhotoBomb_Controller
     {
         // A handy shortcut to the settings class...
         static Properties.Settings Settings = Properties.Settings.Default;
@@ -75,7 +75,7 @@ namespace SoftwareEng
         /// <summary>
         /// This will setup the class. 
         /// </summary>
-        public PhotoBomb_Controller()
+        public zzobsoletezzPhotoBomb_Controller()
         {
             _imageManipulation = new ImageManipulation();
             _photoBombDatabase = new PhotoBomb();

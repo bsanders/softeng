@@ -157,7 +157,7 @@ namespace SoftwareEng
         //temp variable to test out collection views
         private CollectionView _ImageListCollectionView;
 
-        public MainWindow()
+        public MainWindow(PhotoBomberController controllerInstance)
         {
             InitializeComponent();
 
@@ -167,7 +167,8 @@ namespace SoftwareEng
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Settings.OrgName);
 
-            masterAndCommander = new PhotoBomberController();
+            masterAndCommander = controllerInstance;
+
             masterAndCommander.init(guiConstructorCallback,
                 System.IO.Path.Combine(basePath, Settings.AlbumXMLFile),
                 System.IO.Path.Combine(basePath, Settings.PhotoXMLFile),
