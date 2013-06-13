@@ -191,6 +191,32 @@ namespace SoftwareEng
             gui_getCurrentTheme();
         }
 
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            // Set the base path for all data to be in the User's application data folder under "PhotoBomber Studios" for now.
+            // This is equivalent to whatever %localappdata% resolves to in Explorer
+            string basePath = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                Settings.OrgName);
+
+            isMouseInDockHitBox = false;
+            isMouseInDock = false;
+
+            hideAddAlbumBox();
+
+            populateAlbumView(true);
+
+            _isInsideAlbum = false;
+            if (mainWindowAlbumList.Items.IsEmpty == false)
+            {
+                mainWindowAlbumList.SelectedItem = mainWindowAlbumList.Items[0];
+                mainWindowAlbumList.Focus();
+            }
+
+            gui_getCurrentTheme();
+        }
 
         /*********************************************************************************************
         * Author: Alejandro Sosa

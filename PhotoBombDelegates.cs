@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace SoftwareEng
 {
@@ -57,5 +58,103 @@ namespace SoftwareEng
     public delegate void threadUpdateDelegate(int processed);
 
     public delegate void greyScaleConverterDelegate(addNewPictures_callback returnAddress, ComplexPhotoData imageToBeConverted, Guid inThisAlbum);
+
+
+
+    #region Controller Delegates/Containers
+
+    public delegate void controllerManipulateSetting();
+
+    public delegate void controllerOpenFile();
+
+    public delegate void controllerBind();
+
+    public delegate void controllerShowError(String delMessageOfDoom);
+
+    public delegate void controllerSave();
+
+    public delegate void controllerAddItem(generic_callback delGuiCallback, SimpleAlbumData delAlbumData);
+
+    public delegate void controllerAddItem(addNewPictures_callback delGuiCallback, List<String> delImageUserPath, List<String> delImageExtension, Guid delAbumUID, List<String> delInAlbumImageName, ProgressChangedEventHandler delUpdateCallback, int delUpdateAmount);
+
+    public delegate void controllerEditItem();
+
+    public delegate void controllerGetSelectedData();
+
+    public delegate void controllerClose();
+
+    public class controllerDataDelegateContainer
+    {
+        private controllerGetSelectedData pSelectedDataGetter;
+        private controllerBind pBinder;
+        private controllerAddItem pItemAdder;
+        private controllerEditItem pItemEditor;
+
+        public controllerDataDelegateContainer(controllerBind iBinder, controllerGetSelectedData iSelectedDataGetter, controllerAddItem iItemAdder, controllerEditItem iItemEditor)
+        {
+            pBinder = iBinder;
+            pSelectedDataGetter = iSelectedDataGetter;
+            pItemAdder = iItemAdder;
+            pItemEditor = iItemEditor;
+        }
+
+        public void retrieveDelegates(out controllerBind iBinder, out controllerGetSelectedData iSelectedDataGetter, out controllerAddItem iItemAdder, out controllerEditItem iItemEditor)
+        {
+            iBinder = pBinder;
+            iSelectedDataGetter = pSelectedDataGetter;
+            iItemAdder = pItemAdder;
+            iItemEditor = pItemEditor;
+        }
+    }
+
+    public class controllerMiscDelegateContainer
+    {
+        private controllerSave pFileSaver;
+        private controllerOpenFile pFileOpener;
+        private controllerManipulateSetting pSettingHandler;
+
+        public controllerMiscDelegateContainer(controllerOpenFile iFileOpener, controllerManipulateSetting iSettingHandler, controllerSave iFileSaver)
+        {
+            pFileOpener = iFileOpener;
+            pFileSaver = iFileSaver;
+            pSettingHandler = iSettingHandler;
+        }
+
+        public void retrieveDelegates(out controllerOpenFile iFileOpener, out controllerManipulateSetting iSettingHandler, out controllerSave iFileSaver)
+        {
+            iFileOpener = pFileOpener;
+            iFileSaver = pFileSaver;
+            iSettingHandler = pSettingHandler;
+        }
+    }
+
+    public class controllerDelegateContainer
+    {
+        private controllerShowError pErrorDisplayer;
+        private controllerClose pProgramCloser;
+
+        public controllerDelegateContainer(controllerShowError iErrorDisplayer, controllerClose iProgramCloser = null)
+        {
+            pErrorDisplayer = iErrorDisplayer;
+            if (iProgramCloser == null)
+            {
+                pProgramCloser = new controllerClose(emptyControllerCloseFunc);
+                return;
+            }
+            pProgramCloser = iProgramCloser;
+        }
+
+        public void retrieveDelegates(out controllerShowError iErrorDisplayer, out controllerClose iProgramCloser)
+        {
+            iErrorDisplayer = pErrorDisplayer;
+            iProgramCloser = pProgramCloser;
+        }
+
+        private void emptyControllerCloseFunc()
+        {
+        }
+    }
+
+    #endregion
     
 }
